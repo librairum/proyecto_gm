@@ -112,6 +112,7 @@ public class DatosComunicacion {
         }
         return estadoProceso;
     }
+    //Metod par aactualizr registro
     static boolean  Actualizar(Comunicacion entidad) {
         boolean estadoProceso  = false;
         try{
