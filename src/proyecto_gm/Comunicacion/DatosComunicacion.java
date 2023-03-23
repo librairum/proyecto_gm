@@ -22,7 +22,7 @@ import proyecto_gm.ConexionBD;
  *
  * @author pc_sistemas2022
  */
-
+//Lista los datos de la tabla comunicacion
 public class DatosComunicacion {
     public DatosComunicacion(){}
     Comunicacion entidad = new Comunicacion();
@@ -75,10 +75,12 @@ public class DatosComunicacion {
             }
             return estado;
     }
+     //Proceso para insertar un registor al tabla comunicacion
     static boolean Insertar(Comunicacion entidad){
         boolean estadoProceso  = false;
         try {
             
+            //Llmar al procedimiento almacenado
             CallableStatement proc = conn.prepareCall(" {call insertar_comunicacion(?,?,?,?,?,?,?,?,?,?,?,?,?)}");
         
             //validacion de campos con valores en blanco
