@@ -58,6 +58,8 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("INSTITUCIONES");
 
+        jPanel2.setBackground(new java.awt.Color(255, 248, 239));
+
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -239,6 +241,7 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
         btnEliminar.setEnabled(false);
         btnGuardar.setEnabled(true);
         btnDeshacer.setEnabled(true);
+        btnEditar.setEnabled(false);
         // Habilitar campos
         DatosFacultades.habilitarCampos(jPanel2);
 
