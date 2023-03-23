@@ -217,6 +217,8 @@ public class frmArea extends javax.swing.JInternalFrame {
         btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
         btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
         txtId.setEditable(false);txtDescripcion.setEditable(false);
+        //
+        btnAgregar.setEnabled(true);
 
         Area are= new Area();
         are.setId(txtId.getText());
@@ -272,6 +274,8 @@ public class frmArea extends javax.swing.JInternalFrame {
         btnGuardar.setEnabled(true);btnDeshacer.setEnabled(true);btnEditar.setEnabled(false);btnEliminar.setEnabled(false);
         txtId.setEditable(true);txtDescripcion.setEditable(true);
         esNuevo=true;
+        //
+        btnAgregar.setEnabled(false);
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped
