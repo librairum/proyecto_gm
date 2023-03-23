@@ -146,7 +146,9 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="cboCargo" min="-2" pref="125" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="44" max="32767" attributes="0"/>
+                          <Component id="btnExport" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
                           <Component id="btnDatAcad" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
                       </Group>
@@ -252,6 +254,7 @@
                       <Component id="jLabel54" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnDatAcad" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="cboCargo" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnExport" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="70" max="32767" attributes="0"/>
                   <Component id="jScrollPane3" min="-2" pref="367" max="-2" attributes="0"/>
@@ -559,6 +562,11 @@
             </Component>
           </SubComponents>
         </Container>
+        <Component class="javax.swing.JButton" name="btnExport">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Exportar Datos"/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

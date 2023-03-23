@@ -75,6 +75,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         cboCargo = new javax.swing.JComboBox<>();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblEmpleado = new javax.swing.JTable();
+        btnExport = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -231,6 +232,8 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         tblEmpleado.setPreferredSize(new java.awt.Dimension(1000, 600));
         jScrollPane3.setViewportView(tblEmpleado);
 
+        btnExport.setText("Exportar Datos");
+
         escritorio.setLayer(btnNuevo, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorio.setLayer(btnEditar, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorio.setLayer(btnGuardar, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -262,6 +265,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         escritorio.setLayer(cboArea, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorio.setLayer(cboCargo, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorio.setLayer(jScrollPane3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        escritorio.setLayer(btnExport, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
         escritorio.setLayout(escritorioLayout);
@@ -317,7 +321,9 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                         .addGap(25, 25, 25))
                     .addGroup(escritorioLayout.createSequentialGroup()
                         .addComponent(cboCargo, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                        .addComponent(btnExport)
+                        .addGap(73, 73, 73)
                         .addComponent(btnDatAcad)
                         .addGap(62, 62, 62))
                     .addGroup(escritorioLayout.createSequentialGroup()
@@ -399,7 +405,8 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                     .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel54)
                     .addComponent(btnDatAcad)
-                    .addComponent(cboCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnExport))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -570,6 +577,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnDatAcad;
     public static javax.swing.JButton btnEditar;
     public static javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnExport;
     public static javax.swing.JButton btnGuardar;
     public static javax.swing.JButton btnNuevo;
     private javax.swing.JComboBox<String> cboArea;
