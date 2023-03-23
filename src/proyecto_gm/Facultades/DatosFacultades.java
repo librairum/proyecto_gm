@@ -74,7 +74,7 @@ public class DatosFacultades {
 
     }
 
-
+//metodo para insertar datos (nuevo cambio)
     public static void insertarDatos(Facultades carrera, JTable tabla) {
         try {
             CallableStatement cstmt = conn.prepareCall("{ CALL insertar_facultades(?, ?) }");
