@@ -66,6 +66,8 @@ public class frmFacultades extends javax.swing.JInternalFrame {
             .addGap(0, 407, Short.MAX_VALUE)
         );
 
+        jPanel1.setBackground(new java.awt.Color(255, 248, 239));
+
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -203,6 +205,7 @@ public class frmFacultades extends javax.swing.JInternalFrame {
         btnEliminar.setEnabled(false);
         btnGuardar.setEnabled(true);
         btnDeshacer.setEnabled(true);
+        btnEditar.setEnabled(false);
         // Habilitar camposS
         DatosFacultades.habilitarCampos(jPanel1);
 
@@ -271,7 +274,7 @@ public class frmFacultades extends javax.swing.JInternalFrame {
         // Limpiar datos
         DatosFacultades.limpiarCampos(jPanel1);
         // Bloquear campos
-        DatosFacultades.bloquearCampos(jPanel1);
+        //DatosFacultades.bloquearCampos(jPanel1);
 
         // Deshabilitar los botones Guardar y Deshacer
         btnGuardar.setEnabled(true);

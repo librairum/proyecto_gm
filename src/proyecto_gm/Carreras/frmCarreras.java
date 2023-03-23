@@ -73,6 +73,8 @@ public class frmCarreras extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("CARRERAS");
 
+        escritorio.setBackground(new java.awt.Color(255, 248, 239));
+
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -197,6 +199,7 @@ public class frmCarreras extends javax.swing.JInternalFrame {
         btnEliminar.setEnabled(false);
         btnGuardar.setEnabled(true);
         btnDeshacer.setEnabled(true);
+        btnAgregar.setEnabled(false);
         esNuevo = true;
     }//GEN-LAST:event_btnAgregarActionPerformed
 
@@ -206,6 +209,7 @@ public class frmCarreras extends javax.swing.JInternalFrame {
         btnEliminar.setEnabled(false);
         btnGuardar.setEnabled(true);
         btnDeshacer.setEnabled(true);
+        btnEditar.setEnabled(false);
         // Habilitar campos
         DatosFacultades.habilitarCampos(escritorio);
 
@@ -267,6 +271,14 @@ public class frmCarreras extends javax.swing.JInternalFrame {
 
     private void btnDeshacerKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnDeshacerKeyTyped
         // TODO add your handling code here:
+        // Limpiar datos
+        DatosFacultades.limpiarCampos(escritorio);
+        // Bloquear campos
+        //DatosFacultades.bloquearCampos(jPanel1);
+
+        // Deshabilitar los botones Guardar y Deshacer
+        btnGuardar.setEnabled(true);
+        btnDeshacer.setEnabled(true);
     }//GEN-LAST:event_btnDeshacerKeyTyped
 
 
