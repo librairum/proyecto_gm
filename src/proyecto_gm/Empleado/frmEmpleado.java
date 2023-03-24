@@ -5,6 +5,7 @@
 package proyecto_gm.Empleado;
 
 import java.awt.Toolkit;
+import java.io.IOException;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -14,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
  * @author LUIS
  */
 public class frmEmpleado extends javax.swing.JInternalFrame {
+    Exportar obj;
     
     boolean esNuevo = false;
     
@@ -233,6 +235,11 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         jScrollPane3.setViewportView(tblEmpleado);
 
         btnExport.setText("Exportar Datos");
+        btnExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportActionPerformed(evt);
+            }
+        });
 
         escritorio.setLayer(btnNuevo, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorio.setLayer(btnEditar, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -571,6 +578,16 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
             Toolkit.getDefaultToolkit().beep();
         }
     }//GEN-LAST:event_txtCelKeyTyped
+
+    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
+        // TODO add your handling code here:
+        try{
+            obj = new Exportar(); //mandamos a llamar a la clase
+            obj.exportarExcel(tblEmpleado); //llamamos el metodo desde la clase DatosEmpleados
+        } catch (IOException ex){
+            
+        }
+    }//GEN-LAST:event_btnExportActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btnCancelar;
