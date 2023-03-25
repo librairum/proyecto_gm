@@ -1,13 +1,16 @@
 package proyecto_gm.Instituciones;
 
 import java.awt.Toolkit;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import proyecto_gm.Empleado.Exportar;
 import proyecto_gm.Facultades.DatosFacultades;
 import static proyecto_gm.Instituciones.DatosInstituciones.validarNumeros;
 
 public class frmInstituciones extends javax.swing.JInternalFrame {
+    Exportar obj;
 
     DefaultTableModel modelo;
     boolean esNuevo = false;
@@ -53,6 +56,7 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
         txtRazon = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblInstituciones = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -133,6 +137,13 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tblInstituciones);
 
+        jButton1.setText("Exportar Datos");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -179,7 +190,10 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
                                     .addComponent(jLabel5)
                                     .addComponent(jLabel2))
                                 .addGap(18, 18, 18)
-                                .addComponent(txtSede, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtSede, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(130, 130, 130)
+                                .addComponent(jButton1)
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(48, 48, 48))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -205,9 +219,10 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4)
                     .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
-                    .addComponent(txtSede, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSede, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -341,6 +356,16 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_txtDireccionKeyTyped
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        try{
+            obj = new Exportar(); //mandamos a llamar a la clase
+            obj.exportarExcel(tblInstituciones); //llamamos el metodo desde la clase DatosEmpleados
+        } catch (IOException ex){
+            
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
@@ -348,6 +373,7 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
