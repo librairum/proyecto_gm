@@ -267,7 +267,7 @@ public class DatosEmpleados {
             // Bloqueamos lo siguientes botontes del formulario:
             frmEmpleado.btnGuardar.setEnabled(false);
             frmEmpleado.btnCancelar.setEnabled(false);
-            
+
             // Habilitamos la seleccion de fila(s) en la tabla
             tabla.setRowSelectionAllowed(true);
         }
@@ -409,21 +409,21 @@ public class DatosEmpleados {
             validar = false;
             JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd-mm-aaaa. Inténtelo de nuevo.");
         }
-        
+
         // Validamos correo
         // Expresión regular para validar el formato de un correo electrónico
         String regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
-        
+
         if (!emp.getCorreo().matches(regex)) {
             validar = false;
             JOptionPane.showMessageDialog(null, "El formato de correo es el siguiente: someone@mail.com\nInténtelo de nuevo.");
         }
-        
+
         // Validamos el dni
         if (emp.getDni().length() != 8) {
             JOptionPane.showMessageDialog(null, "El DNI debe contener 8 dígitos.");
         }
-        
+
         // Validamos el celular
         if (emp.getCelular().length() != 9) {
             JOptionPane.showMessageDialog(null, "El celular debe contener 9 dígitos.");
@@ -431,4 +431,56 @@ public class DatosEmpleados {
 
         return validar;
     }
-}
+    
+    
+
+//    public void exportarExcel(JTable t) throws IOException {
+//        JFileChooser chooser = new JFileChooser();
+//        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivo de exce", "xls");
+//        chooser.setFileFilter(filter);
+//        chooser.setDialogTitle("Guardar archivo");
+//        chooser.setAcceptAllFileFilterUsed(false);
+//        if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+//            String ruta = chooser.getSelectedFile().toString().concat(".xls");
+//            try {
+//                File archivoXLS = new File(ruta);
+//                if (archivoXLS.exists()) {
+//                    archivoXLS.delete();
+//                }
+//                archivoXLS.createNewFile();
+//                Workbook libro = new HSSFWorkbook();
+//                FileOutputStream archivo = new FileOutputStream(archivoXLS);
+//                Sheet hoja = libro.createSheet("Datos");
+//                hoja.setDisplayGridlines(false);
+//                for (int f = 0; f < t.getColumnCount(); f++) {
+//                    Row fila = hoja.createRow(f);
+//                    for (int c = 0; c < t.getColumnCount(); c++) {
+//                        Cell celda = fila.createCell(c);
+//                        if (f == 0) {
+//                            celda.setCellValue(t.getColumnName(c));
+//                        }
+//                    }
+//                }
+//                int filaInicio = 1;
+//                for (int f = 0; f < t.getRowCount(); f++) {
+//                    Row fila = hoja.createRow(filaInicio);
+//                    filaInicio++;
+//                    for (int c = 0; c < t.getColumnCount(); c++) {
+//                        Cell celda = fila.createCell(c);
+//                        if (t.getValueAt(f, c) instanceof Double) {
+//                            celda.setCellValue(Double.parseDouble(t.getValueAt(f, c).toString()));
+//                        } else if (t.getValueAt(f, c) instanceof Float) {
+//                            celda.setCellValue(Float.parseFloat((String) t.getValueAt(f, c)));
+//                        } else {
+//                            celda.setCellValue(String.valueOf(t.getValueAt(f, c)));
+//                        }
+//                    }
+//                }
+//                libro.write(archivo);
+//                archivo.close();
+//                Desktop.getDesktop().open(archivoXLS);
+//            } catch (IOException | NumberFormatException e) {
+//                throw e;
+//            }
+//        }
+    }
