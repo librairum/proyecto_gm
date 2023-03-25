@@ -68,6 +68,7 @@ public class DatosArea {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+        
     }
     
     public static void Actualizar(Area are, JTable tabla){
@@ -113,7 +114,6 @@ public class DatosArea {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-
     }
       
     public static void Editar(JTable tabla, JTextField [] cod){

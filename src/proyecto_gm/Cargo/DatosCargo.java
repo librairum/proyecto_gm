@@ -72,7 +72,7 @@ public class DatosCargo {
     
      public static void Actualizar(Cargo car, JTable tabla){
         try { 
-            CallableStatement ate = conn.prepareCall("{CALL actualizar_areas (?,?)}");
+            CallableStatement ate = conn.prepareCall("{CALL actualizar_cargos (?,?)}");
             //defino los parametros de la bd para ser actualizado mediante el id
             ate.setString(1, car.Id);
             ate.setString(2, car.Descripcion);

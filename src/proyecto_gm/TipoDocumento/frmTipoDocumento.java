@@ -51,6 +51,9 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("TIPO DOCUMENTO");
 
+        escritorio.setBackground(new java.awt.Color(255, 255, 255));
+        escritorio.setForeground(new java.awt.Color(255, 255, 255));
+
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -231,6 +234,7 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
         btnEditar.setEnabled(false); btnEliminar.setEnabled(false);
         // Deshabilitamos la seleccion de filas de la tabla
         tblTipoDocumento.setRowSelectionAllowed(false);
+        btnAgregar.setEnabled(false);
         
 esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
 
@@ -238,6 +242,7 @@ esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
       // Habilitamos los campos:
         DatosTipoDocumento.Habilitar(escritorio);
+        btnAgregar.setEnabled(false);
 
         // Agrupar las cajas de texto
         JTextField[] camposTexto = {txtId, txtDescripcion};
@@ -278,6 +283,7 @@ esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
                     DatosTipoDocumento.Insertar(tip, tblTipoDocumento);
                     JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
                 }
+            DatosTipoDocumento.Limpiar(escritorio);
         } else {
             // Actualizar registro existente
             if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {

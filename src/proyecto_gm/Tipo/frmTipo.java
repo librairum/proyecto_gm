@@ -15,18 +15,14 @@ public class frmTipo extends javax.swing.JInternalFrame {
     public frmTipo() {
         initComponents();
         modelo = new DefaultTableModel();
-        modelo.addColumn("ID");
-        modelo.addColumn("DESCRIPCION");
+        modelo.addColumn("Id");
+        modelo.addColumn("Descripción");
         this.tblTipo.setModel(modelo);
-        DatosTipo.Mostrar(modelo);
         
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
         DatosTipo.Bloquear(escritorio);
-        // Quitar la edicion de las celdas
-        tblTipo.setCellSelectionEnabled(false);
-        // Poder seleccionar fila(s) de la tabla
-        tblTipo.setRowSelectionAllowed(true);
+        DatosTipo.Mostrar(modelo);
     }
     
     
@@ -50,6 +46,8 @@ public class frmTipo extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("TIPO EMPLEADO");
+
+        escritorio.setBackground(new java.awt.Color(255, 248, 239));
 
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -86,7 +84,7 @@ public class frmTipo extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel1.setText("ID:");
+        jLabel1.setText("Id:");
 
         txtId.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -94,7 +92,7 @@ public class frmTipo extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel2.setText("DESCRIPCIÓN:");
+        jLabel2.setText("Descripción:");
 
         tblTipo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -123,48 +121,53 @@ public class frmTipo extends javax.swing.JInternalFrame {
         escritorioLayout.setHorizontalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(escritorioLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnAgregar)
                     .addGroup(escritorioLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(escritorioLayout.createSequentialGroup()
-                        .addComponent(btnEditar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEliminar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnGuardar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDeshacer))
-                    .addGroup(escritorioLayout.createSequentialGroup()
-                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(65, 65, 65)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 5, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(escritorioLayout.createSequentialGroup()
+                        .addComponent(btnAgregar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnEditar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnEliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnGuardar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnDeshacer))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 25, Short.MAX_VALUE))
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(escritorioLayout.createSequentialGroup()
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnAgregar)
-                    .addComponent(btnEditar)
-                    .addComponent(btnEliminar)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnDeshacer))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(btnDeshacer)
+                                .addComponent(btnGuardar, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(btnEliminar, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addComponent(btnEditar, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(btnAgregar))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 24, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -184,13 +187,15 @@ public class frmTipo extends javax.swing.JInternalFrame {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
 btnGuardar.setEnabled(true);btnDeshacer.setEnabled(true);btnEditar.setEnabled(false);btnEliminar.setEnabled(false);
 txtId.setEditable(true);txtDescripcion.setEditable(true);
+btnAgregar.setEnabled(false);
 esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
-      btnGuardar.setEnabled(true);btnDeshacer.setEnabled(true);btnEliminar.setEnabled(false);
+        btnGuardar.setEnabled(true);btnDeshacer.setEnabled(true);btnEliminar.setEnabled(false);
         txtId.setEditable(false);
         txtDescripcion.setEditable(true);
+        btnAgregar.setEnabled(false);
         
         JTextField [] cod= new JTextField [2];
         cod[0] = txtId;
@@ -213,6 +218,7 @@ esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
         btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
         btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
         txtId.setEditable(false);txtDescripcion.setEditable(false);
+        btnAgregar.setEnabled(true);
 
         Tipo tip= new Tipo();
         tip.setId(txtId.getText());
@@ -228,6 +234,7 @@ esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
                     DatosTipo.Insertar(tip, tblTipo);
                     JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
                 }
+            DatosTipo.Limpiar(escritorio);
         } else {
             // Actualizar registro existente
             if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
@@ -239,13 +246,13 @@ esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
         }
         modelo.setRowCount(0);
         DatosTipo.Mostrar(modelo);
-        DatosTipo.Limpiar(rootPane);
+        DatosTipo.Limpiar(escritorio);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
         // TODO add your handling code here:
-        DatosTipo.Limpiar(rootPane);
+        DatosTipo.Limpiar(escritorio);
         btnEditar.setEnabled(true);btnEliminar.setEnabled(true);btnAgregar.setEnabled(true);
         btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
         txtId.setEditable(false);txtDescripcion.setEditable(false);
