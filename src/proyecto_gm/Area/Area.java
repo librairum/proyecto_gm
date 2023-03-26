@@ -30,7 +30,4 @@ public class Area {
         this.Descripcion = Descripcion;
     }
 
-    
-
-    
 }

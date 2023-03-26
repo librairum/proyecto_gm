@@ -79,6 +79,11 @@ public class DatosArea {
             ate.setString(2, are.Descripcion);
             ate.executeUpdate();
             
+            // Actualizamos la tabla
+                DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+                modelo.setRowCount(0);
+
+                DatosArea.Mostrar(modelo);
           
             ate.close();
         } catch (SQLException ex) {

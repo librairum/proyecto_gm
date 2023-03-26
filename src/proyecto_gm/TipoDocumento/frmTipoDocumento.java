@@ -2,7 +2,6 @@ package proyecto_gm.TipoDocumento;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -276,22 +275,17 @@ esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
          //Preguntamos si haremos un INSERT o un UPDATE
          if (esNuevo) {
             // Insertar nuevo registro
-            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                    return;
-                } else {
+            if (DatosTipoDocumento.ValidarCampos(tip)) {
                     DatosTipoDocumento.Insertar(tip, tblTipoDocumento);
-                    JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+                            
+                } else 
+            {
+                if(DatosTipoDocumento.ValidarCampos(tip)){
+             DatosTipoDocumento.Actualizar(tip, tblTipoDocumento);
+                    
                 }
             DatosTipoDocumento.Limpiar(escritorio);
-        } else {
-            // Actualizar registro existente
-            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                    return;
-                } else {
-                    DatosTipoDocumento.Actualizar(tip, tblTipoDocumento);
-                    JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+     
         }
         DatosTipoDocumento.Limpiar(escritorio);
         DatosTipoDocumento.Bloquear(escritorio);

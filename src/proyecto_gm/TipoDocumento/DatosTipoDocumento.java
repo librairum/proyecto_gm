@@ -273,4 +273,28 @@ public class DatosTipoDocumento {
         }
 
     }
+    public static boolean ValidarCampos(TipoDocumento emp) {
+        boolean validar = true;
+        String[] campos = {emp.getId()
+        };
+
+        // Validamos si los campos estan vacios
+        for (String campo : campos) {
+            if (campo.equals("")) {
+                validar = false;
+            }
+        }
+
+        if (!validar) {
+            JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos.");
+        }
+
+        // Validamos uno por uno
+        // Validamos ID:
+        if (!emp.getId().matches("^[A-Z]{2}[0-9]{2}$") || emp.getId().length() != 4) {
+            validar = false;
+            JOptionPane.showMessageDialog(null, "El formato del ID es el siguiente: AA00. Inténtelo de nuevo.");
+        }
+        return validar;
+    }
 }

@@ -9,6 +9,7 @@ import proyecto_gm.Empleado.frmEmpleado;
 import proyecto_gm.Cargo.frmCargo;
 
 import proyecto_gm.Area.frmArea;
+import proyecto_gm.CabeceraComprobante.frmCabeceraComprobante;
 import proyecto_gm.Comunicacion.frmListaComunicacion;
 import proyecto_gm.Modulo.frmModulo;
 import proyecto_gm.Proveedores.frmProveedores;
@@ -45,6 +46,7 @@ public class menu extends javax.swing.JFrame {
         menuproveedores = new javax.swing.JMenuItem();
         menuTipoDocumento = new javax.swing.JMenuItem();
         menuComunicaciones = new javax.swing.JMenuItem();
+        menuCabeceraComprobante = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         menuRegistros = new javax.swing.JMenuItem();
         menuGastos = new javax.swing.JMenuItem();
@@ -158,6 +160,14 @@ public class menu extends javax.swing.JFrame {
             }
         });
         jMenu1.add(menuComunicaciones);
+
+        menuCabeceraComprobante.setText("Cabecera de Comprobante");
+        menuCabeceraComprobante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCabeceraComprobanteActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuCabeceraComprobante);
 
         jMenuBar1.add(jMenu1);
 
@@ -307,6 +317,14 @@ public class menu extends javax.swing.JFrame {
         verventana.show();
     }//GEN-LAST:event_menuproveedoresActionPerformed
 
+    private void menuCabeceraComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCabeceraComprobanteActionPerformed
+        // TODO add your handling code here:
+        frmCabeceraComprobante verventana = new frmCabeceraComprobante();
+        escritorio.add(verventana);
+        
+        verventana.show();
+    }//GEN-LAST:event_menuCabeceraComprobanteActionPerformed
+
    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -350,6 +368,7 @@ public class menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem menuArea;
+    private javax.swing.JMenuItem menuCabeceraComprobante;
     private javax.swing.JMenuItem menuCampos;
     private javax.swing.JMenuItem menuCargo;
     private javax.swing.JMenuItem menuComunicaciones;

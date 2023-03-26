@@ -6,23 +6,22 @@ import javax.swing.table.DefaultTableModel;
 
 public class frmArea extends javax.swing.JInternalFrame {
 
-    DefaultTableModel modelo;
+    
     boolean esNuevo=false;
   
     public frmArea() {
         initComponents();
-   
-        modelo = new DefaultTableModel();
-        modelo.addColumn("Id");
-        modelo.addColumn("Descripción");
-        this.tblArea.setModel(modelo);
-        
+        DefaultTableModel modelo = (DefaultTableModel) tblArea.getModel();
         
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
         DatosArea.Bloquear(escritorio);
         
         DatosArea.Mostrar(modelo);
+        // Quitar la edicion de las celdas
+        tblArea.setCellSelectionEnabled(false);
+        // Poder seleccionar fila(s) de la tabla
+        tblArea.setRowSelectionAllowed(true);
     }  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -227,8 +226,7 @@ public class frmArea extends javax.swing.JInternalFrame {
                     DatosArea.Actualizar(are, tblArea);
                     JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
         }
-        modelo.setRowCount(0);
-        DatosArea.Mostrar(modelo);
+        
         DatosArea.Limpiar(escritorio);
 
         }
@@ -247,6 +245,8 @@ public class frmArea extends javax.swing.JInternalFrame {
         btnGuardar.setEnabled(true);btnDeshacer.setEnabled(true);btnEliminar.setEnabled(false);
         txtId.setEditable(false);
         txtDescripcion.setEditable(true);
+        btnAgregar.setEnabled(false);
+        btnEditar.setEnabled(false);
 
         JTextField [] cod= new JTextField [2];
         cod[0] = txtId;

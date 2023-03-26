@@ -154,6 +154,11 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
 
         jLabel49.setText("CORREO:");
 
+        txtFechaNac.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFechaNacActionPerformed(evt);
+            }
+        });
         txtFechaNac.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtFechaNacKeyTyped(evt);
@@ -571,6 +576,10 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
             Toolkit.getDefaultToolkit().beep();
         }
     }//GEN-LAST:event_txtCelKeyTyped
+
+    private void txtFechaNacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaNacActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFechaNacActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btnCancelar;
