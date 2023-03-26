@@ -13,18 +13,8 @@ public class Empleados {
     private String id, apellidos, nombres, fNacimiento, correo, dni, celular, direccion, idArea, idCargo, idTipo;
 
     // Constructor
-    public Empleados(String id, String apellidos, String nombres, String fNacimiento, String correo, String dni, String celular, String direccion, String idArea, String idCargo, String idTipo) {
-        this.id = id;
-        this.apellidos = apellidos;
-        this.nombres = nombres;
-        this.fNacimiento = fNacimiento;
-        this.correo = correo;
-        this.dni = dni;
-        this.celular = celular;
-        this.direccion = direccion;
-        this.idArea = idArea;
-        this.idCargo = idCargo;
-        this.idTipo = idTipo;
+    public Empleados() {
+        // Constructor vacio
     }
 
     // Getters & Setters
@@ -115,7 +105,7 @@ public class Empleados {
     public void setIdTipo(String idTipo) {
         this.idTipo = idTipo;
     }
-    
+
     
     
 }

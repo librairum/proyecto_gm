@@ -4,8 +4,7 @@
  */
 package proyecto_gm.Empleado;
 
-import javax.swing.JInternalFrame;
-import javax.swing.JTable;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,7 +17,7 @@ public class Datosacad extends javax.swing.JInternalFrame {
      */
     public Datosacad() {
         initComponents();
-        DatosAcademicos.CargarCombos(cbxInstitucion, cbxFacultad, cbxCarrera, cbxCiclo);
+        DatosAcademicos.CargarCombos(cboInstitucion, cboFacultad, cboCarrera);
         setSize(675, 330);
         setLocation(210, 90);
         txtDni.setEnabled(false);
@@ -43,15 +42,15 @@ public class Datosacad extends javax.swing.JInternalFrame {
         btnCancelar = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel3 = new javax.swing.JLabel();
-        cbxInstitucion = new javax.swing.JComboBox<>();
+        cboInstitucion = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        cbxFacultad = new javax.swing.JComboBox<>();
+        cboFacultad = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         txtCodEs = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        cbxCarrera = new javax.swing.JComboBox<>();
-        cbxCiclo = new javax.swing.JComboBox<>();
+        cboCarrera = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
+        cboCiclo = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -94,6 +93,8 @@ public class Datosacad extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Ciclo:");
 
+        cboCiclo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Por definir...", "1ro", "2do", "3ro", "4to", "5to", "6to", "7mo", "8vo", "9no", "10mo", "Egresado" }));
+
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
@@ -121,17 +122,17 @@ public class Datosacad extends javax.swing.JInternalFrame {
                             .addComponent(jLabel5)
                             .addComponent(jLabel6))
                         .addGap(28, 28, 28)
-                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cbxCiclo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbxCarrera, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cboCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cboCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panelLayout.createSequentialGroup()
                         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cbxInstitucion, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbxFacultad, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(cboInstitucion, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cboFacultad, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panelLayout.createSequentialGroup()
                         .addGap(425, 425, 425)
                         .addComponent(jLabel7)
@@ -159,21 +160,21 @@ public class Datosacad extends javax.swing.JInternalFrame {
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel7)
-                    .addComponent(cbxInstitucion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboInstitucion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCodEs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(cbxFacultad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboFacultad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(cbxCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(cbxCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(21, Short.MAX_VALUE))
+                    .addComponent(cboCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -195,8 +196,13 @@ public class Datosacad extends javax.swing.JInternalFrame {
     
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
-        String[] opciones = DatosAcademicos.CapturarOpciones(cbxInstitucion, cbxFacultad, cbxCarrera, cbxCiclo);
-        DatosAcademicos.InsertarDatos(this, txtDni.getText(), opciones[0], opciones[1], opciones[2], opciones[3], txtCodEs.getText());
+        String[] opciones = DatosAcademicos.CapturarOpciones(cboInstitucion, cboFacultad, cboCarrera);
+        if (txtCodEs.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debe rellenar el código de estudiante.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            txtCodEs.requestFocus();
+        } else {
+            DatosAcademicos.InsertarDatos(this, txtDni.getText(), opciones[0], opciones[1], opciones[2], cboCiclo.getSelectedItem().toString(), txtCodEs.getText());
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -217,10 +223,10 @@ public class Datosacad extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JComboBox<String> cbxCarrera;
-    private javax.swing.JComboBox<String> cbxCiclo;
-    private javax.swing.JComboBox<String> cbxFacultad;
-    private javax.swing.JComboBox<String> cbxInstitucion;
+    private javax.swing.JComboBox<String> cboCarrera;
+    private javax.swing.JComboBox<String> cboCiclo;
+    private javax.swing.JComboBox<String> cboFacultad;
+    private javax.swing.JComboBox<String> cboInstitucion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
