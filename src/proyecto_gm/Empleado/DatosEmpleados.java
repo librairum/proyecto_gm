@@ -355,6 +355,8 @@ public class DatosEmpleados {
         for (JTextField campo : campos) {
             if (campo.getText().equals("")) {
                 validar = false;
+                campo.requestFocus();
+                break;
             }
         }
 
