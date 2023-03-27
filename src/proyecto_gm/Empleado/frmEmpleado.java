@@ -4,9 +4,13 @@
  */
 package proyecto_gm.Empleado;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import proyecto_gm.Exportar;
 
 /**
  *
@@ -56,7 +60,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtFecNaci = new javax.swing.JTextField();
+        txtFecNac = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         txtCorreo = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -123,18 +127,21 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
             }
         });
 
+        txtId.setNextFocusableComponent(txtApe);
         txtId.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtIdKeyTyped(evt);
             }
         });
 
+        txtApe.setNextFocusableComponent(txtNom);
         txtApe.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtApeFocusLost(evt);
             }
         });
 
+        txtNom.setNextFocusableComponent(txtFecNac);
         txtNom.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtNomFocusLost(evt);
@@ -149,14 +156,16 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Fecha de nacimiento:");
 
-        txtFecNaci.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtFecNac.setNextFocusableComponent(txtCorreo);
+        txtFecNac.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtFecNaciKeyTyped(evt);
+                txtFecNacKeyTyped(evt);
             }
         });
 
         jLabel12.setText("dd-mm-aaaa");
 
+        txtCorreo.setNextFocusableComponent(txtDni);
         txtCorreo.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtCorreoFocusLost(evt);
@@ -165,18 +174,25 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Correo:");
 
+        cboCargo.setNextFocusableComponent(rbPorDefinir);
+
+        cboArea.setNextFocusableComponent(cboCargo);
+
+        txtDirec.setNextFocusableComponent(cboArea);
         txtDirec.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtDirecFocusLost(evt);
             }
         });
 
+        txtCel.setNextFocusableComponent(txtDirec);
         txtCel.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCelKeyTyped(evt);
             }
         });
 
+        txtDni.setNextFocusableComponent(txtCel);
         txtDni.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtDniKeyTyped(evt);
@@ -194,6 +210,11 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         jLabel11.setText("Cargo:");
 
         btnExportar.setText("Exportar a Excel");
+        btnExportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportarActionPerformed(evt);
+            }
+        });
 
         btnDatAcad.setText("Registrar Datos Académicos");
         btnDatAcad.addActionListener(new java.awt.event.ActionListener() {
@@ -237,12 +258,15 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         }
 
         rbEstable.setText("Estable");
+        rbEstable.setNextFocusableComponent(btnGuardar);
         rbEstable.setActionCommand("Estable");
 
         rbPracticante.setText("Practicante");
+        rbPracticante.setNextFocusableComponent(btnGuardar);
         rbPracticante.setActionCommand("Practicante");
 
         rbPorDefinir.setText("Por definir...");
+        rbPorDefinir.setNextFocusableComponent(btnGuardar);
         rbPorDefinir.setActionCommand("Por definir...");
 
         escritorio.setLayer(btnNuevo, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -257,7 +281,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         escritorio.setLayer(jLabel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorio.setLayer(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorio.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        escritorio.setLayer(txtFecNaci, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        escritorio.setLayer(txtFecNac, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorio.setLayer(jLabel12, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorio.setLayer(txtCorreo, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorio.setLayer(jLabel5, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -309,7 +333,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                     .addComponent(txtApe, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(escritorioLayout.createSequentialGroup()
-                        .addComponent(txtFecNaci, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtFecNac, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel12))
                     .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -386,7 +410,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(txtFecNaci, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtFecNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9)
                             .addComponent(cboArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel12))
@@ -435,7 +459,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         empleado.setId(txtId.getText());
         empleado.setApellidos(txtApe.getText());
         empleado.setNombres(txtNom.getText());
-        empleado.setfNacimiento(txtFecNaci.getText());
+        empleado.setfNacimiento(txtFecNac.getText());
         empleado.setCorreo(txtCorreo.getText());
         empleado.setDni(txtDni.getText());
         empleado.setCelular(txtCel.getText());
@@ -445,7 +469,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         empleado.setIdTipo(opciones[2]);
 
         // Seleccionamos las cajas para validar
-        JTextField[] porValidar = {txtId, txtApe, txtNom, txtFecNaci, txtCorreo, txtDni, txtCel, txtDirec};
+        JTextField[] porValidar = {txtId, txtApe, txtNom, txtFecNac, txtCorreo, txtDni, txtCel, txtDirec};
 
         // Preguntamos si haremos un INSERT o un UPDATE
         if (esNuevo) {
@@ -489,7 +513,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         // Lo habilitaremos al presionar "Guardar".
 
         // Agrupar las cajas de texto
-        JTextField[] camposTexto = {txtId, txtApe, txtNom, txtFecNaci, txtCorreo,
+        JTextField[] camposTexto = {txtId, txtApe, txtNom, txtFecNac, txtCorreo,
             txtDni, txtCel, txtDirec};
 
         // Agrupar los combo boxes y cargar el radio button correspondiente
@@ -509,17 +533,17 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         btnGuardar.setEnabled(false); btnCancelar.setEnabled(false);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
-    private void txtFecNaciKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFecNaciKeyTyped
+    private void txtFecNacKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFecNacKeyTyped
         // TODO add your handling code here:
         char c = evt.getKeyChar();
         if (!(Character.isDigit(c) || c == '-')) {
             evt.consume(); // Si no es un número o un guión, se ignora el evento de tecla
         }
 
-        if (txtFecNaci.getText().length() >= 10) {
+        if (txtFecNac.getText().length() >= 10) {
             evt.consume();
         }
-    }//GEN-LAST:event_txtFecNaciKeyTyped
+    }//GEN-LAST:event_txtFecNacKeyTyped
 
     private void txtDniKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDniKeyTyped
         // TODO add your handling code here:
@@ -546,7 +570,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // Habilitamos los campos:
         DatosEmpleados.HabilitarCampos(escritorio, opcionesTipo);
-        txtId.requestFocus(); // Colocamos el cursor en txtId
+        txtId.requestFocus();
 
         // Habilitamos los siguientes botones
         btnGuardar.setEnabled(true); btnCancelar.setEnabled(true);
@@ -588,6 +612,15 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnDatAcadActionPerformed
 
+    private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
+        try {
+            Exportar obj = new Exportar();
+            obj.exportarExcel(tblEmpleados);
+        } catch (IOException ex) {
+            Logger.getLogger(frmEmpleado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnExportarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btnCancelar;
@@ -623,7 +656,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JTextField txtDirec;
     private javax.swing.JTextField txtDni;
-    private javax.swing.JTextField txtFecNaci;
+    private javax.swing.JTextField txtFecNac;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtNom;
     // End of variables declaration//GEN-END:variables
