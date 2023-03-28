@@ -128,7 +128,7 @@ public class DatosEmpleados {
     }
 
     // Mostrar datos
-    public static void MostrarDatos(DefaultTableModel modelo) {
+    public static void Mostrar(DefaultTableModel modelo) {
         try {
             PreparedStatement pstmt = conn.prepareStatement("CALL listar_emple()");
             ResultSet rs = pstmt.executeQuery();
@@ -182,7 +182,7 @@ public class DatosEmpleados {
     }
 
     // Insertar datos
-    public static void InsertarDatos(Empleados empleado, JTable tabla) {
+    public static void Insertar(Empleados empleado, JTable tabla) {
         try {
             CallableStatement cstmt = conn.prepareCall("{ CALL insertar_datos_empleado(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
             cstmt.setString(1, empleado.getId());
@@ -202,7 +202,7 @@ public class DatosEmpleados {
             // Actualizamos la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
-            DatosEmpleados.MostrarDatos(modelo);
+            DatosEmpleados.Mostrar(modelo);
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -261,7 +261,7 @@ public class DatosEmpleados {
     }
     // Actualizar datos
 
-    public static void ActualizarDatos(Empleados empleado, JTable tabla) {
+    public static void Actualizar(Empleados empleado, JTable tabla) {
         try {
             CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_datos_empleado(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
             cstmt.setString(1, empleado.getId());
@@ -281,7 +281,7 @@ public class DatosEmpleados {
             // Actualizamos la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
-            DatosEmpleados.MostrarDatos(modelo);
+            DatosEmpleados.Mostrar(modelo);
             
 
         } catch (SQLException ex) {
@@ -290,7 +290,7 @@ public class DatosEmpleados {
     }
 
     // Eliminar datos
-    public static void EliminarDatos(JTable tabla) {
+    public static void Eliminar(JTable tabla) {
         try {
             // Obtener el indice de la fila seleccionada
             int fila = tabla.getSelectedRow();
@@ -310,7 +310,7 @@ public class DatosEmpleados {
                     // Actualizar el JTable
                     DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
                     modelo.setRowCount(0);
-                    DatosEmpleados.MostrarDatos(modelo);
+                    DatosEmpleados.Mostrar(modelo);
                     
                     // JOptionPane.showMessageDialog(null, "La fila ha sido eliminada exitosamente");                
                 } else {
@@ -349,7 +349,7 @@ public class DatosEmpleados {
     }
 
     // Validar campos
-    public static boolean ValidarCampos(JTextField[] campos) {
+    public static boolean Validar(JTextField[] campos) {
         boolean validar = true;
         // Validamos si los campos estan vacios
         for (JTextField campo : campos) {
