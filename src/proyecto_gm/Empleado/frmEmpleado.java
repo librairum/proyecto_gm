@@ -29,7 +29,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         DatosEmpleados.BloquearCampos(escritorio, opcionesTipo);
         DatosEmpleados.CargarCombos(cboArea, cboCargo);
         rbPorDefinir.setSelected(true);
-        DatosEmpleados.MostrarDatos(modelo);
+        DatosEmpleados.Mostrar(modelo);
         btnGuardar.setEnabled(false); btnCancelar.setEnabled(false);
         // Quitar la edicion de las celdas
         tblEmpleados.setCellSelectionEnabled(false);
@@ -473,13 +473,13 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
 
         // Preguntamos si haremos un INSERT o un UPDATE
         if (esNuevo) {
-            if (DatosEmpleados.ValidarCampos(porValidar)) {
-                DatosEmpleados.InsertarDatos(empleado, tblEmpleados);
+            if (DatosEmpleados.Validar(porValidar)) {
+                DatosEmpleados.Insertar(empleado, tblEmpleados);
                 DatosEmpleados.CleanForm(escritorio, rbPorDefinir, opcionesTipo, tblEmpleados);
             }
         } else {
-            if (DatosEmpleados.ValidarCampos(porValidar)) {
-                DatosEmpleados.ActualizarDatos(empleado, tblEmpleados);
+            if (DatosEmpleados.Validar(porValidar)) {
+                DatosEmpleados.Actualizar(empleado, tblEmpleados);
                 DatosEmpleados.CleanForm(escritorio, rbPorDefinir, opcionesTipo, tblEmpleados);
             }
         }
@@ -526,7 +526,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // Eliminamos el registro seleccionado y bloqueamos los campos
-        DatosEmpleados.EliminarDatos(tblEmpleados);
+        DatosEmpleados.Eliminar(tblEmpleados);
         DatosEmpleados.BloquearCampos(escritorio, opcionesTipo);
 
         // Bloqueamos los siguientes botones:
