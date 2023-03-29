@@ -5,19 +5,21 @@
 package proyecto_gm.Empleado;
 
 import java.awt.Component;
+import java.awt.Container;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
@@ -34,8 +36,8 @@ public class DatosEmpleados {
     static Connection conn = ConexionBD.getConnection();
 
     // Limpiar campos
-    public static void LimpiarCampos(JDesktopPane panel, JRadioButton porDefecto) {
-        Component[] components = panel.getComponents();
+    public static void Limpiar(Container contenedor, JRadioButton porDefecto) {
+        Component[] components = contenedor.getComponents();
         for (Component component : components) {
             if (component instanceof JTextField jTextField) {
                 jTextField.setText("");
@@ -49,89 +51,88 @@ public class DatosEmpleados {
         porDefecto.setSelected(true);
     }
 
-    // Bloquear campos
-    public static void BloquearCampos(JDesktopPane panel, ButtonGroup opciones) {
-        Component[] components = panel.getComponents();
+    // Habilitar o bloquear campos y botones
+    public static void Habilitar(Container contenedor, ButtonGroup opciones, boolean bloquear) {
+        Component[] components = contenedor.getComponents();
         for (Component component : components) {
             if (component instanceof JTextField jTextField) {
-                jTextField.setEnabled(false);
+                jTextField.setEnabled(bloquear);
             } else if (component instanceof JComboBox jComboBox) {
-                jComboBox.setEnabled(false);
+                jComboBox.setEnabled(bloquear);
+            } else if (component instanceof JButton jButton) {
+                String button = jButton.getName();
+                if (button.equals("guardar") || button.equals("cancelar")) {
+                    jButton.setEnabled(bloquear);
+                } else if (button.equals("nuevo") || button.equals("editar") || button.equals("eliminar")) {
+                    jButton.setEnabled(!bloquear); // aplicar logica inversa
+                }
             } else {
                 // No hace nada para otros tipos de componentes
             }
         }
+
         for (Enumeration<AbstractButton> buttons = opciones.getElements(); buttons.hasMoreElements();) {
-            buttons.nextElement().setEnabled(false);
+            buttons.nextElement().setEnabled(bloquear);
         }
-
-    }
-
-    // Habilitar campos
-    public static void HabilitarCampos(JDesktopPane panel, ButtonGroup opciones) {
-        Component[] components = panel.getComponents();
-        for (Component component : components) {
-            if (component instanceof JTextField jTextField) {
-                jTextField.setEnabled(true);
-            } else if (component instanceof JComboBox jComboBox) {
-                jComboBox.setEnabled(true);
-            } else {
-                // No hace nada para otros tipos de componentes
-            }
-        }
-        for (Enumeration<AbstractButton> buttons = opciones.getElements(); buttons.hasMoreElements();) {
-            buttons.nextElement().setEnabled(true);
-        }
-
-    }
-    
-    // Pensando en el nombre del metodo...
-    public static void CleanForm(JDesktopPane panel, JRadioButton porDefecto, ButtonGroup opciones, JTable tabla) {
-        DatosEmpleados.LimpiarCampos(panel, porDefecto);
-        DatosEmpleados.BloquearCampos(panel, opciones);
-        // Bloqueamos los siguientes botones:
-        frmEmpleado.btnGuardar.setEnabled(false); frmEmpleado.btnCancelar.setEnabled(false);
-        // Habilitamos lo siguientes botones:
-        frmEmpleado.btnNuevo.setEnabled(true); frmEmpleado.btnEditar.setEnabled(true); frmEmpleado.btnEliminar.setEnabled(true);
-        // Limpiamos alguna seleccion previa de alguna fila de la tabla
-        tabla.clearSelection();
-        // Habilitamos la seleccion de filas de la tabla
-        tabla.setRowSelectionAllowed(true);
     }
 
     // Cargar opciones para los combo boxes
     public static void CargarCombos(JComboBox cboArea, JComboBox cboCargo) {
+        PreparedStatement pstmtArea = null;
+        PreparedStatement pstmtCargo = null;
+        ResultSet rsAreas = null;
+        ResultSet rsCargos = null;
         try {
             // Preparamos la consultas
-            PreparedStatement pstmtArea = conn.prepareStatement("SELECT Descripcion FROM areas");
-            PreparedStatement pstmtCargo = conn.prepareStatement("SELECT Descripcion FROM cargos");
+            pstmtArea = conn.prepareStatement("SELECT Descripcion FROM areas");
+            pstmtCargo = conn.prepareStatement("SELECT Descripcion FROM cargos");
 
             // Las ejecutamos
-            ResultSet areas = pstmtArea.executeQuery();
-            ResultSet cargos = pstmtCargo.executeQuery();
+            rsAreas = pstmtArea.executeQuery();
+            rsCargos = pstmtCargo.executeQuery();
 
             // Agregamos las areas en cbxArea
-            while (areas.next()) {
-                String nomArea = areas.getString("Descripcion");
+            while (rsAreas.next()) {
+                String nomArea = rsAreas.getString("Descripcion");
                 cboArea.addItem(nomArea);
             }
 
             // Agregamos los cargos a cbxCargo
-            while (cargos.next()) {
-                String nomCargo = cargos.getString("Descripcion");
+            while (rsCargos.next()) {
+                String nomCargo = rsCargos.getString("Descripcion");
                 cboCargo.addItem(nomCargo);
             }
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            // Cerramos los recursos
+            try {
+                if (rsAreas != null) {
+                    rsAreas.close();
+                }
+                if (rsCargos != null) {
+                    rsCargos.close();
+                }
+                if (pstmtArea != null) {
+                    pstmtArea.close();
+                }
+                if (pstmtCargo != null) {
+                    pstmtCargo.close();
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
-    // Mostrar datos
-    public static void Mostrar(DefaultTableModel modelo) {
+    // Listar datos
+    public static void Listar(DefaultTableModel modelo) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement pstmt = conn.prepareStatement("CALL listar_emple()");
-            ResultSet rs = pstmt.executeQuery();
+            pstmt = conn.prepareStatement("CALL listar_emple()");
+            rs = pstmt.executeQuery();
             while (rs.next()) {
                 Object[] row = new Object[]{rs.getString("Id"), rs.getString("Apellidos"),
                     rs.getString("Nombres"), rs.getString("FechaNacimiento"), rs.getString("Correo"),
@@ -139,8 +140,24 @@ public class DatosEmpleados {
                     rs.getString("Area"), rs.getString("Cargo"), rs.getString("Tip. Empleado")};
                 modelo.addRow(row);
             }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
     }
 
@@ -148,6 +165,8 @@ public class DatosEmpleados {
     public static String[] CapturarOpciones(JComboBox cbxArea, JComboBox cbxCargo, ButtonGroup opciones) {
         String[] ids = new String[3];
         String idArea = "", idCargo = "", idTipoEmpleado = "";
+        CallableStatement cstmt = null;
+        ResultSet rs = null;
         try {
             // Capturar las opciones seleccionadas en los combo boxes
             String selectArea = cbxArea.getSelectedItem().toString();
@@ -158,11 +177,11 @@ public class DatosEmpleados {
             String tipoEmpleado = selectedRadioButton.getActionCommand();
 
             // Obtener los id de las elecciones en area, cargo y tipo de empleado
-            CallableStatement cstmt = conn.prepareCall("{ CALL consulta_areas_cargos_tipos(?, ?, ?) }");
+            cstmt = conn.prepareCall("{ CALL consulta_areas_cargos_tipos(?, ?, ?) }");
             cstmt.setString(1, selectArea);
             cstmt.setString(2, selectCargo);
             cstmt.setString(3, tipoEmpleado);
-            ResultSet rs = cstmt.executeQuery();
+            rs = cstmt.executeQuery();
 
             while (rs.next()) {
                 idArea = rs.getString("Id_area");
@@ -174,8 +193,24 @@ public class DatosEmpleados {
             ids[1] = idCargo;
             ids[2] = idTipoEmpleado;
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error al procesar las opciones seleccionadas.", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error al procesar las opciones seleccionadas.", JOptionPane.ERROR_MESSAGE);
+        } finally { // Finalmente cerramos el ResultSet y el CallableStatement
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
 
         return ids;
@@ -183,8 +218,9 @@ public class DatosEmpleados {
 
     // Insertar datos
     public static void Insertar(Empleados empleado, JTable tabla) {
+        CallableStatement cstmt = null;
         try {
-            CallableStatement cstmt = conn.prepareCall("{ CALL insertar_datos_empleado(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+            cstmt = conn.prepareCall("{ CALL insertar_datos_empleado(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
             cstmt.setString(1, empleado.getId());
             cstmt.setString(2, empleado.getApellidos());
             cstmt.setString(3, empleado.getNombres());
@@ -202,30 +238,30 @@ public class DatosEmpleados {
             // Actualizamos la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
-            DatosEmpleados.Mostrar(modelo);
+            DatosEmpleados.Listar(modelo);
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
 
     }
 
     // Boton Editar
-    public static void Editar(JDesktopPane panel, JTable tabla, JTextField[] camposTexto, JComboBox[] combos, ButtonGroup grupoBotones) {
+    public static void Editar(Container contenedor, JTable tabla, JTextField[] camposTexto, JComboBox[] combos, ButtonGroup grupoBotones) {
+
         // Obtener la fila seleccionada
         int fila = tabla.getSelectedRow();
         if (fila >= 0) {
-            // Deshabilitamos lo siguientes botones del formulario:
-            frmEmpleado.btnNuevo.setEnabled(false);
-            frmEmpleado.btnEditar.setEnabled(false);
-            frmEmpleado.btnEliminar.setEnabled(false);
-            // Habilitamos lo siguientes botontes del formulario:
-            frmEmpleado.btnGuardar.setEnabled(true);
-            frmEmpleado.btnCancelar.setEnabled(true);
-            // Volvemos a habilitar los campos
-            DatosEmpleados.HabilitarCampos(panel, grupoBotones);
-
-            // Deshabilitamos la seleccion de fila(s) en la tabla
+            DatosEmpleados.Habilitar(contenedor, grupoBotones, true);
+            tabla.clearSelection();
             tabla.setRowSelectionAllowed(false);
 
             // Llenar los campos de texto con los valores de la fila
@@ -262,8 +298,9 @@ public class DatosEmpleados {
     // Actualizar datos
 
     public static void Actualizar(Empleados empleado, JTable tabla) {
+        CallableStatement cstmt = null;
         try {
-            CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_datos_empleado(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+            cstmt = conn.prepareCall("{ CALL actualizar_datos_empleado(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
             cstmt.setString(1, empleado.getId());
             cstmt.setString(2, empleado.getApellidos());
             cstmt.setString(3, empleado.getNombres());
@@ -281,16 +318,24 @@ public class DatosEmpleados {
             // Actualizamos la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
-            DatosEmpleados.Mostrar(modelo);
-            
+            DatosEmpleados.Listar(modelo);
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
     }
 
     // Eliminar datos
     public static void Eliminar(JTable tabla) {
+        CallableStatement cstmt = null;
         try {
             // Obtener el indice de la fila seleccionada
             int fila = tabla.getSelectedRow();
@@ -303,15 +348,15 @@ public class DatosEmpleados {
                     String id = tabla.getModel().getValueAt(fila, 0).toString(); //Se asume que el ID se encuentra en la primera columna
 
                     // Ejecutar el procedimiento almacenado
-                    CallableStatement stmt = conn.prepareCall("{ CALL eliminar_empleados(?) }");
-                    stmt.setString(1, id);
-                    stmt.execute();
+                    cstmt = conn.prepareCall("{ CALL eliminar_empleados(?) }");
+                    cstmt.setString(1, id);
+                    cstmt.execute();
 
                     // Actualizar el JTable
                     DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
                     modelo.setRowCount(0);
-                    DatosEmpleados.Mostrar(modelo);
-                    
+                    DatosEmpleados.Listar(modelo);
+
                     // JOptionPane.showMessageDialog(null, "La fila ha sido eliminada exitosamente");                
                 } else {
                     tabla.clearSelection();
@@ -320,8 +365,16 @@ public class DatosEmpleados {
                 JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
 
     }
@@ -330,7 +383,6 @@ public class DatosEmpleados {
     // Debemos capturar el nombre completo y el dni de la fila seleccionada
     public static boolean ObtenerEmpleado(JTable tabla) {
         // Obtener el indice de la fila seleccionada
-        boolean correcto = true;
         int fila = tabla.getSelectedRow();
         String nombreCompleto = "", dni = "";
 
@@ -341,11 +393,11 @@ public class DatosEmpleados {
             Datosacad.txtNomCom.setText(nombreCompleto);
             Datosacad.txtDni.setText(dni);
         } else {
-            correcto = false;
             JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para registrar sus datos académicos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return false;
         }
 
-        return correcto;
+        return true;
     }
 
     // Validar campos
@@ -362,12 +414,7 @@ public class DatosEmpleados {
 
         if (validar) {
             // Validamos uno por uno
-            // Validamos ID:
-            if (!campos[0].getText().matches("^[A-Z]{2}[0-9]{2}$") /*|| campos[0].getText().length() != 4*/) {
-                validar = false;
-                JOptionPane.showMessageDialog(null, "El formato del ID consta de 2 letras mayúsculas y 2 números.\nInténtelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                campos[0].requestFocus();
-            } else if (!campos[4].getText().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) { // Validamos correo
+            if (!campos[4].getText().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) { // Validamos correo
                 validar = false;
                 JOptionPane.showMessageDialog(null, "El formato de correo es el siguiente: someone@mail.com\nInténtelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 campos[4].requestFocus();
@@ -402,5 +449,33 @@ public class DatosEmpleados {
         }
 
         return validar;
+    }
+
+    public static String GenerarCodigo(String tabla, String prefijo, int longitud) {
+        CallableStatement cstmt = null;
+        String codigo_generado = "";
+        try {
+            cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }");
+            cstmt.setString(1, tabla);
+            cstmt.setString(2, prefijo);
+            cstmt.setInt(3, longitud);
+            cstmt.registerOutParameter(4, Types.VARCHAR);
+
+            cstmt.execute();
+
+            codigo_generado = cstmt.getString(4);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+
+        return codigo_generado;
     }
 }

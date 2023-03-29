@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -28,92 +29,64 @@ public class DatosViaticos {
     static Connection conn = ConexionBD.getConnection();
 
     // Limpiar campos
-    public static void LimpiarCampos(Container contenedor) {
+    public static void Limpiar(Container contenedor) {
         for (Component componente : contenedor.getComponents()) {
             if (componente instanceof JTextField jTextField) {
                 jTextField.setText("");
             } else if (componente instanceof JComboBox jComboBox) {
                 jComboBox.setSelectedIndex(-1);
             } else if (componente instanceof Container container) {
-                LimpiarCampos(container);
+                Limpiar(container);
             } else {
                 // No hace nada para otros tipos de componentes
             }
         }
-    }
-
-    // Bloquear campos
-    public static void BloquearCampos(Container contenedor) {
-        for (Component componente : contenedor.getComponents()) {
-            if (componente instanceof JTextField jTextField) {
-                jTextField.setEnabled(false);
-            } else if (componente instanceof JComboBox jComboBox) {
-                jComboBox.setEnabled(false);
-            } else if (componente instanceof Container container) {
-                BloquearCampos(container);
-            } else {
-                // No hace nada para otros tipos de componentes
-            }
-        }
-
     }
 
     // Habilitar campos
-    public static void HabilitarCampos(Container contenedor, JTextField txtId) {
+    public static void Habilitar(Container contenedor, boolean bloquear) {
         for (Component componente : contenedor.getComponents()) {
-            if (componente instanceof JTextField jTextField && componente != txtId) {
-                jTextField.setEnabled(true);
+            if (componente instanceof JTextField jTextField) {
+                jTextField.setEnabled(bloquear);
             } else if (componente instanceof JComboBox jComboBox) {
-                jComboBox.setEnabled(true);
-            } else if (componente instanceof Container container) {
-                HabilitarCampos(container, txtId);
+                jComboBox.setEnabled(bloquear);
+            } else if (componente instanceof JButton jButton) {
+                String button = jButton.getName();
+                if (button.equals("guardar") || button.equals("cancelar")) {
+                    jButton.setEnabled(bloquear);
+                } else if (button.equals("nuevo") || button.equals("editar") || button.equals("eliminar")) {
+                    jButton.setEnabled(!bloquear); // aplicar logica inversa
+                }
             } else {
                 // No hace nada para otros tipos de componentes
             }
         }
-    }
-
-    // Pensando en el nombre de la funcion...
-    public static void CleanForm(JPanel panel, JTable tabla, JComboBox cboEmp, JComboBox cboPer) {
-        DatosViaticos.LimpiarCampos(panel);
-        DatosViaticos.BloquearCampos(panel);
-        // Quitamos las selecciones de los combo boxes
-        cboEmp.setSelectedIndex(-1);
-        cboPer.setSelectedIndex(-1);
-
-        // Bloqueamos los siguientes botones:
-        frmViaticos.btnGuardar.setEnabled(false);
-        frmViaticos.btnCancelar.setEnabled(false);
-        // Habilitamos lo siguientes botones:
-        frmViaticos.btnNuevo.setEnabled(true);
-        frmViaticos.btnEditar.setEnabled(true);
-        frmViaticos.btnEliminar.setEnabled(true);
-        // Limpiamos alguna seleccion previa de alguna fila de la tabla
-        tabla.clearSelection();
-        // Habilitamos la seleccion de filas de la tabla
-        tabla.setRowSelectionAllowed(true);
     }
 
     // Cargar opciones para los combo boxes
     public static void CargarCombos(JComboBox cboEmpleado, JComboBox cboPeriodo) {
+        PreparedStatement pstmtEmp = null;
+        PreparedStatement pstmtPer = null;
+        ResultSet rsEmp = null;
+        ResultSet rsPer = null;
         try {
             // Preparamos la consultas
-            PreparedStatement pstmtEmp = conn.prepareStatement("SELECT Nombres FROM empleados");
-            PreparedStatement pstmtPer = conn.prepareStatement("SELECT Id FROM periodos");
+            pstmtEmp = conn.prepareStatement("SELECT Nombres FROM empleados");
+            pstmtPer = conn.prepareStatement("SELECT Id FROM periodos");
 
             // Las ejecutamos
-            ResultSet empleados = pstmtEmp.executeQuery();
-            ResultSet periodos = pstmtPer.executeQuery();
+            rsEmp = pstmtEmp.executeQuery();
+            rsPer = pstmtPer.executeQuery();
 
             // Agregamos las areas en cbxArea
-            while (empleados.next()) {
-                String nomEmp = empleados.getString("Nombres");
+            while (rsEmp.next()) {
+                String nomEmp = rsEmp.getString("Nombres");
                 cboEmpleado.addItem(nomEmp);
             }
 
             // Agregamos los cargos a cbxCargo
-            while (periodos.next()) {
-                String nomPer = periodos.getString("Id");
+            while (rsPer.next()) {
+                String nomPer = rsPer.getString("Id");
                 cboPeriodo.addItem(nomPer);
             }
 
@@ -121,30 +94,61 @@ public class DatosViaticos {
             cboEmpleado.setSelectedIndex(-1);
             cboPeriodo.setSelectedIndex(-1);
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (rsEmp != null) {
+                    rsEmp.close();
+                }
+                if (rsPer != null) {
+                    rsPer.close();
+                }
+                if (pstmtEmp != null) {
+                    pstmtEmp.close();
+                }
+                if (pstmtPer != null) {
+                    pstmtPer.close();
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
     // Mostrar datos
-    public static void MostrarDatos(DefaultTableModel modelo) {
+    public static void Listar(DefaultTableModel modelo) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement stmt = conn.prepareStatement("CALL listar_viaticos()");
-            ResultSet rs = stmt.executeQuery();
+            pstmt = conn.prepareStatement("CALL listar_viaticos()");
+            rs = pstmt.executeQuery();
             while (rs.next()) {
                 Object[] row = new Object[]{rs.getString("Id"), rs.getString("Descripcion"), rs.getString("Pasaje"),
                     rs.getString("Menu"), rs.getString("Empleado"), rs.getString("Periodo")};
                 modelo.addRow(row);
             }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
     // Insertar datos
-    public static void InsertarDatos(Viaticos viatico, JTable tabla) {
+    public static void Insertar(Viaticos viatico, JTable tabla) {
+        CallableStatement cstmt = null;
         try {
-            CallableStatement cstmt = conn.prepareCall("{ CALL insertar_viaticos(?, ?, ?, ?, ?) }");
+            cstmt = conn.prepareCall("{ CALL insertar_viaticos(?, ?, ?, ?, ?) }");
             cstmt.setString(1, viatico.getDescripcion());
             cstmt.setFloat(2, viatico.getPasaje());
             cstmt.setFloat(3, viatico.getMenu());
@@ -156,10 +160,18 @@ public class DatosViaticos {
             // Actualizamos la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
-            DatosViaticos.MostrarDatos(modelo);
+            DatosViaticos.Listar(modelo);
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (cstmt != null) {
+                    cstmt.close();
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
 
     }
@@ -170,15 +182,9 @@ public class DatosViaticos {
         int fila = tabla.getSelectedRow();
 
         if (fila >= 0) {
-            // Bloqueamos lo siguientes botones del formulario:
-            frmViaticos.btnNuevo.setEnabled(false);
-            frmViaticos.btnEditar.setEnabled(false);
-            frmViaticos.btnEliminar.setEnabled(false);
-            // Habilitamos lo siguientes botontes del formulario:
-            frmViaticos.btnGuardar.setEnabled(true);
-            frmViaticos.btnCancelar.setEnabled(true);
-            // Volvemos a habilitar los campos
-            DatosViaticos.HabilitarCampos(panel, cajas[0]);
+            DatosViaticos.Habilitar(panel, true);
+            // Limpiamos la seleccion en la tabla
+            tabla.clearSelection();
             // Deshabilitamos la seleccion de filas de la tabla
             tabla.setRowSelectionAllowed(false);
 
@@ -197,9 +203,10 @@ public class DatosViaticos {
     }
 
     // Actualizar datos
-    public static void ActualizarDatos(Viaticos viatico, JTable tabla) {
+    public static void Actualizar(Viaticos viatico, JTable tabla) {
+        CallableStatement cstmt = null;
         try {
-            CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_viaticos(?, ?, ?, ?, ?, ?) }");
+            cstmt = conn.prepareCall("{ CALL actualizar_viaticos(?, ?, ?, ?, ?, ?) }");
             cstmt.setInt(1, viatico.getId());
             cstmt.setString(2, viatico.getDescripcion());
             cstmt.setFloat(3, viatico.getPasaje());
@@ -213,15 +220,24 @@ public class DatosViaticos {
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
 
-            DatosViaticos.MostrarDatos(modelo);
+            DatosViaticos.Listar(modelo);
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (cstmt != null) {
+                    cstmt.close();
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
     // Eliminar datos
-    public static void EliminarDatos(JTable tabla) {
+    public static void Eliminar(JTable tabla) {
+        CallableStatement cstmt = null;
         try {
             // Obtener el indice de la fila seleccionada
             int fila = tabla.getSelectedRow();
@@ -234,9 +250,9 @@ public class DatosViaticos {
                     int id = Integer.parseInt(tabla.getModel().getValueAt(fila, 0).toString()); //Se asume que el ID se encuentra en la primera columna
 
                     // Ejecutar el procedimiento almacenado
-                    CallableStatement stmt = conn.prepareCall("{ CALL eliminar_viaticos(?) }");
-                    stmt.setInt(1, id);
-                    stmt.execute();
+                    cstmt = conn.prepareCall("{ CALL eliminar_viaticos(?) }");
+                    cstmt.setInt(1, id);
+                    cstmt.execute();
 
                     // Actualizar el JTable
                     DefaultTableModel model = (DefaultTableModel) tabla.getModel();
@@ -249,29 +265,35 @@ public class DatosViaticos {
                 JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (cstmt != null) {
+                    cstmt.close();
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
     
     // Validar campos
     public static boolean Validar(JTextField[] cajas, JComboBox persona, JComboBox periodo) {
-        boolean validar = true;
         // Comprobamos cajas vacías
         for (JTextField caja : cajas) {
             if (caja.getText().equals("")) {
                 JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                validar = false;
-                break;
+                return false;
             }
         }
         
         // Comprobamos combos sin elección
         if (persona.getSelectedItem() == null || periodo.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            validar = false;
+            return false;
         }
         
-        return validar;
+        return true;
     }
 }

@@ -23,12 +23,8 @@ public class frmPeriodos extends javax.swing.JInternalFrame {
     public frmPeriodos() {
         initComponents();
         DefaultTableModel modelo = (DefaultTableModel) tblPeriodo.getModel();
-        DatosPeriodo.MostrarDatos(modelo);
-        DatosPeriodo.BloquearCampos(escritorio);
-
-        btnGuardar.setEnabled(false);
-        btnCancelar.setEnabled(false);
-
+        DatosPeriodo.Listar(modelo);
+        DatosPeriodo.Habilitar(escritorio, false);
         // Quitar la edicion de las celdas
         tblPeriodo.setCellSelectionEnabled(false);
         // Poder seleccionar fila(s) de la tabla
@@ -78,6 +74,7 @@ public class frmPeriodos extends javax.swing.JInternalFrame {
         });
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
+        btnNuevo.setName("nuevo"); // NOI18N
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoActionPerformed(evt);
@@ -85,6 +82,7 @@ public class frmPeriodos extends javax.swing.JInternalFrame {
         });
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
+        btnEditar.setName("editar"); // NOI18N
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditarActionPerformed(evt);
@@ -92,6 +90,7 @@ public class frmPeriodos extends javax.swing.JInternalFrame {
         });
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/eliminar.png"))); // NOI18N
+        btnEliminar.setName("eliminar"); // NOI18N
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
@@ -99,6 +98,7 @@ public class frmPeriodos extends javax.swing.JInternalFrame {
         });
 
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
+        btnGuardar.setName("guardar"); // NOI18N
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
@@ -106,6 +106,7 @@ public class frmPeriodos extends javax.swing.JInternalFrame {
         });
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
+        btnCancelar.setName("cancelar"); // NOI18N
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarActionPerformed(evt);
@@ -193,17 +194,11 @@ public class frmPeriodos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        tblPeriodo.clearSelection();
+        tblPeriodo.setRowSelectionAllowed(false);
         // Habilitamos los campos:
-        DatosPeriodo.HabilitarCampos(escritorio);
+        DatosPeriodo.Habilitar(escritorio, true);
         txtId.requestFocus(); // Colocamos el cursor en txtId
-
-        // Habilitamos los siguientes botones
-        btnGuardar.setEnabled(true);
-        btnCancelar.setEnabled(true);
-        // Bloqueamos los siguientes botones
-        btnNuevo.setEnabled(false);
-        btnEditar.setEnabled(false);
-        btnEliminar.setEnabled(false);
         // Deshabilitamos la seleccion de filas de la tabla
         tblPeriodo.setRowSelectionAllowed(false);
 
@@ -221,13 +216,7 @@ public class frmPeriodos extends javax.swing.JInternalFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        // Eliminamos el registro seleccionado y bloqueamos los campos
-        DatosPeriodo.EliminarDatos(tblPeriodo);
-        DatosPeriodo.BloquearCampos(escritorio);
-
-        // Bloqueamos los siguientes botones:
-        btnGuardar.setEnabled(false);
-        btnCancelar.setEnabled(false);
+        DatosPeriodo.Eliminar(tblPeriodo);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -243,8 +232,11 @@ public class frmPeriodos extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "El ID debe contener 6 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 txtId.requestFocus();
             } else {
-                DatosPeriodo.InsertarDatos(periodo, tblPeriodo);
-                DatosPeriodo.CleanForm(escritorio, tblPeriodo);
+                DatosPeriodo.Insertar(periodo, tblPeriodo);
+                DatosPeriodo.Limpiar(escritorio);
+                DatosPeriodo.Habilitar(escritorio, false);
+                tblPeriodo.clearSelection();
+                tblPeriodo.setRowSelectionAllowed(true);
             }
 
         } else {
@@ -254,9 +246,11 @@ public class frmPeriodos extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "El ID debe contener 6 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 txtId.requestFocus();
             } else {
-                DatosPeriodo.ActualizarDatos(periodo, tblPeriodo);
-                DatosPeriodo.CleanForm(escritorio, tblPeriodo);
-                txtId.setEnabled(true); // Habilitamos txtId
+                DatosPeriodo.Actualizar(periodo, tblPeriodo);
+                DatosPeriodo.Limpiar(escritorio);
+                DatosPeriodo.Habilitar(escritorio, false);
+                tblPeriodo.clearSelection();
+                tblPeriodo.setRowSelectionAllowed(true);
             }
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -264,7 +258,10 @@ public class frmPeriodos extends javax.swing.JInternalFrame {
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
         // Limpiamos y bloqueamos los campos:
-        DatosPeriodo.CleanForm(escritorio, tblPeriodo);
+        DatosPeriodo.Limpiar(escritorio);
+        DatosPeriodo.Habilitar(escritorio, false);
+        tblPeriodo.clearSelection();
+        tblPeriodo.setRowSelectionAllowed(true);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped

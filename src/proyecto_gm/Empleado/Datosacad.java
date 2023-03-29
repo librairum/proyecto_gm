@@ -207,8 +207,7 @@ public class Datosacad extends javax.swing.JInternalFrame {
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-        DatosAcademicos.LimpiarCampos(panel);
-        txtCodEs.setText("");
+        this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void txtCodEsKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodEsKeyTyped

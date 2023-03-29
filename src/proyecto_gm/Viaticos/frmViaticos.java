@@ -30,12 +30,8 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         initComponents();
         DefaultTableModel modelo = (DefaultTableModel) tblViatico.getModel();
         DatosViaticos.CargarCombos(cboEmpleado, cboPeriodo);
-        DatosViaticos.MostrarDatos(modelo);
-        DatosViaticos.BloquearCampos(escritorio);
-
-        btnGuardar.setEnabled(false);
-        btnCancelar.setEnabled(false);
-
+        DatosViaticos.Listar(modelo);
+        DatosViaticos.Habilitar(escritorio, false);
         // Quitar la edicion de las celdas
         tblViatico.setCellSelectionEnabled(false);
         // Poder seleccionar fila(s) de la tabla
@@ -78,8 +74,11 @@ public class frmViaticos extends javax.swing.JInternalFrame {
 
         jLabel1.setText("ID:");
 
+        txtId.setName("id"); // NOI18N
+
         jLabel2.setText("DESCRIPCIÓN:");
 
+        txtDescripcion.setName("descripcion"); // NOI18N
         txtDescripcion.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtDescripcionFocusLost(evt);
@@ -88,6 +87,7 @@ public class frmViaticos extends javax.swing.JInternalFrame {
 
         jLabel3.setText("PASAJE:");
 
+        txtPasaje.setName("pasaje"); // NOI18N
         txtPasaje.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtPasajeKeyTyped(evt);
@@ -99,6 +99,7 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         jLabel5.setText("PERIODO:");
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
+        btnNuevo.setName("nuevo"); // NOI18N
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoActionPerformed(evt);
@@ -106,6 +107,7 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         });
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
+        btnEditar.setName("editar"); // NOI18N
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditarActionPerformed(evt);
@@ -113,6 +115,7 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         });
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/eliminar.png"))); // NOI18N
+        btnEliminar.setName("eliminar"); // NOI18N
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
@@ -120,6 +123,7 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         });
 
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
+        btnGuardar.setName("guardar"); // NOI18N
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
@@ -127,6 +131,7 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         });
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
+        btnCancelar.setName("cancelar"); // NOI18N
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarActionPerformed(evt);
@@ -135,6 +140,7 @@ public class frmViaticos extends javax.swing.JInternalFrame {
 
         jLabel6.setText("MENÚ:");
 
+        txtMenu.setName("menu"); // NOI18N
         txtMenu.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtMenuKeyTyped(evt);
@@ -271,20 +277,14 @@ public class frmViaticos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        // Habilitamos los campos:
-        DatosViaticos.HabilitarCampos(escritorio, txtId);
-        txtDescripcion.requestFocus(); // Colocamos el cursor en txtId
-
-        // Habilitamos los siguientes botones
-        btnGuardar.setEnabled(true);
-        btnCancelar.setEnabled(true);
-        // Bloqueamos los siguientes botones
-        btnNuevo.setEnabled(false);
-        btnEditar.setEnabled(false);
-        btnEliminar.setEnabled(false);
         // Deshabilitamos la seleccion de filas de la tabla
         tblViatico.setRowSelectionAllowed(false);
-
+        // Habilitamos los campos:
+        DatosViaticos.Habilitar(escritorio, true);
+        // Bloquemos ID
+        txtId.setEnabled(false);
+        // Ponemos el foco en descripcion
+        txtDescripcion.requestFocus();
         esNuevo = true; // Indicamos que sera un nuevo registro
     }//GEN-LAST:event_btnNuevoActionPerformed
 
@@ -294,21 +294,14 @@ public class frmViaticos extends javax.swing.JInternalFrame {
 
         JTextField[] cajas = {txtId, txtDescripcion, txtPasaje, txtMenu};
         DatosViaticos.Editar(escritorio, tblViatico, cajas, cboEmpleado, cboPeriodo);
+        txtId.setEnabled(false);
+        txtDescripcion.requestFocus();
         esNuevo = false;
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
-        // Eliminamos el registro seleccionado y bloqueamos los campos
-        DatosViaticos.EliminarDatos(tblViatico);
-        DatosViaticos.BloquearCampos(escritorio);
-        // Quitamos las selecciones de los combo boxes
-        cboEmpleado.setSelectedIndex(-1);
-        cboPeriodo.setSelectedIndex(-1);
-
-        // Bloqueamos los siguientes botones:
-        btnGuardar.setEnabled(false);
-        btnCancelar.setEnabled(false);
+        // Eliminamos el registro seleccionado
+        DatosViaticos.Eliminar(tblViatico);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -324,17 +317,30 @@ public class frmViaticos extends javax.swing.JInternalFrame {
             // Consulta
             String consulta = "SELECT Id FROM empleados WHERE Nombres = ?";
 
+            PreparedStatement pstmt = null;
+            ResultSet rs = null;
             // Preparamos la consulta
             try {
-                PreparedStatement pstmt = conn.prepareStatement(consulta);
+                pstmt = conn.prepareStatement(consulta);
                 pstmt.setString(1, empleado);
-                ResultSet rs = pstmt.executeQuery();
+                rs = pstmt.executeQuery();
 
                 while (rs.next()) {
                     idEmpleado = rs.getString("Id");
                 }
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error al obtener el ID del empleado", JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error al obtener el ID del empleado", JOptionPane.ERROR_MESSAGE);
+            } finally {
+                try {
+                    if (rs != null) {
+                        rs.close();
+                    }
+                    if (pstmt != null) {
+                        pstmt.close();
+                    }
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null,  e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
 
             // Seleccionamos todas las cajas
@@ -349,16 +355,22 @@ public class frmViaticos extends javax.swing.JInternalFrame {
                 if (DatosViaticos.Validar(cajas, cboEmpleado, cboPeriodo)) {
                     viatico.setPasaje(Float.parseFloat(txtPasaje.getText()));
                     viatico.setMenu(Float.parseFloat(txtMenu.getText()));
-                    DatosViaticos.InsertarDatos(viatico, tblViatico);
-                    DatosViaticos.CleanForm(escritorio, tblViatico, cboEmpleado, cboPeriodo);
+                    DatosViaticos.Insertar(viatico, tblViatico);
+                    DatosViaticos.Limpiar(escritorio);
+                    DatosViaticos.Habilitar(escritorio, false);
+                    tblViatico.clearSelection();
+                    tblViatico.setRowSelectionAllowed(true);
                 }
             } else {
                 viatico.setId(Integer.parseInt(txtId.getText()));
                 viatico.setPasaje(Float.parseFloat(txtPasaje.getText()));
                 viatico.setMenu(Float.parseFloat(txtMenu.getText()));
                 if (DatosViaticos.Validar(cajas, cboPeriodo, cboPeriodo)) {
-                    DatosViaticos.ActualizarDatos(viatico, tblViatico);
-                    DatosViaticos.CleanForm(escritorio, tblViatico, cboEmpleado, cboPeriodo);
+                    DatosViaticos.Actualizar(viatico, tblViatico);
+                    DatosViaticos.Limpiar(escritorio);
+                    DatosViaticos.Habilitar(escritorio, false);
+                    tblViatico.clearSelection();
+                    tblViatico.setRowSelectionAllowed(true);
                 }
             }
         } else {
@@ -368,7 +380,8 @@ public class frmViaticos extends javax.swing.JInternalFrame {
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-        DatosViaticos.CleanForm(escritorio, tblViatico, cboEmpleado, cboPeriodo);
+        DatosViaticos.Limpiar(escritorio);
+        DatosViaticos.Habilitar(escritorio, false);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void txtPasajeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasajeKeyTyped
