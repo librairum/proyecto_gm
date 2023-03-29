@@ -277,7 +277,7 @@ public class frmViaticos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        // Deshabilitamos la seleccion de filas de la tabla
+        tblViatico.clearSelection();
         tblViatico.setRowSelectionAllowed(false);
         // Habilitamos los campos:
         DatosViaticos.Habilitar(escritorio, true);
@@ -294,8 +294,6 @@ public class frmViaticos extends javax.swing.JInternalFrame {
 
         JTextField[] cajas = {txtId, txtDescripcion, txtPasaje, txtMenu};
         DatosViaticos.Editar(escritorio, tblViatico, cajas, cboEmpleado, cboPeriodo);
-        txtId.setEnabled(false);
-        txtDescripcion.requestFocus();
         esNuevo = false;
     }//GEN-LAST:event_btnEditarActionPerformed
 
@@ -382,6 +380,8 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         DatosViaticos.Limpiar(escritorio);
         DatosViaticos.Habilitar(escritorio, false);
+        tblViatico.clearSelection();
+        tblViatico.setRowSelectionAllowed(true);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void txtPasajeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasajeKeyTyped
