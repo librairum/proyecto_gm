@@ -192,6 +192,9 @@ public class DatosViaticos {
                 String dato = tabla.getModel().getValueAt(fila, i).toString();
                 cajas[i].setText(dato);
             }
+            
+            cajas[0].setEnabled(false);
+            cajas[1].requestFocus();
 
             cboEmp.setSelectedItem(tabla.getModel().getValueAt(fila, 4).toString());
             cboPer.setSelectedItem(tabla.getModel().getValueAt(fila, 5).toString());
