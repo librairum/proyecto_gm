@@ -26,14 +26,13 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
     public frmEmpleado() {
         initComponents();
         DefaultTableModel modelo = (DefaultTableModel) tblEmpleados.getModel();
-        DatosEmpleados.BloquearCampos(escritorio, opcionesTipo);
+        DatosEmpleados.Habilitar(escritorio, opcionesTipo, false);
         DatosEmpleados.CargarCombos(cboArea, cboCargo);
         rbPorDefinir.setSelected(true);
-        DatosEmpleados.Mostrar(modelo);
-        btnGuardar.setEnabled(false); btnCancelar.setEnabled(false);
+        DatosEmpleados.Listar(modelo);
         // Quitar la edicion de las celdas
         tblEmpleados.setCellSelectionEnabled(false);
-        // Poder seleccionar fila(s) de la tabla
+        // Habilitar la selecciono de filas
         tblEmpleados.setRowSelectionAllowed(true);
     }
 
@@ -93,6 +92,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         setPreferredSize(new java.awt.Dimension(1086, 640));
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
+        btnNuevo.setName("nuevo"); // NOI18N
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoActionPerformed(evt);
@@ -100,6 +100,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         });
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
+        btnEditar.setName("editar"); // NOI18N
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditarActionPerformed(evt);
@@ -107,6 +108,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         });
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/eliminar.png"))); // NOI18N
+        btnEliminar.setName("eliminar"); // NOI18N
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
@@ -114,6 +116,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         });
 
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
+        btnGuardar.setName("guardar"); // NOI18N
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
@@ -121,6 +124,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         });
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
+        btnCancelar.setName("cancelar"); // NOI18N
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarActionPerformed(evt);
@@ -210,6 +214,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         jLabel11.setText("Cargo:");
 
         btnExportar.setText("Exportar a Excel");
+        btnExportar.setName("exportar"); // NOI18N
         btnExportar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExportarActionPerformed(evt);
@@ -217,6 +222,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         });
 
         btnDatAcad.setText("Registrar Datos Académicos");
+        btnDatAcad.setName("registrar"); // NOI18N
         btnDatAcad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDatAcadActionPerformed(evt);
@@ -475,12 +481,18 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         if (esNuevo) {
             if (DatosEmpleados.Validar(porValidar)) {
                 DatosEmpleados.Insertar(empleado, tblEmpleados);
-                DatosEmpleados.CleanForm(escritorio, rbPorDefinir, opcionesTipo, tblEmpleados);
+                DatosEmpleados.Limpiar(escritorio, rbPorDefinir);
+                DatosEmpleados.Habilitar(escritorio, opcionesTipo, false);
+                tblEmpleados.clearSelection();
+                tblEmpleados.setRowSelectionAllowed(true);
             }
         } else {
             if (DatosEmpleados.Validar(porValidar)) {
                 DatosEmpleados.Actualizar(empleado, tblEmpleados);
-                DatosEmpleados.CleanForm(escritorio, rbPorDefinir, opcionesTipo, tblEmpleados);
+                DatosEmpleados.Limpiar(escritorio, rbPorDefinir);
+                DatosEmpleados.Habilitar(escritorio, opcionesTipo, false);
+                tblEmpleados.clearSelection();
+                tblEmpleados.setRowSelectionAllowed(true);
             }
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -505,13 +517,16 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // Limpiamos y bloqueamos los campos:
-        DatosEmpleados.CleanForm(escritorio, rbPorDefinir, opcionesTipo, tblEmpleados);
+        DatosEmpleados.Limpiar(escritorio, rbPorDefinir);
+        DatosEmpleados.Habilitar(escritorio, opcionesTipo, false);
+        tblEmpleados.clearSelection();
+        tblEmpleados.setRowSelectionAllowed(true);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // IMPORTANTE: Al presionar en "Editar", txtId quedará deshabilitado.
         // Lo habilitaremos al presionar "Guardar".
-
+        
         // Agrupar las cajas de texto
         JTextField[] camposTexto = {txtId, txtApe, txtNom, txtFecNac, txtCorreo,
             txtDni, txtCel, txtDirec};
@@ -527,10 +542,6 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // Eliminamos el registro seleccionado y bloqueamos los campos
         DatosEmpleados.Eliminar(tblEmpleados);
-        DatosEmpleados.BloquearCampos(escritorio, opcionesTipo);
-
-        // Bloqueamos los siguientes botones:
-        btnGuardar.setEnabled(false); btnCancelar.setEnabled(false);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void txtFecNacKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFecNacKeyTyped
@@ -569,15 +580,13 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // Habilitamos los campos:
-        DatosEmpleados.HabilitarCampos(escritorio, opcionesTipo);
-        txtId.requestFocus();
-
-        // Habilitamos los siguientes botones
-        btnGuardar.setEnabled(true); btnCancelar.setEnabled(true);
-        // Bloqueamos los siguientes botones
-        btnNuevo.setEnabled(false); btnEditar.setEnabled(false); btnEliminar.setEnabled(false);
-        // Deshabilitamos la seleccion de filas de la tabla
+        tblEmpleados.clearSelection();
         tblEmpleados.setRowSelectionAllowed(false);
+        DatosEmpleados.Habilitar(escritorio, opcionesTipo, true);
+        String codigo = DatosEmpleados.GenerarCodigo("empleados", "E", 4);
+        txtId.setText(codigo);
+        txtId.setEnabled(false);
+        txtApe.requestFocus();
 
         esNuevo = true; // Indicamos que sera un nuevo registro
     }//GEN-LAST:event_btnNuevoActionPerformed

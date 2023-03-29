@@ -4,7 +4,6 @@
  */
 package proyecto_gm.Empleado;
 
-import java.awt.Component;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.CallableStatement;
@@ -12,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import proyecto_gm.ConexionBD;
 
 /**
@@ -23,51 +21,69 @@ public class DatosAcademicos {
 
     static Connection conn = ConexionBD.getConnection();
 
-    // Limpiar campos
-    public static void LimpiarCampos(JPanel panel) {
-        Component[] components = panel.getComponents();
-        for (Component component : components) {
-            if (component instanceof JComboBox jComboBox) {
-                jComboBox.setSelectedIndex(0);
-            } else {
-                // No hace nada para otros tipos de componentes
-            }
-        }
-    }
-
     // Cargar opciones para los combo boxes
     public static void CargarCombos(JComboBox cbxInstitucion, JComboBox cbxFacultad, JComboBox cbxCarrera) {
+        PreparedStatement pstmtIns = null;
+        PreparedStatement pstmtFac = null;
+        PreparedStatement pstmtCar = null;
+
+        ResultSet rsIns = null;
+        ResultSet rsFac = null;
+        ResultSet rsCar = null;
         try {
             // Preparamos la consultas
-            PreparedStatement pstmtInst = conn.prepareStatement("SELECT RazonSocial FROM institucioneseducativas");
-            PreparedStatement pstmtFac = conn.prepareStatement("SELECT Descripcion FROM facultades");
-            PreparedStatement pstmtCar = conn.prepareStatement("SELECT Descripcion FROM carreras");
+            pstmtIns = conn.prepareStatement("SELECT RazonSocial FROM institucioneseducativas");
+            pstmtFac = conn.prepareStatement("SELECT Descripcion FROM facultades");
+            pstmtCar = conn.prepareStatement("SELECT Descripcion FROM carreras");
 
             // Ejecutamos
-            ResultSet instituciones = pstmtInst.executeQuery();
-            ResultSet facultades = pstmtFac.executeQuery();
-            ResultSet carreras = pstmtCar.executeQuery();
+            rsIns = pstmtIns.executeQuery();
+            rsFac = pstmtFac.executeQuery();
+            rsCar = pstmtCar.executeQuery();
 
             // Llenamos cbxInstitucion
-            while (instituciones.next()) {
-                String inst = instituciones.getString("RazonSocial");
+            while (rsIns.next()) {
+                String inst = rsIns.getString("RazonSocial");
                 cbxInstitucion.addItem(inst);
             }
 
             // Llenamos cbxFacultad
-            while (facultades.next()) {
-                String fac = facultades.getString("Descripcion");
+            while (rsFac.next()) {
+                String fac = rsFac.getString("Descripcion");
                 cbxFacultad.addItem(fac);
             }
 
             // Llenamos cbxCarrera
-            while (carreras.next()) {
-                String car = carreras.getString("Descripcion");
+            while (rsCar.next()) {
+                String car = rsCar.getString("Descripcion");
                 cbxCarrera.addItem(car);
             }
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (rsIns != null) {
+                    rsIns.close();
+                }
+                if (rsFac != null) {
+                    rsFac.close();
+                }
+                if (rsCar != null) {
+                    rsCar.close();
+                }
+                if (pstmtIns != null) {
+                    pstmtIns.close();
+                }
+                if (pstmtFac != null) {
+                    pstmtFac.close();
+                }
+                if (pstmtCar != null) {
+                    pstmtCar.close();
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
@@ -75,6 +91,8 @@ public class DatosAcademicos {
     public static String[] CapturarOpciones(JComboBox cbxIns, JComboBox cbxFac, JComboBox cbxCar) {
         String[] ids = new String[3];
         String idIns = "", idFac = "", idCar = "";
+        CallableStatement cstmt = null;
+        ResultSet rs = null;
         try {
             // Capturar las opciones seleccionadas en los combo boxes
             String selectIns = cbxIns.getSelectedItem().toString();
@@ -82,11 +100,11 @@ public class DatosAcademicos {
             String selectCar = cbxCar.getSelectedItem().toString();
 
             // Obtener los id de las instituciones, facultades y carreras
-            CallableStatement cstmt = conn.prepareCall("{ CALL consulta_inst_facu_carr(?, ?, ?) }");
+            cstmt = conn.prepareCall("{ CALL consulta_inst_facu_carr(?, ?, ?) }");
             cstmt.setString(1, selectIns);
             cstmt.setString(2, selectFac);
             cstmt.setString(3, selectCar);
-            ResultSet rs = cstmt.executeQuery();
+            rs = cstmt.executeQuery();
 
             while (rs.next()) {
                 idIns = rs.getString("id_ins");
@@ -98,8 +116,19 @@ public class DatosAcademicos {
             ids[1] = idFac;
             ids[2] = idCar;
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar Opciones", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error en Capturar Opciones", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (cstmt != null) {
+                    cstmt.close();
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
 
         return ids;
@@ -107,8 +136,9 @@ public class DatosAcademicos {
 
     // Boton Guardar
     public static void InsertarDatos(Datosacad obj, String dni, String inst, String fac, String car, String cic, String codEstudiante) {
+        CallableStatement cstmt = null;
         try {
-            CallableStatement cstmt = conn.prepareCall("{ CALL insertar_datos_academicos(?, ?, ?, ?, ?, ?) }");
+            cstmt = conn.prepareCall("{ CALL insertar_datos_academicos(?, ?, ?, ?, ?, ?) }");
             cstmt.setString(1, dni);
             cstmt.setString(2, inst);
             cstmt.setString(3, fac);
@@ -118,14 +148,22 @@ public class DatosAcademicos {
 
             if (cstmt.execute() != true) {
                 JOptionPane.showMessageDialog(null, "Datos académicos registrados exitosamente.", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
-                obj.dispose();
-                
+                obj.dispose(); // Cerramos la ventana
+
             } else {
                 JOptionPane.showMessageDialog(null, "No se pudieron registrar los datos académicos.", "Error", JOptionPane.ERROR_MESSAGE);
             }
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
     }
 
