@@ -78,7 +78,11 @@ public class DatosModulo {
             ate.setString(1, mod.Id);
             ate.setString(2, mod.Descripcion);
             ate.executeUpdate();
-            
+            // Actualizamos la tabla
+                DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+                modelo.setRowCount(0);
+
+                DatosModulo.Mostrar(modelo);
           
             ate.close();
         } catch (SQLException ex) {

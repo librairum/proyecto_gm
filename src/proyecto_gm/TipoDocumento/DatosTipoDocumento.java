@@ -294,6 +294,7 @@ public class DatosTipoDocumento {
         if (!emp.getId().matches("^[A-Z]{2}[0-9]{2}$") || emp.getId().length() != 4) {
             validar = false;
             JOptionPane.showMessageDialog(null, "El formato del ID es el siguiente: AA00. Inténtelo de nuevo.");
+        
         }
         return validar;
     }

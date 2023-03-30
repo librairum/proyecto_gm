@@ -5,8 +5,6 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class frmArea extends javax.swing.JInternalFrame {
-
-    
     boolean esNuevo=false;
   
     public frmArea() {
@@ -198,11 +196,6 @@ public class frmArea extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
-        btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
-        txtId.setEditable(false);txtDescripcion.setEditable(false);
-        btnAgregar.setEnabled(true);
-
         Area are= new Area();
         are.setId(txtId.getText());
         are.setDescripcion(txtDescripcion.getText());
@@ -212,11 +205,21 @@ public class frmArea extends javax.swing.JInternalFrame {
             if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Completar bien los campos");
                     return;
-                } else {
+                } 
+            else if(!txtId.getText().matches("^[A-Z]{2}[0-9]{2}$")){
+                JOptionPane.showMessageDialog(null, "El formato del Id es el siguente: AR00. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                txtId.requestFocus();
+            }
+            else {
                     DatosArea.Insertar(are, tblArea);
                     JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+                    DatosArea.Limpiar(escritorio);
+                    btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
+                    btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);btnAgregar.setEnabled(true);
+                    DatosArea.Bloquear(escritorio);
+        
                 }
-            DatosArea.Limpiar(escritorio);
+            
         } else {
             // Actualizar registro existente
             if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
@@ -225,10 +228,12 @@ public class frmArea extends javax.swing.JInternalFrame {
                 } else {
                     DatosArea.Actualizar(are, tblArea);
                     JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
-        }
+                    DatosArea.Limpiar(escritorio);
+                    btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
+                    btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);btnAgregar.setEnabled(true);
+                    DatosArea.Bloquear(escritorio);
+            }
         
-        DatosArea.Limpiar(escritorio);
-
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 

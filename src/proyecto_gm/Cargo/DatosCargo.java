@@ -77,6 +77,11 @@ public class DatosCargo {
             ate.setString(1, car.Id);
             ate.setString(2, car.Descripcion);
             ate.executeUpdate();
+            // Actualizamos la tabla
+                DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+                modelo.setRowCount(0);
+
+                DatosCargo.Mostrar(modelo);
           
             ate.close();
         } catch (SQLException ex) {

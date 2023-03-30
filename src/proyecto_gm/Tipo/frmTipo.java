@@ -7,17 +7,11 @@ import javax.swing.table.DefaultTableModel;
 
 
 public class frmTipo extends javax.swing.JInternalFrame {
-
-
-    DefaultTableModel modelo;
     boolean esNuevo=false;
 
     public frmTipo() {
         initComponents();
-        modelo = new DefaultTableModel();
-        modelo.addColumn("Id");
-        modelo.addColumn("Descripción");
-        this.tblTipo.setModel(modelo);
+        DefaultTableModel modelo = (DefaultTableModel) tblTipo.getModel();
         
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
@@ -215,11 +209,7 @@ esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
-        btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
-        btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
-        txtId.setEditable(false);txtDescripcion.setEditable(false);
-        btnAgregar.setEnabled(true);
-
+        
         Tipo tip= new Tipo();
         tip.setId(txtId.getText());
         tip.setDescripcion(txtDescripcion.getText());
@@ -230,12 +220,24 @@ esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
             if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Completar bien los campos");
                     return;
-                } else {
+                } 
+            else if(!txtId.getText().matches("^[A-Z]{2}[0-9]{2}$")){
+                
+                JOptionPane.showMessageDialog(null, "El formato del Id es el siguente: AR00. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                txtId.requestFocus();
+            }
+            
+            else {
                     DatosTipo.Insertar(tip, tblTipo);
                     JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+                    DatosTipo.Limpiar(escritorio);
+                    btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
+                    btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
+                    txtId.setEditable(false);txtDescripcion.setEditable(false);
+                    btnAgregar.setEnabled(true);
                 }
-            DatosTipo.Limpiar(escritorio);
-        } else {
+            
+            } else {
             // Actualizar registro existente
             if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Completar bien los campos");
@@ -243,10 +245,13 @@ esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
                 } else {
                     DatosTipo.Actualizar(tip, tblTipo);
                     JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+                    DatosTipo.Limpiar(escritorio);
+                    btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
+                    btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
+                    txtId.setEditable(false);txtDescripcion.setEditable(false);
+                    btnAgregar.setEnabled(true);
         }
-        modelo.setRowCount(0);
-        DatosTipo.Mostrar(modelo);
-        DatosTipo.Limpiar(escritorio);
+  
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 

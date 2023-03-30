@@ -131,4 +131,6 @@ public class DatosArea {
             JOptionPane.showMessageDialog(null,"No seleciono una fila" );
         }
     }
-}
+    
+   
+    }

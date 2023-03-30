@@ -2,6 +2,7 @@ package proyecto_gm.TipoDocumento;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -260,7 +261,6 @@ esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
         DatosTipoDocumento.Eliminar(tblTipoDocumento);
         DatosTipoDocumento.Bloquear(escritorio);
-        
         // Bloqueamos los siguientes botones:
         btnGuardar.setEnabled(false); btnDeshacer.setEnabled(false);
     }//GEN-LAST:event_btnEliminarActionPerformed
@@ -275,26 +275,36 @@ esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
          //Preguntamos si haremos un INSERT o un UPDATE
          if (esNuevo) {
             // Insertar nuevo registro
-            if (DatosTipoDocumento.ValidarCampos(tip)) {
+            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Completar bien los campos");
+                    return;
+                } 
+            else if(!txtId.getText().matches("^[A-Z]{2}[0-9]{2}$")){
+                JOptionPane.showMessageDialog(null, "El formato del Id es el siguente: AR00. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                txtId.requestFocus();
+            } else {
                     DatosTipoDocumento.Insertar(tip, tblTipoDocumento);
-                            
-                } else 
-            {
-                if(DatosTipoDocumento.ValidarCampos(tip)){
-             DatosTipoDocumento.Actualizar(tip, tblTipoDocumento);
-                    
-                }
-            DatosTipoDocumento.Limpiar(escritorio);
+                    JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+                    DatosTipoDocumento.Limpiar(escritorio);
+                    btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
+                    btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);btnAgregar.setEnabled(true);
+                    DatosTipoDocumento.Bloquear(escritorio);
      
         }
-        DatosTipoDocumento.Limpiar(escritorio);
-        DatosTipoDocumento.Bloquear(escritorio);
-        
-        // Bloqueamos los siguientes botones:
-        btnGuardar.setEnabled(false); btnDeshacer.setEnabled(false);
-        // Habilitamos lo siguientes botones:
-        btnAgregar.setEnabled(true); btnEditar.setEnabled(true); btnEliminar.setEnabled(true);
-        // Limpiamos alguna seleccion previa de alguna fila de la tabla
+           } else {
+            // Actualizar registro existente
+            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Completar bien los campos");
+                    return;
+                } else {
+                    DatosTipoDocumento.Actualizar(tip, tblTipoDocumento);
+                    JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
+                    DatosTipoDocumento.Limpiar(escritorio);
+                    btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
+                    btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);btnAgregar.setEnabled(true);
+                    DatosTipoDocumento.Bloquear(escritorio);
+            }
+            // Limpiamos alguna seleccion previa de alguna fila de la tabla
         tblTipoDocumento.clearSelection();
         // Habilitamos la seleccion de filas de la tabla
         tblTipoDocumento.setRowSelectionAllowed(true);

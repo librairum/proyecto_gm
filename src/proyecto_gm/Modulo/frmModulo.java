@@ -5,18 +5,12 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class frmModulo extends javax.swing.JInternalFrame {
-
-    DefaultTableModel modelo;
     boolean esNuevo=false;
   
     public frmModulo() {
         initComponents();
    
-        modelo = new DefaultTableModel();
-        modelo.addColumn("Id");
-        modelo.addColumn("Descripción");
-        this.tblModulo.setModel(modelo);
- 
+        DefaultTableModel modelo = (DefaultTableModel) tblModulo.getModel();
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
         DatosModulo.Bloquear(escritorio);
@@ -199,11 +193,6 @@ public class frmModulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
-        btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
-        txtId.setEditable(false);txtDescripcion.setEditable(false);
-        btnAgregar.setEnabled(true);
-
         Modulo are= new Modulo();
         are.setId(txtId.getText());
         are.setDescripcion(txtDescripcion.getText());
@@ -213,11 +202,20 @@ public class frmModulo extends javax.swing.JInternalFrame {
             if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Completar bien los campos");
                     return;
-                } else {
+                } 
+            else if(!txtId.getText().matches("^[A-Z]{2}[0-9]{2}$")){
+                JOptionPane.showMessageDialog(null, "El formato del Id es el siguente: MO00. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                txtId.requestFocus();
+            }else {
                     DatosModulo.Insertar(are, tblModulo);
                     JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+                    DatosModulo.Limpiar(escritorio);
+                    btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
+                    btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
+                    txtId.setEditable(false);txtDescripcion.setEditable(false);
+                    btnAgregar.setEnabled(true);
                 }
-                DatosModulo.Limpiar(escritorio);
+                
         } else {
             // Actualizar registro existente
             if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
@@ -226,12 +224,13 @@ public class frmModulo extends javax.swing.JInternalFrame {
                 } else {
                     DatosModulo.Actualizar(are, tblModulo);
                     JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+                    DatosModulo.Limpiar(escritorio);
+                    btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
+                    btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
+                    txtId.setEditable(false);txtDescripcion.setEditable(false);
+                    btnAgregar.setEnabled(true);
+            }     
         }
-        modelo.setRowCount(0);
-        DatosModulo.Mostrar(modelo);
-        DatosModulo.Limpiar(escritorio);
-
-         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed

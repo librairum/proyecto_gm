@@ -77,7 +77,11 @@ public class DatosTipo {
             ate.setString(1, tip.Id);
             ate.setString(2, tip.Descripcion);
             ate.executeUpdate();
-            
+            // Actualizamos la tabla
+                DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+                modelo.setRowCount(0);
+
+                DatosTipo.Mostrar(modelo);
           
             ate.close();
         } catch (SQLException ex) {

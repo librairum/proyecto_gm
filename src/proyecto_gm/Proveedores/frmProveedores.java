@@ -8,20 +8,13 @@ import javax.swing.table.DefaultTableModel;
 
 
 public class frmProveedores extends javax.swing.JInternalFrame {
-    DefaultTableModel modelo;
+    
     boolean esNuevo=false;
 
     
     public frmProveedores() {
         initComponents();
-        modelo = new DefaultTableModel();
-        modelo.addColumn("Id");
-        modelo.addColumn("Nombres");
-        modelo.addColumn("Direccion");
-        modelo.addColumn("Correo");
-        modelo.addColumn("Telefono");
-        modelo.addColumn("Ruc");
-        this.tblProveedores.setModel(modelo);
+        DefaultTableModel modelo = (DefaultTableModel) tblProveedores.getModel();
         
         
         btnGuardar.setEnabled(false);
@@ -112,7 +105,19 @@ public class frmProveedores extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Nombres:");
 
+        txtNombres.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombresKeyTyped(evt);
+            }
+        });
+
         jLabel3.setText("Dirección:");
+
+        txtDireccion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDireccionKeyTyped(evt);
+            }
+        });
 
         jLabel4.setText("Correo:");
 
@@ -248,20 +253,15 @@ public class frmProveedores extends javax.swing.JInternalFrame {
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
         // TODO add your handling code here:
-        DatosProveedores.Limpiar(rootPane);
+        DatosProveedores.Limpiar(escritorio);
         btnEditar.setEnabled(true);btnEliminar.setEnabled(true);btnAgregar.setEnabled(true);
         btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
         
-        txtId.setEditable(false);txtNombres.setEditable(false);txtDireccion.setEditable(false);
-        txtCorreo.setEditable(false);txtTelefono.setEditable(false);txtRuc.setEditable(false);
+        DatosProveedores.Bloquear(escritorio);
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
-        btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false); btnAgregar.setEnabled(true);
-        txtId.setEditable(false);txtNombres.setEditable(false);txtDireccion.setEditable(false);
-        txtCorreo.setEditable(false);txtTelefono.setEditable(false);txtRuc.setEditable(false);
-
+        
         Proveedores pro= new Proveedores();
         pro.setId(txtId.getText());
         pro.setNombres(txtNombres.getText());
@@ -277,11 +277,38 @@ public class frmProveedores extends javax.swing.JInternalFrame {
             || txtCorreo.getText().isEmpty()|| txtTelefono.getText().isEmpty()|| txtRuc.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Completar bien los campos");
                 return;
-            } else {
+            } 
+            else if(!txtId.getText().matches("^[A-Z]{2}[0-9]{2}$")){
+                
+                JOptionPane.showMessageDialog(null, "El formato del Id es el siguente: AR00. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                txtId.requestFocus();
+            }
+            else if(!txtCorreo.getText().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")){
+                
+                JOptionPane.showMessageDialog(null, "El formato del correo es el siguente: alguien@gmail.com. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                txtCorreo.requestFocus();
+            }
+            
+            else if(txtTelefono.getText().length() != 9){
+                
+                JOptionPane.showMessageDialog(null, "El telefono debe contener 9 dígitos. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                txtTelefono.requestFocus();
+            }
+            else if(txtRuc.getText().length() != 11){
+                
+                JOptionPane.showMessageDialog(null, "El Ruc debe contener 11 dígitos. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                txtRuc.requestFocus();
+            }
+            else {
                 DatosProveedores.Insertar(pro, tblProveedores);
                 JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+                DatosProveedores.Limpiar(escritorio);
+                btnEditar.setEnabled(true);btnEliminar.setEnabled(true);btnAgregar.setEnabled(true);
+                btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false); 
+          
+                DatosProveedores.Bloquear(escritorio);
             }
-            DatosProveedores.Limpiar(escritorio);
+            
         } else {
             // Actualizar registro existente
             if (txtId.getText().isEmpty() || txtNombres.getText().isEmpty() || txtDireccion.getText().isEmpty()
@@ -291,10 +318,13 @@ public class frmProveedores extends javax.swing.JInternalFrame {
             } else {
                 DatosProveedores.Actualizar(pro, tblProveedores);
                 JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
+                DatosProveedores.Limpiar(escritorio);
+                
+                btnEditar.setEnabled(true);btnEliminar.setEnabled(true);btnAgregar.setEnabled(true);
+                btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false); 
+          
+                DatosProveedores.Bloquear(escritorio);
             }
-            modelo.setRowCount(0);
-            DatosProveedores.Mostrar(modelo);
-            DatosProveedores.Limpiar(escritorio);
 
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -304,8 +334,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         DatosProveedores.Eliminar(tblProveedores);
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
-        txtId.setEditable(false);txtNombres.setEditable(false);txtDireccion.setEditable(false);
-        txtCorreo.setEditable(false);txtTelefono.setEditable(false);txtRuc.setEditable(false);
+        DatosProveedores.Bloquear(escritorio);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
@@ -346,7 +375,11 @@ public class frmProveedores extends javax.swing.JInternalFrame {
 
     private void txtTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoKeyTyped
         // TODO add your handling code here:
-        if (txtRuc.getText().length() >= 9) {
+        char c = evt.getKeyChar();
+        if (!((c >= '0') && (c <= '9') || (c == evt.VK_BACK_SPACE) || (c == evt.VK_DELETE))) {
+            evt.consume();
+        }
+        if (txtTelefono.getText().length() >= 9) {
             evt.consume();
             Toolkit.getDefaultToolkit().beep();
         }
@@ -359,6 +392,16 @@ public class frmProveedores extends javax.swing.JInternalFrame {
             Toolkit.getDefaultToolkit().beep();
         }
     }//GEN-LAST:event_txtRucKeyTyped
+
+    private void txtNombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombresKeyTyped
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_txtNombresKeyTyped
+
+    private void txtDireccionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDireccionKeyTyped
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_txtDireccionKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

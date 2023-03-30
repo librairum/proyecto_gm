@@ -232,10 +232,6 @@ public class frmCargo extends javax.swing.JInternalFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:z
-        btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
-        btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
-        txtId.setEditable(false);txtDescripcion.setEditable(false);
-        btnAgregar.setEnabled(true);
 
         Cargo car= new Cargo();
         car.setId(txtId.getText());
@@ -246,11 +242,21 @@ public class frmCargo extends javax.swing.JInternalFrame {
             if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Completar bien los campos");
                 return;
-            } else {
+            } 
+            else if(!txtId.getText().matches("^[A-Z]{2}[0-9]{2}$")){
+                JOptionPane.showMessageDialog(null, "El formato del Id es el siguente: CR00. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                txtId.requestFocus();
+            }
+            else {
                 DatosCargo.Insertar(car, tblCargo);
                 JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+                DatosCargo.Limpiar(escritorio);
+                btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
+        btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
+        txtId.setEditable(false);txtDescripcion.setEditable(false);
+        btnAgregar.setEnabled(true);
             }
-            DatosCargo.Limpiar(escritorio);
+            
         } else {
             // Actualizar registro existente
             if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
@@ -259,10 +265,13 @@ public class frmCargo extends javax.swing.JInternalFrame {
             } else {
                 DatosCargo.Actualizar(car, tblCargo);
                 JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+                DatosCargo.Limpiar(escritorio);
+                    btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
+        btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
+        txtId.setEditable(false);txtDescripcion.setEditable(false);
+        btnAgregar.setEnabled(true);
             }
-            modelo.setRowCount(0);
-            DatosCargo.Mostrar(modelo);
-            DatosCargo.Limpiar(escritorio);
+  
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
