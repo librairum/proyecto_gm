@@ -234,6 +234,7 @@ public class DatosEmpleados {
             cstmt.setString(11, empleado.getIdTipo());
 
             cstmt.execute(); // se inserta los datos a la BD
+            JOptionPane.showMessageDialog(null, "Empleado registrado satisfactoriamente.", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
 
             // Actualizamos la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
@@ -246,7 +247,7 @@ public class DatosEmpleados {
             if (cstmt != null) {
                 try {
                     cstmt.close();
-                } catch (Exception e) {
+                } catch (SQLException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }

@@ -257,6 +257,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblEmpleados.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tblEmpleados.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblEmpleados);
         if (tblEmpleados.getColumnModel().getColumnCount() > 0) {
