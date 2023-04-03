@@ -13,7 +13,7 @@ public class frmArea extends javax.swing.JInternalFrame {
         
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
-        DatosArea.Bloquear(escritorio);
+        DatosArea.Habilitar(escritorio, false);
         
         DatosArea.Mostrar(modelo);
         // Quitar la edicion de las celdas
@@ -47,6 +47,7 @@ public class frmArea extends javax.swing.JInternalFrame {
         escritorio.setEnabled(false);
 
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
+        btnGuardar.setName("guardar"); // NOI18N
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
@@ -54,6 +55,7 @@ public class frmArea extends javax.swing.JInternalFrame {
         });
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
+        btnEditar.setName("editar"); // NOI18N
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditarActionPerformed(evt);
@@ -61,6 +63,7 @@ public class frmArea extends javax.swing.JInternalFrame {
         });
 
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
+        btnAgregar.setName("agregar"); // NOI18N
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgregarActionPerformed(evt);
@@ -68,6 +71,7 @@ public class frmArea extends javax.swing.JInternalFrame {
         });
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/eliminar.png"))); // NOI18N
+        btnEliminar.setName("eliminar"); // NOI18N
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
@@ -75,6 +79,7 @@ public class frmArea extends javax.swing.JInternalFrame {
         });
 
         btnDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
+        btnDeshacer.setName("deshacer"); // NOI18N
         btnDeshacer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeshacerActionPerformed(evt);
@@ -189,9 +194,10 @@ public class frmArea extends javax.swing.JInternalFrame {
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
         // TODO add your handling code here:
         DatosArea.Limpiar(rootPane);
-        btnEditar.setEnabled(true);btnEliminar.setEnabled(true);btnAgregar.setEnabled(true);
-        btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
-        txtId.setEditable(false);txtDescripcion.setEditable(false);
+        DatosArea.Habilitar(escritorio, false);
+        tblArea.clearSelection();
+        // Habilitamos la seleccion de filas de la tabla
+        tblArea.setRowSelectionAllowed(true);
         
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
@@ -214,9 +220,10 @@ public class frmArea extends javax.swing.JInternalFrame {
                     DatosArea.Insertar(are, tblArea);
                     JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
                     DatosArea.Limpiar(escritorio);
-                    btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
-                    btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);btnAgregar.setEnabled(true);
-                    DatosArea.Bloquear(escritorio);
+                    DatosArea.Habilitar(escritorio, false);
+                    tblArea.clearSelection();
+                    // Habilitamos la seleccion de filas de la tabla
+                    tblArea.setRowSelectionAllowed(true);
         
                 }
             
@@ -229,9 +236,10 @@ public class frmArea extends javax.swing.JInternalFrame {
                     DatosArea.Actualizar(are, tblArea);
                     JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
                     DatosArea.Limpiar(escritorio);
-                    btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
-                    btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);btnAgregar.setEnabled(true);
-                    DatosArea.Bloquear(escritorio);
+                    DatosArea.Habilitar(escritorio, false);
+                    tblArea.clearSelection();
+                    // Habilitamos la seleccion de filas de la tabla
+                    tblArea.setRowSelectionAllowed(true);
             }
         
         }
@@ -240,32 +248,25 @@ public class frmArea extends javax.swing.JInternalFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
         DatosArea.Eliminar(tblArea);
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        txtId.setEditable(false);txtDescripcion.setEditable(false);
+        DatosArea.Habilitar(escritorio, false);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
-        btnGuardar.setEnabled(true);btnDeshacer.setEnabled(true);btnEliminar.setEnabled(false);
-        txtId.setEditable(false);
-        txtDescripcion.setEditable(true);
-        btnAgregar.setEnabled(false);
-        btnEditar.setEnabled(false);
-
         JTextField [] cod= new JTextField [2];
         cod[0] = txtId;
         cod[1] = txtDescripcion;
-        DatosArea.Editar(tblArea, cod);
+        DatosArea.Editar(escritorio, tblArea, cod);
+
         esNuevo=false;
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        btnGuardar.setEnabled(true);btnDeshacer.setEnabled(true);btnEditar.setEnabled(false);btnEliminar.setEnabled(false);
-        txtId.setEditable(true);txtDescripcion.setEditable(true);
-        
+       DatosArea.Habilitar(escritorio, true);
+       txtId.requestFocus();
         esNuevo=true;
-        btnAgregar.setEnabled(false);
+        tblArea.setRowSelectionAllowed(false);
+        
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped

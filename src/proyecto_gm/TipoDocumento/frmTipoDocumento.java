@@ -14,12 +14,10 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
     public frmTipoDocumento() {
         initComponents();
         DefaultTableModel modelo = (DefaultTableModel) tblTipoDocumento.getModel();
-        DatosTipoDocumento.Bloquear(escritorio);
+        DatosTipoDocumento.Habilitar(escritorio,false);
         DatosTipoDocumento.CargarCombo(cboModulo);
         
-        DatosTipoDocumento.Mostrar(modelo);
-        btnGuardar.setEnabled(false); btnDeshacer.setEnabled(false);
-        
+        DatosTipoDocumento.Mostrar(modelo);        
         // Quitar la edicion de las celdas
         tblTipoDocumento.setCellSelectionEnabled(false);
         // Poder seleccionar fila(s) de la tabla
@@ -53,8 +51,14 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
 
         escritorio.setBackground(new java.awt.Color(255, 255, 255));
         escritorio.setForeground(new java.awt.Color(255, 255, 255));
+        escritorio.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentMoved(java.awt.event.ComponentEvent evt) {
+                escritorioComponentMoved(evt);
+            }
+        });
 
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
+        btnAgregar.setName("agregar"); // NOI18N
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgregarActionPerformed(evt);
@@ -62,6 +66,7 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
         });
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
+        btnEditar.setName("editar"); // NOI18N
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditarActionPerformed(evt);
@@ -69,6 +74,7 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
         });
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/eliminar.png"))); // NOI18N
+        btnEliminar.setName("eliminar"); // NOI18N
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
@@ -76,6 +82,7 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
         });
 
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
+        btnGuardar.setName("guardar"); // NOI18N
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
@@ -83,6 +90,7 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
         });
 
         btnDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
+        btnDeshacer.setName("deshacer"); // NOI18N
         btnDeshacer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeshacerActionPerformed(evt);
@@ -225,33 +233,21 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        DatosTipoDocumento.Habilitar(escritorio);
+        DatosTipoDocumento.Habilitar(escritorio, true);
         txtId.requestFocus(); // Colocamos el cursor en txtId
-        
-        // Habilitamos los siguientes botones
-        btnGuardar.setEnabled(true); btnDeshacer.setEnabled(true);
-        // Bloqueamos los siguientes botones
-        btnEditar.setEnabled(false); btnEliminar.setEnabled(false);
         // Deshabilitamos la seleccion de filas de la tabla
         tblTipoDocumento.setRowSelectionAllowed(false);
-        btnAgregar.setEnabled(false);
         
 esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
-      // Habilitamos los campos:
-        DatosTipoDocumento.Habilitar(escritorio);
-        btnAgregar.setEnabled(false);
-
+       
         // Agrupar las cajas de texto
         JTextField[] camposTexto = {txtId, txtDescripcion};
-        
 
-        // Agrupar los combo boxes y cargar el radio button correspondiente
-        // que esta en el button group
+        // Agrupar los combo boxes
         JComboBox[] combos = {cboModulo};
-        DatosTipoDocumento.Editar(tblTipoDocumento, camposTexto, combos);
+        DatosTipoDocumento.Editar(escritorio, tblTipoDocumento, camposTexto, combos);
         
         esNuevo = false;
 
@@ -260,9 +256,8 @@ esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
         DatosTipoDocumento.Eliminar(tblTipoDocumento);
-        DatosTipoDocumento.Bloquear(escritorio);
-        // Bloqueamos los siguientes botones:
-        btnGuardar.setEnabled(false); btnDeshacer.setEnabled(false);
+        DatosTipoDocumento.Habilitar(escritorio, false);
+        
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -286,9 +281,11 @@ esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
                     DatosTipoDocumento.Insertar(tip, tblTipoDocumento);
                     JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
                     DatosTipoDocumento.Limpiar(escritorio);
-                    btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
-                    btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);btnAgregar.setEnabled(true);
-                    DatosTipoDocumento.Bloquear(escritorio);
+                    DatosTipoDocumento.Habilitar(escritorio, false);
+                    // Limpiamos alguna seleccion previa de alguna fila de la tabla
+                    tblTipoDocumento.clearSelection();
+                    // Habilitamos la seleccion de filas de la tabla
+                    tblTipoDocumento.setRowSelectionAllowed(true);
      
         }
            } else {
@@ -300,26 +297,21 @@ esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
                     DatosTipoDocumento.Actualizar(tip, tblTipoDocumento);
                     JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
                     DatosTipoDocumento.Limpiar(escritorio);
-                    btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
-                    btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);btnAgregar.setEnabled(true);
-                    DatosTipoDocumento.Bloquear(escritorio);
+                    DatosTipoDocumento.Habilitar(escritorio, false);
+                    // Limpiamos alguna seleccion previa de alguna fila de la tabla
+                    tblTipoDocumento.clearSelection();
+                    // Habilitamos la seleccion de filas de la tabla
+                    tblTipoDocumento.setRowSelectionAllowed(true);
+
             }
-            // Limpiamos alguna seleccion previa de alguna fila de la tabla
-        tblTipoDocumento.clearSelection();
-        // Habilitamos la seleccion de filas de la tabla
-        tblTipoDocumento.setRowSelectionAllowed(true);
+            
          }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
         // Limpiamos y bloqueamos los campos:
         DatosTipoDocumento.Limpiar(escritorio);
-        DatosTipoDocumento.Bloquear(escritorio);
-        
-        // Bloqueamos los siguientes botones:
-        btnGuardar.setEnabled(false); btnDeshacer.setEnabled(false);
-        // Habilitamos lo siguientes botones:
-        btnAgregar.setEnabled(true); btnEditar.setEnabled(true); btnEliminar.setEnabled(true);
+        DatosTipoDocumento.Habilitar(escritorio, false);
         // Limpiamos alguna seleccion previa de alguna fila de la tabla
         tblTipoDocumento.clearSelection();
         // Habilitamos la seleccion de filas de la tabla
@@ -347,18 +339,22 @@ esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void txtDescripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyTyped
         // TODO add your handling code here:
-        String texto = txtDescripcion.getText();
-    char c = evt.getKeyChar();
-    if (Character.isLetter(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE) {
-        // Validar texto ingresado
-        String nuevoTexto = texto.substring(0, txtDescripcion.getCaretPosition()) + c + texto.substring(txtDescripcion.getCaretPosition());
-        if (!nuevoTexto.matches("^[a-zA-Z]+$")) {
-            evt.consume();
-        }
-    } else {
-        evt.consume();
-    }
+//        String texto = txtDescripcion.getText();
+//    char c = evt.getKeyChar();
+//    if (Character.isLetter(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE) {
+//        // Validar texto ingresado
+//        String nuevoTexto = texto.substring(0, txtDescripcion.getCaretPosition()) + c + texto.substring(txtDescripcion.getCaretPosition());
+//        if (!nuevoTexto.matches("^[a-zA-Z]+$")) {
+//            evt.consume();
+//        }
+//    } else {
+//        evt.consume();
+//    }
     }//GEN-LAST:event_txtDescripcionKeyTyped
+
+    private void escritorioComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_escritorioComponentMoved
+        // TODO add your handling code here:
+    }//GEN-LAST:event_escritorioComponentMoved
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

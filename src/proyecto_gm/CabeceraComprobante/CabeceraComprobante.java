@@ -2,35 +2,34 @@ package proyecto_gm.CabeceraComprobante;
 
 public class CabeceraComprobante {
     //Atributos
-    String NumeroFactura;
+    String NumeroComprobante;
     String FechaEmision;
     String FechaVencimiento;
     float Total;
     String IdProveedores;
     String IdTipoDocumento;
     
-    public CabeceraComprobante (String NumeroFactura, String FechaEmision, String FechaVencimiento,
+    public CabeceraComprobante (String NumeroComprobante, String FechaEmision, String FechaVencimiento,
             float Total, String IdProveedores, String TipoDocumento)
     {
-        this.NumeroFactura=NumeroFactura;
+        this.NumeroComprobante=NumeroComprobante;
         this.FechaEmision=FechaEmision;
         this.FechaVencimiento=FechaVencimiento;
         this.Total= Total;
         this.IdProveedores= IdProveedores;
         this.IdTipoDocumento= TipoDocumento;
         
-    
     }
     public CabeceraComprobante() {
         
     }
 
-    public String getNumeroFactura() {
-        return NumeroFactura;
+    public String getNumeroComprobante() {
+        return NumeroComprobante;
     }
 
-    public void setNumeroFactura(String NumeroFactura) {
-        this.NumeroFactura = NumeroFactura;
+    public void setNumeroComprobante(String NumeroComprobante) {
+        this.NumeroComprobante = NumeroComprobante;
     }
 
     public String getFechaEmision() {
@@ -72,6 +71,6 @@ public class CabeceraComprobante {
     public void setIdTipoDocumento(String IdTipoDocumento) {
         this.IdTipoDocumento = IdTipoDocumento;
     }
-    
 
+    
 }

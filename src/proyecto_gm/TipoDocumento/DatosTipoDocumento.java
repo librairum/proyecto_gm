@@ -1,11 +1,13 @@
 package proyecto_gm.TipoDocumento;
 
 import java.awt.Component;
+import java.awt.Container;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JButton;
 
 import javax.swing.JComboBox;
 import javax.swing.JDesktopPane;
@@ -22,8 +24,8 @@ public class DatosTipoDocumento {
     static Connection conn = ConexionBD.getConnection();
 
     // Limpiar campos
-    public static void Limpiar(JDesktopPane desktopPane) {
-        Component[] components = desktopPane.getComponents();
+    public static void Limpiar(Container contenedor) {
+        Component[] components = contenedor.getComponents();
         for (Component component : components) {
             if (component instanceof JTextField jTextField) {
                 jTextField.setText("");
@@ -35,28 +37,22 @@ public class DatosTipoDocumento {
         }
     }
 
-    // Bloquear campos
-    public static void Bloquear(JDesktopPane desktopPane) {
-        Component[] components = desktopPane.getComponents();
-        for (Component component : components) {
-            if (component instanceof JTextField jTextField) {
-                jTextField.setEnabled(false);
-            } else if (component instanceof JComboBox jComboBox) {
-                jComboBox.setEnabled(false);
-            } else {
-                // No hace nada para otros tipos de componentes
-            }
-        }
-    }
 
-    // Habilitar campos
-    public static void Habilitar(JDesktopPane desktopPane) {
-        Component[] components = desktopPane.getComponents();
+    // Habilitar o bloquear campos y botones
+    public static void Habilitar(Container contenedor,  boolean bloquear) {
+        Component[] components = contenedor.getComponents();
         for (Component component : components) {
             if (component instanceof JTextField jTextField) {
-                jTextField.setEnabled(true);
+                jTextField.setEnabled(bloquear);
             } else if (component instanceof JComboBox jComboBox) {
-                jComboBox.setEnabled(true);
+                jComboBox.setEnabled(bloquear);
+            } else if (component instanceof JButton jButton) {
+                String button = jButton.getName();
+                if (button.equals("guardar") || button.equals("deshacer")) {
+                    jButton.setEnabled(bloquear);
+                } else if (button.equals("agregar") || button.equals("editar") || button.equals("eliminar"))  {
+                    jButton.setEnabled(!bloquear); // aplicar logica inversa
+                }
             } else {
                 // No hace nada para otros tipos de componentes
             }
@@ -146,46 +142,24 @@ public class DatosTipoDocumento {
 
     }
 
-    // Obtener datos de una fila seleccionada
-    private static Object[] obtenerValoresFila(int filaSeleccionada, JTable tabla) {
-        // Obtener el modelo de la tabla
-        TableModel modelo = tabla.getModel();
-
-        // Obtener el número de columnas de la tabla
-        int numColumnas = modelo.getColumnCount();
-
-        // Crear un arreglo de objetos para almacenar los valores de la fila
-        Object[] valoresFila = new Object[numColumnas];
-
-        // Obtener los valores de la fila seleccionada y guardarlos en el arreglo
-        for (int i = 0; i < numColumnas; i++) {
-            valoresFila[i] = modelo.getValueAt(filaSeleccionada, i);
-        }
-
-        return valoresFila;
-    }
-
+   
     // Boton editar
-    public static void Editar(JTable tabla, JTextField[] camposTexto, JComboBox[] combos) {
-        // Bloqueamos lo siguientes botones del formulario:
-        frmTipoDocumento.btnAgregar.setEnabled(false);
-        frmTipoDocumento.btnEliminar.setEnabled(false);
-        // Habilitamos lo siguientes botontes del formulario:
-        frmTipoDocumento.btnGuardar.setEnabled(true);
-        frmTipoDocumento.btnDeshacer.setEnabled(true);
-        // Deshabilitamos la seleccion de filas de la tabla
-        tabla.setRowSelectionAllowed(false);
+    public static void Editar(Container contenedor, JTable tabla, JTextField[] camposTexto, JComboBox[] combos) {
+        
 
         // Obtener la fila seleccionada
         int filaSeleccionada = tabla.getSelectedRow();
         if (filaSeleccionada >= 0) {
             // Obtener los valores de la fila seleccionada
-            Object[] valoresFila = obtenerValoresFila(filaSeleccionada, tabla); // Usamos el método para obtener los valores de la fila seleccionada de la tabla
-
+            DatosTipoDocumento.Habilitar(contenedor, true);
+            tabla.clearSelection();
+            // Deshabilitamos la seleccion de filas de la tabla
+            tabla.setRowSelectionAllowed(false);
             // Llenar los campos de texto con los valores de la fila
             for (int i = 0; i < camposTexto.length; i++) {
-                if (valoresFila[i] != null) {
-                    camposTexto[i].setText(valoresFila[i].toString());
+                if (tabla.getValueAt(filaSeleccionada, i) != null) {
+                    String dato= tabla.getModel().getValueAt(filaSeleccionada, i).toString();
+                    camposTexto[i].setText(dato);
                 } else {
                     camposTexto[i].setText("");
                 }
@@ -196,17 +170,11 @@ public class DatosTipoDocumento {
 
             // Llenar los combos con los valores de la fila
             for (int i = 0; i < combos.length; i++) {
-                combos[i].setSelectedItem(valoresFila[camposTexto.length + i].toString());
+                combos[i].setSelectedItem(tabla.getModel().getValueAt(filaSeleccionada, camposTexto.length + i).toString());
+                break;
             }
         } else {
             JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.");
-
-            // Habilitamos lo siguientes botones del formulario:
-            frmTipoDocumento.btnAgregar.setEnabled(true);
-            frmTipoDocumento.btnEliminar.setEnabled(true);
-            // Bloqueamos lo siguientes botontes del formulario:
-            frmTipoDocumento.btnGuardar.setEnabled(false);
-            frmTipoDocumento.btnDeshacer.setEnabled(false);
             
             // Habilitamos la seleccion de fila(s) en la tabla
             tabla.setRowSelectionAllowed(true);

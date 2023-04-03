@@ -11,6 +11,7 @@ import proyecto_gm.Cargo.frmCargo;
 import proyecto_gm.Area.frmArea;
 import proyecto_gm.CabeceraComprobante.frmCabeceraComprobante;
 import proyecto_gm.Comunicacion.frmListaComunicacion;
+import proyecto_gm.CabeceraComprobante.frmDetalleComprobante;
 import proyecto_gm.Modulo.frmModulo;
 import proyecto_gm.Proveedores.frmProveedores;
 import proyecto_gm.TipoDocumento.frmTipoDocumento;
@@ -47,6 +48,7 @@ public class menu extends javax.swing.JFrame {
         menuTipoDocumento = new javax.swing.JMenuItem();
         menuComunicaciones = new javax.swing.JMenuItem();
         menuCabeceraComprobante = new javax.swing.JMenuItem();
+        menuDetalleComprobante = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         menuRegistros = new javax.swing.JMenuItem();
         menuGastos = new javax.swing.JMenuItem();
@@ -168,6 +170,14 @@ public class menu extends javax.swing.JFrame {
             }
         });
         jMenu1.add(menuCabeceraComprobante);
+
+        menuDetalleComprobante.setText("Detalle Comprobante");
+        menuDetalleComprobante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuDetalleComprobanteActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuDetalleComprobante);
 
         jMenuBar1.add(jMenu1);
 
@@ -325,6 +335,15 @@ public class menu extends javax.swing.JFrame {
         verventana.show();
     }//GEN-LAST:event_menuCabeceraComprobanteActionPerformed
 
+    private void menuDetalleComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDetalleComprobanteActionPerformed
+        // TODO add your handling code here:
+//        frmDetalleComprobante verventana = new frmDetalleComprobante();
+//        escritorio.add(verventana);
+//        
+//        verventana.show();
+        
+    }//GEN-LAST:event_menuDetalleComprobanteActionPerformed
+
    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -372,6 +391,7 @@ public class menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuCampos;
     private javax.swing.JMenuItem menuCargo;
     private javax.swing.JMenuItem menuComunicaciones;
+    private javax.swing.JMenuItem menuDetalleComprobante;
     private javax.swing.JMenuItem menuEmpleado;
     private javax.swing.JMenuItem menuGastos;
     private javax.swing.JMenuItem menuModulo;
