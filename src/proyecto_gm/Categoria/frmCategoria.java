@@ -36,7 +36,7 @@ public class frmCategoria extends javax.swing.JInternalFrame {
         btnDeshacer.setEnabled(false);
 
         DatosFacultades.bloquearCampos(jPanel1);
-        DatosFacultades.mostrarDatos(modelo);
+        DatosCategoria.mostrarDatos(modelo);
     }
     
 
@@ -255,6 +255,14 @@ public class frmCategoria extends javax.swing.JInternalFrame {
                 DatosCategoria.actualizarDatos(f, tblCategoria);
                 JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
             }
+        }
+        DatosFacultades.limpiarCampos(jPanel1);
+            DatosFacultades.bloquearCampos(jPanel1);
+            btnGuardar.setEnabled(false);
+            btnDeshacer.setEnabled(false);
+            btnEditar.setEnabled(true);
+            btnEliminar.setEnabled(true);
+            btnAgregar.setEnabled(true);
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped
