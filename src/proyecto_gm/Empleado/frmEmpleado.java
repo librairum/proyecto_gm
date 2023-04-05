@@ -4,6 +4,9 @@
  */
 package proyecto_gm.Empleado;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.IOException;
@@ -11,9 +14,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import proyecto_gm.Exportar;
 
 /**
@@ -29,6 +36,25 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
      */
     public frmEmpleado() {
         initComponents();
+        // Personalizar header
+        JTableHeader header = tblEmpleados.getTableHeader();
+        header.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                    Object value,
+                    boolean isSelected,
+                    boolean hasFocus,
+                    int row,
+                    int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                setHorizontalAlignment(JLabel.CENTER);
+                setBackground(Color.DARK_GRAY);
+                setForeground(Color.WHITE);
+                setFont(getFont().deriveFont(Font.BOLD, 14));
+                return this;
+            }
+        });
+
         DefaultTableModel modelo = (DefaultTableModel) tblEmpleados.getModel();
         DatosEmpleados.Habilitar(escritorio, opcionesTipo, false);
         DatosEmpleados.CargarCombos(cboArea, cboCargo);
@@ -99,7 +125,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("EMPLEADOS");
-        setPreferredSize(new java.awt.Dimension(1086, 640));
+        setPreferredSize(new java.awt.Dimension(1266, 640));
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
         btnNuevo.setName("nuevo"); // NOI18N
@@ -242,6 +268,8 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
 
         jLabel10.setText("Tip. Empleado");
 
+        tblEmpleados.setBackground(new java.awt.Color(255, 255, 255));
+        tblEmpleados.setForeground(new java.awt.Color(0, 0, 0));
         tblEmpleados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -259,20 +287,36 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
             }
         });
         tblEmpleados.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tblEmpleados.setFocusable(false);
+        tblEmpleados.setRowHeight(25);
+        tblEmpleados.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        tblEmpleados.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        tblEmpleados.setShowGrid(true);
         tblEmpleados.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblEmpleados);
         if (tblEmpleados.getColumnModel().getColumnCount() > 0) {
             tblEmpleados.getColumnModel().getColumn(0).setResizable(false);
+            tblEmpleados.getColumnModel().getColumn(0).setPreferredWidth(10);
             tblEmpleados.getColumnModel().getColumn(1).setResizable(false);
+            tblEmpleados.getColumnModel().getColumn(1).setPreferredWidth(100);
             tblEmpleados.getColumnModel().getColumn(2).setResizable(false);
+            tblEmpleados.getColumnModel().getColumn(2).setPreferredWidth(80);
             tblEmpleados.getColumnModel().getColumn(3).setResizable(false);
+            tblEmpleados.getColumnModel().getColumn(3).setPreferredWidth(40);
             tblEmpleados.getColumnModel().getColumn(4).setResizable(false);
+            tblEmpleados.getColumnModel().getColumn(4).setPreferredWidth(175);
             tblEmpleados.getColumnModel().getColumn(5).setResizable(false);
+            tblEmpleados.getColumnModel().getColumn(5).setPreferredWidth(35);
             tblEmpleados.getColumnModel().getColumn(6).setResizable(false);
+            tblEmpleados.getColumnModel().getColumn(6).setPreferredWidth(45);
             tblEmpleados.getColumnModel().getColumn(7).setResizable(false);
+            tblEmpleados.getColumnModel().getColumn(7).setPreferredWidth(175);
             tblEmpleados.getColumnModel().getColumn(8).setResizable(false);
+            tblEmpleados.getColumnModel().getColumn(8).setPreferredWidth(60);
             tblEmpleados.getColumnModel().getColumn(9).setResizable(false);
+            tblEmpleados.getColumnModel().getColumn(9).setPreferredWidth(60);
             tblEmpleados.getColumnModel().getColumn(10).setResizable(false);
+            tblEmpleados.getColumnModel().getColumn(10).setPreferredWidth(50);
         }
 
         rbEstable.setText("Estable");
@@ -355,7 +399,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel12))
                     .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 147, Short.MAX_VALUE)
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
                     .addComponent(jLabel7)
@@ -371,7 +415,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(cboCargo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(cboArea, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
+                .addGap(189, 189, 189)
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioLayout.createSequentialGroup()
                         .addComponent(rbEstable)
@@ -409,35 +453,27 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                     .addGroup(escritorioLayout.createSequentialGroup()
                         .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7)
-                            .addComponent(txtDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(txtApe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6)
-                            .addComponent(txtCel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtApe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8)
-                            .addComponent(txtDirec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(txtFecNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9)
-                            .addComponent(cboArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel12))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
                             .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11)
-                            .addComponent(cboCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnExportar)))
+                            .addComponent(btnExportar))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(escritorioLayout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -446,9 +482,27 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                             .addComponent(rbEstable)
                             .addComponent(rbPorDefinir))
                         .addGap(18, 18, 18)
-                        .addComponent(btnDatAcad)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnDatAcad))
+                    .addGroup(escritorioLayout.createSequentialGroup()
+                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(txtDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(txtCel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(txtDirec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(cboArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel11)
+                            .addComponent(cboCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
 
@@ -641,7 +695,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                     }
                 }
             }
-            
+
             verventana.txtNomCom.setText(nombreCompleto);
             verventana.txtDni.setText(dni);
             escritorio.add(verventana);
