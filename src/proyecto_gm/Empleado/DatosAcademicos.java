@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import proyecto_gm.ConexionBD;
 
 /**
@@ -22,7 +23,7 @@ public class DatosAcademicos {
     static Connection conn = ConexionBD.getConnection();
 
     // Cargar opciones para los combo boxes
-    public static void CargarCombos(JComboBox cbxInstitucion, JComboBox cbxFacultad, JComboBox cbxCarrera) {
+    public static void CargarCombos(JComboBox cboInstitucion, JComboBox cboFacultad, JComboBox cboCarrera) {
         PreparedStatement pstmtIns = null;
         PreparedStatement pstmtFac = null;
         PreparedStatement pstmtCar = null;
@@ -44,19 +45,19 @@ public class DatosAcademicos {
             // Llenamos cbxInstitucion
             while (rsIns.next()) {
                 String inst = rsIns.getString("RazonSocial");
-                cbxInstitucion.addItem(inst);
+                cboInstitucion.addItem(inst);
             }
 
             // Llenamos cbxFacultad
             while (rsFac.next()) {
                 String fac = rsFac.getString("Descripcion");
-                cbxFacultad.addItem(fac);
+                cboFacultad.addItem(fac);
             }
 
             // Llenamos cbxCarrera
             while (rsCar.next()) {
                 String car = rsCar.getString("Descripcion");
-                cbxCarrera.addItem(car);
+                cboCarrera.addItem(car);
             }
 
         } catch (SQLException e) {
@@ -107,9 +108,9 @@ public class DatosAcademicos {
             rs = cstmt.executeQuery();
 
             while (rs.next()) {
-                idIns = rs.getString("id_ins");
-                idFac = rs.getString("id_fac");
-                idCar = rs.getString("id_car");
+                idIns = rs.getString("Id_ins");
+                idFac = rs.getString("Id_fac");
+                idCar = rs.getString("Id_car");
             }
 
             ids[0] = idIns;
