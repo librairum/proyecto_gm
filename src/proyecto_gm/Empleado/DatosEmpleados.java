@@ -380,27 +380,6 @@ public class DatosEmpleados {
 
     }
 
-    // Boton registrar datos academicos
-    // Debemos capturar el nombre completo y el dni de la fila seleccionada
-    public static boolean ObtenerEmpleado(JTable tabla) {
-        // Obtener el indice de la fila seleccionada
-        int fila = tabla.getSelectedRow();
-        String nombreCompleto = "", dni = "";
-
-        if (fila >= 0) {
-            nombreCompleto = tabla.getModel().getValueAt(fila, 2).toString() + " " + tabla.getModel().getValueAt(fila, 1).toString();
-            dni = tabla.getModel().getValueAt(fila, 5).toString();
-
-            Datosacad.txtNomCom.setText(nombreCompleto);
-            Datosacad.txtDni.setText(dni);
-        } else {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para registrar sus datos académicos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-
-        return true;
-    }
-
     // Validar campos
     public static boolean Validar(JTextField[] campos) {
         boolean validar = true;
@@ -450,6 +429,42 @@ public class DatosEmpleados {
         }
 
         return validar;
+    }
+    
+    // Obtener datos académicos del empleado
+    public static String[] DatAcadEmpleado(String dni) {
+        String[] datos = new String[5];
+        CallableStatement cstmt = null;
+        ResultSet rs = null;
+        try {
+            cstmt = conn.prepareCall("{ CALL obtener_datos_academicos(?) }");
+            cstmt.setString(1, dni);
+            rs = cstmt.executeQuery();
+            
+            if (rs.next()) {
+                datos[0] = rs.getString("Institucion");
+                datos[1] = rs.getString("Facultad");
+                datos[2] = rs.getString("Carrera");
+                datos[3] = rs.getString("Ciclo");
+                datos[4] = rs.getString("Codigo");
+            }
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error al cargar datos", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (cstmt != null) {
+                    cstmt.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        
+        return datos;
     }
 
     public static String GenerarCodigo(String tabla, String prefijo, int longitud) {

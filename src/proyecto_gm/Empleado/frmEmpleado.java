@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.Exportar;
@@ -20,7 +21,7 @@ import proyecto_gm.Exportar;
  * @author jeanv
  */
 public class frmEmpleado extends javax.swing.JInternalFrame {
-    
+
     boolean esNuevo = false;
 
     /**
@@ -536,7 +537,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // IMPORTANTE: Al presionar en "Editar", txtId quedará deshabilitado.
         // Lo habilitaremos al presionar "Guardar".
-        
+
         // Agrupar las cajas de texto
         JTextField[] camposTexto = {txtId, txtApe, txtNom, txtFecNac, txtCorreo,
             txtDni, txtCel, txtDirec};
@@ -570,7 +571,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         char c = evt.getKeyChar();
         if (!((c >= '0') && (c <= '9') || (c == evt.VK_BACK_SPACE) || (c == evt.VK_DELETE))) {
-            evt.consume() ;// Si no es un número, se ignora el evento de tecla
+            evt.consume();// Si no es un número, se ignora el evento de tecla
         }
         if (txtDni.getText().length() >= 8) {
             evt.consume();
@@ -622,13 +623,36 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
     private void btnDatAcadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDatAcadActionPerformed
         // TODO add your handling code here:
         Datosacad verventana = new Datosacad();
-        
-        if (DatosEmpleados.ObtenerEmpleado(tblEmpleados)) { // Si se ejecuta bien el metodo
+        int fila = tblEmpleados.getSelectedRow();
+        if (fila >= 0) {
+            String apellidos = tblEmpleados.getValueAt(fila, 1).toString();
+            String nombres = tblEmpleados.getValueAt(fila, 2).toString();
+            String dni = tblEmpleados.getValueAt(fila, 5).toString();
+            String nombreCompleto = nombres + " " + apellidos;
+            String[] datos = DatosEmpleados.DatAcadEmpleado(dni);
+            JComboBox[] combos = {verventana.cboInstitucion, verventana.cboFacultad, verventana.cboCarrera, verventana.cboCiclo};
+            for (String dato : datos) {
+                if (dato != null) {
+                    for (JComboBox combo : combos) {
+                        combo.setSelectedItem(dato);
+                        if (dato.equals(datos[4])) {
+                            verventana.txtCodEs.setText(dato);
+                        }
+                    }
+                }
+            }
+            
+            verventana.txtNomCom.setText(nombreCompleto);
+            verventana.txtDni.setText(dni);
             escritorio.add(verventana);
             verventana.setVisible(true);
             // Limpiamos alguna seleccion previa de alguna fila de la tabla
             tblEmpleados.clearSelection();
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
+
+
     }//GEN-LAST:event_btnDatAcadActionPerformed
 
     private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed

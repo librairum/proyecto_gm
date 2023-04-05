@@ -11,18 +11,18 @@ import javax.swing.JOptionPane;
  * @author USUARIO
  */
 public class Datosacad extends javax.swing.JInternalFrame {
-
     /**
      * Creates new form Datosacad
      */
     public Datosacad() {
         initComponents();
-        DatosAcademicos.CargarCombos(cboInstitucion, cboFacultad, cboCarrera);
         setSize(675, 330);
         setLocation(210, 90);
         txtDni.setEnabled(false);
         txtNomCom.setEnabled(false);
+        DatosAcademicos.CargarCombos(cboInstitucion, cboFacultad, cboCarrera);
     }
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -222,10 +222,10 @@ public class Datosacad extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JComboBox<String> cboCarrera;
-    private javax.swing.JComboBox<String> cboCiclo;
-    private javax.swing.JComboBox<String> cboFacultad;
-    private javax.swing.JComboBox<String> cboInstitucion;
+    public javax.swing.JComboBox<String> cboCarrera;
+    public javax.swing.JComboBox<String> cboCiclo;
+    public javax.swing.JComboBox<String> cboFacultad;
+    public javax.swing.JComboBox<String> cboInstitucion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -235,8 +235,8 @@ public class Datosacad extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPanel panel;
-    private javax.swing.JTextField txtCodEs;
-    public static javax.swing.JTextField txtDni;
-    public static javax.swing.JTextField txtNomCom;
+    public javax.swing.JTextField txtCodEs;
+    public javax.swing.JTextField txtDni;
+    public javax.swing.JTextField txtNomCom;
     // End of variables declaration//GEN-END:variables
 }
