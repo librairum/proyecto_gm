@@ -32,7 +32,7 @@ public class menu extends javax.swing.JFrame {
     public menu() {
 
         initComponents();
-        setSize(1100, 700);
+        setSize(1280, 700);
         this.setLocationRelativeTo(null);
     }
 
