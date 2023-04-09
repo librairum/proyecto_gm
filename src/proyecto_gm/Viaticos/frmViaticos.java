@@ -4,13 +4,20 @@
  */
 package proyecto_gm.Viaticos;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import proyecto_gm.ConexionBD;
 
 /**
@@ -28,6 +35,25 @@ public class frmViaticos extends javax.swing.JInternalFrame {
      */
     public frmViaticos() {
         initComponents();
+        // Personalizar header
+        JTableHeader header = tblViatico.getTableHeader();
+        header.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                    Object value,
+                    boolean isSelected,
+                    boolean hasFocus,
+                    int row,
+                    int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                setHorizontalAlignment(JLabel.CENTER);
+                setBackground(Color.DARK_GRAY);
+                setForeground(Color.WHITE);
+                setFont(getFont().deriveFont(Font.BOLD, 13));
+                return this;
+            }
+        });
+        
         DefaultTableModel modelo = (DefaultTableModel) tblViatico.getModel();
         DatosViaticos.CargarCombos(cboEmpleado, cboPeriodo);
         DatosViaticos.Listar(modelo);
@@ -71,6 +97,7 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("VIATICOS");
+        setPreferredSize(new java.awt.Dimension(660, 395));
 
         jLabel1.setText("ID:");
 
@@ -179,14 +206,14 @@ public class frmViaticos extends javax.swing.JInternalFrame {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE))
                     .addGroup(escritorioLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cboEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(38, 38, 38)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel5)
                     .addComponent(jLabel3))
@@ -208,14 +235,13 @@ public class frmViaticos extends javax.swing.JInternalFrame {
                         .addComponent(btnGuardar)
                         .addComponent(btnCancelar)))
                 .addGap(26, 26, 26)
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
-                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel2)
-                        .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtPasaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPasaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
                 .addGap(18, 18, 18)
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -227,6 +253,7 @@ public class frmViaticos extends javax.swing.JInternalFrame {
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
+        tblViatico.setBackground(new java.awt.Color(255, 255, 255));
         tblViatico.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -243,15 +270,26 @@ public class frmViaticos extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblViatico.setFocusable(false);
+        tblViatico.setRowHeight(25);
+        tblViatico.setSelectionBackground(new java.awt.Color(153, 153, 153));
+        tblViatico.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        tblViatico.setShowGrid(true);
         tblViatico.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblViatico);
         if (tblViatico.getColumnModel().getColumnCount() > 0) {
             tblViatico.getColumnModel().getColumn(0).setResizable(false);
+            tblViatico.getColumnModel().getColumn(0).setPreferredWidth(20);
             tblViatico.getColumnModel().getColumn(1).setResizable(false);
+            tblViatico.getColumnModel().getColumn(1).setPreferredWidth(210);
             tblViatico.getColumnModel().getColumn(2).setResizable(false);
+            tblViatico.getColumnModel().getColumn(2).setPreferredWidth(60);
             tblViatico.getColumnModel().getColumn(3).setResizable(false);
+            tblViatico.getColumnModel().getColumn(3).setPreferredWidth(40);
             tblViatico.getColumnModel().getColumn(4).setResizable(false);
+            tblViatico.getColumnModel().getColumn(4).setPreferredWidth(100);
             tblViatico.getColumnModel().getColumn(5).setResizable(false);
+            tblViatico.getColumnModel().getColumn(5).setPreferredWidth(60);
         }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
