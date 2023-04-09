@@ -50,7 +50,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                 setHorizontalAlignment(JLabel.CENTER);
                 setBackground(Color.DARK_GRAY);
                 setForeground(Color.WHITE);
-                setFont(getFont().deriveFont(Font.BOLD, 14));
+                setFont(getFont().deriveFont(Font.BOLD, 13));
                 return this;
             }
         });
@@ -289,7 +289,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         tblEmpleados.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tblEmpleados.setFocusable(false);
         tblEmpleados.setRowHeight(25);
-        tblEmpleados.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        tblEmpleados.setSelectionBackground(new java.awt.Color(153, 153, 153));
         tblEmpleados.setSelectionForeground(new java.awt.Color(0, 0, 0));
         tblEmpleados.setShowGrid(true);
         tblEmpleados.getTableHeader().setReorderingAllowed(false);
