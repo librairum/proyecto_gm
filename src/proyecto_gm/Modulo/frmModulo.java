@@ -259,7 +259,10 @@ public class frmModulo extends javax.swing.JInternalFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         DatosModulo.Habilitar(escritorio, true);
-        txtId.requestFocus();
+        String codigo = DatosModulo.GenerarCodigo("modulo", "MO" , 4);
+        txtId.setText(codigo);
+        txtId.setEnabled(false);
+        txtDescripcion.requestFocus();
         esNuevo=true;
         tblModulo.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnAgregarActionPerformed

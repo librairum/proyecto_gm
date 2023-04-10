@@ -208,7 +208,10 @@ public class frmCargo extends javax.swing.JInternalFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         DatosCargo.Habilitar(escritorio, true);
-       txtId.requestFocus();
+        String codigo = DatosCargo.GenerarCodigo("cargos", "CA" , 4);
+        txtId.setText(codigo);
+        txtId.setEnabled(false);
+        txtDescripcion.requestFocus();
         esNuevo=true;
         tblCargo.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnAgregarActionPerformed

@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import javax.swing.JButton;
 
 import javax.swing.JComboBox;
@@ -33,6 +34,33 @@ public class DatosTipoDocumento {
                 // No hace nada para otros tipos de componentes
             }
         }
+    }
+    public static String GenerarCodigo(String tabla, String prefijo, int longitud) {
+        CallableStatement cstmt = null;
+        String codigo_generado = "";
+        try {
+            cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }");
+            cstmt.setString(1, tabla);
+            cstmt.setString(2, prefijo);
+            cstmt.setInt(3, longitud);
+            cstmt.registerOutParameter(4, Types.VARCHAR);
+
+            cstmt.execute();
+
+            codigo_generado = cstmt.getString(4);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+        return codigo_generado;
+        
     }
 
 

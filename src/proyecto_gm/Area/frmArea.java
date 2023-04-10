@@ -268,7 +268,11 @@ public class frmArea extends javax.swing.JInternalFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         DatosArea.Habilitar(escritorio, true);
-        txtId.requestFocus();
+        String codigo = DatosArea.GenerarCodigo("areas", "AR" , 4);
+        txtId.setText(codigo);
+        txtId.setEnabled(false);
+        
+        txtDescripcion.requestFocus();
         esNuevo=true;
         tblArea.setRowSelectionAllowed(false);
 

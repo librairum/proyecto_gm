@@ -357,7 +357,10 @@ public class frmProveedores extends javax.swing.JInternalFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
        DatosProveedores.Habilitar(escritorio, true);
-       txtId.requestFocus();
+       String codigo = DatosProveedores.GenerarCodigo("proveedores", "PO" , 4);
+        txtId.setText(codigo);
+        txtId.setEnabled(false);
+        txtNombres.requestFocus();
        esNuevo=true;
        tblProveedores.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnAgregarActionPerformed

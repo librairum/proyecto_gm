@@ -2,7 +2,6 @@ package proyecto_gm.CabeceraComprobante;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -321,14 +320,15 @@ public class frmCabeceraComprobante extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-
+        esNuevo = false;
         // Agrupar las cajas de texto
-        JTextField[] camposTexto = {txtNumeroFactura, txtFechaEmision, txtFechaVencimiento, 
-            txtSubTotal, txtIgv,txtTotal};
+        JTextField[] camposTexto = {txtNumeroFactura, txtFechaEmision, txtFechaVencimiento,
+            txtSubTotal, txtIgv, txtTotal};
         // Agrupar los combo boxes
         JComboBox[] combos = {cboProveedores, cboTipoDocumento};
 
         DatosCabeceraComprobante.Editar(escritorio, tblCabezera, camposTexto, combos);
+
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -343,7 +343,7 @@ public class frmCabeceraComprobante extends javax.swing.JInternalFrame {
         String[] opciones = DatosCabeceraComprobante.Capturar(cboProveedores, cboTipoDocumento);
         // Creamos un objeto tipo Empleado
         CabeceraComprobante cab = new CabeceraComprobante(txtNumeroFactura.getText(),
-                txtFechaEmision.getText(), txtFechaVencimiento.getText(),Float.parseFloat(txtSubTotal.getText()), Float.parseFloat(txtIgv.getText()), Float.parseFloat(txtTotal.getText()),
+                txtFechaEmision.getText(), txtFechaVencimiento.getText(), Float.parseFloat(txtSubTotal.getText()), Float.parseFloat(txtIgv.getText()), Float.parseFloat(txtTotal.getText()),
                 opciones[0],
                 opciones[1]);
         // Preguntamos si haremos un INSERT o un UPDATE
@@ -359,19 +359,20 @@ public class frmCabeceraComprobante extends javax.swing.JInternalFrame {
                 tblCabezera.clearSelection();
                 // Habilitamos la seleccion de filas de la tabla
                 tblCabezera.setRowSelectionAllowed(true);
-            } else {
-                if (DatosCabeceraComprobante.ValidarCampos(cab)) {
-                    DatosCabeceraComprobante.Actualizar(cab, tblCabezera);
-                    JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
-                    DatosCabeceraComprobante.Limpiar(escritorio);
-                    DatosCabeceraComprobante.Habilitar(escritorio, false);
+            }
+        } else {
+            if (DatosCabeceraComprobante.ValidarCampos(cab)) {
+                DatosCabeceraComprobante.Actualizar(cab, tblCabezera);
+                JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
+                DatosCabeceraComprobante.Limpiar(escritorio);
+                DatosCabeceraComprobante.Habilitar(escritorio, false);
 
-                    tblCabezera.clearSelection();
-                    // Habilitamos la seleccion de filas de la tabla
-                    tblCabezera.setRowSelectionAllowed(true);
-                }
+                tblCabezera.clearSelection();
+                // Habilitamos la seleccion de filas de la tabla
+                tblCabezera.setRowSelectionAllowed(true);
             }
         }
+
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
@@ -391,8 +392,17 @@ public class frmCabeceraComprobante extends javax.swing.JInternalFrame {
     private void txtFechaEmisionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaEmisionKeyTyped
         // TODO add your handling code here:
         char c = evt.getKeyChar();
-        if (!(Character.isDigit(c))) {
-            evt.consume(); // Si no es un número o un guión, se ignora el evento de tecla
+        if (c == evt.VK_BACK_SPACE) {
+            // permitir eliminar el carácter anterior incluso si es una diagonal
+            String fecha = txtFechaEmision.getText();
+            int length = fecha.length();
+            if (length > 0) {
+                // eliminar el último carácter de la cadena
+                fecha = fecha.substring(0, length - 1);
+                txtFechaEmision.setText(fecha);
+            }
+        } else if (!(Character.isDigit(c))) {
+            evt.consume(); // Si no es un número, se ignora el evento de tecla
         }
 
         String fecha = txtFechaEmision.getText();
@@ -410,8 +420,17 @@ public class frmCabeceraComprobante extends javax.swing.JInternalFrame {
     private void txtFechaVencimientoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaVencimientoKeyTyped
         // TODO add your handling code here:
         char c = evt.getKeyChar();
-        if (!(Character.isDigit(c))) {
-            evt.consume(); // Si no es un número o un guión, se ignora el evento de tecla
+        if (c == evt.VK_BACK_SPACE) {
+            // permitir eliminar el carácter anterior incluso si es una diagonal
+            String fecha = txtFechaVencimiento.getText();
+            int length = fecha.length();
+            if (length > 0) {
+                // eliminar el último carácter de la cadena
+                fecha = fecha.substring(0, length - 1);
+                txtFechaVencimiento.setText(fecha);
+            }
+        } else if (!(Character.isDigit(c))) {
+            evt.consume(); // Si no es un número, se ignora el evento de tecla
         }
 
         String fecha = txtFechaVencimiento.getText();
@@ -428,9 +447,9 @@ public class frmCabeceraComprobante extends javax.swing.JInternalFrame {
 
     private void txtSubTotalFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSubTotalFocusLost
         // TODO add your handling code here:
-        float Igv = (float) (Math.round((Float.parseFloat(txtSubTotal.getText()) * 0.18) * 100.0) / 100.0);        
+        float Igv = (float) (Math.round((Float.parseFloat(txtSubTotal.getText()) * 0.18) * 100.0) / 100.0);
         txtIgv.setText(String.valueOf(Igv));
-        
+
         float Total = Float.parseFloat(txtSubTotal.getText()) + Igv;
         txtTotal.setText(String.valueOf(Total));
     }//GEN-LAST:event_txtSubTotalFocusLost

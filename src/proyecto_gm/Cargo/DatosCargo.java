@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -26,6 +27,33 @@ public class DatosCargo {
                 Limpiar((Container)componente);
             }
         }  
+    }
+    public static String GenerarCodigo(String tabla, String prefijo, int longitud) {
+        CallableStatement cstmt = null;
+        String codigo_generado = "";
+        try {
+            cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }");
+            cstmt.setString(1, tabla);
+            cstmt.setString(2, prefijo);
+            cstmt.setInt(3, longitud);
+            cstmt.registerOutParameter(4, Types.VARCHAR);
+
+            cstmt.execute();
+
+            codigo_generado = cstmt.getString(4);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+        return codigo_generado;
+        
     }
     
     // Habilitar o bloquear campos y botones
@@ -113,7 +141,7 @@ public class DatosCargo {
                     String id = tabla.getModel().getValueAt(fila, 0).toString(); //Se asume que el ID se encuentra en la primera columna
 
                     // Ejecutar el procedimiento almacenado
-                    CallableStatement stmt = conn.prepareCall("{ CALL eliminar_tipodocumento(?) }");
+                    CallableStatement stmt = conn.prepareCall("{ CALL eliminar_cargos(?) }");
                     stmt.setString(1, id);
                     stmt.execute();
 

@@ -271,7 +271,10 @@ public class frmTipo extends javax.swing.JInternalFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         DatosTipo.Habilitar(escritorio, true);
-        txtId.requestFocus();
+        String codigo = DatosTipo.GenerarCodigo("tiposempleados", "TE" , 4);
+        txtId.setText(codigo);
+        txtId.setEnabled(false);
+        txtDescripcion.requestFocus();
         esNuevo=true;
         tblTipo.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnAgregarActionPerformed

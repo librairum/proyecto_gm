@@ -12,7 +12,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.ConexionBD;
-
+import java.sql.Types;
 public class DatosArea {
     
     static Connection conn = ConexionBD.getConnection();
@@ -28,6 +28,33 @@ public class DatosArea {
         }  
     }
     
+    public static String GenerarCodigo(String tabla, String prefijo, int longitud) {
+        CallableStatement cstmt = null;
+        String codigo_generado = "";
+        try {
+            cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }");
+            cstmt.setString(1, tabla);
+            cstmt.setString(2, prefijo);
+            cstmt.setInt(3, longitud);
+            cstmt.registerOutParameter(4, Types.VARCHAR);
+
+            cstmt.execute();
+
+            codigo_generado = cstmt.getString(4);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+        return codigo_generado;
+        
+    }
    // Habilitar o bloquear campos y botones
     public static void Habilitar(Container contenedor,  boolean bloquear) {
         Component[] components = contenedor.getComponents();
@@ -115,7 +142,7 @@ public class DatosArea {
                     String id = tabla.getModel().getValueAt(fila, 0).toString(); //Se asume que el ID se encuentra en la primera columna
 
                     // Ejecutar el procedimiento almacenado
-                    CallableStatement stmt = conn.prepareCall("{ CALL eliminar_tipodocumento(?) }");
+                    CallableStatement stmt = conn.prepareCall("{ CALL eliminar_areas(?) }");
                     stmt.setString(1, id);
                     stmt.execute();
 
@@ -152,6 +179,10 @@ public class DatosArea {
             JOptionPane.showMessageDialog(null,"No seleciono una fila" );
             return false;
         }
+    }
+
+    static void GenerarCodigo(JTable tblArea, String codigo, int i) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
    

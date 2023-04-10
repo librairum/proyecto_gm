@@ -18,8 +18,9 @@ import java.text.SimpleDateFormat;
 import javax.swing.JButton;
 
 public class DatosCabeceraComprobante {
+
     static Connection conn = ConexionBD.getConnection();
-    
+
 // Limpiar campos
     public static void Limpiar(Container contenedor) {
         Component[] components = contenedor.getComponents();
@@ -33,9 +34,9 @@ public class DatosCabeceraComprobante {
             }
         }
     }
-  
+
     // Habilitar campos
-    public static void Habilitar(Container contenedor,  boolean bloquear) {
+    public static void Habilitar(Container contenedor, boolean bloquear) {
         Component[] components = contenedor.getComponents();
         for (Component component : components) {
             if (component instanceof JTextField jTextField) {
@@ -44,9 +45,9 @@ public class DatosCabeceraComprobante {
                 jComboBox.setEnabled(bloquear);
             } else if (component instanceof JButton jButton) {
                 String button = jButton.getName();
-                if (button.equals("guardar") || button.equals("deshacer")|| button.equals("ingresar")) {
+                if (button.equals("guardar") || button.equals("deshacer") || button.equals("ingresar")) {
                     jButton.setEnabled(bloquear);
-                } else if (button.equals("agregar") || button.equals("editar") || button.equals("eliminar"))  {
+                } else if (button.equals("agregar") || button.equals("editar") || button.equals("eliminar")) {
                     jButton.setEnabled(!bloquear); // aplicar logica inversa
                 }
             } else {
@@ -54,8 +55,9 @@ public class DatosCabeceraComprobante {
             }
         }
     }
+
     // Cargar opciones para los combo boxes
-    public static void CargarCombo(JComboBox cboProveedores,JComboBox cboTipoDocumento ) {
+    public static void CargarCombo(JComboBox cboProveedores, JComboBox cboTipoDocumento) {
         try {
             // Preparamos la consultas
             PreparedStatement pstmtProveedores = conn.prepareStatement("SELECT Nombres FROM proveedores");
@@ -80,7 +82,7 @@ public class DatosCabeceraComprobante {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     // Mostrar datos
     public static void Mostrar(DefaultTableModel modelo) {
         try {
@@ -89,15 +91,16 @@ public class DatosCabeceraComprobante {
             while (rs.next()) {
                 Object[] row = new Object[]{rs.getString("Numero de Comprobante"), rs.getString("Fecha de Emision"),
                     rs.getString("Fecha de Vencimiento"), rs.getString("Sub Total"), rs.getString("Igv"), rs.getString("Total"), rs.getString("Proveedores"),
-                rs.getString("Tipo de Documento")};
+                    rs.getString("Tipo de Documento")};
                 modelo.addRow(row);
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-       // Capturar las opciones de los combo boxes
-    public static String[] Capturar(JComboBox cboProveedores,JComboBox cboTipoDocumento) {
+    // Capturar las opciones de los combo boxes
+
+    public static String[] Capturar(JComboBox cboProveedores, JComboBox cboTipoDocumento) {
         String[] ids = new String[2];
         String idProveedores = "", idTiposDocumentos = "";
         try {
@@ -110,7 +113,7 @@ public class DatosCabeceraComprobante {
                     + "FROM proveedores P, tiposdocumentos T "
                     + "WHERE P.Nombres = ? AND T.Descripcion = ? ";
             PreparedStatement pstmt = conn.prepareStatement(consulta);
-            
+
             pstmt.setString(1, selectproveedores);
             pstmt.setString(2, selectiposdocumentos);
             ResultSet rs = pstmt.executeQuery();
@@ -128,12 +131,12 @@ public class DatosCabeceraComprobante {
         }
 
         return ids;
-        }
+    }
 
     public static void Insertar(CabeceraComprobante cab, JTable tabla) {
         try {
             CallableStatement cstmt = conn.prepareCall("{ CALL insertar_cabeceracomprobante(?, ?, ?, ?,?,?, ?, ?) }");
-            
+
             cstmt.setString(1, cab.getNumeroComprobante());
             cstmt.setString(2, cab.getFechaEmision());
             cstmt.setString(3, cab.getFechaVencimiento());
@@ -142,7 +145,6 @@ public class DatosCabeceraComprobante {
             cstmt.setFloat(6, cab.getTotal());
             cstmt.setString(7, cab.getIdProveedores());
             cstmt.setString(8, cab.getIdTipoDocumento());
-           
 
             cstmt.execute(); // se inserta los datos a la BD
 
@@ -155,10 +157,9 @@ public class DatosCabeceraComprobante {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     // Boton editar
     public static void Editar(Container contenedor, JTable tabla, JTextField[] camposTexto, JComboBox[] combos) {
-        
 
         // Obtener la fila seleccionada
         int filaSeleccionada = tabla.getSelectedRow();
@@ -171,7 +172,7 @@ public class DatosCabeceraComprobante {
             // Llenar los campos de texto con los valores de la fila
             for (int i = 0; i < camposTexto.length; i++) {
                 if (tabla.getValueAt(filaSeleccionada, i) != null) {
-                    String dato= tabla.getModel().getValueAt(filaSeleccionada, i).toString();
+                    String dato = tabla.getModel().getValueAt(filaSeleccionada, i).toString();
                     camposTexto[i].setText(dato);
                 } else {
                     camposTexto[i].setText("");
@@ -184,21 +185,20 @@ public class DatosCabeceraComprobante {
             // Llenar los combos con los valores de la fila
             for (int i = 0; i < combos.length; i++) {
                 combos[i].setSelectedItem(tabla.getModel().getValueAt(filaSeleccionada, camposTexto.length + i).toString());
-                break;
+
             }
         } else {
             JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.");
-            
+
             // Habilitamos la seleccion de fila(s) en la tabla
             tabla.setRowSelectionAllowed(true);
         }
     }
-    
+
     public static void Actualizar(CabeceraComprobante cab, JTable tabla) {
         try {
-            CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_cabeceracomprobante(?, ?, ?, ?,?,?,?,?) }");
-            
-            
+            CallableStatement cstmt = conn.prepareCall("{CALL actualizar_cabeceracomprobante(?, ?, ?, ?, ?, ?, ?, ?) }");
+
             cstmt.setString(1, cab.getNumeroComprobante());
             cstmt.setString(2, cab.getFechaEmision());
             cstmt.setString(3, cab.getFechaVencimiento());
@@ -207,19 +207,19 @@ public class DatosCabeceraComprobante {
             cstmt.setFloat(6, cab.getTotal());
             cstmt.setString(7, cab.getIdProveedores());
             cstmt.setString(8, cab.getIdTipoDocumento());
+            cstmt.execute();
 
+            // Actualizamos la tabla
+            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+            modelo.setRowCount(0);
 
-                // Actualizamos la tabla
-                DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-                modelo.setRowCount(0);
-
-                DatosCabeceraComprobante.Mostrar(modelo);
-            
+            DatosCabeceraComprobante.Mostrar(modelo);
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
     // Eliminar datos
     public static void Eliminar(JTable tabla) {
         try {
@@ -252,6 +252,7 @@ public class DatosCabeceraComprobante {
         }
 
     }
+
     // Validar campos
     public static boolean ValidarCampos(CabeceraComprobante emp) {
         boolean validar = true;
@@ -290,7 +291,7 @@ public class DatosCabeceraComprobante {
             validar = false;
             JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd/mm/aaaa. Inténtelo de nuevo.");
         }
-        
+
         // Validamos fecha vencimiento
         // Verificar que el string tenga longitud 10
         if (emp.getFechaVencimiento().length() == 10) {
@@ -301,17 +302,17 @@ public class DatosCabeceraComprobante {
             try {
                 // Intentar parsear el string como una fecha
                 sdf.parse(emp.getFechaVencimiento());
-                
+
             } catch (ParseException e) {
-                
+
                 JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd/mm/aaaa. Inténtelo de nuevo.");
             }
 
         } else {
-            
+
             JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd-mm-aaaa. Inténtelo de nuevo.");
         }
-    
+
         return validar;
     }
 
