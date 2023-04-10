@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.Carreras.DatosCarrera;
-import proyecto_gm.Empleado.Exportar;
+import proyecto_gm.Exportar;
 
 public class frmFacultades extends javax.swing.JInternalFrame {
     Exportar obj;
