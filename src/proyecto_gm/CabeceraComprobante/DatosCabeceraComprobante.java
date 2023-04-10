@@ -88,7 +88,7 @@ public class DatosCabeceraComprobante {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Object[] row = new Object[]{rs.getString("Numero de Comprobante"), rs.getString("Fecha de Emision"),
-                    rs.getString("Fecha de Vencimiento"), rs.getString("Total"), rs.getString("Proveedores"),
+                    rs.getString("Fecha de Vencimiento"), rs.getString("Sub Total"), rs.getString("Igv"), rs.getString("Total"), rs.getString("Proveedores"),
                 rs.getString("Tipo de Documento")};
                 modelo.addRow(row);
             }
@@ -132,14 +132,16 @@ public class DatosCabeceraComprobante {
 
     public static void Insertar(CabeceraComprobante cab, JTable tabla) {
         try {
-            CallableStatement cstmt = conn.prepareCall("{ CALL insertar_cabeceracomprobante(?, ?, ?, ?, ?, ?) }");
+            CallableStatement cstmt = conn.prepareCall("{ CALL insertar_cabeceracomprobante(?, ?, ?, ?,?,?, ?, ?) }");
             
             cstmt.setString(1, cab.getNumeroComprobante());
             cstmt.setString(2, cab.getFechaEmision());
             cstmt.setString(3, cab.getFechaVencimiento());
-            cstmt.setFloat(4, cab.getTotal());
-            cstmt.setString(5, cab.getIdProveedores());
-            cstmt.setString(6, cab.getIdTipoDocumento());
+            cstmt.setFloat(4, cab.getSubTotal());
+            cstmt.setFloat(5, cab.getIgv());
+            cstmt.setFloat(6, cab.getTotal());
+            cstmt.setString(7, cab.getIdProveedores());
+            cstmt.setString(8, cab.getIdTipoDocumento());
            
 
             cstmt.execute(); // se inserta los datos a la BD
@@ -194,15 +196,17 @@ public class DatosCabeceraComprobante {
     
     public static void Actualizar(CabeceraComprobante cab, JTable tabla) {
         try {
-            CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_cabeceracomprobante(?, ?, ?, ?,?,?) }");
+            CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_cabeceracomprobante(?, ?, ?, ?,?,?,?,?) }");
             
             
             cstmt.setString(1, cab.getNumeroComprobante());
             cstmt.setString(2, cab.getFechaEmision());
             cstmt.setString(3, cab.getFechaVencimiento());
-            cstmt.setFloat(4, cab.getTotal());
-            cstmt.setString(5, cab.getIdProveedores());
-            cstmt.setString(6, cab.getIdTipoDocumento());
+            cstmt.setFloat(4, cab.getSubTotal());
+            cstmt.setFloat(5, cab.getIgv());
+            cstmt.setFloat(6, cab.getTotal());
+            cstmt.setString(7, cab.getIdProveedores());
+            cstmt.setString(8, cab.getIdTipoDocumento());
 
 
                 // Actualizamos la tabla
@@ -270,7 +274,7 @@ public class DatosCabeceraComprobante {
         // Verificar que el string tenga longitud 10
         if (emp.getFechaEmision().length() == 10) {
             // Definir el formato de fecha
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             sdf.setLenient(false); // no permitir fechas inválidas
 
             try {
@@ -279,19 +283,19 @@ public class DatosCabeceraComprobante {
                 validar = true;
             } catch (ParseException e) {
                 validar = false;
-                JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd-mm-aaaa. Inténtelo de nuevo.");
+                JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd/mm/aaaa. Inténtelo de nuevo.");
             }
 
         } else {
             validar = false;
-            JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd-mm-aaaa. Inténtelo de nuevo.");
+            JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd/mm/aaaa. Inténtelo de nuevo.");
         }
         
         // Validamos fecha vencimiento
         // Verificar que el string tenga longitud 10
         if (emp.getFechaVencimiento().length() == 10) {
             // Definir el formato de fecha
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             sdf.setLenient(false); // no permitir fechas inválidas
 
             try {
@@ -300,7 +304,7 @@ public class DatosCabeceraComprobante {
                 
             } catch (ParseException e) {
                 
-                JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd-mm-aaaa. Inténtelo de nuevo.");
+                JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd/mm/aaaa. Inténtelo de nuevo.");
             }
 
         } else {

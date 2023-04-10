@@ -5,21 +5,24 @@ public class CabeceraComprobante {
     String NumeroComprobante;
     String FechaEmision;
     String FechaVencimiento;
+    float SubTotal;
+    float Igv;
     float Total;
     String IdProveedores;
     String IdTipoDocumento;
-    
-    public CabeceraComprobante (String NumeroComprobante, String FechaEmision, String FechaVencimiento,
-            float Total, String IdProveedores, String TipoDocumento)
-    {
-        this.NumeroComprobante=NumeroComprobante;
-        this.FechaEmision=FechaEmision;
-        this.FechaVencimiento=FechaVencimiento;
-        this.Total= Total;
-        this.IdProveedores= IdProveedores;
-        this.IdTipoDocumento= TipoDocumento;
-        
+
+    public CabeceraComprobante(String NumeroComprobante, String FechaEmision, String FechaVencimiento, float SubTotal, float Igv, float Total, String IdProveedores, String IdTipoDocumento) {
+        this.NumeroComprobante = NumeroComprobante;
+        this.FechaEmision = FechaEmision;
+        this.FechaVencimiento = FechaVencimiento;
+        this.SubTotal = SubTotal;
+        this.Igv = Igv;
+        this.Total = Total;
+        this.IdProveedores = IdProveedores;
+        this.IdTipoDocumento = IdTipoDocumento;
     }
+    
+    
     public CabeceraComprobante() {
         
     }
@@ -48,6 +51,22 @@ public class CabeceraComprobante {
         this.FechaVencimiento = FechaVencimiento;
     }
 
+    public float getSubTotal() {
+        return SubTotal;
+    }
+
+    public void setSubTotal(float SubTotal) {
+        this.SubTotal = SubTotal;
+    }
+
+    public float getIgv() {
+        return Igv;
+    }
+
+    public void setIgv(float Igv) {
+        this.Igv = Igv;
+    }
+
     public float getTotal() {
         return Total;
     }
@@ -72,5 +91,6 @@ public class CabeceraComprobante {
         this.IdTipoDocumento = IdTipoDocumento;
     }
 
+    
     
 }

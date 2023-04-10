@@ -10,13 +10,11 @@ import java.sql.SQLException;
 import javax.swing.JButton;
 
 import javax.swing.JComboBox;
-import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import proyecto_gm.ConexionBD;
 
 public class DatosTipoDocumento {

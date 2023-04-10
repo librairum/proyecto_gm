@@ -15,8 +15,12 @@ public class frmTipo extends javax.swing.JInternalFrame {
         
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
-        DatosTipo.Bloquear(escritorio);
+        DatosTipo.Habilitar(escritorio, false);
         DatosTipo.Mostrar(modelo);
+        // Quitar la edicion de las celdas
+        tblTipo.setCellSelectionEnabled(false);
+        // Poder seleccionar fila(s) de la tabla
+        tblTipo.setRowSelectionAllowed(true);
     }
     
     
@@ -25,7 +29,6 @@ public class frmTipo extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         escritorio = new javax.swing.JPanel();
-        btnAgregar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
@@ -36,6 +39,7 @@ public class frmTipo extends javax.swing.JInternalFrame {
         txtDescripcion = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblTipo = new javax.swing.JTable();
+        btnAgregar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -43,14 +47,8 @@ public class frmTipo extends javax.swing.JInternalFrame {
 
         escritorio.setBackground(new java.awt.Color(255, 248, 239));
 
-        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
-        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarActionPerformed(evt);
-            }
-        });
-
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
+        btnEditar.setName("editar"); // NOI18N
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditarActionPerformed(evt);
@@ -58,6 +56,7 @@ public class frmTipo extends javax.swing.JInternalFrame {
         });
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/eliminar.png"))); // NOI18N
+        btnEliminar.setName("eliminar"); // NOI18N
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
@@ -65,6 +64,7 @@ public class frmTipo extends javax.swing.JInternalFrame {
         });
 
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
+        btnGuardar.setName("guardar"); // NOI18N
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
@@ -72,6 +72,7 @@ public class frmTipo extends javax.swing.JInternalFrame {
         });
 
         btnDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
+        btnDeshacer.setName("deshacer"); // NOI18N
         btnDeshacer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeshacerActionPerformed(evt);
@@ -110,6 +111,14 @@ public class frmTipo extends javax.swing.JInternalFrame {
             tblTipo.getColumnModel().getColumn(1).setResizable(false);
         }
 
+        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
+        btnAgregar.setName("agregar"); // NOI18N
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
         escritorio.setLayout(escritorioLayout);
         escritorioLayout.setHorizontalGroup(
@@ -117,11 +126,12 @@ public class frmTipo extends javax.swing.JInternalFrame {
             .addGroup(escritorioLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1)
                     .addGroup(escritorioLayout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(101, 101, 101)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
                         .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -134,8 +144,7 @@ public class frmTipo extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnGuardar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnDeshacer))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnDeshacer)))
                 .addGap(0, 25, Short.MAX_VALUE))
         );
         escritorioLayout.setVerticalGroup(
@@ -159,9 +168,9 @@ public class frmTipo extends javax.swing.JInternalFrame {
                     .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel1)))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 24, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 20, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -178,23 +187,13 @@ public class frmTipo extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-btnGuardar.setEnabled(true);btnDeshacer.setEnabled(true);btnEditar.setEnabled(false);btnEliminar.setEnabled(false);
-txtId.setEditable(true);txtDescripcion.setEditable(true);
-btnAgregar.setEnabled(false);
-esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
-
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
-        btnGuardar.setEnabled(true);btnDeshacer.setEnabled(true);btnEliminar.setEnabled(false);
-        txtId.setEditable(false);
-        txtDescripcion.setEditable(true);
-        btnAgregar.setEnabled(false);
-        
         JTextField [] cod= new JTextField [2];
         cod[0] = txtId;
         cod[1] = txtDescripcion;
-        DatosTipo.Editar(tblTipo, cod);
+        DatosTipo.Editar(escritorio, tblTipo, cod);
+
         esNuevo=false;
 
     }//GEN-LAST:event_btnEditarActionPerformed
@@ -202,9 +201,7 @@ esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
         DatosTipo.Eliminar(tblTipo);
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        txtId.setEditable(false);txtDescripcion.setEditable(false);
+        DatosTipo.Habilitar(escritorio, false);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -231,10 +228,10 @@ esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
                     DatosTipo.Insertar(tip, tblTipo);
                     JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
                     DatosTipo.Limpiar(escritorio);
-                    btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
-                    btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
-                    txtId.setEditable(false);txtDescripcion.setEditable(false);
-                    btnAgregar.setEnabled(true);
+                    DatosTipo.Habilitar(escritorio, false);
+                    tblTipo.clearSelection();
+                    // Habilitamos la seleccion de filas de la tabla
+                    tblTipo.setRowSelectionAllowed(true);
                 }
             
             } else {
@@ -246,10 +243,10 @@ esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
                     DatosTipo.Actualizar(tip, tblTipo);
                     JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
                     DatosTipo.Limpiar(escritorio);
-                    btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
-                    btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
-                    txtId.setEditable(false);txtDescripcion.setEditable(false);
-                    btnAgregar.setEnabled(true);
+                    DatosTipo.Habilitar(escritorio, false);
+                    tblTipo.clearSelection();
+                    // Habilitamos la seleccion de filas de la tabla
+                    tblTipo.setRowSelectionAllowed(true);
         }
   
         }
@@ -257,10 +254,11 @@ esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
         // TODO add your handling code here:
-        DatosTipo.Limpiar(escritorio);
-        btnEditar.setEnabled(true);btnEliminar.setEnabled(true);btnAgregar.setEnabled(true);
-        btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
-        txtId.setEditable(false);txtDescripcion.setEditable(false);
+        DatosTipo.Limpiar(rootPane);
+        DatosTipo.Habilitar(escritorio, false);
+        tblTipo.clearSelection();
+        // Habilitamos la seleccion de filas de la tabla
+        tblTipo.setRowSelectionAllowed(true);
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped
@@ -270,6 +268,13 @@ esNuevo=true;    }//GEN-LAST:event_btnAgregarActionPerformed
             Toolkit.getDefaultToolkit().beep();
         }
     }//GEN-LAST:event_txtIdKeyTyped
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        DatosTipo.Habilitar(escritorio, true);
+        txtId.requestFocus();
+        esNuevo=true;
+        tblTipo.setRowSelectionAllowed(false);
+    }//GEN-LAST:event_btnAgregarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -106,13 +106,14 @@ public class DatosCargo {
             int fila = tabla.getSelectedRow();
 
             if (fila >= 0) {
-                int opcion = JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?");
+                String[] options = {"Sí", "No", "Cancelar"};
+                int opcion = JOptionPane.showOptionDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
                 if (opcion == JOptionPane.YES_OPTION) {
                     // Obtener los datos de fila seleccionada
                     String id = tabla.getModel().getValueAt(fila, 0).toString(); //Se asume que el ID se encuentra en la primera columna
 
                     // Ejecutar el procedimiento almacenado
-                    CallableStatement stmt = conn.prepareCall("{ CALL eliminar_cargos(?) }");
+                    CallableStatement stmt = conn.prepareCall("{ CALL eliminar_tipodocumento(?) }");
                     stmt.setString(1, id);
                     stmt.execute();
 
@@ -120,9 +121,9 @@ public class DatosCargo {
                     DefaultTableModel model = (DefaultTableModel) tabla.getModel();
                     model.removeRow(fila);
                     // JOptionPane.showMessageDialog(null, "La fila ha sido eliminada exitosamente");                
+                } 
                 } else {
-                    JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para eliminar.");
-                }
+                JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para eliminar.");
             }
 
         } catch (SQLException ex) {
@@ -134,7 +135,7 @@ public class DatosCargo {
     public static boolean Editar(Container contenedor,  JTable tabla, JTextField [] cod){
         int fila = tabla.getSelectedRow();
         if (fila != -1) {
-            DatosCargo.Habilitar(tabla, true);
+            DatosCargo.Habilitar(contenedor, true);
             tabla.clearSelection();
             tabla.setRowSelectionAllowed(false);
             for (int i = 0; i < cod.length; i++) {

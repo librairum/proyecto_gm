@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -27,14 +28,24 @@ public class DatosTipo {
         }  
     }
     
-    public static void Bloquear(Container contenedor){
-        for (Component componente: contenedor.getComponents()){
-            if(componente instanceof JTextField){
-                ((JTextField)componente).setEditable(false);
-            }else if( componente instanceof Container){
-                Limpiar((Container)componente);
+    // Habilitar o bloquear campos y botones
+    public static void Habilitar(Container contenedor,  boolean bloquear) {
+        Component[] components = contenedor.getComponents();
+        for (Component component : components) {
+            if (component instanceof JTextField jTextField) {
+                jTextField.setEnabled(bloquear);
+            
+            } else if (component instanceof JButton jButton) {
+                String button = jButton.getName();
+                if (button.equals("guardar") || button.equals("deshacer")) {
+                    jButton.setEnabled(bloquear);
+                } else if (button.equals("agregar") || button.equals("editar") || button.equals("eliminar"))  {
+                    jButton.setEnabled(!bloquear); // aplicar logica inversa
+                }
+            } else {
+                // No hace nada para otros tipos de componentes
             }
-        }  
+        }
     }
     
     public static void Mostrar(DefaultTableModel modelo) {
@@ -95,13 +106,14 @@ public class DatosTipo {
             int fila = tabla.getSelectedRow();
 
             if (fila >= 0) {
-                int opcion = JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?");
+                String[] options = {"Sí", "No", "Cancelar"};
+                int opcion = JOptionPane.showOptionDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
                 if (opcion == JOptionPane.YES_OPTION) {
                     // Obtener los datos de fila seleccionada
                     String id = tabla.getModel().getValueAt(fila, 0).toString(); //Se asume que el ID se encuentra en la primera columna
 
                     // Ejecutar el procedimiento almacenado
-                    CallableStatement stmt = conn.prepareCall("{ CALL eliminar_tipoempleado(?) }");
+                    CallableStatement stmt = conn.prepareCall("{ CALL eliminar_tipodocumento(?) }");
                     stmt.setString(1, id);
                     stmt.execute();
 
@@ -109,9 +121,9 @@ public class DatosTipo {
                     DefaultTableModel model = (DefaultTableModel) tabla.getModel();
                     model.removeRow(fila);
                     // JOptionPane.showMessageDialog(null, "La fila ha sido eliminada exitosamente");                
+                } 
                 } else {
-                    JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para eliminar.");
-                }
+                JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para eliminar.");
             }
 
         } catch (SQLException ex) {
@@ -120,14 +132,23 @@ public class DatosTipo {
 
     }
       
-    public static void Editar(JTable tabla, JTextField [] cod){
-        int selectedRow = tabla.getSelectedRow();
-        if (selectedRow != -1) {
+    public static boolean Editar(Container contenedor,  JTable tabla, JTextField [] cod){
+        int fila = tabla.getSelectedRow();
+        if (fila != -1) {
+            DatosTipo.Habilitar(contenedor, true);
+            tabla.clearSelection();
+            tabla.setRowSelectionAllowed(false);
             for (int i = 0; i < cod.length; i++) {
-                cod[i].setText(tabla.getValueAt(selectedRow, i).toString());
+                
+                String dato= tabla.getModel().getValueAt(fila, i).toString();
+                cod[i].setText(dato);
             }
+            cod[0].setEnabled(false);
+            cod[1].requestFocus();
+            return true;
         }else{
             JOptionPane.showMessageDialog(null,"No seleciono una fila" );
+            return false;
         }
     }
 }

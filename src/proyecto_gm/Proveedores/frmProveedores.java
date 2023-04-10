@@ -19,9 +19,13 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
-        DatosProveedores.Bloquear(escritorio);
+        DatosProveedores.Habilitar(escritorio, false);
         
         DatosProveedores.Mostrar(modelo);
+        // Quitar la edicion de las celdas
+        tblProveedores.setCellSelectionEnabled(false);
+        // Poder seleccionar fila(s) de la tabla
+        tblProveedores.setRowSelectionAllowed(true);
     }
 
     @SuppressWarnings("unchecked")
@@ -56,6 +60,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         escritorio.setBackground(new java.awt.Color(255, 248, 239));
 
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
+        btnAgregar.setName("agregar"); // NOI18N
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgregarActionPerformed(evt);
@@ -63,6 +68,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         });
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
+        btnEditar.setName("editar"); // NOI18N
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditarActionPerformed(evt);
@@ -70,6 +76,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         });
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/eliminar.png"))); // NOI18N
+        btnEliminar.setName("eliminar"); // NOI18N
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
@@ -77,6 +84,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         });
 
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
+        btnGuardar.setName("guardar"); // NOI18N
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
@@ -84,6 +92,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         });
 
         btnDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
+        btnDeshacer.setName("deshacer"); // NOI18N
         btnDeshacer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeshacerActionPerformed(evt);
@@ -92,11 +101,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Id:");
 
-        txtId.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIdActionPerformed(evt);
-            }
-        });
+        txtId.setNextFocusableComponent(txtNombres);
         txtId.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtIdKeyTyped(evt);
@@ -105,6 +110,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Nombres:");
 
+        txtNombres.setNextFocusableComponent(txtDireccion);
         txtNombres.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtNombresKeyTyped(evt);
@@ -113,6 +119,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Dirección:");
 
+        txtDireccion.setNextFocusableComponent(txtCorreo);
         txtDireccion.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtDireccionKeyTyped(evt);
@@ -121,8 +128,11 @@ public class frmProveedores extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Correo:");
 
+        txtCorreo.setNextFocusableComponent(txtTelefono);
+
         jLabel5.setText("Telefono:");
 
+        txtTelefono.setNextFocusableComponent(txtRuc);
         txtTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtTelefonoKeyTyped(evt);
@@ -153,6 +163,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblProveedores.setFocusable(false);
         jScrollPane1.setViewportView(tblProveedores);
 
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
@@ -247,17 +258,13 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtIdActionPerformed
-
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
         // TODO add your handling code here:
         DatosProveedores.Limpiar(escritorio);
-        btnEditar.setEnabled(true);btnEliminar.setEnabled(true);btnAgregar.setEnabled(true);
-        btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
-        
-        DatosProveedores.Bloquear(escritorio);
+        DatosProveedores.Habilitar(escritorio, false);
+        tblProveedores.clearSelection();
+        // Habilitamos la seleccion de filas de la tabla
+        tblProveedores.setRowSelectionAllowed(true);
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -303,10 +310,10 @@ public class frmProveedores extends javax.swing.JInternalFrame {
                 DatosProveedores.Insertar(pro, tblProveedores);
                 JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
                 DatosProveedores.Limpiar(escritorio);
-                btnEditar.setEnabled(true);btnEliminar.setEnabled(true);btnAgregar.setEnabled(true);
-                btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false); 
-          
-                DatosProveedores.Bloquear(escritorio);
+                DatosProveedores.Habilitar(escritorio, false);
+                    tblProveedores.clearSelection();
+                    // Habilitamos la seleccion de filas de la tabla
+                    tblProveedores.setRowSelectionAllowed(true);
             }
             
         } else {
@@ -319,11 +326,10 @@ public class frmProveedores extends javax.swing.JInternalFrame {
                 DatosProveedores.Actualizar(pro, tblProveedores);
                 JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
                 DatosProveedores.Limpiar(escritorio);
-                
-                btnEditar.setEnabled(true);btnEliminar.setEnabled(true);btnAgregar.setEnabled(true);
-                btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false); 
-          
-                DatosProveedores.Bloquear(escritorio);
+                DatosProveedores.Habilitar(escritorio, false);
+                    tblProveedores.clearSelection();
+                    // Habilitamos la seleccion de filas de la tabla
+                    tblProveedores.setRowSelectionAllowed(true);
             }
 
         }
@@ -332,18 +338,11 @@ public class frmProveedores extends javax.swing.JInternalFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
         DatosProveedores.Eliminar(tblProveedores);
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        DatosProveedores.Bloquear(escritorio);
+        DatosProveedores.Habilitar(escritorio, false);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
-        btnGuardar.setEnabled(true);btnDeshacer.setEnabled(true);btnEliminar.setEnabled(false);
-        txtId.setEditable(false);txtNombres.setEditable(true);txtDireccion.setEditable(true);
-        txtCorreo.setEditable(true);txtTelefono.setEditable(true);txtRuc.setEditable(false);
-        btnAgregar.setEnabled(false);
-
         JTextField [] cod= new JTextField [6];
         cod[0] = txtId;
         cod[1] = txtNombres;
@@ -351,18 +350,16 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         cod[3] = txtCorreo;
         cod[4] = txtTelefono;
         cod[5] = txtRuc;
-        
-        
-        DatosProveedores.Editar(tblProveedores, cod);
+        DatosProveedores.Editar(escritorio, tblProveedores, cod);
+
         esNuevo=false;
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        btnGuardar.setEnabled(true);btnDeshacer.setEnabled(true);btnEditar.setEnabled(false);btnEliminar.setEnabled(false);
-        txtId.setEditable(true);txtNombres.setEditable(true);txtDireccion.setEditable(true);
-        txtCorreo.setEditable(true);txtTelefono.setEditable(true);txtRuc.setEditable(true);
-        esNuevo=true;
-        btnAgregar.setEnabled(false);
+       DatosProveedores.Habilitar(escritorio, true);
+       txtId.requestFocus();
+       esNuevo=true;
+       tblProveedores.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped

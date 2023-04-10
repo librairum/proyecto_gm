@@ -13,9 +13,13 @@ public class frmModulo extends javax.swing.JInternalFrame {
         DefaultTableModel modelo = (DefaultTableModel) tblModulo.getModel();
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
-        DatosModulo.Bloquear(escritorio);
+        DatosModulo.Habilitar(escritorio, false);
         
         DatosModulo.Mostrar(modelo);
+        // Quitar la edicion de las celdas
+        tblModulo.setCellSelectionEnabled(false);
+        // Poder seleccionar fila(s) de la tabla
+        tblModulo.setRowSelectionAllowed(true);
     }  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -42,6 +46,7 @@ public class frmModulo extends javax.swing.JInternalFrame {
         escritorio.setBackground(new java.awt.Color(255, 248, 239));
 
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
+        btnAgregar.setName("agregar"); // NOI18N
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgregarActionPerformed(evt);
@@ -49,6 +54,7 @@ public class frmModulo extends javax.swing.JInternalFrame {
         });
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
+        btnEditar.setName("editar"); // NOI18N
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditarActionPerformed(evt);
@@ -56,6 +62,7 @@ public class frmModulo extends javax.swing.JInternalFrame {
         });
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/eliminar.png"))); // NOI18N
+        btnEliminar.setName("eliminar"); // NOI18N
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
@@ -63,6 +70,7 @@ public class frmModulo extends javax.swing.JInternalFrame {
         });
 
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
+        btnGuardar.setName("guardar"); // NOI18N
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
@@ -70,6 +78,7 @@ public class frmModulo extends javax.swing.JInternalFrame {
         });
 
         btnDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
+        btnDeshacer.setName("deshacer"); // NOI18N
         btnDeshacer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeshacerActionPerformed(evt);
@@ -187,9 +196,10 @@ public class frmModulo extends javax.swing.JInternalFrame {
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
         // TODO add your handling code here:
         DatosModulo.Limpiar(escritorio);
-        btnEditar.setEnabled(true);btnEliminar.setEnabled(true);btnAgregar.setEnabled(true);
-        btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
-        txtId.setEditable(false);txtDescripcion.setEditable(false);
+        DatosModulo.Habilitar(escritorio, false);
+        tblModulo.clearSelection();
+        // Habilitamos la seleccion de filas de la tabla
+        tblModulo.setRowSelectionAllowed(true);
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -210,10 +220,10 @@ public class frmModulo extends javax.swing.JInternalFrame {
                     DatosModulo.Insertar(are, tblModulo);
                     JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
                     DatosModulo.Limpiar(escritorio);
-                    btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
-                    btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
-                    txtId.setEditable(false);txtDescripcion.setEditable(false);
-                    btnAgregar.setEnabled(true);
+                    DatosModulo.Habilitar(escritorio, false);
+                    tblModulo.clearSelection();
+                    // Habilitamos la seleccion de filas de la tabla
+                    tblModulo.setRowSelectionAllowed(true);
                 }
                 
         } else {
@@ -225,10 +235,10 @@ public class frmModulo extends javax.swing.JInternalFrame {
                     DatosModulo.Actualizar(are, tblModulo);
                     JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
                     DatosModulo.Limpiar(escritorio);
-                    btnEditar.setEnabled(true);btnEliminar.setEnabled(true);
-                    btnGuardar.setEnabled(false);btnDeshacer.setEnabled(false);
-                    txtId.setEditable(false);txtDescripcion.setEditable(false);
-                    btnAgregar.setEnabled(true);
+                    DatosModulo.Habilitar(escritorio, false);
+                    tblModulo.clearSelection();
+                    // Habilitamos la seleccion de filas de la tabla
+                    tblModulo.setRowSelectionAllowed(true);
             }     
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -236,30 +246,22 @@ public class frmModulo extends javax.swing.JInternalFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
         DatosModulo.Eliminar(tblModulo);
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        txtId.setEditable(false);txtDescripcion.setEditable(false);
+        DatosModulo.Habilitar(escritorio, false);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
-        btnGuardar.setEnabled(true);btnDeshacer.setEnabled(true);btnEliminar.setEnabled(false);
-        txtId.setEditable(false);
-        txtDescripcion.setEditable(true);
-        btnAgregar.setEnabled(false);
-
         JTextField [] cod= new JTextField [2];
         cod[0] = txtId;
         cod[1] = txtDescripcion;
-        DatosModulo.Editar(tblModulo, cod);
+        DatosModulo.Editar(escritorio, tblModulo, cod);
         esNuevo=false;
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        btnGuardar.setEnabled(true);btnDeshacer.setEnabled(true);btnEditar.setEnabled(false);btnEliminar.setEnabled(false);
-        txtId.setEditable(true);txtDescripcion.setEditable(true);
+        DatosModulo.Habilitar(escritorio, true);
+        txtId.requestFocus();
         esNuevo=true;
-        btnAgregar.setEnabled(false);
+        tblModulo.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped
