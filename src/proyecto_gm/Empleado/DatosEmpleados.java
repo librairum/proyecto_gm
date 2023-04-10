@@ -408,11 +408,11 @@ public class DatosEmpleados {
                 campos[6].requestFocus();
             } else if (campos[3].getText().length() != 10) { // Validamos fecha
                 validar = false;
-                JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd-mm-aaaa. Inténtelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd/mm/aaaa. Inténtelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 campos[3].requestFocus();
             } else {
                 // Definir el formato de fecha
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                 sdf.setLenient(false); // no permitir fechas inválidas
 
                 try {
@@ -420,7 +420,7 @@ public class DatosEmpleados {
                     sdf.parse(campos[3].getText());
                 } catch (ParseException e) {
                     validar = false;
-                    JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd-mm-aaaa. Inténtelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd/mm/aaaa. Inténtelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 }
             }
         } else {
