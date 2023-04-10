@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import proyecto_gm.Empleado.Exportar;
+import proyecto_gm.Exportar;
 import proyecto_gm.Facultades.DatosFacultades;
 import static proyecto_gm.Instituciones.DatosInstituciones.validarNumeros;
 
