@@ -168,11 +168,6 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         });
 
         txtId.setNextFocusableComponent(txtApe);
-        txtId.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtIdKeyTyped(evt);
-            }
-        });
 
         txtApe.setNextFocusableComponent(txtNom);
         txtApe.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -204,7 +199,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         });
 
         jLabel12.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel12.setText("dd-mm-aaaa");
+        jLabel12.setText("dd/mm/aaaa");
 
         txtCorreo.setNextFocusableComponent(txtDni);
         txtCorreo.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -520,6 +515,40 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        // Habilitamos los campos:
+        tblEmpleados.clearSelection();
+        tblEmpleados.setRowSelectionAllowed(false);
+        DatosEmpleados.Habilitar(escritorio, opcionesTipo, true);
+        String codigo = DatosEmpleados.GenerarCodigo("empleados", "E", 4);
+        txtId.setText(codigo);
+        txtId.setEnabled(false);
+        txtApe.requestFocus();
+
+        esNuevo = true; // Indicamos que sera un nuevo registro
+    }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // IMPORTANTE: Al presionar en "Editar", txtId quedará deshabilitado.
+        // Lo habilitaremos al presionar "Guardar".
+
+        // Agrupar las cajas de texto
+        JTextField[] camposTexto = {txtId, txtApe, txtNom, txtFecNac, txtCorreo,
+            txtDni, txtCel, txtDirec};
+
+        // Agrupar los combo boxes y cargar el radio button correspondiente
+        // que esta en el button group
+        JComboBox[] combos = {cboArea, cboCargo};
+        DatosEmpleados.Editar(escritorio, tblEmpleados, camposTexto, combos, opcionesTipo);
+
+        esNuevo = false; // Indicamos que no sera un nuevo registro
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // Eliminamos el registro seleccionado y bloqueamos los campos
+        DatosEmpleados.Eliminar(tblEmpleados);
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // Obtenemos los ids del area, cargo y tipo seleccionado
         // Capturar las opciones seleccionadas en los combo boxes
@@ -562,24 +591,6 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    private void txtCorreoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCorreoFocusLost
-        // TODO add your handling code here:
-        String text = txtCorreo.getText().trim(); // Eliminamos los espacios del inicio y del final
-        txtCorreo.setText(text);
-    }//GEN-LAST:event_txtCorreoFocusLost
-
-    private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped
-        // TODO add your handling code here:
-        char c = evt.getKeyChar();
-        if (!(Character.isUpperCase(c) || Character.isDigit(c))) {
-            evt.consume(); // Si no es letra mayúscula o número, se ignora el evento de tecla
-        }
-
-        if (txtId.getText().length() >= 4) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_txtIdKeyTyped
-
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // Limpiamos y bloqueamos los campos:
         DatosEmpleados.Limpiar(escritorio, rbPorDefinir);
@@ -587,92 +598,6 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         tblEmpleados.clearSelection();
         tblEmpleados.setRowSelectionAllowed(true);
     }//GEN-LAST:event_btnCancelarActionPerformed
-
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // IMPORTANTE: Al presionar en "Editar", txtId quedará deshabilitado.
-        // Lo habilitaremos al presionar "Guardar".
-
-        // Agrupar las cajas de texto
-        JTextField[] camposTexto = {txtId, txtApe, txtNom, txtFecNac, txtCorreo,
-            txtDni, txtCel, txtDirec};
-
-        // Agrupar los combo boxes y cargar el radio button correspondiente
-        // que esta en el button group
-        JComboBox[] combos = {cboArea, cboCargo};
-        DatosEmpleados.Editar(escritorio, tblEmpleados, camposTexto, combos, opcionesTipo);
-
-        esNuevo = false; // Indicamos que no sera un nuevo registro
-    }//GEN-LAST:event_btnEditarActionPerformed
-
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // Eliminamos el registro seleccionado y bloqueamos los campos
-        DatosEmpleados.Eliminar(tblEmpleados);
-    }//GEN-LAST:event_btnEliminarActionPerformed
-
-    private void txtFecNacKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFecNacKeyTyped
-        // TODO add your handling code here:
-        char c = evt.getKeyChar();
-        if (!(Character.isDigit(c) || c == '-')) {
-            evt.consume(); // Si no es un número o un guión, se ignora el evento de tecla
-        }
-
-        if (txtFecNac.getText().length() >= 10) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_txtFecNacKeyTyped
-
-    private void txtDniKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDniKeyTyped
-        // TODO add your handling code here:
-        char c = evt.getKeyChar();
-        if (!((c >= '0') && (c <= '9') || (c == evt.VK_BACK_SPACE) || (c == evt.VK_DELETE))) {
-            evt.consume();// Si no es un número, se ignora el evento de tecla
-        }
-        if (txtDni.getText().length() >= 8) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_txtDniKeyTyped
-
-    private void txtCelKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCelKeyTyped
-        // TODO add your handling code here:
-        char c = evt.getKeyChar();
-        if (!((c >= '0') && (c <= '9') || (c == evt.VK_BACK_SPACE) || (c == evt.VK_DELETE))) {
-            evt.consume();
-        }
-        if (txtCel.getText().length() >= 9) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_txtCelKeyTyped
-
-    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        // Habilitamos los campos:
-        tblEmpleados.clearSelection();
-        tblEmpleados.setRowSelectionAllowed(false);
-        DatosEmpleados.Habilitar(escritorio, opcionesTipo, true);
-        String codigo = DatosEmpleados.GenerarCodigo("empleados", "E", 4);
-        txtId.setText(codigo);
-        txtId.setEnabled(false);
-        txtApe.requestFocus();
-
-        esNuevo = true; // Indicamos que sera un nuevo registro
-    }//GEN-LAST:event_btnNuevoActionPerformed
-
-    private void txtNomFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNomFocusLost
-        // TODO add your handling code here:
-        String text = txtNom.getText().trim(); // Eliminamos los espacios del inicio y del final
-        txtNom.setText(text);
-    }//GEN-LAST:event_txtNomFocusLost
-
-    private void txtApeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtApeFocusLost
-        // TODO add your handling code here:
-        String text = txtApe.getText().trim(); // Eliminamos los espacios del inicio y del final
-        txtApe.setText(text);
-    }//GEN-LAST:event_txtApeFocusLost
-
-    private void txtDirecFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDirecFocusLost
-        // TODO add your handling code here:
-        String text = txtDirec.getText().trim(); // Eliminamos los espacios del inicio y del final
-        txtDirec.setText(text);
-    }//GEN-LAST:event_txtDirecFocusLost
 
     private void btnDatAcadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDatAcadActionPerformed
         // TODO add your handling code here:
@@ -706,7 +631,6 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Debe seleccionar una fila.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
 
-
     }//GEN-LAST:event_btnDatAcadActionPerformed
 
     private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
@@ -718,6 +642,70 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnExportarActionPerformed
 
+    private void txtCorreoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCorreoFocusLost
+        // TODO add your handling code here:
+        String text = txtCorreo.getText().trim(); // Eliminamos los espacios del inicio y del final
+        txtCorreo.setText(text);
+    }//GEN-LAST:event_txtCorreoFocusLost
+
+    private void txtFecNacKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFecNacKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (!(Character.isDigit(c))) {
+            evt.consume(); // Si no es un número o un guión, se ignora el evento de tecla
+        }
+
+        String fecha = txtFecNac.getText();
+        int length = fecha.length();
+        if (length == 2 || length == 5) { // Si se ha ingresado un día o un mes completo, se agrega el guión correspondiente
+            fecha += "/";
+            txtFecNac.setText(fecha);
+        }
+
+        if (length >= 10) {
+            evt.consume(); // Si ya se ha ingresado la fecha completa, se ignora el evento de tecla
+        }
+    }//GEN-LAST:event_txtFecNacKeyTyped
+
+    private void txtDniKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDniKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (!((c >= '0') && (c <= '9') || (c == evt.VK_BACK_SPACE) || (c == evt.VK_DELETE))) {
+            evt.consume();// Si no es un número, se ignora el evento de tecla
+        }
+        if (txtDni.getText().length() >= 8) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtDniKeyTyped
+
+    private void txtCelKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCelKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (!((c >= '0') && (c <= '9') || (c == evt.VK_BACK_SPACE) || (c == evt.VK_DELETE))) {
+            evt.consume();
+        }
+        if (txtCel.getText().length() >= 9) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCelKeyTyped
+
+    private void txtNomFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNomFocusLost
+        // TODO add your handling code here:
+        String text = txtNom.getText().trim(); // Eliminamos los espacios del inicio y del final
+        txtNom.setText(text);
+    }//GEN-LAST:event_txtNomFocusLost
+
+    private void txtApeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtApeFocusLost
+        // TODO add your handling code here:
+        String text = txtApe.getText().trim(); // Eliminamos los espacios del inicio y del final
+        txtApe.setText(text);
+    }//GEN-LAST:event_txtApeFocusLost
+
+    private void txtDirecFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDirecFocusLost
+        // TODO add your handling code here:
+        String text = txtDirec.getText().trim(); // Eliminamos los espacios del inicio y del final
+        txtDirec.setText(text);
+    }//GEN-LAST:event_txtDirecFocusLost
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btnCancelar;

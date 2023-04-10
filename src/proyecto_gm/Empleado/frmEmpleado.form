@@ -302,9 +302,6 @@
               <ComponentRef name="txtApe"/>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtIdKeyTyped"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtApe">
           <Properties>
@@ -361,7 +358,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="99" green="99" red="99" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="dd-mm-aaaa"/>
+            <Property name="text" type="java.lang.String" value="dd/mm/aaaa"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtCorreo">
