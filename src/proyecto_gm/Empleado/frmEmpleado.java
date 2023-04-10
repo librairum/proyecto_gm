@@ -21,6 +21,9 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 import proyecto_gm.Exportar;
 
 /**
@@ -60,6 +63,22 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         DatosEmpleados.CargarCombos(cboArea, cboCargo);
         rbPorDefinir.setSelected(true);
         DatosEmpleados.Listar(modelo);
+        
+        // Ocultar la columna DIRECCIÓN
+        // Obtener la columna que se desea ocultar
+        int columnIndex = 8; // índice de la columna a ocultar
+
+        // Obtener el modelo de tabla del JTable
+        TableModel model = tblEmpleados.getModel();
+
+        // Obtener el modelo de columnas del JTable
+        TableColumnModel columnModel = tblEmpleados.getColumnModel();
+
+        // Ocultar la columna
+        TableColumn column = columnModel.getColumn(columnIndex);
+        columnModel.removeColumn(column);
+
+        
         // Quitar la edicion de las celdas
         tblEmpleados.setCellSelectionEnabled(false);
         // Habilitar la selecciono de filas
@@ -117,6 +136,8 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         rbEstable = new javax.swing.JRadioButton();
         rbPracticante = new javax.swing.JRadioButton();
         rbPorDefinir = new javax.swing.JRadioButton();
+        jLabel14 = new javax.swing.JLabel();
+        txtDistrito = new javax.swing.JTextField();
 
         opcionesTipo.add(rbEstable);
         opcionesTipo.add(rbPracticante);
@@ -221,7 +242,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
             }
         });
 
-        txtCel.setNextFocusableComponent(txtDirec);
+        txtCel.setNextFocusableComponent(txtDistrito);
         txtCel.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCelKeyTyped(evt);
@@ -270,11 +291,11 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "ID", "APELLIDOS", "NOMBRES", "FEC. NACIMIENTO", "CORREO", "DNI", "CELULAR", "DIRECCIÓN", "ÁREA", "CARGO", "TIP. EMPLEADO"
+                "ID", "APELLIDOS", "NOMBRES", "FEC. NACIMIENTO", "CORREO", "DNI", "CELULAR", "DISTRITO", "DIRECCIÓN", "ÁREA", "CARGO", "TIP. EMPLEADO"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -305,13 +326,15 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
             tblEmpleados.getColumnModel().getColumn(6).setResizable(false);
             tblEmpleados.getColumnModel().getColumn(6).setPreferredWidth(45);
             tblEmpleados.getColumnModel().getColumn(7).setResizable(false);
-            tblEmpleados.getColumnModel().getColumn(7).setPreferredWidth(175);
+            tblEmpleados.getColumnModel().getColumn(7).setPreferredWidth(100);
             tblEmpleados.getColumnModel().getColumn(8).setResizable(false);
-            tblEmpleados.getColumnModel().getColumn(8).setPreferredWidth(60);
+            tblEmpleados.getColumnModel().getColumn(8).setPreferredWidth(175);
             tblEmpleados.getColumnModel().getColumn(9).setResizable(false);
             tblEmpleados.getColumnModel().getColumn(9).setPreferredWidth(60);
             tblEmpleados.getColumnModel().getColumn(10).setResizable(false);
-            tblEmpleados.getColumnModel().getColumn(10).setPreferredWidth(50);
+            tblEmpleados.getColumnModel().getColumn(10).setPreferredWidth(60);
+            tblEmpleados.getColumnModel().getColumn(11).setResizable(false);
+            tblEmpleados.getColumnModel().getColumn(11).setPreferredWidth(50);
         }
 
         rbEstable.setText("Estable");
@@ -325,6 +348,15 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         rbPorDefinir.setText("Por definir...");
         rbPorDefinir.setNextFocusableComponent(btnGuardar);
         rbPorDefinir.setActionCommand("Por definir...");
+
+        jLabel14.setText("Distrito:");
+
+        txtDistrito.setNextFocusableComponent(txtDirec);
+        txtDistrito.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtDistritoFocusLost(evt);
+            }
+        });
 
         escritorio.setLayer(btnNuevo, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorio.setLayer(btnEditar, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -359,6 +391,8 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         escritorio.setLayer(rbEstable, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorio.setLayer(rbPracticante, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorio.setLayer(rbPorDefinir, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        escritorio.setLayer(jLabel14, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        escritorio.setLayer(txtDistrito, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
         escritorio.setLayout(escritorioLayout);
@@ -376,6 +410,10 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancelar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
             .addGroup(escritorioLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -383,7 +421,8 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel4)
                     .addComponent(jLabel3)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -393,27 +432,23 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                         .addComponent(txtFecNac, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel12))
-                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 147, Short.MAX_VALUE)
+                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDni, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel11))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(txtDni, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(txtCel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtDirec, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(cboCargo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cboArea, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(189, 189, 189)
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioLayout.createSequentialGroup()
-                        .addComponent(rbEstable)
+                    .addGroup(escritorioLayout.createSequentialGroup()
+                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel14))
+                        .addGap(23, 23, 23)
+                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(escritorioLayout.createSequentialGroup()
+                                .addComponent(txtCel, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(escritorioLayout.createSequentialGroup()
+                                .addComponent(txtDistrito, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(rbEstable)))
                         .addGap(18, 18, 18)
                         .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
@@ -423,15 +458,24 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                                 .addComponent(rbPorDefinir)))
                         .addGap(22, 22, 22))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioLayout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtDirec, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnDatAcad)
                         .addGap(72, 72, 72))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioLayout.createSequentialGroup()
-                        .addComponent(btnExportar)
-                        .addGap(105, 105, 105))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
+                    .addGroup(escritorioLayout.createSequentialGroup()
+                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel11))
+                        .addGap(31, 31, 31)
+                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(escritorioLayout.createSequentialGroup()
+                                .addComponent(cboCargo, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(318, 318, 318)
+                                .addComponent(btnExportar))
+                            .addComponent(cboArea, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(105, 137, Short.MAX_VALUE))))
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -443,31 +487,45 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                     .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(32, 32, 32)
+                .addGap(25, 25, 25)
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(escritorioLayout.createSequentialGroup()
                         .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6)
+                            .addComponent(txtCel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(txtApe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtApe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel14)
+                            .addComponent(txtDistrito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8)
+                            .addComponent(txtDirec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(txtFecNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel12))
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel9)
+                            .addComponent(cboArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
                             .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnExportar))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                            .addComponent(btnExportar)
+                            .addComponent(jLabel11)
+                            .addComponent(cboCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(9, 9, 9)
+                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(txtDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(escritorioLayout.createSequentialGroup()
                         .addComponent(jLabel10)
@@ -477,27 +535,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                             .addComponent(rbEstable)
                             .addComponent(rbPorDefinir))
                         .addGap(18, 18, 18)
-                        .addComponent(btnDatAcad))
-                    .addGroup(escritorioLayout.createSequentialGroup()
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7)
-                            .addComponent(txtDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(txtCel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(txtDirec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel9)
-                            .addComponent(cboArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel11)
-                            .addComponent(cboCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(btnDatAcad)))
                 .addContainerGap())
         );
 
@@ -534,7 +572,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
 
         // Agrupar las cajas de texto
         JTextField[] camposTexto = {txtId, txtApe, txtNom, txtFecNac, txtCorreo,
-            txtDni, txtCel, txtDirec};
+            txtDni, txtCel, txtDistrito, txtDirec};
 
         // Agrupar los combo boxes y cargar el radio button correspondiente
         // que esta en el button group
@@ -563,13 +601,14 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         empleado.setCorreo(txtCorreo.getText());
         empleado.setDni(txtDni.getText());
         empleado.setCelular(txtCel.getText());
+        empleado.setDistrito(txtDistrito.getText());
         empleado.setDireccion(txtDirec.getText());
         empleado.setIdArea(opciones[0]);
         empleado.setIdCargo(opciones[1]);
         empleado.setIdTipo(opciones[2]);
 
         // Seleccionamos las cajas para validar
-        JTextField[] porValidar = {txtId, txtApe, txtNom, txtFecNac, txtCorreo, txtDni, txtCel, txtDirec};
+        JTextField[] porValidar = {txtId, txtApe, txtNom, txtFecNac, txtCorreo, txtDni, txtCel, txtDistrito, txtDirec};
 
         // Preguntamos si haremos un INSERT o un UPDATE
         if (esNuevo) {
@@ -715,6 +754,12 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         txtDirec.setText(text);
     }//GEN-LAST:event_txtDirecFocusLost
 
+    private void txtDistritoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDistritoFocusLost
+        // TODO add your handling code here:
+        String text = txtDistrito.getText().trim(); // Eliminamos los espacios del inicio y del final
+        txtDistrito.setText(text);
+    }//GEN-LAST:event_txtDistritoFocusLost
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnDatAcad;
@@ -730,6 +775,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -748,6 +794,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtCel;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JTextField txtDirec;
+    private javax.swing.JTextField txtDistrito;
     private javax.swing.JTextField txtDni;
     private javax.swing.JTextField txtFecNac;
     private javax.swing.JTextField txtId;

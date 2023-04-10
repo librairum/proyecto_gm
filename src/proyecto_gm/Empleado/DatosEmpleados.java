@@ -136,8 +136,8 @@ public class DatosEmpleados {
             while (rs.next()) {
                 Object[] row = new Object[]{rs.getString("Id"), rs.getString("Apellidos"),
                     rs.getString("Nombres"), rs.getString("FechaNacimiento"), rs.getString("Correo"),
-                    rs.getString("Dni"), rs.getString("Celular"), rs.getString("Direccion"),
-                    rs.getString("Area"), rs.getString("Cargo"), rs.getString("Tip. Empleado")};
+                    rs.getString("Dni"), rs.getString("Celular"), rs.getString("Distrito"),
+                    rs.getString("Direccion"), rs.getString("Area"), rs.getString("Cargo"), rs.getString("Tip. Empleado")};
                 modelo.addRow(row);
             }
         } catch (SQLException e) {
@@ -220,7 +220,7 @@ public class DatosEmpleados {
     public static void Insertar(Empleados empleado, JTable tabla) {
         CallableStatement cstmt = null;
         try {
-            cstmt = conn.prepareCall("{ CALL insertar_datos_empleado(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+            cstmt = conn.prepareCall("{ CALL insertar_datos_empleado(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
             cstmt.setString(1, empleado.getId());
             cstmt.setString(2, empleado.getApellidos());
             cstmt.setString(3, empleado.getNombres());
@@ -228,10 +228,11 @@ public class DatosEmpleados {
             cstmt.setString(5, empleado.getCorreo());
             cstmt.setString(6, empleado.getDni());
             cstmt.setString(7, empleado.getCelular());
-            cstmt.setString(8, empleado.getDireccion());
-            cstmt.setString(9, empleado.getIdArea());
-            cstmt.setString(10, empleado.getIdCargo());
-            cstmt.setString(11, empleado.getIdTipo());
+            cstmt.setString(8, empleado.getDistrito());
+            cstmt.setString(9, empleado.getDireccion());
+            cstmt.setString(10, empleado.getIdArea());
+            cstmt.setString(11, empleado.getIdCargo());
+            cstmt.setString(12, empleado.getIdTipo());
 
             cstmt.execute(); // se inserta los datos a la BD
             JOptionPane.showMessageDialog(null, "Empleado registrado satisfactoriamente.", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
@@ -301,7 +302,7 @@ public class DatosEmpleados {
     public static void Actualizar(Empleados empleado, JTable tabla) {
         CallableStatement cstmt = null;
         try {
-            cstmt = conn.prepareCall("{ CALL actualizar_datos_empleado(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+            cstmt = conn.prepareCall("{ CALL actualizar_datos_empleado(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
             cstmt.setString(1, empleado.getId());
             cstmt.setString(2, empleado.getApellidos());
             cstmt.setString(3, empleado.getNombres());
@@ -309,10 +310,11 @@ public class DatosEmpleados {
             cstmt.setString(5, empleado.getCorreo());
             cstmt.setString(6, empleado.getDni());
             cstmt.setString(7, empleado.getCelular());
-            cstmt.setString(8, empleado.getDireccion());
-            cstmt.setString(9, empleado.getIdArea());
-            cstmt.setString(10, empleado.getIdCargo());
-            cstmt.setString(11, empleado.getIdTipo());
+            cstmt.setString(8, empleado.getDistrito());
+            cstmt.setString(9, empleado.getDireccion());
+            cstmt.setString(10, empleado.getIdArea());
+            cstmt.setString(11, empleado.getIdCargo());
+            cstmt.setString(12, empleado.getIdTipo());
 
             cstmt.execute(); // se actualiza los datos en la BD
 
