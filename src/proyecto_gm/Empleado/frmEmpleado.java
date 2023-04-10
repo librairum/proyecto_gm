@@ -649,10 +649,18 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCorreoFocusLost
 
     private void txtFecNacKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFecNacKeyTyped
-        // TODO add your handling code here:
         char c = evt.getKeyChar();
-        if (!(Character.isDigit(c))) {
-            evt.consume(); // Si no es un número o un guión, se ignora el evento de tecla
+        if (c == evt.VK_BACK_SPACE) {
+            // permitir eliminar el carácter anterior incluso si es una diagonal
+            String fecha = txtFecNac.getText();
+            int length = fecha.length();
+            if (length > 0) {
+                // eliminar el último carácter de la cadena
+                fecha = fecha.substring(0, length - 1);
+                txtFecNac.setText(fecha);
+            }
+        } else if (!(Character.isDigit(c))) {
+            evt.consume(); // Si no es un número, se ignora el evento de tecla
         }
 
         String fecha = txtFecNac.getText();
