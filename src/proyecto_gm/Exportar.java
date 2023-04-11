@@ -59,6 +59,8 @@ public class Exportar {
                         } else {
                             celda.setCellValue(String.valueOf(t.getValueAt(f, c)));
                         }
+                        
+                        hoja.autoSizeColumn(c);
                     }
                 }
                 libro.write(archivo);
