@@ -9,6 +9,8 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,7 +65,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         DatosEmpleados.CargarCombos(cboArea, cboCargo);
         rbPorDefinir.setSelected(true);
         DatosEmpleados.Listar(modelo);
-        
+
         // Ocultar la columna DIRECCIÓN
         // Obtener la columna que se desea ocultar
         int columnIndex = 8; // índice de la columna a ocultar
@@ -78,7 +80,6 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         TableColumn column = columnModel.getColumn(columnIndex);
         columnModel.removeColumn(column);
 
-        
         // Quitar la edicion de las celdas
         tblEmpleados.setCellSelectionEnabled(false);
         // Habilitar la selecciono de filas
