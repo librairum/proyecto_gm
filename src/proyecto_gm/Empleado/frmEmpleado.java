@@ -462,7 +462,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                             .addGroup(escritorioLayout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtDirec, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtDirec, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(escritorioLayout.createSequentialGroup()
@@ -478,7 +478,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                                 .addGap(33, 33, 33)
                                 .addComponent(btnDatAcad)
                                 .addGap(50, 50, 50)))
-                        .addGap(90, 90, 90))))
+                        .addGap(89, 89, 89))))
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
