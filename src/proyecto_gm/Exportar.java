@@ -21,7 +21,7 @@ public class Exportar {
 
     public void exportarExcel(JTable t) throws IOException {
         JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivo de exce", "xls");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivo de excel", "xls");
         chooser.setFileFilter(filter);
         chooser.setDialogTitle("Guardar archivo");
         chooser.setAcceptAllFileFilterUsed(false);
@@ -59,6 +59,8 @@ public class Exportar {
                         } else {
                             celda.setCellValue(String.valueOf(t.getValueAt(f, c)));
                         }
+                        
+                        hoja.autoSizeColumn(c);
                     }
                 }
                 libro.write(archivo);
