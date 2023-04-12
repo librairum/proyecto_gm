@@ -17,7 +17,7 @@ public class Datosacad extends javax.swing.JInternalFrame {
     public Datosacad() {
         initComponents();
         setSize(675, 330);
-        setLocation(290, 140);
+        setLocation(210, 120);
         txtDni.setEnabled(false);
         txtNomCom.setEnabled(false);
         DatosAcademicos.CargarCombos(cboInstitucion, cboFacultad, cboCarrera);
