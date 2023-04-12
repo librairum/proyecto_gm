@@ -6,6 +6,7 @@ package proyecto_gm;
 
 //import proyecto_gm..Gastos;
 //import proyecto_gm..Registros;
+import javax.swing.JFrame;
 import proyecto_gm.Instituciones.frmInstituciones;
 import proyecto_gm.Tipo.frmTipo;
 import proyecto_gm.Facultades.frmFacultades;
@@ -34,6 +35,7 @@ public class menu extends javax.swing.JFrame {
         initComponents();
         setSize(1280, 700);
         this.setLocationRelativeTo(null);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
     /**
