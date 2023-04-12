@@ -128,6 +128,11 @@ public class frmCarreras extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(tblCarreras);
 
         btnDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
+        btnDeshacer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeshacerActionPerformed(evt);
+            }
+        });
         btnDeshacer.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 btnDeshacerKeyTyped(evt);
@@ -287,13 +292,7 @@ public class frmCarreras extends javax.swing.JInternalFrame {
     private void btnDeshacerKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnDeshacerKeyTyped
         // TODO add your handling code here:
         // Limpiar datos
-        DatosFacultades.limpiarCampos(escritorio);
-        // Bloquear campos
-        //DatosFacultades.bloquearCampos(jPanel1);
-
-        // Deshabilitar los botones Guardar y Deshacer
-        btnGuardar.setEnabled(true);
-        btnDeshacer.setEnabled(true);
+        
     }//GEN-LAST:event_btnDeshacerKeyTyped
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -305,6 +304,18 @@ public class frmCarreras extends javax.swing.JInternalFrame {
             
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
+        // TODO add your handling code here:
+        DatosFacultades.limpiarCampos(escritorio);
+        // Deshabilitar los botones Guardar y Deshacer
+        btnGuardar.setEnabled(false);
+        btnDeshacer.setEnabled(false);
+        btnEditar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+        btnAgregar.setEnabled(true);
+        DatosFacultades.bloquearCampos(escritorio);
+    }//GEN-LAST:event_btnDeshacerActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

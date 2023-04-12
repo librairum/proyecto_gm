@@ -332,6 +332,12 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
         DatosFacultades.limpiarCampos(jPanel2);
         //limpiarCampos(); bloquearCampos();
+        btnGuardar.setEnabled(false);
+        btnDeshacer.setEnabled(false);
+        btnEditar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+        btnAgregar.setEnabled(true);
+        DatosFacultades.bloquearCampos(jPanel2);
 
     }//GEN-LAST:event_btnDeshacerActionPerformed
 

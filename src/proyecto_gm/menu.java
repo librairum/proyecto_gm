@@ -9,7 +9,9 @@ import proyecto_gm.Empleado.frmEmpleado;
 import proyecto_gm.Cargo.frmCargo;
 
 import proyecto_gm.Area.frmArea;
+import proyecto_gm.Articulo.frmArticulo;
 import proyecto_gm.CabeceraComprobante.frmCabeceraComprobante;
+import proyecto_gm.Categoria.frmCategoria;
 import proyecto_gm.Comunicacion.frmListaComunicacion;
 import proyecto_gm.Modulo.frmModulo;
 import proyecto_gm.Proveedores.frmProveedores;
@@ -34,7 +36,7 @@ public class menu extends javax.swing.JFrame {
 
         escritorio = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        menuArticulo = new javax.swing.JMenu();
         menuArea = new javax.swing.JMenuItem();
         menuCargo = new javax.swing.JMenuItem();
         menuEmpleado = new javax.swing.JMenuItem();
@@ -47,6 +49,8 @@ public class menu extends javax.swing.JFrame {
         menuTipoDocumento = new javax.swing.JMenuItem();
         menuComunicaciones = new javax.swing.JMenuItem();
         menuCabeceraComprobante = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        MenuCategoria = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         menuRegistros = new javax.swing.JMenuItem();
         menuGastos = new javax.swing.JMenuItem();
@@ -66,10 +70,10 @@ public class menu extends javax.swing.JFrame {
             .addGap(0, 761, Short.MAX_VALUE)
         );
 
-        jMenu1.setText("Mantenimiento");
-        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+        menuArticulo.setText("Mantenimiento");
+        menuArticulo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu1ActionPerformed(evt);
+                menuArticuloActionPerformed(evt);
             }
         });
 
@@ -79,7 +83,7 @@ public class menu extends javax.swing.JFrame {
                 menuAreaActionPerformed(evt);
             }
         });
-        jMenu1.add(menuArea);
+        menuArticulo.add(menuArea);
 
         menuCargo.setText("Cargo");
         menuCargo.addActionListener(new java.awt.event.ActionListener() {
@@ -87,7 +91,7 @@ public class menu extends javax.swing.JFrame {
                 menuCargoActionPerformed(evt);
             }
         });
-        jMenu1.add(menuCargo);
+        menuArticulo.add(menuCargo);
 
         menuEmpleado.setText("Empleado");
         menuEmpleado.addActionListener(new java.awt.event.ActionListener() {
@@ -95,7 +99,7 @@ public class menu extends javax.swing.JFrame {
                 menuEmpleadoActionPerformed(evt);
             }
         });
-        jMenu1.add(menuEmpleado);
+        menuArticulo.add(menuEmpleado);
 
         menuTipo.setText("Tipo de empleado");
         menuTipo.addActionListener(new java.awt.event.ActionListener() {
@@ -103,7 +107,7 @@ public class menu extends javax.swing.JFrame {
                 menuTipoActionPerformed(evt);
             }
         });
-        jMenu1.add(menuTipo);
+        menuArticulo.add(menuTipo);
 
         jMenuItem1.setText("Instituciones");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
@@ -111,7 +115,7 @@ public class menu extends javax.swing.JFrame {
                 jMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        menuArticulo.add(jMenuItem1);
 
         jMenuItem2.setText("Facultades");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
@@ -119,7 +123,7 @@ public class menu extends javax.swing.JFrame {
                 jMenuItem2ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        menuArticulo.add(jMenuItem2);
 
         jMenuItem3.setText("Carreras");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
@@ -127,7 +131,7 @@ public class menu extends javax.swing.JFrame {
                 jMenuItem3ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem3);
+        menuArticulo.add(jMenuItem3);
 
         menuModulo.setText("Modulo");
         menuModulo.addActionListener(new java.awt.event.ActionListener() {
@@ -135,7 +139,7 @@ public class menu extends javax.swing.JFrame {
                 menuModuloActionPerformed(evt);
             }
         });
-        jMenu1.add(menuModulo);
+        menuArticulo.add(menuModulo);
 
         menuproveedores.setText("Proveedores");
         menuproveedores.addActionListener(new java.awt.event.ActionListener() {
@@ -143,7 +147,7 @@ public class menu extends javax.swing.JFrame {
                 menuproveedoresActionPerformed(evt);
             }
         });
-        jMenu1.add(menuproveedores);
+        menuArticulo.add(menuproveedores);
 
         menuTipoDocumento.setText("Tipo Documento");
         menuTipoDocumento.addActionListener(new java.awt.event.ActionListener() {
@@ -151,7 +155,7 @@ public class menu extends javax.swing.JFrame {
                 menuTipoDocumentoActionPerformed(evt);
             }
         });
-        jMenu1.add(menuTipoDocumento);
+        menuArticulo.add(menuTipoDocumento);
 
         menuComunicaciones.setText("Comunicaciones");
         menuComunicaciones.addActionListener(new java.awt.event.ActionListener() {
@@ -159,7 +163,7 @@ public class menu extends javax.swing.JFrame {
                 menuComunicacionesActionPerformed(evt);
             }
         });
-        jMenu1.add(menuComunicaciones);
+        menuArticulo.add(menuComunicaciones);
 
         menuCabeceraComprobante.setText("Cabecera de Comprobante");
         menuCabeceraComprobante.addActionListener(new java.awt.event.ActionListener() {
@@ -167,9 +171,25 @@ public class menu extends javax.swing.JFrame {
                 menuCabeceraComprobanteActionPerformed(evt);
             }
         });
-        jMenu1.add(menuCabeceraComprobante);
+        menuArticulo.add(menuCabeceraComprobante);
 
-        jMenuBar1.add(jMenu1);
+        jMenuItem4.setText("Articulo");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        menuArticulo.add(jMenuItem4);
+
+        MenuCategoria.setText("Categoria");
+        MenuCategoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuCategoriaActionPerformed(evt);
+            }
+        });
+        menuArticulo.add(MenuCategoria);
+
+        jMenuBar1.add(menuArticulo);
 
         jMenu2.setText("Proceso");
 
@@ -233,9 +253,9 @@ public class menu extends javax.swing.JFrame {
         verventana.show();
     }//GEN-LAST:event_menuCargoActionPerformed
 
-    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
+    private void menuArticuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuArticuloActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenu1ActionPerformed
+    }//GEN-LAST:event_menuArticuloActionPerformed
 
     private void menuAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAreaActionPerformed
         // TODO add your handling code here:
@@ -325,6 +345,21 @@ public class menu extends javax.swing.JFrame {
         verventana.show();
     }//GEN-LAST:event_menuCabeceraComprobanteActionPerformed
 
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        frmArticulo verventana = new frmArticulo();
+        escritorio.add(verventana);
+        verventana.show();
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void MenuCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuCategoriaActionPerformed
+        // TODO add your handling code here:
+        frmCategoria verventana = new frmCategoria();
+        escritorio.add(verventana);
+        verventana.show();
+        
+    }//GEN-LAST:event_MenuCategoriaActionPerformed
+
    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -359,15 +394,17 @@ public class menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem MenuCategoria;
     private javax.swing.JDesktopPane escritorio;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem menuArea;
+    private javax.swing.JMenu menuArticulo;
     private javax.swing.JMenuItem menuCabeceraComprobante;
     private javax.swing.JMenuItem menuCampos;
     private javax.swing.JMenuItem menuCargo;

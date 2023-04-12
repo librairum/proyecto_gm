@@ -291,8 +291,13 @@ public class frmFacultades extends javax.swing.JInternalFrame {
         //DatosFacultades.bloquearCampos(jPanel1);
 
         // Deshabilitar los botones Guardar y Deshacer
-        btnGuardar.setEnabled(true);
-        btnDeshacer.setEnabled(true);
+        btnGuardar.setEnabled(false);
+        btnDeshacer.setEnabled(false);
+        btnEditar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+        btnNuevo.setEnabled(true);
+        DatosFacultades.bloquearCampos(jPanel1);
+
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped

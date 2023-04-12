@@ -293,8 +293,13 @@ public class frmArticulo extends javax.swing.JInternalFrame {
 
         DatosCategoria.limpiarCampos(escritorio);
         
-        btnGuardar.setEnabled(true);
-        btnDeshacer.setEnabled(true);
+        
+        DatosArticulo.BloquearCampos(escritorio);
+        btnGuardar.setEnabled(false);
+        btnDeshacer.setEnabled(false);
+        btnEditar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+        btnAgregar.setEnabled(true);
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped

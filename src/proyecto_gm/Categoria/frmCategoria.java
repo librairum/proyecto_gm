@@ -291,8 +291,12 @@ public class frmCategoria extends javax.swing.JInternalFrame {
         //DatosFacultades.bloquearCampos(jPanel1);
 
         // Deshabilitar los botones Guardar y Deshacer
-        btnGuardar.setEnabled(true);
-        btnDeshacer.setEnabled(true);
+        btnGuardar.setEnabled(false);
+        btnDeshacer.setEnabled(false);
+        btnEditar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+        btnAgregar.setEnabled(true);
+        DatosFacultades.bloquearCampos(jPanel1);
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
 
