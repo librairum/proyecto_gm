@@ -5,7 +5,12 @@
 package proyecto_gm.Comunicacion;
 
 import java.awt.TrayIcon;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -39,6 +44,24 @@ public class Utilitario {
         }
         
     }
+    static String TraerFechaActual(){
+        String resultado = "";
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");  
+        LocalDateTime fechaActual = LocalDateTime.now();
+        
+        String sFecha = fechaActual.format(dtf);
+        resultado = sFecha;
+        return resultado;
+    }
+    static String TraerFechaInicial(){
+        String resultado = "";
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");  
+        LocalDateTime fechaActual = LocalDateTime.now();
+        LocalDateTime fechaInicio = LocalDateTime.of(2023, 3, 1,0,0);
+        resultado   = fechaInicio.format(dtf);
+        return resultado;
+    }
+    
 //    static void MostrarMensajeInformacion(String mensaje, String titulo){
 //    
 //    }
