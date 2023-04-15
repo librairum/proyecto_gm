@@ -428,7 +428,6 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         if (!(Character.isDigit(c) || c == '.')) {
             evt.consume(); // Si no es un número o un punto, se ignora el evento de tecla
         }
-
     }//GEN-LAST:event_txtPasajeKeyTyped
 
     private void txtMenuKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMenuKeyTyped

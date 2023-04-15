@@ -199,7 +199,6 @@ public class DatosViaticos {
             cboEmp.setSelectedItem(tabla.getModel().getValueAt(fila, 4).toString());
             cboPer.setSelectedItem(tabla.getModel().getValueAt(fila, 5).toString());
 
-            cajas[1].requestFocus();
         } else {
             JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }

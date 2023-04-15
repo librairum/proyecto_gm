@@ -9,6 +9,7 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,7 +24,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
 import proyecto_gm.Exportar;
 
 /**
@@ -59,24 +59,17 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         });
 
         DefaultTableModel modelo = (DefaultTableModel) tblEmpleados.getModel();
+        // Obtener la columna que se desea ocultar
+        TableColumn col = tblEmpleados.getColumnModel().getColumn(8);
+        // Obtener el modelo de columna de la tabla
+        TableColumnModel tcm = tblEmpleados.getColumnModel();
+        // Remover la columna del modelo de columna
+        tcm.removeColumn(col);
+
         DatosEmpleados.Habilitar(escritorio, opcionesTipo, false);
         DatosEmpleados.CargarCombos(cboArea, cboCargo);
         rbPorDefinir.setSelected(true);
         DatosEmpleados.Listar(modelo);
-
-        // Ocultar la columna DIRECCIÓN
-        // Obtener la columna que se desea ocultar
-        int columnIndex = 8; // índice de la columna a ocultar
-
-        // Obtener el modelo de tabla del JTable
-        TableModel model = tblEmpleados.getModel();
-
-        // Obtener el modelo de columnas del JTable
-        TableColumnModel columnModel = tblEmpleados.getColumnModel();
-
-        // Ocultar la columna
-        TableColumn column = columnModel.getColumn(columnIndex);
-        columnModel.removeColumn(column);
 
         // Quitar la edicion de las celdas
         tblEmpleados.setCellSelectionEnabled(false);
@@ -317,11 +310,11 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
             tblEmpleados.getColumnModel().getColumn(2).setResizable(false);
             tblEmpleados.getColumnModel().getColumn(2).setPreferredWidth(80);
             tblEmpleados.getColumnModel().getColumn(3).setResizable(false);
-            tblEmpleados.getColumnModel().getColumn(3).setPreferredWidth(40);
+            tblEmpleados.getColumnModel().getColumn(3).setPreferredWidth(50);
             tblEmpleados.getColumnModel().getColumn(4).setResizable(false);
             tblEmpleados.getColumnModel().getColumn(4).setPreferredWidth(175);
             tblEmpleados.getColumnModel().getColumn(5).setResizable(false);
-            tblEmpleados.getColumnModel().getColumn(5).setPreferredWidth(35);
+            tblEmpleados.getColumnModel().getColumn(5).setPreferredWidth(40);
             tblEmpleados.getColumnModel().getColumn(6).setResizable(false);
             tblEmpleados.getColumnModel().getColumn(6).setPreferredWidth(45);
             tblEmpleados.getColumnModel().getColumn(7).setResizable(false);
@@ -448,8 +441,8 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                             .addGroup(escritorioLayout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtDirec, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(139, 384, Short.MAX_VALUE))
+                                .addComponent(txtDirec, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(309, 434, Short.MAX_VALUE))
                     .addGroup(escritorioLayout.createSequentialGroup()
                         .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel9)
@@ -693,16 +686,15 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
 
     private void txtFecNacKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFecNacKeyTyped
         char c = evt.getKeyChar();
-        if (c == evt.VK_BACK_SPACE) {
+        if (c == KeyEvent.VK_BACK_SPACE) {
             // permitir eliminar el carácter anterior incluso si es una diagonal
             String fecha = txtFecNac.getText();
-            int length = fecha.length();
-            if (length > 0) {
+            if (!fecha.isEmpty()) {
                 // eliminar el último carácter de la cadena
-                fecha = fecha.substring(0, length - 1);
+                fecha = fecha.substring(0, fecha.length() - 1);
                 txtFecNac.setText(fecha);
             }
-        } else if (!(Character.isDigit(c))) {
+        } else if (!Character.isDigit(c)) {
             evt.consume(); // Si no es un número, se ignora el evento de tecla
         }
 
