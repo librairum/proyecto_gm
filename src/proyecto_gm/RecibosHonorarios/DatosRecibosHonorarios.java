@@ -151,18 +151,18 @@ public class DatosRecibosHonorarios {
             cajas[2].setText(tabla.getModel().getValueAt(fila, 2).toString());
             cajas[3].setText(tabla.getModel().getValueAt(fila, 3).toString());
             cajas[4].setText(tabla.getModel().getValueAt(fila, 4).toString());
-            cajas[5].setText(tabla.getModel().getValueAt(fila, 6).toString());
-            cajas[6].setText(tabla.getModel().getValueAt(fila, 8).toString()); // la columna "CONCEPTO" está en la posición 7
-            cajas[7].setText(tabla.getModel().getValueAt(fila, 9).toString()); // la columna "IMP. NETO" está en la posición 8
-            cajas[8].setText(tabla.getModel().getValueAt(fila, 10).toString()); // la columna "RETENCIÓN IR" está en la posición 9
-            cajas[9].setText(tabla.getModel().getValueAt(fila, 11).toString()); // la columna "IMP. TOTAL" está en la posición 10
-            cajas[10].setText(tabla.getModel().getValueAt(fila, 12).toString()); // la columna "FEC. EMISIÓN" está en la posición 11
+            cajas[5].setText(tabla.getModel().getValueAt(fila, 6).toString()); // la columna "DIRECCIÓN" está en la posición 6
+            cajas[6].setText(tabla.getModel().getValueAt(fila, 8).toString()); // la columna "CONCEPTO" está en la posición 8
+            cajas[7].setText(tabla.getModel().getValueAt(fila, 9).toString()); // la columna "IMP. NETO" está en la posición 9
+            cajas[8].setText(tabla.getModel().getValueAt(fila, 10).toString()); // la columna "RETENCIÓN IR" está en la posición 10
+            cajas[9].setText(tabla.getModel().getValueAt(fila, 11).toString()); // la columna "IMP. TOTAL" está en la posición 11
+            cajas[10].setText(tabla.getModel().getValueAt(fila, 12).toString()); // la columna "FEC. EMISIÓN" está en la posición 12
 
             cajas[0].setEnabled(false);
             cajas[1].requestFocus();
 
-            cboDistrito.setSelectedItem(tabla.getModel().getValueAt(fila, 5).toString()); // la columna "DISTRITO" está en la posición 6
-            cboPago.setSelectedItem(tabla.getModel().getValueAt(fila, 7).toString()); // la columna "F. PAGO" está en la posición 12
+            cboDistrito.setSelectedItem(tabla.getModel().getValueAt(fila, 5).toString()); // la columna "DISTRITO" está en la posición 5
+            cboPago.setSelectedItem(tabla.getModel().getValueAt(fila, 7).toString()); // la columna "F. PAGO" está en la posición 7
 
         } else {
             JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -254,29 +254,21 @@ public class DatosRecibosHonorarios {
     }
 
     // Validar campos
-    public static boolean Validar(JTextField[] cajas, JComboBox persona, JComboBox periodo) {
-        // Comprobamos cajas vacías
-        for (JTextField caja : cajas) {
-            if (caja.getText().equals("")) {
-                JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                return false;
-            }
-        }
-
-        // Comprobamos combos sin elección
-        if (persona.getSelectedItem() == null || periodo.getSelectedItem() == null) {
-            JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-
-        return true;
-    }
-
-    public static boolean Validar(JTextField[] campos) {
+    public static boolean Validar(JTextField[] campos, JComboBox[] combos) {
         for (JTextField campo : campos) {
             if (campo.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 campo.requestFocus();
+                return false;
+            }
+        }
+        
+        for (JComboBox combo : combos) {
+            if (combo.getSelectedItem() == null) {
+                JOptionPane.showMessageDialog(
+                        null, "Debe escoger un distrito y una forma de pago.", "Advertencia", JOptionPane.WARNING_MESSAGE
+                );
+                combo.requestFocus();
                 return false;
             }
         }

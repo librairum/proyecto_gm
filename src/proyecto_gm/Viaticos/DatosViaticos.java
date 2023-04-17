@@ -281,12 +281,24 @@ public class DatosViaticos {
     }
     
     // Validar campos
-    public static boolean Validar(JTextField[] campos) {
+    public static boolean Validar(JTextField[] campos, JComboBox[] combos) {
         // Comprobamos cajas vacías
         for (JTextField campo : campos) {
             if (campo.getText().equals("")) {
-                JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(
+                        null, "Debe rellenar todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE
+                );
                 campo.requestFocus();
+                return false;
+            }
+        }
+        
+        for (JComboBox combo : combos) {
+            if (combo.getSelectedItem() == null) {
+                JOptionPane.showMessageDialog(
+                        null, "Debe escoger un empleado y un periodo.", "Advertencia", JOptionPane.WARNING_MESSAGE
+                );
+                combo.requestFocus();
                 return false;
             }
         }

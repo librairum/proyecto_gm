@@ -523,24 +523,13 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // Seleccionamos todas las cajas
+        // Seleccionamos todas las cajas y combos
         JTextField[] campos = {txtNroRecibo, txtRuc, txtNom, txtApe, txtDirec, txtImpNeto, txtConcepto, txtFecEmi};
-
-        // Validamos que todos los campos estén llenos
-        if (!DatosRecibosHonorarios.Validar(campos)) {
-            return;
-        }
-
-        // Validamos que se haya seleccionado un distrito y una forma de pago
         JComboBox[] combos = {cboDistrito, cboPago};
-        for (JComboBox combo : combos) {
-            if (combo.getSelectedItem() == null) {
-                JOptionPane.showMessageDialog(
-                        null, "Debe escoger un distrito y una forma de pago.", "Advertencia", JOptionPane.WARNING_MESSAGE
-                );
-                combo.requestFocus();
-                return;
-            }
+        
+        // Validamos que todos los campos estén llenos
+        if (!DatosRecibosHonorarios.Validar(campos, combos)) {
+            return; // se corta la ejecucion del boton
         }
 
         // Obtenemos el distrito y la forma de pago

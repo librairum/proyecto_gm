@@ -342,24 +342,13 @@ public class frmViaticos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // Seleccionamos todas las cajas
+        // Seleccionamos todas las cajas y combos
         JTextField[] campos = {txtDescripcion, txtPasaje, txtMenu};
+        JComboBox[] combos = {cboEmpleado, cboPeriodo};
         
         // Validamos que todos los campos estén llenos
-        if (!DatosViaticos.Validar(campos)) {
-            return;
-        }
-
-        // Validamos que se haya seleccionado un empleado y un periodo
-        JComboBox[] combos = {cboEmpleado, cboPeriodo};
-        for (JComboBox combo : combos) {
-            if (combo.getSelectedItem() == null) {
-                JOptionPane.showMessageDialog(
-                        null, "Debe escoger un empleado y un periodo.", "Advertencia", JOptionPane.WARNING_MESSAGE
-                );
-                combo.requestFocus();
-                return;
-            }
+        if (!DatosViaticos.Validar(campos, combos)) {
+            return; // se corta la ejecucion del metodo
         }
 
         String periodo = cboPeriodo.getSelectedItem().toString();

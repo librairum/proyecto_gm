@@ -270,7 +270,8 @@ public class DatosEmpleados {
             for (int i = 0; i < camposTexto.length; i++) {
                 Object valor = tabla.getModel().getValueAt(fila, i);
                 String dato = (valor != null) ? valor.toString() : "";
-                // Si "valor" no es nulo, se convierte en string. Caso contrario, será una cadena vacía
+                // Si "valor" no es nulo, se almacenara en "dato" como un string
+                // Si no, se almacenara una cadena vacia
                 camposTexto[i].setText(dato);
             }
 
