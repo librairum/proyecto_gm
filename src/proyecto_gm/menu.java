@@ -14,9 +14,11 @@ import proyecto_gm.CabeceraComprobante.frmCabeceraComprobante;
 import proyecto_gm.Categoria.frmCategoria;
 import proyecto_gm.Comunicacion.frmListaComunicacion;
 import proyecto_gm.Modulo.frmModulo;
+import proyecto_gm.Periodos.frmPeriodos;
 import proyecto_gm.Proveedores.frmProveedores;
 import proyecto_gm.RecibosHonorarios.frmRecibosHonorarios;
 import proyecto_gm.TipoDocumento.frmTipoDocumento;
+import proyecto_gm.Viaticos.frmViaticos;
 
 
 
@@ -53,6 +55,8 @@ public class menu extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         MenuCategoria = new javax.swing.JMenuItem();
         menuRecibosHonorarios = new javax.swing.JMenuItem();
+        menuViaticos = new javax.swing.JMenuItem();
+        menuPeriodos = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         menuRegistros = new javax.swing.JMenuItem();
         menuGastos = new javax.swing.JMenuItem();
@@ -198,6 +202,22 @@ public class menu extends javax.swing.JFrame {
             }
         });
         menuArticulo.add(menuRecibosHonorarios);
+
+        menuViaticos.setText("Viáticos");
+        menuViaticos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuViaticosActionPerformed(evt);
+            }
+        });
+        menuArticulo.add(menuViaticos);
+
+        menuPeriodos.setText("Periodos");
+        menuPeriodos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuPeriodosActionPerformed(evt);
+            }
+        });
+        menuArticulo.add(menuPeriodos);
 
         jMenuBar1.add(menuArticulo);
 
@@ -376,6 +396,20 @@ public class menu extends javax.swing.JFrame {
         verventana.show();
     }//GEN-LAST:event_menuRecibosHonorariosActionPerformed
 
+    private void menuViaticosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuViaticosActionPerformed
+        // TODO add your handling code here:
+        frmViaticos verventana = new frmViaticos();
+        escritorio.add(verventana);
+        verventana.show();
+    }//GEN-LAST:event_menuViaticosActionPerformed
+
+    private void menuPeriodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPeriodosActionPerformed
+        // TODO add your handling code here:
+        frmPeriodos verventana = new frmPeriodos();
+        escritorio.add(verventana);
+        verventana.show();
+    }//GEN-LAST:event_menuPeriodosActionPerformed
+
    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -428,10 +462,12 @@ public class menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuEmpleado;
     private javax.swing.JMenuItem menuGastos;
     private javax.swing.JMenuItem menuModulo;
+    private javax.swing.JMenuItem menuPeriodos;
     private javax.swing.JMenuItem menuRecibosHonorarios;
     private javax.swing.JMenuItem menuRegistros;
     private javax.swing.JMenuItem menuTipo;
     private javax.swing.JMenuItem menuTipoDocumento;
+    private javax.swing.JMenuItem menuViaticos;
     private javax.swing.JMenuItem menuproveedores;
     // End of variables declaration//GEN-END:variables
 }

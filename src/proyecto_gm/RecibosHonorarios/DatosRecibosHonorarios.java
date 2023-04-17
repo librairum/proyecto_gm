@@ -165,7 +165,7 @@ public class DatosRecibosHonorarios {
             cboPago.setSelectedItem(tabla.getModel().getValueAt(fila, tabla.getColumnModel().getColumnIndex("F. PAGO")).toString());
 
         } else {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -237,7 +237,7 @@ public class DatosRecibosHonorarios {
                     tabla.clearSelection();
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
 
         } catch (SQLException e) {
@@ -269,6 +269,25 @@ public class DatosRecibosHonorarios {
             return false;
         }
 
+        return true;
+    }
+
+    public static boolean Validar(JTextField[] campos) {
+        for (JTextField campo : campos) {
+            if (campo.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                campo.requestFocus();
+                return false;
+            }
+        }
+        
+        if (campos[1].getText().length() != 11) {
+            JOptionPane.showMessageDialog(null, "El RUC debe contener 11 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            campos[1].requestFocus();
+            return false;
+        }
+        
+        // Si se llega aquí, todos los campos son válidos
         return true;
     }
 

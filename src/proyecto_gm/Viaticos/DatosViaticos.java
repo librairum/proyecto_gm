@@ -200,7 +200,7 @@ public class DatosViaticos {
             cboPer.setSelectedItem(tabla.getModel().getValueAt(fila, 5).toString());
 
         } else {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -264,7 +264,7 @@ public class DatosViaticos {
                     tabla.clearSelection();
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
 
         } catch (SQLException e) {
@@ -281,19 +281,14 @@ public class DatosViaticos {
     }
     
     // Validar campos
-    public static boolean Validar(JTextField[] cajas, JComboBox persona, JComboBox periodo) {
+    public static boolean Validar(JTextField[] campos) {
         // Comprobamos cajas vacías
-        for (JTextField caja : cajas) {
-            if (caja.getText().equals("")) {
+        for (JTextField campo : campos) {
+            if (campo.getText().equals("")) {
                 JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                campo.requestFocus();
                 return false;
             }
-        }
-        
-        // Comprobamos combos sin elección
-        if (persona.getSelectedItem() == null || periodo.getSelectedItem() == null) {
-            JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return false;
         }
         
         return true;

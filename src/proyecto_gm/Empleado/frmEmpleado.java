@@ -174,14 +174,16 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
         btnCancelar.setName("cancelar"); // NOI18N
+        btnCancelar.setNextFocusableComponent(txtApe);
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarActionPerformed(evt);
             }
         });
 
-        txtId.setNextFocusableComponent(txtApe);
+        txtId.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
+        txtApe.setFocusCycleRoot(true);
         txtApe.setNextFocusableComponent(txtNom);
         txtApe.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -540,11 +542,11 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorio, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(escritorio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorio, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(escritorio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -568,13 +570,13 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         // Lo habilitaremos al presionar "Guardar".
 
         // Agrupar las cajas de texto
-        JTextField[] camposTexto = {txtId, txtApe, txtNom, txtFecNac, txtCorreo,
+        JTextField[] campos = {txtId, txtApe, txtNom, txtFecNac, txtCorreo,
             txtDni, txtCel, txtDistrito, txtDirec};
 
         // Agrupar los combo boxes y cargar el radio button correspondiente
         // que esta en el button group
         JComboBox[] combos = {cboArea, cboCargo};
-        DatosEmpleados.Editar(escritorio, tblEmpleados, camposTexto, combos, opcionesTipo);
+        DatosEmpleados.Editar(escritorio, tblEmpleados, campos, combos, opcionesTipo);
 
         esNuevo = false; // Indicamos que no sera un nuevo registro
     }//GEN-LAST:event_btnEditarActionPerformed
@@ -585,11 +587,16 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // Obtenemos los ids del area, cargo y tipo seleccionado
         // Capturar las opciones seleccionadas en los combo boxes
         String[] opciones = DatosEmpleados.CapturarOpciones(cboArea, cboCargo, opcionesTipo);
 
-        // Creamos un objeto tipo Empleado
+        // Validar los campos del formulario
+        JTextField[] campos = {txtApe, txtNom, txtFecNac, txtCorreo, txtDni, txtCel, txtDistrito, txtDirec};
+        if (!DatosEmpleados.Validar(campos)) {
+            return;
+        }
+
+        // Crear un objeto Empleados y asignar los valores
         Empleados empleado = new Empleados();
         empleado.setId(txtId.getText());
         empleado.setApellidos(txtApe.getText());
@@ -604,27 +611,18 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         empleado.setIdCargo(opciones[1]);
         empleado.setIdTipo(opciones[2]);
 
-        // Seleccionamos las cajas para validar
-        JTextField[] porValidar = {txtId, txtApe, txtNom, txtFecNac, txtCorreo, txtDni, txtCel, txtDistrito, txtDirec};
-
-        // Preguntamos si haremos un INSERT o un UPDATE
+        // Insertar o actualizar según sea el caso
         if (esNuevo) {
-            if (DatosEmpleados.Validar(porValidar)) {
-                DatosEmpleados.Insertar(empleado, tblEmpleados);
-                DatosEmpleados.Limpiar(escritorio, rbPorDefinir);
-                DatosEmpleados.Habilitar(escritorio, opcionesTipo, false);
-                tblEmpleados.clearSelection();
-                tblEmpleados.setRowSelectionAllowed(true);
-            }
+            DatosEmpleados.Insertar(empleado, tblEmpleados);
         } else {
-            if (DatosEmpleados.Validar(porValidar)) {
-                DatosEmpleados.Actualizar(empleado, tblEmpleados);
-                DatosEmpleados.Limpiar(escritorio, rbPorDefinir);
-                DatosEmpleados.Habilitar(escritorio, opcionesTipo, false);
-                tblEmpleados.clearSelection();
-                tblEmpleados.setRowSelectionAllowed(true);
-            }
+            DatosEmpleados.Actualizar(empleado, tblEmpleados);
         }
+
+        // Limpiar y deshabilitar el formulario
+        DatosEmpleados.Limpiar(escritorio, rbPorDefinir);
+        DatosEmpleados.Habilitar(escritorio, opcionesTipo, false);
+        tblEmpleados.clearSelection();
+        tblEmpleados.setRowSelectionAllowed(true);
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
