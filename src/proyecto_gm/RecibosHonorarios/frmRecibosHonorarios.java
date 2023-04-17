@@ -8,9 +8,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -18,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import proyecto_gm.Exportar;
 
 /**
  *
@@ -112,6 +115,7 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         txtFecEmi = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         txtNroRecibo = new javax.swing.JTextField();
+        btnExportar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -345,6 +349,14 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         txtNroRecibo.setFocusCycleRoot(true);
         txtNroRecibo.setNextFocusableComponent(txtRuc);
 
+        btnExportar.setText("Exportar a Excel");
+        btnExportar.setName("exportar"); // NOI18N
+        btnExportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
         escritorio.setLayout(escritorioLayout);
         escritorioLayout.setHorizontalGroup(
@@ -372,8 +384,11 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
                     .addComponent(jLabel10)
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioLayout.createSequentialGroup()
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, escritorioLayout.createSequentialGroup()
+                        .addComponent(txtImpNeto, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(escritorioLayout.createSequentialGroup()
                         .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cboDistrito, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtDirec, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -395,10 +410,10 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
                                     .addComponent(txtFecEmi, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(98, 98, 98))
                     .addGroup(escritorioLayout.createSequentialGroup()
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtImpNeto, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtConcepto, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(txtConcepto, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnExportar)
+                        .addGap(79, 79, 79))))
             .addGroup(escritorioLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnNuevo)
@@ -469,7 +484,8 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
                     .addComponent(jLabel7)
                     .addComponent(txtApe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(txtConcepto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtConcepto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnExportar))
                 .addGap(30, 30, 30)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(10, Short.MAX_VALUE))
@@ -526,7 +542,7 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         // Seleccionamos todas las cajas y combos
         JTextField[] campos = {txtNroRecibo, txtRuc, txtNom, txtApe, txtDirec, txtImpNeto, txtConcepto, txtFecEmi};
         JComboBox[] combos = {cboDistrito, cboPago};
-        
+
         // Validamos que todos los campos estén llenos
         if (!DatosRecibosHonorarios.Validar(campos, combos)) {
             return; // se corta la ejecucion del boton
@@ -651,11 +667,21 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txtImpNetoKeyTyped
 
+    private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
+        try {
+            Exportar obj = new Exportar();
+            obj.exportarExcel(tblHonorarios);
+        } catch (IOException ex) {
+            Logger.getLogger(frmRecibosHonorarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnExportarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btnCancelar;
     public static javax.swing.JButton btnEditar;
     public static javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnExportar;
     public static javax.swing.JButton btnGuardar;
     public static javax.swing.JButton btnNuevo;
     private javax.swing.JComboBox<String> cboDistrito;
