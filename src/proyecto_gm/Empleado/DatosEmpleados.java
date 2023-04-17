@@ -268,16 +268,10 @@ public class DatosEmpleados {
 
             // Llenar los campos de texto con los valores de la fila
             for (int i = 0; i < camposTexto.length; i++) {
-                int indiceVista = tabla.convertColumnIndexToView(i);
-                if (indiceVista != -1) { // si la columna no está oculta
-                    Object valor = tabla.getValueAt(fila, indiceVista);
-                    String dato = (valor != null) ? valor.toString() : "";
-                    camposTexto[i].setText(dato);
-                } else { // mostrar el valor de la columna oculta con índice original 8
-                    Object valor = tabla.getModel().getValueAt(fila, 8);
-                    String dato = (valor != null) ? valor.toString() : "";
-                    camposTexto[i].setText(dato);
-                }
+                Object valor = tabla.getModel().getValueAt(fila, i);
+                String dato = (valor != null) ? valor.toString() : "";
+                // Si "valor" no es nulo, se convierte en string. Caso contrario, será una cadena vacía
+                camposTexto[i].setText(dato);
             }
 
             camposTexto[0].setEnabled(false);
@@ -422,7 +416,7 @@ public class DatosEmpleados {
             campos[2].requestFocus();
             return false;
         }
-        
+
         // Si se llega aquí, todos los campos son válidos
         return true;
     }
