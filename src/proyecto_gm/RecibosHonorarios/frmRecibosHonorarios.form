@@ -51,50 +51,48 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="txtId" alignment="0" min="-2" pref="72" max="-2" attributes="0"/>
+                      <Component id="txtRuc" alignment="0" min="-2" pref="85" max="-2" attributes="0"/>
+                      <Component id="txtNom" alignment="0" min="-2" pref="137" max="-2" attributes="0"/>
+                      <Component id="txtApe" alignment="0" min="-2" pref="145" max="-2" attributes="0"/>
+                      <Component id="txtNroRecibo" min="-2" pref="72" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="90" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel10" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="cboDistrito" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
+                              <Component id="txtDirec" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                              <Component id="cboPago" alignment="0" min="-2" pref="110" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace pref="173" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txtId" alignment="0" min="-2" pref="72" max="-2" attributes="0"/>
-                              <Component id="txtRuc" alignment="0" min="-2" pref="85" max="-2" attributes="0"/>
-                              <Component id="txtNom" alignment="0" min="-2" pref="137" max="-2" attributes="0"/>
-                              <Component id="txtApe" alignment="0" min="-2" pref="145" max="-2" attributes="0"/>
-                              <Component id="txtNroRecibo" min="-2" pref="72" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel10" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txtConcepto" pref="396" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="cboDistrito" min="-2" pref="160" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
+                                  <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                                   <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="txtIR" min="-2" pref="72" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="txtDirec" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
-                                      <Component id="cboPago" alignment="0" min="-2" pref="110" max="-2" attributes="0"/>
-                                      <Component id="txtImpNeto" min="-2" pref="72" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="jLabel12" alignment="1" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel13" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -106,20 +104,28 @@
                                   </Group>
                               </Group>
                           </Group>
+                          <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnNuevo" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnEditar" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnEliminar" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnGuardar" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnCancelar" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="txtImpNeto" min="-2" pref="72" max="-2" attributes="0"/>
+                              <Component id="txtConcepto" min="-2" pref="300" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
+              </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="btnNuevo" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="btnEditar" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="btnEliminar" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="btnGuardar" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="btnCancelar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
               </Group>
               <Group type="102" alignment="0" attributes="0">
@@ -141,34 +147,44 @@
                       <Component id="btnCancelar" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtId" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cboDistrito" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtIR" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtDirec" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtImpTotal" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtNroRecibo" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                          <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtFecEmi" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtId" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="cboDistrito" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtDirec" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtNroRecibo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtRuc" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="cboPago" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtRuc" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cboPago" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtIR" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtImpTotal" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtFecEmi" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -371,7 +387,7 @@
         <Component class="javax.swing.JTextField" name="txtConcepto">
           <Properties>
             <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-              <ComponentRef name="btnGuardar"/>
+              <ComponentRef name="txtFecEmi"/>
             </Property>
           </Properties>
         </Component>
@@ -391,7 +407,7 @@
         <Component class="javax.swing.JComboBox" name="cboDistrito">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] {&#xa;    &quot;Ancon&quot;,&#xa;    &quot;Ate&quot;,&#xa;    &quot;Barranco&quot;,&#xa;    &quot;Bre&#xf1;a&quot;,&#xa;    &quot;Carabayllo&quot;,&#xa;    &quot;Chaclacayo&quot;,&#xa;    &quot;Chorrillos&quot;,&#xa;    &quot;Cieneguilla&quot;,&#xa;    &quot;Comas&quot;,&#xa;    &quot;El Agustino&quot;,&#xa;    &quot;Independencia&quot;,&#xa;    &quot;Jesus Maria&quot;,&#xa;    &quot;La Molina&quot;,&#xa;    &quot;La Victoria&quot;,&#xa;    &quot;Lima&quot;,&#xa;    &quot;Lince&quot;,&#xa;    &quot;Los Olivos&quot;,&#xa;    &quot;Lurigancho&quot;,&#xa;    &quot;Lurin&quot;,&#xa;    &quot;Magdalena del Mar&quot;,&#xa;    &quot;Miraflores&quot;,&#xa;    &quot;Pachacamac&quot;,&#xa;    &quot;Pucusana&quot;,&#xa;    &quot;Pueblo Libre&quot;,&#xa;    &quot;Puente Piedra&quot;,&#xa;    &quot;Punta Hermosa&quot;,&#xa;    &quot;Punta Negra&quot;,&#xa;    &quot;Rimac&quot;,&#xa;    &quot;San Bartolo&quot;,&#xa;    &quot;San Borja&quot;,&#xa;    &quot;San Isidro&quot;,&#xa;    &quot;San Juan de Lurigancho&quot;,&#xa;    &quot;San Juan de Miraflores&quot;,&#xa;    &quot;San Luis&quot;,&#xa;    &quot;San Martin de Porres&quot;,&#xa;    &quot;San Miguel&quot;,&#xa;    &quot;Santa Anita&quot;,&#xa;    &quot;Santa Maria del Mar&quot;,&#xa;    &quot;Santa Rosa&quot;,&#xa;    &quot;Santiago de Surco&quot;,&#xa;    &quot;Surquillo&quot;,&#xa;    &quot;Villa El Salvador&quot;,&#xa;    &quot;Villa Maria del Triunfo&quot;&#xa;})" type="code"/>
+              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] {&#xa;    &quot;Anc&#xf3;n&quot;,&#xa;    &quot;Ate&quot;,&#xa;    &quot;Barranco&quot;,&#xa;    &quot;Bre&#xf1;a&quot;,&#xa;    &quot;Carabayllo&quot;,&#xa;    &quot;Chaclacayo&quot;,&#xa;    &quot;Chorrillos&quot;,&#xa;    &quot;Cieneguilla&quot;,&#xa;    &quot;Comas&quot;,&#xa;    &quot;El Agustino&quot;,&#xa;    &quot;Independencia&quot;,&#xa;    &quot;Jes&#xfa;s Mar&#xed;a&quot;,&#xa;    &quot;La Molina&quot;,&#xa;    &quot;La Victoria&quot;,&#xa;    &quot;Lima&quot;,&#xa;    &quot;Lince&quot;,&#xa;    &quot;Los Olivos&quot;,&#xa;    &quot;Lurigancho&quot;,&#xa;    &quot;Lurin&quot;,&#xa;    &quot;Magdalena del Mar&quot;,&#xa;    &quot;Miraflores&quot;,&#xa;    &quot;Pachacamac&quot;,&#xa;    &quot;Pucusana&quot;,&#xa;    &quot;Pueblo Libre&quot;,&#xa;    &quot;Puente Piedra&quot;,&#xa;    &quot;Punta Hermosa&quot;,&#xa;    &quot;Punta Negra&quot;,&#xa;    &quot;R&#xed;mac&quot;,&#xa;    &quot;San Bartolo&quot;,&#xa;    &quot;San Borja&quot;,&#xa;    &quot;San Isidro&quot;,&#xa;    &quot;San Juan de Lurigancho&quot;,&#xa;    &quot;San Juan de Miraflores&quot;,&#xa;    &quot;San Luis&quot;,&#xa;    &quot;San Mart&#xed;n de Porres&quot;,&#xa;    &quot;San Miguel&quot;,&#xa;    &quot;Santa Anita&quot;,&#xa;    &quot;Santa Mar&#xed;a del Mar&quot;,&#xa;    &quot;Santa Rosa&quot;,&#xa;    &quot;Santiago de Surco&quot;,&#xa;    &quot;Surquillo&quot;,&#xa;    &quot;Villa El Salvador&quot;,&#xa;    &quot;Villa Mar&#xed;a del Triunfo&quot;&#xa;})" type="code"/>
             </Property>
             <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
               <ComponentRef name="txtDirec"/>
@@ -404,7 +420,7 @@
         <Component class="javax.swing.JTextField" name="txtImpNeto">
           <Properties>
             <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-              <ComponentRef name="txtFecEmi"/>
+              <ComponentRef name="txtConcepto"/>
             </Property>
           </Properties>
           <Events>
@@ -463,52 +479,52 @@
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="90" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="125" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="160" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="170" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="0" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="105" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="200" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="60" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="60" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="60" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
@@ -539,7 +555,7 @@
         <Component class="javax.swing.JTextField" name="txtFecEmi">
           <Properties>
             <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-              <ComponentRef name="txtConcepto"/>
+              <ComponentRef name="btnGuardar"/>
             </Property>
           </Properties>
           <Events>

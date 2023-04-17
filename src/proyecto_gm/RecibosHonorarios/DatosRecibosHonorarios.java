@@ -146,23 +146,23 @@ public class DatosRecibosHonorarios {
             // Deshabilitamos la seleccion de filas de la tabla
             tabla.setRowSelectionAllowed(false);
 
-            cajas[0].setText(tabla.getModel().getValueAt(fila, tabla.getColumnModel().getColumnIndex("ID")).toString());
-            cajas[1].setText(tabla.getModel().getValueAt(fila, tabla.getColumnModel().getColumnIndex("NRO. RECIBO")).toString());
-            cajas[2].setText(tabla.getModel().getValueAt(fila, tabla.getColumnModel().getColumnIndex("RUC")).toString());
-            cajas[3].setText(tabla.getModel().getValueAt(fila, tabla.getColumnModel().getColumnIndex("NOMBRES")).toString());
-            cajas[4].setText(tabla.getModel().getValueAt(fila, tabla.getColumnModel().getColumnIndex("APELLIDOS")).toString());
-            cajas[5].setText(tabla.getModel().getValueAt(fila, tabla.getColumnModel().getColumnIndex("DIRECCIÓN")).toString());
-            cajas[6].setText(tabla.getModel().getValueAt(fila, tabla.getColumnModel().getColumnIndex("CONCEPTO")).toString());
-            cajas[7].setText(tabla.getModel().getValueAt(fila, tabla.getColumnModel().getColumnIndex("IMP. NETO")).toString());
-            cajas[8].setText(tabla.getModel().getValueAt(fila, tabla.getColumnModel().getColumnIndex("RETENCIÓN IR")).toString());
-            cajas[9].setText(tabla.getModel().getValueAt(fila, tabla.getColumnModel().getColumnIndex("IMP. TOTAL")).toString());
-            cajas[10].setText(tabla.getModel().getValueAt(fila, tabla.getColumnModel().getColumnIndex("FEC. EMISIÓN")).toString());
+            cajas[0].setText(tabla.getModel().getValueAt(fila, 0).toString());
+            cajas[1].setText(tabla.getModel().getValueAt(fila, 1).toString());
+            cajas[2].setText(tabla.getModel().getValueAt(fila, 2).toString());
+            cajas[3].setText(tabla.getModel().getValueAt(fila, 3).toString());
+            cajas[4].setText(tabla.getModel().getValueAt(fila, 4).toString());
+            cajas[5].setText(tabla.getModel().getValueAt(fila, 6).toString());
+            cajas[6].setText(tabla.getModel().getValueAt(fila, 8).toString()); // la columna "CONCEPTO" está en la posición 7
+            cajas[7].setText(tabla.getModel().getValueAt(fila, 9).toString()); // la columna "IMP. NETO" está en la posición 8
+            cajas[8].setText(tabla.getModel().getValueAt(fila, 10).toString()); // la columna "RETENCIÓN IR" está en la posición 9
+            cajas[9].setText(tabla.getModel().getValueAt(fila, 11).toString()); // la columna "IMP. TOTAL" está en la posición 10
+            cajas[10].setText(tabla.getModel().getValueAt(fila, 12).toString()); // la columna "FEC. EMISIÓN" está en la posición 11
 
             cajas[0].setEnabled(false);
             cajas[1].requestFocus();
 
-            cboDistrito.setSelectedItem(tabla.getModel().getValueAt(fila, tabla.getColumnModel().getColumnIndex("DISTRITO")).toString());
-            cboPago.setSelectedItem(tabla.getModel().getValueAt(fila, tabla.getColumnModel().getColumnIndex("F. PAGO")).toString());
+            cboDistrito.setSelectedItem(tabla.getModel().getValueAt(fila, 5).toString()); // la columna "DISTRITO" está en la posición 6
+            cboPago.setSelectedItem(tabla.getModel().getValueAt(fila, 7).toString()); // la columna "F. PAGO" está en la posición 12
 
         } else {
             JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -280,13 +280,13 @@ public class DatosRecibosHonorarios {
                 return false;
             }
         }
-        
+
         if (campos[1].getText().length() != 11) {
             JOptionPane.showMessageDialog(null, "El RUC debe contener 11 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             campos[1].requestFocus();
             return false;
         }
-        
+
         // Si se llega aquí, todos los campos son válidos
         return true;
     }
