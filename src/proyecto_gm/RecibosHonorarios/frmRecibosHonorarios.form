@@ -330,6 +330,7 @@
             </Property>
           </Properties>
           <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtRucFocusLost"/>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtRucKeyTyped"/>
           </Events>
         </Component>
@@ -385,8 +386,14 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtIR">
           <Properties>
-            <Property name="editable" type="boolean" value="false"/>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="txtConcepto"/>
+            </Property>
           </Properties>
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtIRFocusLost"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtIRKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtConcepto">
           <Properties>
@@ -398,7 +405,7 @@
         <Component class="javax.swing.JComboBox" name="cboPago">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] { &quot;Transferencia&quot;, &quot;Efectivo&quot; })" type="code"/>
+              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] { &quot;Transferencia&quot;, &quot;Al contado&quot; })" type="code"/>
             </Property>
             <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
               <ComponentRef name="txtImpNeto"/>
@@ -424,7 +431,7 @@
         <Component class="javax.swing.JTextField" name="txtImpNeto">
           <Properties>
             <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-              <ComponentRef name="txtConcepto"/>
+              <ComponentRef name="txtIR"/>
             </Property>
           </Properties>
           <Events>
@@ -579,6 +586,9 @@
               <ComponentRef name="txtRuc"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNroReciboKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnExportar">
           <Properties>

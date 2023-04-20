@@ -115,6 +115,7 @@ public class DatosRecibosHonorarios {
             cstmt.setString(13, recibo.getFecha());
 
             cstmt.execute(); // se inserta los datos a la BD
+            JOptionPane.showMessageDialog(null, "Recibo registrado satisfactoriamente.", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
 
             // Actualizamos la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();

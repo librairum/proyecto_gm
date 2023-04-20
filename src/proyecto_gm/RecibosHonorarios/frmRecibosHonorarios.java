@@ -182,6 +182,11 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         jLabel7.setText("Apellidos:");
 
         txtRuc.setNextFocusableComponent(txtNom);
+        txtRuc.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtRucFocusLost(evt);
+            }
+        });
         txtRuc.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtRucKeyTyped(evt);
@@ -217,11 +222,21 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
             }
         });
 
-        txtIR.setEditable(false);
+        txtIR.setNextFocusableComponent(txtConcepto);
+        txtIR.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtIRFocusLost(evt);
+            }
+        });
+        txtIR.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtIRKeyTyped(evt);
+            }
+        });
 
         txtConcepto.setNextFocusableComponent(txtFecEmi);
 
-        cboPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Transferencia", "Efectivo" }));
+        cboPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Transferencia", "Al contado" }));
         cboPago.setNextFocusableComponent(txtImpNeto);
 
         cboDistrito.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {
@@ -271,7 +286,7 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         }));
         cboDistrito.setNextFocusableComponent(txtDirec);
 
-        txtImpNeto.setNextFocusableComponent(txtConcepto);
+        txtImpNeto.setNextFocusableComponent(txtIR);
         txtImpNeto.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtImpNetoFocusLost(evt);
@@ -348,6 +363,11 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         txtNroRecibo.setActionCommand("<Not Set>");
         txtNroRecibo.setFocusCycleRoot(true);
         txtNroRecibo.setNextFocusableComponent(txtRuc);
+        txtNroRecibo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNroReciboKeyTyped(evt);
+            }
+        });
 
         btnExportar.setText("Exportar a Excel");
         btnExportar.setName("exportar"); // NOI18N
@@ -521,6 +541,7 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         String codigo = DatosRecibosHonorarios.GenerarCodigo("reciboshonorarios", "RE", 7);
         txtId.setText(codigo);
         txtId.setEnabled(false);
+        txtNroRecibo.setText("E001-");
         txtNroRecibo.requestFocus();
         esNuevo = true; // Indicamos que sera un nuevo registro
     }//GEN-LAST:event_btnNuevoActionPerformed
@@ -590,15 +611,15 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void txtImpNetoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtImpNetoFocusLost
-        String impuestoNeto = txtImpNeto.getText();
-        if (!impuestoNeto.isEmpty()) {
-            float impNeto = Float.parseFloat(impuestoNeto);
-            float ir = Math.round(impNeto * 0.08f * 100.0) / 100.0f;
-            float impTotal = Math.round((impNeto - ir) * 100.0) / 100.0f;
-
-            txtIR.setText(String.valueOf(ir));
-            txtImpTotal.setText(String.valueOf(impTotal));
+        String impBruto = txtImpNeto.getText();
+        if (impBruto.isEmpty()) {
+            impBruto = "0.00";
+            txtImpNeto.setText(impBruto); // Agrega esta línea para establecer el valor en la caja de texto
         }
+        float rentaBruta = Float.parseFloat(impBruto);
+        float ir = Math.round(rentaBruta * 0.08f * 100.0f) / 100.0f;
+        txtIR.setText(String.valueOf(ir));
+        txtIR.selectAll(); // Agrega esta línea para seleccionar el contenido de txtIR
     }//GEN-LAST:event_txtImpNetoFocusLost
 
     private void txtFecEmiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFecEmiKeyTyped
@@ -675,6 +696,46 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
             Logger.getLogger(frmRecibosHonorarios.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnExportarActionPerformed
+
+    private void txtIRFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtIRFocusLost
+        String impIR = txtIR.getText();
+        if (impIR.isEmpty()) {
+            impIR = "0.00";
+            txtIR.setText(impIR); // Agrega esta línea para establecer el valor en la caja de texto
+        }
+        float rentaBruta = Float.parseFloat(txtImpNeto.getText());
+        float impRenta = Float.parseFloat(impIR);
+        float rentaNeta = Math.round((rentaBruta - impRenta) * 100.0) / 100.0f;
+        txtImpTotal.setText(String.valueOf(rentaNeta));
+    }//GEN-LAST:event_txtIRFocusLost
+
+    private void txtIRKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIRKeyTyped
+        char c = evt.getKeyChar();
+        String text = txtImpNeto.getText();
+
+        if (!(Character.isDigit(c) || c == '.')) {
+            evt.consume(); // Si no es un número o un punto, se ignora el evento de tecla
+        } else if (c == '.' && text.contains(".")) {
+            evt.consume(); // Si el carácter ingresado es un punto y ya hay un punto en el campo de texto, se ignora el evento de tecla
+        } else if (text.contains(".") && text.length() - text.indexOf(".") > 2) {
+            evt.consume(); // Si ya hay dos decimales en el campo de texto, se ignora el evento de tecla
+        } else if (text.equals("0") && c != '.') {
+            evt.consume(); // Si el primer carácter es 0 y el siguiente carácter no es un punto, se ignora el evento de tecla
+        }
+    }//GEN-LAST:event_txtIRKeyTyped
+
+    private void txtNroReciboKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNroReciboKeyTyped
+        char c = evt.getKeyChar();
+        // Validar que sea un número o un carácter de control
+        if (!Character.isDigit(c) && !Character.isISOControl(c)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNroReciboKeyTyped
+
+    private void txtRucFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtRucFocusLost
+        String text = txtRuc.getText().trim();
+        txtRuc.setText(text);
+    }//GEN-LAST:event_txtRucFocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
