@@ -13,6 +13,7 @@ import proyecto_gm.Articulo.frmArticulo;
 import proyecto_gm.CabeceraComprobante.frmCabeceraComprobante;
 import proyecto_gm.Categoria.frmCategoria;
 import proyecto_gm.Comunicacion.frmListaComunicacion;
+import proyecto_gm.Cuentas.frmCuentas;
 import proyecto_gm.Modulo.frmModulo;
 import proyecto_gm.Periodos.frmPeriodos;
 import proyecto_gm.Proveedores.frmProveedores;
@@ -57,6 +58,8 @@ public class menu extends javax.swing.JFrame {
         menuRecibosHonorarios = new javax.swing.JMenuItem();
         menuViaticos = new javax.swing.JMenuItem();
         menuPeriodos = new javax.swing.JMenuItem();
+        menuCuentasBancarias = new javax.swing.JMenuItem();
+        menuTransferencias = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         menuRegistros = new javax.swing.JMenuItem();
         menuGastos = new javax.swing.JMenuItem();
@@ -218,6 +221,17 @@ public class menu extends javax.swing.JFrame {
             }
         });
         menuArticulo.add(menuPeriodos);
+
+        menuCuentasBancarias.setText("Cuentas Bancarias");
+        menuCuentasBancarias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCuentasBancariasActionPerformed(evt);
+            }
+        });
+        menuArticulo.add(menuCuentasBancarias);
+
+        menuTransferencias.setText("Transferencias");
+        menuArticulo.add(menuTransferencias);
 
         jMenuBar1.add(menuArticulo);
 
@@ -410,6 +424,13 @@ public class menu extends javax.swing.JFrame {
         verventana.show();
     }//GEN-LAST:event_menuPeriodosActionPerformed
 
+    private void menuCuentasBancariasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCuentasBancariasActionPerformed
+        // TODO add your handling code here:
+        frmCuentas verventana = new frmCuentas();
+        escritorio.add(verventana);
+        verventana.show();
+    }//GEN-LAST:event_menuCuentasBancariasActionPerformed
+
    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -459,6 +480,7 @@ public class menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuCampos;
     private javax.swing.JMenuItem menuCargo;
     private javax.swing.JMenuItem menuComunicaciones;
+    private javax.swing.JMenuItem menuCuentasBancarias;
     private javax.swing.JMenuItem menuEmpleado;
     private javax.swing.JMenuItem menuGastos;
     private javax.swing.JMenuItem menuModulo;
@@ -467,6 +489,7 @@ public class menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuRegistros;
     private javax.swing.JMenuItem menuTipo;
     private javax.swing.JMenuItem menuTipoDocumento;
+    private javax.swing.JMenuItem menuTransferencias;
     private javax.swing.JMenuItem menuViaticos;
     private javax.swing.JMenuItem menuproveedores;
     // End of variables declaration//GEN-END:variables
