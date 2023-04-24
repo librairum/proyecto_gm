@@ -12,9 +12,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -72,15 +75,17 @@ public class DatosCuentas {
     }
 
     // Cargar opciones el combo box "cboBanco"
-    public static void CargarBancos(JComboBox cboBanco) {
-        try ( PreparedStatement pstmt = conn.prepareStatement("SELECT Descripcion FROM bancos");  ResultSet rs = pstmt.executeQuery();) {
+    public static void CargarBancos(JComboBox<String> cboBanco) {
+        String sql = "SELECT Descripcion FROM bancos";
+        List<String> bancos = new ArrayList<>();
+        try ( PreparedStatement pstmt = conn.prepareStatement(sql);  ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
-                String banco = rs.getString("Descripcion");
-                cboBanco.addItem(banco);
+                bancos.add(rs.getString(1));
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+        cboBanco.setModel(new DefaultComboBoxModel<>(bancos.toArray(new String[0])));
     }
 
     // Mostrar datos
@@ -272,19 +277,19 @@ public class DatosCuentas {
                 return false;
             }
         }
-        
+
         if (campos[1].getText().length() != 14) {
             JOptionPane.showMessageDialog(null, "El número de cuenta debe contener 14 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             campos[1].requestFocus();
             return false;
         }
-        
+
         if (campos[2].getText().length() != 20) {
             JOptionPane.showMessageDialog(null, "El número de cuenta interbancaria debe contener 20 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             campos[2].requestFocus();
             return false;
         }
-        
+
         return true;
     }
 

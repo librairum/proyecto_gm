@@ -7,7 +7,6 @@ import proyecto_gm.Facultades.frmFacultades;
 import proyecto_gm.Carreras.frmCarreras;
 import proyecto_gm.Empleado.frmEmpleado;
 import proyecto_gm.Cargo.frmCargo;
-
 import proyecto_gm.Area.frmArea;
 import proyecto_gm.Articulo.frmArticulo;
 import proyecto_gm.CabeceraComprobante.frmCabeceraComprobante;
@@ -19,6 +18,7 @@ import proyecto_gm.Periodos.frmPeriodos;
 import proyecto_gm.Proveedores.frmProveedores;
 import proyecto_gm.RecibosHonorarios.frmRecibosHonorarios;
 import proyecto_gm.TipoDocumento.frmTipoDocumento;
+import proyecto_gm.Transferencias.frmTransferencias;
 import proyecto_gm.Viaticos.frmViaticos;
 
 
@@ -231,6 +231,11 @@ public class menu extends javax.swing.JFrame {
         menuArticulo.add(menuCuentasBancarias);
 
         menuTransferencias.setText("Transferencias");
+        menuTransferencias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuTransferenciasActionPerformed(evt);
+            }
+        });
         menuArticulo.add(menuTransferencias);
 
         jMenuBar1.add(menuArticulo);
@@ -430,6 +435,12 @@ public class menu extends javax.swing.JFrame {
         escritorio.add(verventana);
         verventana.show();
     }//GEN-LAST:event_menuCuentasBancariasActionPerformed
+
+    private void menuTransferenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuTransferenciasActionPerformed
+        frmTransferencias verventana = new frmTransferencias();
+        escritorio.add(verventana);
+        verventana.show();
+    }//GEN-LAST:event_menuTransferenciasActionPerformed
 
    
     public static void main(String args[]) {

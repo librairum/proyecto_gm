@@ -5,12 +5,12 @@
         <group>
             <file>file:/D:/jeanv/Documentos/proyecto_gm/src/proyecto_gm/RecibosHonorarios/DatosRecibosHonorarios.java</file>
             <file>file:/D:/jeanv/Documentos/proyecto_gm/src/proyecto_gm/menu.java</file>
-            <file>file:/D:/jeanv/Documentos/proyecto_gm/src/proyecto_gm/Empleado/DatosEmpleados.java</file>
+            <file>file:/D:/jeanv/Documentos/proyecto_gm/src/proyecto_gm/Transferencias/Transferencia.java</file>
             <file>file:/D:/jeanv/Documentos/proyecto_gm/src/proyecto_gm/RecibosHonorarios/frmRecibosHonorarios.java</file>
             <file>file:/D:/jeanv/Documentos/proyecto_gm/src/proyecto_gm/Cuentas/DatosCuentas.java</file>
             <file>file:/D:/jeanv/Documentos/proyecto_gm/src/proyecto_gm/Cuentas/frmCuentas.java</file>
-            <file>file:/D:/jeanv/Documentos/proyecto_gm/src/proyecto_gm/Cuentas/Cuentas.java</file>
-            <file>file:/D:/jeanv/Documentos/proyecto_gm/src/proyecto_gm/Empleado/frmEmpleado.java</file>
+            <file>file:/D:/jeanv/Documentos/proyecto_gm/src/proyecto_gm/Transferencias/DatosTransferencias.java</file>
+            <file>file:/D:/jeanv/Documentos/proyecto_gm/src/proyecto_gm/Transferencias/frmTransferencias.java</file>
         </group>
     </open-files>
 </project-private>

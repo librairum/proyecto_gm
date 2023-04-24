@@ -324,6 +324,7 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         tblHonorarios.setSelectionBackground(new java.awt.Color(153, 153, 153));
         tblHonorarios.setSelectionForeground(new java.awt.Color(0, 0, 0));
         tblHonorarios.setShowGrid(true);
+        tblHonorarios.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblHonorarios);
         if (tblHonorarios.getColumnModel().getColumnCount() > 0) {
             tblHonorarios.getColumnModel().getColumn(0).setResizable(false);

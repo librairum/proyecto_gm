@@ -9,8 +9,8 @@ package proyecto_gm.Cuentas;
  * @author jeanv
  */
 public class Cuentas {
-    String id, tipoPropietario, nombres, nroCuenta, nroCuentaInterbancaria, tipoMoneda;
-    int idBanco;
+    private String id, tipoPropietario, nombres, nroCuenta, nroCuentaInterbancaria, tipoMoneda;
+    private int idBanco;
     
     public Cuentas() {
         // Constructo vacio

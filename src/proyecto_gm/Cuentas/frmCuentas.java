@@ -100,6 +100,8 @@ public class frmCuentas extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("CUENTAS BANCARIAS");
 
+        panel.setBackground(new java.awt.Color(255, 248, 239));
+
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
         btnNuevo.setName("nuevo"); // NOI18N
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -221,6 +223,7 @@ public class frmCuentas extends javax.swing.JInternalFrame {
         tblCuentas.setSelectionBackground(new java.awt.Color(153, 153, 153));
         tblCuentas.setSelectionForeground(new java.awt.Color(0, 0, 0));
         tblCuentas.setShowGrid(true);
+        tblCuentas.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblCuentas);
         if (tblCuentas.getColumnModel().getColumnCount() > 0) {
             tblCuentas.getColumnModel().getColumn(0).setResizable(false);
