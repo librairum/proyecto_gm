@@ -99,6 +99,8 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
         setTitle("TRANSFERENCIAS");
         setToolTipText("");
 
+        panel.setBackground(new java.awt.Color(255, 248, 239));
+
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
         btnNuevo.setName("nuevo"); // NOI18N
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -351,7 +353,7 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
         // Seleccionamos todas las cajas y combos
         JTextField[] campos = {txtPeriodo, txtNroOperacion, txtFecha};
         JComboBox[] combos = {cboOrigen, cboDestino};
-
+ 
         // Validamos que todos los campos estén llenos
         if (!DatosTransferencias.Validar(campos, combos)) {
             return; // se corta la ejecucion del boton
