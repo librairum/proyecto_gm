@@ -97,7 +97,7 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("TRANSFERENCIAS");
-        setToolTipText("");
+        setToolTipText(null);
 
         panel.setBackground(new java.awt.Color(255, 248, 239));
 
@@ -388,7 +388,6 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
         DatosTransferencias.Habilitar(panel, false);
         tblTransferencias.clearSelection();
         tblTransferencias.setRowSelectionAllowed(true);
-
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
