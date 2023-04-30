@@ -13,6 +13,7 @@ import proyecto_gm.Articulo.frmArticulo;
 import proyecto_gm.CabeceraComprobante.frmCabeceraComprobante;
 import proyecto_gm.Categoria.frmCategoria;
 import proyecto_gm.Comunicacion.frmListaComunicacion;
+import proyecto_gm.Contactos.frmContacto;
 import proyecto_gm.Modulo.frmModulo;
 import proyecto_gm.Proveedores.frmProveedores;
 import proyecto_gm.TipoDocumento.frmTipoDocumento;
@@ -51,6 +52,7 @@ public class menu extends javax.swing.JFrame {
         menuCabeceraComprobante = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         MenuCategoria = new javax.swing.JMenuItem();
+        menuContacto = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         menuRegistros = new javax.swing.JMenuItem();
         menuGastos = new javax.swing.JMenuItem();
@@ -188,6 +190,14 @@ public class menu extends javax.swing.JFrame {
             }
         });
         menuArticulo.add(MenuCategoria);
+
+        menuContacto.setText("Contacto");
+        menuContacto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuContactoActionPerformed(evt);
+            }
+        });
+        menuArticulo.add(menuContacto);
 
         jMenuBar1.add(menuArticulo);
 
@@ -360,6 +370,13 @@ public class menu extends javax.swing.JFrame {
         
     }//GEN-LAST:event_MenuCategoriaActionPerformed
 
+    private void menuContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuContactoActionPerformed
+        // TODO add your handling code here:
+        frmContacto verventana = new frmContacto();
+        escritorio.add(verventana);
+        verventana.show();
+    }//GEN-LAST:event_menuContactoActionPerformed
+
    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -409,6 +426,7 @@ public class menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuCampos;
     private javax.swing.JMenuItem menuCargo;
     private javax.swing.JMenuItem menuComunicaciones;
+    private javax.swing.JMenuItem menuContacto;
     private javax.swing.JMenuItem menuEmpleado;
     private javax.swing.JMenuItem menuGastos;
     private javax.swing.JMenuItem menuModulo;

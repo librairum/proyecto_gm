@@ -96,6 +96,12 @@ public class frmCategoria extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Descripcion:");
 
+        txtDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDescripcionKeyTyped(evt);
+            }
+        });
+
         jButton1.setText("Exportar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -298,6 +304,14 @@ public class frmCategoria extends javax.swing.JInternalFrame {
         btnAgregar.setEnabled(true);
         DatosFacultades.bloquearCampos(jPanel1);
     }//GEN-LAST:event_btnDeshacerActionPerformed
+
+    private void txtDescripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyTyped
+        // TODO add your handling code here:
+        if (txtDescripcion.getText().length() >= 100) {
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }//GEN-LAST:event_txtDescripcionKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
