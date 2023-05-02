@@ -18,7 +18,7 @@ public class frmCabeceraComprobante extends javax.swing.JInternalFrame {
 
         DatosCabeceraComprobante.Mostrar(modelo);
         DatosCabeceraComprobante.CargarCombo(cboProveedores, cboTipoDocumento);
-
+       
         DatosCabeceraComprobante.Habilitar(escritorio, false);
         // Quitar la edicion de las celdas
         tblCabezera.setCellSelectionEnabled(false);
@@ -161,6 +161,7 @@ public class frmCabeceraComprobante extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Tipo de Documento");
 
+        txtTotal.setEditable(false);
         txtTotal.setNextFocusableComponent(cboProveedores);
 
         cboProveedores.setNextFocusableComponent(cboTipoDocumento);
@@ -181,7 +182,13 @@ public class frmCabeceraComprobante extends javax.swing.JInternalFrame {
                 txtSubTotalFocusLost(evt);
             }
         });
+        txtSubTotal.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtSubTotalKeyTyped(evt);
+            }
+        });
 
+        txtIgv.setEditable(false);
         txtIgv.setNextFocusableComponent(txtTotal);
 
         escritorio.setLayer(btnAgregar, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -453,6 +460,22 @@ public class frmCabeceraComprobante extends javax.swing.JInternalFrame {
         float Total = Float.parseFloat(txtSubTotal.getText()) + Igv;
         txtTotal.setText(String.valueOf(Total));
     }//GEN-LAST:event_txtSubTotalFocusLost
+
+    private void txtSubTotalKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSubTotalKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        String text = txtSubTotal.getText();
+
+        if (!(Character.isDigit(c) || c == '.')) {
+            evt.consume(); // Si no es un número o un punto, se ignora el evento de tecla
+        } else if (c == '.' && text.contains(".")) {
+            evt.consume(); // Si el carácter ingresado es un punto y ya hay un punto en el campo de texto, se ignora el evento de tecla
+        } else if (text.contains(".") && text.length() - text.indexOf(".") > 2) {
+            evt.consume(); // Si ya hay dos decimales en el campo de texto, se ignora el evento de tecla
+        } else if (text.equals("0") && c != '.') {
+            evt.consume(); // Si el primer carácter es 0 y el siguiente carácter no es un punto, se ignora el evento de tecla
+        }
+    }//GEN-LAST:event_txtSubTotalKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
