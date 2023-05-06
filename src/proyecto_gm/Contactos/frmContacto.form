@@ -222,16 +222,31 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtNombre">
+          <Properties>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="txtFecha"/>
+            </Property>
+          </Properties>
           <Events>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNombreKeyTyped"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtFecha">
+          <Properties>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="txtPersonas"/>
+            </Property>
+          </Properties>
           <Events>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtFechaKeyTyped"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtPersonas">
+          <Properties>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="txtEmpresa"/>
+            </Property>
+          </Properties>
           <Events>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPersonasKeyTyped"/>
           </Events>
@@ -252,16 +267,31 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtEmpresa">
+          <Properties>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="txtCargo"/>
+            </Property>
+          </Properties>
           <Events>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtEmpresaKeyTyped"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtCargo">
+          <Properties>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="txtCorreo"/>
+            </Property>
+          </Properties>
           <Events>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtCargoKeyTyped"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtCorreo">
+          <Properties>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="txtTelefono"/>
+            </Property>
+          </Properties>
           <Events>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtCorreoKeyTyped"/>
           </Events>
@@ -282,6 +312,11 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtTelefono">
+          <Properties>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="cboDepartamento"/>
+            </Property>
+          </Properties>
           <Events>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtTelefonoKeyTyped"/>
           </Events>
@@ -291,12 +326,20 @@
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
             </Property>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="txtDireccion"/>
+            </Property>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JTextField" name="txtDireccion">
+          <Properties>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="txtNota"/>
+            </Property>
+          </Properties>
           <Events>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtDireccionKeyTyped"/>
           </Events>
