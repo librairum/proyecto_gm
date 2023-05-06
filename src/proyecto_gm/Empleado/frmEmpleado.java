@@ -566,9 +566,6 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // IMPORTANTE: Al presionar en "Editar", txtId quedará deshabilitado.
-        // Lo habilitaremos al presionar "Guardar".
-
         // Agrupar las cajas de texto
         JTextField[] campos = {txtId, txtApe, txtNom, txtFecNac, txtCorreo,
             txtDni, txtCel, txtDistrito, txtDirec};
