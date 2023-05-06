@@ -436,8 +436,8 @@ public class frmContacto extends javax.swing.JInternalFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
         Contacto f = new Contacto(txtId.getText(), txtNombre.getText(), txtFecha.getText(), txtPersonas.getText()
-                , txtEmpresa.getText(), txtCargo.getText(), txtCorreo.getText(), txtTelefono.getText(), txtDireccion.getText(), 
-                txtNota.getText(), cboDepartamento.getSelectedItem().toString());
+                , txtEmpresa.getText(), txtCargo.getText(), txtCorreo.getText(), txtTelefono.getText(), cboDepartamento.getSelectedItem().toString(), txtDireccion.getText(), 
+                txtNota.getText());
         if (esNuevo) {
             // Insertar nuevo registro
             if (txtId.getText().isEmpty() || txtNombre.getText().isEmpty()
