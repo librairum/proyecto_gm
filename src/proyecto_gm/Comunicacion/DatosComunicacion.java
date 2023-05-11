@@ -18,6 +18,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.ConexionBD;
+import proyecto_gm.proyectos.Proyectos;
+
 /**
  *
  * @author pc_sistemas2022
@@ -341,62 +343,7 @@ public class DatosComunicacion {
         }
     }
     
-    /*
-    --  METODO LISTA DATOS
-    private static void mostrarProcedimiento() throws SQLException {
-             
-                   Connection conectar = null;
-                   ResultSet rs;
-                        try{
-                                // creamos la Conexion
-                                conectar = Conexion.conectar();                                                                                       
-                                CallableStatement prcProcedimientoAlmacenado = conectar.prepareCall("{call MostrarCampo()}");
-                              rs=prcProcedimientoAlmacenado.executeQuery();                             
-                             
-                           while(rs.next()){
-                                  System.out.println("ID"+"->"+rs.getInt(1));
-                                  System.out.println("Longitud"+"->"+rs.getString(2));
-                                  System.out.println("Nombre Campo"+"->"+rs.getString(3));
-                                  System.out.println("Descripcion"+"->"+rs.getString(4));
-                                 
-                           }
-                                 
-                                conectar.commit();
-                               
-                             
-                               
-                        } catch (Exception e) {
-                               
-                                conectar.rollback();
-                               
-                                e.printStackTrace();
-                        } finally {
-                                
-                                conectar.close();
-                        }
-        }
-    
-    
-    
-    public void Actualizar(){
-        try {
-            
-        } catch (Exception e) {
-        }
-    }
-    
-    
-    public void Eliminar(){
-        try {
-            
-        } catch (Exception e) {
-        }
-    }
-    */
-//    public String[][] listar(){
-//    
-//    }
-
+   
 
     
 }

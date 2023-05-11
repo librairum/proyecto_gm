@@ -4,13 +4,19 @@
  */
 package proyecto_gm.Comunicacion;
 
+import java.io.Console;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
+import proyecto_gm.proyectos.DatosProyectos;
+import proyecto_gm.proyectos.Proyectos;
 /**
  *
  * @author pc_sistemas2022
@@ -184,6 +190,16 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
         txtIdPeriodo.setBounds(650, 40, 111, 22);
 
         cboNomProyecto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Via Expresa Santa Rosa", "PEC", "Proyecto Llata" }));
+        cboNomProyecto.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cboNomProyectoItemStateChanged(evt);
+            }
+        });
+        cboNomProyecto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboNomProyectoActionPerformed(evt);
+            }
+        });
         getContentPane().add(cboNomProyecto);
         cboNomProyecto.setBounds(71, 42, 490, 22);
 
@@ -346,6 +362,11 @@ private void MostrarMensaje(String contenido, TipoMensaje tipo ){
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:z
+        System.out.println(cboNomProyecto.getSelectedItem());
+        Proyectos p = (Proyectos)cboNomProyecto.getSelectedItem();
+        System.out.println(p.getId()); 
+        
+        /*
         boolean procesoExitoso = false;
         entidad = new Comunicacion();
         if(cboNomProyecto.getSelectedIndex() == -1){
@@ -399,7 +420,7 @@ private void MostrarMensaje(String contenido, TipoMensaje tipo ){
             HabilitarBotones(true);
             HabilitarControles(false);
         }
-
+*/
 
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -419,7 +440,9 @@ private void MostrarMensaje(String contenido, TipoMensaje tipo ){
         HabilitarControles(true);
         txtId.setEnabled(false);
     }//GEN-LAST:event_btnEditarActionPerformed
-private void Iniciarvalores(){
+          List<Proyectos> lista =  DatosProyectos.listar();
+          String[] codigos = new String[lista.size()];
+    private void Iniciarvalores(){
       //iniciar variables por defecto
          String sFecha = Utilitario.TraerFechaActual();
          txtFecha.setText(sFecha);
@@ -432,6 +455,18 @@ private void Iniciarvalores(){
          //asingar codigo a la caja de t4exto codigo
          String idGenerado = DatosComunicacion.GenerarCodigo();
          txtId.setText(idGenerado);
+         
+           this.cboNomProyecto.removeAllItems();
+           int x = 0;
+           for (Proyectos elemento : lista) {
+               
+                //modeloCombo.addElement(elemento);
+                codigos[x] = elemento.getId();
+                this.cboNomProyecto.addItem(elemento.getDescripcion());
+                x++;
+          }
+           
+        
 }
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
 //        desbloquear();btnGuardar.setEnabled(true);btnDeshacer.setEnabled(true);
@@ -468,6 +503,27 @@ private void Iniciarvalores(){
      
      
     }//GEN-LAST:event_formInternalFrameOpened
+
+    private void cboNomProyectoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboNomProyectoActionPerformed
+     
+    }//GEN-LAST:event_cboNomProyectoActionPerformed
+
+    private void cboNomProyectoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboNomProyectoItemStateChanged
+           try{
+        //Proyectos p = (Proyectos)this.cboNomProyecto.getSelectedItem();
+        //System.out.println(p.getId()+ "-"+ p.getDescripcion()); 
+         int indiceSeleccionado = cboNomProyecto.getSelectedIndex();
+         String codigoSeleccionado = "", valorSeleccionado = "";
+         codigoSeleccionado = codigos[indiceSeleccionado];
+         valorSeleccionado = this.cboNomProyecto.getSelectedItem().toString();
+         System.out.println(codigoSeleccionado+ "-"+ valorSeleccionado); 
+        //Proyectos p = (Proyectos)cboNomProyecto.getSelectedItem();
+        
+        
+        }catch(Exception ex){
+        
+        }
+    }//GEN-LAST:event_cboNomProyectoItemStateChanged
 /*
     -- formateo de fecha java 
          
