@@ -118,9 +118,9 @@ public class DatosCargo {
             ate.executeUpdate();
             // Actualizamos la tabla
                 DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-                modelo.setRowCount(0);
+                modelo.setRowCount(0); // quitar filas
 
-                DatosCargo.Mostrar(modelo);
+                DatosCargo.Mostrar(modelo); // cargar modelo nuevamente
           
             ate.close();
         } catch (SQLException ex) {

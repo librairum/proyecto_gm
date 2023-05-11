@@ -9,6 +9,7 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,7 +24,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
 import proyecto_gm.Exportar;
 
 /**
@@ -59,24 +59,17 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         });
 
         DefaultTableModel modelo = (DefaultTableModel) tblEmpleados.getModel();
+        // Obtener la columna que se desea ocultar
+        TableColumn col = tblEmpleados.getColumnModel().getColumn(8);
+        // Obtener el modelo de columna de la tabla
+        TableColumnModel tcm = tblEmpleados.getColumnModel();
+        // Remover la columna del modelo de columna
+        tcm.removeColumn(col);
+
         DatosEmpleados.Habilitar(escritorio, opcionesTipo, false);
         DatosEmpleados.CargarCombos(cboArea, cboCargo);
         rbPorDefinir.setSelected(true);
         DatosEmpleados.Listar(modelo);
-
-        // Ocultar la columna DIRECCIÓN
-        // Obtener la columna que se desea ocultar
-        int columnIndex = 8; // índice de la columna a ocultar
-
-        // Obtener el modelo de tabla del JTable
-        TableModel model = tblEmpleados.getModel();
-
-        // Obtener el modelo de columnas del JTable
-        TableColumnModel columnModel = tblEmpleados.getColumnModel();
-
-        // Ocultar la columna
-        TableColumn column = columnModel.getColumn(columnIndex);
-        columnModel.removeColumn(column);
 
         // Quitar la edicion de las celdas
         tblEmpleados.setCellSelectionEnabled(false);
@@ -181,14 +174,16 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
         btnCancelar.setName("cancelar"); // NOI18N
+        btnCancelar.setNextFocusableComponent(txtApe);
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarActionPerformed(evt);
             }
         });
 
-        txtId.setNextFocusableComponent(txtApe);
+        txtId.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
+        txtApe.setFocusCycleRoot(true);
         txtApe.setNextFocusableComponent(txtNom);
         txtApe.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -317,11 +312,11 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
             tblEmpleados.getColumnModel().getColumn(2).setResizable(false);
             tblEmpleados.getColumnModel().getColumn(2).setPreferredWidth(80);
             tblEmpleados.getColumnModel().getColumn(3).setResizable(false);
-            tblEmpleados.getColumnModel().getColumn(3).setPreferredWidth(40);
+            tblEmpleados.getColumnModel().getColumn(3).setPreferredWidth(50);
             tblEmpleados.getColumnModel().getColumn(4).setResizable(false);
             tblEmpleados.getColumnModel().getColumn(4).setPreferredWidth(175);
             tblEmpleados.getColumnModel().getColumn(5).setResizable(false);
-            tblEmpleados.getColumnModel().getColumn(5).setPreferredWidth(35);
+            tblEmpleados.getColumnModel().getColumn(5).setPreferredWidth(40);
             tblEmpleados.getColumnModel().getColumn(6).setResizable(false);
             tblEmpleados.getColumnModel().getColumn(6).setPreferredWidth(45);
             tblEmpleados.getColumnModel().getColumn(7).setResizable(false);
@@ -448,8 +443,8 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                             .addGroup(escritorioLayout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtDirec, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(139, 384, Short.MAX_VALUE))
+                                .addComponent(txtDirec, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(309, 434, Short.MAX_VALUE))
                     .addGroup(escritorioLayout.createSequentialGroup()
                         .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel9)
@@ -547,11 +542,11 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorio, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(escritorio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorio, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(escritorio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -571,17 +566,14 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // IMPORTANTE: Al presionar en "Editar", txtId quedará deshabilitado.
-        // Lo habilitaremos al presionar "Guardar".
-
         // Agrupar las cajas de texto
-        JTextField[] camposTexto = {txtId, txtApe, txtNom, txtFecNac, txtCorreo,
+        JTextField[] campos = {txtId, txtApe, txtNom, txtFecNac, txtCorreo,
             txtDni, txtCel, txtDistrito, txtDirec};
 
         // Agrupar los combo boxes y cargar el radio button correspondiente
         // que esta en el button group
         JComboBox[] combos = {cboArea, cboCargo};
-        DatosEmpleados.Editar(escritorio, tblEmpleados, camposTexto, combos, opcionesTipo);
+        DatosEmpleados.Editar(escritorio, tblEmpleados, campos, combos, opcionesTipo);
 
         esNuevo = false; // Indicamos que no sera un nuevo registro
     }//GEN-LAST:event_btnEditarActionPerformed
@@ -592,11 +584,16 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // Obtenemos los ids del area, cargo y tipo seleccionado
         // Capturar las opciones seleccionadas en los combo boxes
         String[] opciones = DatosEmpleados.CapturarOpciones(cboArea, cboCargo, opcionesTipo);
 
-        // Creamos un objeto tipo Empleado
+        // Validar los campos del formulario
+        JTextField[] campos = {txtApe, txtNom, txtFecNac, txtCorreo, txtDni, txtCel, txtDistrito, txtDirec};
+        if (!DatosEmpleados.Validar(campos)) {
+            return;
+        }
+
+        // Crear un objeto Empleados y asignar los valores
         Empleados empleado = new Empleados();
         empleado.setId(txtId.getText());
         empleado.setApellidos(txtApe.getText());
@@ -611,27 +608,18 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         empleado.setIdCargo(opciones[1]);
         empleado.setIdTipo(opciones[2]);
 
-        // Seleccionamos las cajas para validar
-        JTextField[] porValidar = {txtId, txtApe, txtNom, txtFecNac, txtCorreo, txtDni, txtCel, txtDistrito, txtDirec};
-
-        // Preguntamos si haremos un INSERT o un UPDATE
+        // Insertar o actualizar según sea el caso
         if (esNuevo) {
-            if (DatosEmpleados.Validar(porValidar)) {
-                DatosEmpleados.Insertar(empleado, tblEmpleados);
-                DatosEmpleados.Limpiar(escritorio, rbPorDefinir);
-                DatosEmpleados.Habilitar(escritorio, opcionesTipo, false);
-                tblEmpleados.clearSelection();
-                tblEmpleados.setRowSelectionAllowed(true);
-            }
+            DatosEmpleados.Insertar(empleado, tblEmpleados);
         } else {
-            if (DatosEmpleados.Validar(porValidar)) {
-                DatosEmpleados.Actualizar(empleado, tblEmpleados);
-                DatosEmpleados.Limpiar(escritorio, rbPorDefinir);
-                DatosEmpleados.Habilitar(escritorio, opcionesTipo, false);
-                tblEmpleados.clearSelection();
-                tblEmpleados.setRowSelectionAllowed(true);
-            }
+            DatosEmpleados.Actualizar(empleado, tblEmpleados);
         }
+
+        // Limpiar y deshabilitar el formulario
+        DatosEmpleados.Limpiar(escritorio, rbPorDefinir);
+        DatosEmpleados.Habilitar(escritorio, opcionesTipo, false);
+        tblEmpleados.clearSelection();
+        tblEmpleados.setRowSelectionAllowed(true);
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -693,16 +681,15 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
 
     private void txtFecNacKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFecNacKeyTyped
         char c = evt.getKeyChar();
-        if (c == evt.VK_BACK_SPACE) {
+        if (c == KeyEvent.VK_BACK_SPACE) {
             // permitir eliminar el carácter anterior incluso si es una diagonal
             String fecha = txtFecNac.getText();
-            int length = fecha.length();
-            if (length > 0) {
+            if (!fecha.isEmpty()) {
                 // eliminar el último carácter de la cadena
-                fecha = fecha.substring(0, length - 1);
+                fecha = fecha.substring(0, fecha.length() - 1);
                 txtFecNac.setText(fecha);
             }
-        } else if (!(Character.isDigit(c))) {
+        } else if (!Character.isDigit(c)) {
             evt.consume(); // Si no es un número, se ignora el evento de tecla
         }
 

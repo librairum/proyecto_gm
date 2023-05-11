@@ -6,7 +6,11 @@ package proyecto_gm.Periodos;
 
 import java.awt.Component;
 import java.awt.Container;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -203,6 +207,23 @@ public class DatosPeriodo {
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
+    }
 
+    // Validar campos
+    public static boolean Validar(JTextField[] campos) {
+        for (JTextField campo : campos) {
+            if (campo.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                campo.requestFocus();
+                return false;
+            }
+
+            if (campo.getName().equals("id") && campo.getText().length() < 6) {
+                JOptionPane.showMessageDialog(null, "El ID debe contener 6 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                campo.requestFocus();
+                return false;
+            }
+        }
+        return true;
     }
 }

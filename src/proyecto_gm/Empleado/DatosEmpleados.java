@@ -268,24 +268,22 @@ public class DatosEmpleados {
 
             // Llenar los campos de texto con los valores de la fila
             for (int i = 0; i < camposTexto.length; i++) {
-                if (tabla.getValueAt(fila, i) != null) { // si el dato no es nulo
-                    String dato = tabla.getModel().getValueAt(fila, i).toString();
-                    camposTexto[i].setText(dato);
-                } else {
-                    camposTexto[i].setText("");
-                }
-
+                Object valor = tabla.getModel().getValueAt(fila, i);
+                String dato = (valor != null) ? valor.toString() : "";
+                // Si "valor" no es nulo, se almacenara en "dato" como un string
+                // Si no, se almacenara una cadena vacia
+                camposTexto[i].setText(dato);
             }
 
             camposTexto[0].setEnabled(false);
             camposTexto[1].requestFocus();
 
-            // Llenar los combos con los valores de la fila
+            // Seleccionar las opciones de los combos
             for (int i = 0; i < combos.length; i++) {
                 combos[i].setSelectedItem(tabla.getModel().getValueAt(fila, camposTexto.length + i).toString());
             }
 
-            // Llenar el grupo de botones con los valores de la fila
+            // Seleccionar las opciones de los radio buttons
             for (Enumeration<AbstractButton> botones = grupoBotones.getElements(); botones.hasMoreElements();) {
                 AbstractButton boton = botones.nextElement();
                 if (boton.getText().equals(tabla.getModel().getValueAt(fila, camposTexto.length + combos.length).toString())) {
@@ -294,7 +292,7 @@ public class DatosEmpleados {
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }
     // Actualizar datos
@@ -365,7 +363,7 @@ public class DatosEmpleados {
                     tabla.clearSelection();
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
 
         } catch (SQLException e) {
@@ -384,55 +382,46 @@ public class DatosEmpleados {
 
     // Validar campos
     public static boolean Validar(JTextField[] campos) {
-        boolean validar = true;
-        // Validamos si los campos estan vacios
         for (JTextField campo : campos) {
-            if (campo.getText().equals("")) {
-                validar = false;
+            if (campo.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 campo.requestFocus();
-                break;
+                return false;
             }
         }
 
-        if (validar) {
-            // Validamos uno por uno
-            if (!campos[4].getText().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) { // Validamos correo
-                validar = false;
-                JOptionPane.showMessageDialog(null, "El formato de correo es el siguiente: someone@mail.com\nInténtelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                campos[4].requestFocus();
-            } else if (campos[5].getText().length() != 8) { // Validamos DNI
-                validar = false;
-                JOptionPane.showMessageDialog(null, "El DNI debe contener 8 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                campos[5].requestFocus();
-            } else if (campos[6].getText().length() != 9) { // Validamos celular
-                validar = false;
-                JOptionPane.showMessageDialog(null, "El celular debe contener 9 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                campos[6].requestFocus();
-            } else if (campos[3].getText().length() != 10) { // Validamos fecha
-                validar = false;
-                JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd/mm/aaaa. Inténtelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                campos[3].requestFocus();
-            } else {
-                // Definir el formato de fecha
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                sdf.setLenient(false); // no permitir fechas inválidas
-
-                try {
-                    // Intentar parsear el string como una fecha
-                    sdf.parse(campos[3].getText());
-                } catch (ParseException e) {
-                    validar = false;
-                    JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd/mm/aaaa. Inténtelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                }
-            }
-        } else {
-            validar = false;
-            JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        if (!campos[3].getText().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            JOptionPane.showMessageDialog(null, "El formato de correo es el siguiente: someone@mail.com\nInténtelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            campos[3].requestFocus();
+            return false;
         }
 
-        return validar;
+        if (campos[4].getText().length() != 8) {
+            JOptionPane.showMessageDialog(null, "El DNI debe contener 8 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            campos[4].requestFocus();
+            return false;
+        }
+
+        if (campos[5].getText().length() != 9) {
+            JOptionPane.showMessageDialog(null, "El celular debe contener 9 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            campos[5].requestFocus();
+            return false;
+        }
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            sdf.setLenient(false);
+            sdf.parse(campos[2].getText());
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd/mm/aaaa. Inténtelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            campos[2].requestFocus();
+            return false;
+        }
+
+        // Si se llega aquí, todos los campos son válidos
+        return true;
     }
-    
+
     // Obtener datos académicos del empleado
     public static String[] DatAcadEmpleado(String dni) {
         String[] datos = new String[5];
@@ -442,7 +431,7 @@ public class DatosEmpleados {
             cstmt = conn.prepareCall("{ CALL obtener_datos_academicos(?) }");
             cstmt.setString(1, dni);
             rs = cstmt.executeQuery();
-            
+
             if (rs.next()) {
                 datos[0] = rs.getString("Institucion");
                 datos[1] = rs.getString("Facultad");
@@ -450,7 +439,7 @@ public class DatosEmpleados {
                 datos[3] = rs.getString("Ciclo");
                 datos[4] = rs.getString("Codigo");
             }
-            
+
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error al cargar datos", JOptionPane.ERROR_MESSAGE);
         } finally {
@@ -465,7 +454,7 @@ public class DatosEmpleados {
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-        
+
         return datos;
     }
 

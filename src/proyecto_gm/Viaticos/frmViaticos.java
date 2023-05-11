@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -53,7 +54,7 @@ public class frmViaticos extends javax.swing.JInternalFrame {
                 return this;
             }
         });
-        
+
         DefaultTableModel modelo = (DefaultTableModel) tblViatico.getModel();
         DatosViaticos.CargarCombos(cboEmpleado, cboPeriodo);
         DatosViaticos.Listar(modelo);
@@ -341,78 +342,53 @@ public class frmViaticos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:
+        // Seleccionamos todas las cajas y combos
+        JTextField[] campos = {txtDescripcion, txtPasaje, txtMenu};
+        JComboBox[] combos = {cboEmpleado, cboPeriodo};
+        
+        // Validamos que todos los campos estén llenos
+        if (!DatosViaticos.Validar(campos, combos)) {
+            return; // se corta la ejecucion del metodo
+        }
 
-        if (cboEmpleado.getSelectedItem() != null || cboPeriodo.getSelectedItem() != null) {
-            // Obtener el periodo
-            String periodo = cboPeriodo.getSelectedItem().toString();
-            // Obtener el ID del empleado
-            String empleado = cboEmpleado.getSelectedItem().toString();
-            String idEmpleado = "";
+        String periodo = cboPeriodo.getSelectedItem().toString();
+        String idEmpleado = ObtenerIdEmpleado(cboEmpleado.getSelectedItem().toString());
 
-            // Consulta
-            String consulta = "SELECT Id FROM empleados WHERE Nombres = ?";
+        Viaticos viatico = new Viaticos();
+        viatico.setDescripcion(txtDescripcion.getText());
+        viatico.setEmpleado(idEmpleado);
+        viatico.setPeriodo(periodo);
+        viatico.setPasaje(Float.parseFloat(txtPasaje.getText()));
+        viatico.setMenu(Float.parseFloat(txtMenu.getText()));
 
-            PreparedStatement pstmt = null;
-            ResultSet rs = null;
-            // Preparamos la consulta
-            try {
-                pstmt = conn.prepareStatement(consulta);
-                pstmt.setString(1, empleado);
-                rs = pstmt.executeQuery();
+        if (esNuevo) {
+            DatosViaticos.Insertar(viatico, tblViatico);
+        } else if (!esNuevo) {
+            viatico.setId(Integer.parseInt(txtId.getText()));
+            DatosViaticos.Actualizar(viatico, tblViatico);
+        }
 
+        DatosViaticos.Limpiar(escritorio);
+        DatosViaticos.Habilitar(escritorio, false);
+        tblViatico.clearSelection();
+        tblViatico.setRowSelectionAllowed(true);
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private String ObtenerIdEmpleado(String empleado) {
+        String idEmpleado = "";
+        String consulta = "SELECT Id FROM empleados WHERE Nombres = ?";
+        try ( PreparedStatement pstmt = conn.prepareStatement(consulta)) {
+            pstmt.setString(1, empleado);
+            try ( ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     idEmpleado = rs.getString("Id");
                 }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error al obtener el ID del empleado", JOptionPane.ERROR_MESSAGE);
-            } finally {
-                try {
-                    if (rs != null) {
-                        rs.close();
-                    }
-                    if (pstmt != null) {
-                        pstmt.close();
-                    }
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null,  e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
             }
-
-            // Seleccionamos todas las cajas
-            JTextField[] cajas = {txtDescripcion, txtPasaje, txtMenu};
-
-            Viaticos viatico = new Viaticos();
-            viatico.setDescripcion(txtDescripcion.getText());
-            viatico.setEmpleado(idEmpleado);
-            viatico.setPeriodo(periodo);
-
-            if (esNuevo) {
-                if (DatosViaticos.Validar(cajas, cboEmpleado, cboPeriodo)) {
-                    viatico.setPasaje(Float.parseFloat(txtPasaje.getText()));
-                    viatico.setMenu(Float.parseFloat(txtMenu.getText()));
-                    DatosViaticos.Insertar(viatico, tblViatico);
-                    DatosViaticos.Limpiar(escritorio);
-                    DatosViaticos.Habilitar(escritorio, false);
-                    tblViatico.clearSelection();
-                    tblViatico.setRowSelectionAllowed(true);
-                }
-            } else {
-                viatico.setId(Integer.parseInt(txtId.getText()));
-                viatico.setPasaje(Float.parseFloat(txtPasaje.getText()));
-                viatico.setMenu(Float.parseFloat(txtMenu.getText()));
-                if (DatosViaticos.Validar(cajas, cboPeriodo, cboPeriodo)) {
-                    DatosViaticos.Actualizar(viatico, tblViatico);
-                    DatosViaticos.Limpiar(escritorio);
-                    DatosViaticos.Habilitar(escritorio, false);
-                    tblViatico.clearSelection();
-                    tblViatico.setRowSelectionAllowed(true);
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error al obtener el ID del empleado", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_btnGuardarActionPerformed
+        return idEmpleado;
+    }
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
@@ -423,19 +399,32 @@ public class frmViaticos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void txtPasajeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasajeKeyTyped
-        // TODO add your handling code here:
         char c = evt.getKeyChar();
+        String text = txtPasaje.getText();
+
         if (!(Character.isDigit(c) || c == '.')) {
             evt.consume(); // Si no es un número o un punto, se ignora el evento de tecla
+        } else if (c == '.' && text.contains(".")) {
+            evt.consume(); // Si el carácter ingresado es un punto y ya hay un punto en el campo de texto, se ignora el evento de tecla
+        } else if (text.contains(".") && text.length() - text.indexOf(".") > 2) {
+            evt.consume(); // Si ya hay dos decimales en el campo de texto, se ignora el evento de tecla
+        } else if (text.equals("0") && c != '.') {
+            evt.consume(); // Si el primer carácter es 0 y el siguiente carácter no es un punto, se ignora el evento de tecla
         }
-
     }//GEN-LAST:event_txtPasajeKeyTyped
 
     private void txtMenuKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMenuKeyTyped
-        // TODO add your handling code here:
         char c = evt.getKeyChar();
+        String text = txtMenu.getText();
+
         if (!(Character.isDigit(c) || c == '.')) {
             evt.consume(); // Si no es un número o un punto, se ignora el evento de tecla
+        } else if (c == '.' && text.contains(".")) {
+            evt.consume(); // Si el carácter ingresado es un punto y ya hay un punto en el campo de texto, se ignora el evento de tecla
+        } else if (text.contains(".") && text.length() - text.indexOf(".") > 2) {
+            evt.consume(); // Si ya hay dos decimales en el campo de texto, se ignora el evento de tecla
+        } else if (text.equals("0") && c != '.') {
+            evt.consume(); // Si el primer carácter es 0 y el siguiente carácter no es un punto, se ignora el evento de tecla
         }
     }//GEN-LAST:event_txtMenuKeyTyped
 

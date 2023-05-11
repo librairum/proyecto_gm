@@ -47,7 +47,7 @@ public class frmPeriodos extends javax.swing.JInternalFrame {
                 return this;
             }
         });
-        
+
         DefaultTableModel modelo = (DefaultTableModel) tblPeriodo.getModel();
         DatosPeriodo.Listar(modelo);
         DatosPeriodo.Habilitar(escritorio, false);
@@ -87,6 +87,7 @@ public class frmPeriodos extends javax.swing.JInternalFrame {
 
         jLabel1.setText("ID:");
 
+        txtId.setName("id"); // NOI18N
         txtId.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtIdKeyTyped(evt);
@@ -95,6 +96,7 @@ public class frmPeriodos extends javax.swing.JInternalFrame {
 
         jLabel2.setText("DESCRIPCIÓN:");
 
+        txtDescripcion.setName("descripcion"); // NOI18N
         txtDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtDescripcionKeyTyped(evt);
@@ -254,38 +256,26 @@ public class frmPeriodos extends javax.swing.JInternalFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
+        JTextField[] campos = {txtId, txtDescripcion};
+        if (!DatosPeriodo.Validar(campos)) {
+            return;
+        }
+
         Periodos periodo = new Periodos();
         periodo.setId(txtId.getText());
         periodo.setDescripcion(txtDescripcion.getText());
 
         if (esNuevo) {
-            if (periodo.getId().equals("") || periodo.getDescripcion().equals("")) {
-                JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            } else if (periodo.getId().length() < 6) {
-                JOptionPane.showMessageDialog(null, "El ID debe contener 6 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                txtId.requestFocus();
-            } else {
-                DatosPeriodo.Insertar(periodo, tblPeriodo);
-                DatosPeriodo.Limpiar(escritorio);
-                DatosPeriodo.Habilitar(escritorio, false);
-                tblPeriodo.clearSelection();
-                tblPeriodo.setRowSelectionAllowed(true);
-            }
+            DatosPeriodo.Insertar(periodo, tblPeriodo);
 
         } else {
-            if (periodo.getId().equals("") || periodo.getDescripcion().equals("")) {
-                JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            } else if (periodo.getId().length() < 6) {
-                JOptionPane.showMessageDialog(null, "El ID debe contener 6 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                txtId.requestFocus();
-            } else {
-                DatosPeriodo.Actualizar(periodo, tblPeriodo);
-                DatosPeriodo.Limpiar(escritorio);
-                DatosPeriodo.Habilitar(escritorio, false);
-                tblPeriodo.clearSelection();
-                tblPeriodo.setRowSelectionAllowed(true);
-            }
+            DatosPeriodo.Actualizar(periodo, tblPeriodo);
         }
+
+        DatosPeriodo.Limpiar(escritorio);
+        DatosPeriodo.Habilitar(escritorio, false);
+        tblPeriodo.clearSelection();
+        tblPeriodo.setRowSelectionAllowed(true);
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
