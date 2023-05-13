@@ -73,7 +73,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
 
         // Quitar la edicion de las celdas
         tblEmpleados.setCellSelectionEnabled(false);
-        // Habilitar la selecciono de filas
+        // Habilitar la seleccion de filas
         tblEmpleados.setRowSelectionAllowed(true);
     }
 

@@ -9,6 +9,8 @@ import proyecto_gm.Empleado.frmEmpleado;
 import proyecto_gm.Cargo.frmCargo;
 import proyecto_gm.Area.frmArea;
 import proyecto_gm.Articulo.frmArticulo;
+import proyecto_gm.Asistencias.frmAsistencias;
+import proyecto_gm.Asistencias.frmImpAsistencias;
 import proyecto_gm.CabeceraComprobante.frmCabeceraComprobante;
 import proyecto_gm.Categoria.frmCategoria;
 import proyecto_gm.Comunicacion.frmListaComunicacion;
@@ -42,6 +44,7 @@ public class menu extends javax.swing.JFrame {
         escritorio = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArticulo = new javax.swing.JMenu();
+        menuAsistencias = new javax.swing.JMenuItem();
         menuArea = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         menuCargo = new javax.swing.JMenuItem();
@@ -53,6 +56,7 @@ public class menu extends javax.swing.JFrame {
         menuCuentasBancarias = new javax.swing.JMenuItem();
         menuEmpleado = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        menuImportar = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         menuModulo = new javax.swing.JMenuItem();
         menuPeriodos = new javax.swing.JMenuItem();
@@ -87,6 +91,14 @@ public class menu extends javax.swing.JFrame {
                 menuArticuloActionPerformed(evt);
             }
         });
+
+        menuAsistencias.setText("Asistencias");
+        menuAsistencias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuAsistenciasActionPerformed(evt);
+            }
+        });
+        menuArticulo.add(menuAsistencias);
 
         menuArea.setText("Area");
         menuArea.addActionListener(new java.awt.event.ActionListener() {
@@ -175,6 +187,14 @@ public class menu extends javax.swing.JFrame {
             }
         });
         menuArticulo.add(jMenuItem2);
+
+        menuImportar.setText("Importar Asistencias");
+        menuImportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuImportarActionPerformed(evt);
+            }
+        });
+        menuArticulo.add(menuImportar);
 
         jMenuItem1.setText("Instituciones");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
@@ -458,6 +478,18 @@ public class menu extends javax.swing.JFrame {
         verventana.show();
     }//GEN-LAST:event_menuContactoActionPerformed
 
+    private void menuImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuImportarActionPerformed
+        frmImpAsistencias verventana = new frmImpAsistencias();
+        escritorio.add(verventana);
+        verventana.show();
+    }//GEN-LAST:event_menuImportarActionPerformed
+
+    private void menuAsistenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAsistenciasActionPerformed
+        frmAsistencias verventana = new frmAsistencias();
+        escritorio.add(verventana);
+        verventana.show();
+    }//GEN-LAST:event_menuAsistenciasActionPerformed
+
    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -503,6 +535,7 @@ public class menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem menuArea;
     private javax.swing.JMenu menuArticulo;
+    private javax.swing.JMenuItem menuAsistencias;
     private javax.swing.JMenuItem menuCabeceraComprobante;
     private javax.swing.JMenuItem menuCampos;
     private javax.swing.JMenuItem menuCargo;
@@ -511,6 +544,7 @@ public class menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuCuentasBancarias;
     private javax.swing.JMenuItem menuEmpleado;
     private javax.swing.JMenuItem menuGastos;
+    private javax.swing.JMenuItem menuImportar;
     private javax.swing.JMenuItem menuModulo;
     private javax.swing.JMenuItem menuPeriodos;
     private javax.swing.JMenuItem menuRecibosHonorarios;
