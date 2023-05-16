@@ -11,6 +11,7 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -23,11 +24,12 @@ import proyecto_gm.ConexionBD;
  */
 public class DatosAsistencia {
 
-    static Connection conn = ConexionBD.getConnection();
+    static final Connection conn = ConexionBD.getConnection();
 
-    public static void fillTableForPeriod(JTable tabla, String periodo, JComboBox combo) {
+    public static void RellenarTabla(JTable tabla, JComboBox mes, JComboBox empleado) {
         // Obtener el dni del empleado
-        String dni = ObtenerDNI(combo);
+        String dni = ObtenerDNI(empleado);
+        String periodo = mes.getSelectedItem().toString();
 
         // Parsea el período en mes y año
         int month = Integer.parseInt(periodo.substring(0, 2));
@@ -115,9 +117,58 @@ public class DatosAsistencia {
         }
         return dni;
     }
-    
-    public static void Actualizar(JTable tabla) {
-        
+
+    public static int ObtenerID(String dni, String fecha, String hora) {
+        int id = 0;
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_asistencia(?, ?, ?, ?) }");) {
+            cstmt.setString(1, dni);
+            cstmt.setString(2, fecha);
+            cstmt.setString(3, hora);
+            cstmt.registerOutParameter(4, Types.INTEGER);
+
+            cstmt.execute();
+
+            id = cstmt.getInt(4);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        System.out.println("id = " + id);
+        return id;
+    }
+
+    public static void Actualizar(Asistencia a, String hora, JTable tabla, JComboBox periodo, JComboBox combo) {
+        int id = ObtenerID(a.getDni(), a.getFecha(), hora);
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_asistencia(?, ?) }");) {
+            cstmt.setInt(1, id);
+            cstmt.setString(2, a.getHora());
+
+            cstmt.execute();
+
+            // Actualizamos la tabla
+            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+            modelo.setRowCount(0);
+            RellenarTabla(tabla, periodo, combo);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public static void Insertar(Asistencia a, JTable tabla, JComboBox periodo, JComboBox combo) {
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL insertar_asistencia(?, ?, ?) }")) {
+            cstmt.setString(1, a.getDni());
+            cstmt.setString(2, a.getFecha());
+            cstmt.setString(3, a.getHora());
+
+            cstmt.execute();
+
+            // Actualizamos la tabla
+            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+            modelo.setRowCount(0);
+            RellenarTabla(tabla, periodo, combo);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
     }
 
 }

@@ -7,10 +7,18 @@ package proyecto_gm.Asistencias;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.io.File;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import proyecto_gm.ImpAsistencias;
 
 /**
  *
@@ -18,11 +26,14 @@ import javax.swing.table.JTableHeader;
  */
 public class frmAsistencias extends javax.swing.JInternalFrame {
 
+    Asistencia a = new Asistencia();
+
     /**
      * Creates new form frmAsistencias
      */
     public frmAsistencias() {
         initComponents();
+        initializeTable();
         // Personalizar header
         JTableHeader header = tblAsistencias.getTableHeader();
         header.setDefaultRenderer(new DefaultTableCellRenderer() {
@@ -49,6 +60,26 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
         tblAsistencias.setDefaultRenderer(Object.class, renderer);
     }
 
+    // Metodo para leer la edicion en las celdas
+    private void initializeTable() {
+        tblAsistencias.setDefaultEditor(Object.class, new DefaultCellEditor(new JTextField()) {
+            @Override
+            public boolean stopCellEditing() {
+                boolean result = super.stopCellEditing();
+                if (result) {
+                    String hora = tblAsistencias.getModel().getValueAt(tblAsistencias.getSelectedRow(), tblAsistencias.getSelectedColumn()).toString();
+                    a.setHora(hora);
+                    if (datos[2].isEmpty()) {
+                        DatosAsistencia.Insertar(a, tblAsistencias, cboPeriodo, cboEmpleado);
+                    } else {
+                        DatosAsistencia.Actualizar(a, datos[2], tblAsistencias, cboPeriodo, cboEmpleado);
+                    }
+                }
+                return result;
+            }
+        });
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -67,6 +98,7 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
         cboPeriodo = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         cboEmpleado = new javax.swing.JComboBox<>();
+        btnImportar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -102,6 +134,11 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
         tblAsistencias.setSelectionForeground(new java.awt.Color(0, 0, 0));
         tblAsistencias.setShowGrid(true);
         tblAsistencias.getTableHeader().setReorderingAllowed(false);
+        tblAsistencias.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblAsistenciasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblAsistencias);
         if (tblAsistencias.getColumnModel().getColumnCount() > 0) {
             tblAsistencias.getColumnModel().getColumn(0).setResizable(false);
@@ -131,6 +168,13 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
             }
         });
 
+        btnImportar.setText("Importar asistencias");
+        btnImportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImportarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -154,7 +198,10 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
                         .addComponent(lblDni, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(147, 147, 147)
-                        .addComponent(lblEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lblEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(204, 204, 204)
+                        .addComponent(btnImportar)))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -166,13 +213,15 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4)
                     .addComponent(cboPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cboEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                .addGap(20, 20, 20)
                 .addComponent(lblEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblDni)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnImportar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -207,8 +256,7 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
         if (!empleadoSeleccionado.equals(ultimoEmpleadoSeleccionado) || !periodoSeleccionado.equals(ultimoPeriodoSeleccionado)) {
             actualizarEmpleadoSeleccionado();
 
-            String periodo = periodoSeleccionado;
-            DatosAsistencia.fillTableForPeriod(tblAsistencias, periodo, cboEmpleado);
+            DatosAsistencia.RellenarTabla(tblAsistencias, cboPeriodo, cboEmpleado);
 
             ultimoEmpleadoSeleccionado = empleadoSeleccionado;
             ultimoPeriodoSeleccionado = periodoSeleccionado;
@@ -216,22 +264,66 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cboEmpleadoActionPerformed
 
     private void cboPeriodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboPeriodoActionPerformed
-    String periodoSeleccionado = cboPeriodo.getSelectedItem().toString();
-    String empleadoSeleccionado = cboEmpleado.getSelectedItem().toString();
-    
-    if (!periodoSeleccionado.equals(ultimoPeriodoSeleccionado) || !empleadoSeleccionado.equals(ultimoEmpleadoSeleccionado)) {
-        actualizarEmpleadoSeleccionado();
-        
-        String periodo = periodoSeleccionado;
-        DatosAsistencia.fillTableForPeriod(tblAsistencias, periodo, cboEmpleado);
-        
-        ultimoPeriodoSeleccionado = periodoSeleccionado;
-        ultimoEmpleadoSeleccionado = empleadoSeleccionado;
-    }
+        String periodoSeleccionado = cboPeriodo.getSelectedItem().toString();
+        String empleadoSeleccionado = cboEmpleado.getSelectedItem().toString();
+
+        if (!periodoSeleccionado.equals(ultimoPeriodoSeleccionado) || !empleadoSeleccionado.equals(ultimoEmpleadoSeleccionado)) {
+            actualizarEmpleadoSeleccionado();
+
+            DatosAsistencia.RellenarTabla(tblAsistencias, cboPeriodo, cboEmpleado);
+
+            ultimoPeriodoSeleccionado = periodoSeleccionado;
+            ultimoEmpleadoSeleccionado = empleadoSeleccionado;
+        }
     }//GEN-LAST:event_cboPeriodoActionPerformed
+
+    private int lastSelectedRow = -1; // Variable para guardar el índice de la última fila seleccionada
+    private int lastSelectedColumn = -1; // Variable para guardar el índice de la última columna seleccionada
+    private String[] datos = new String[3]; // Arreglo para almacenar los datos de la fila seleccionada
+
+    private void tblAsistenciasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAsistenciasMouseClicked
+        int selectedRow = tblAsistencias.getSelectedRow();
+        int selectedColumn = tblAsistencias.getSelectedColumn();
+
+        if (selectedRow != -1 && selectedRow != lastSelectedRow || selectedColumn != lastSelectedColumn) {
+            lastSelectedRow = selectedRow;
+            lastSelectedColumn = selectedColumn;
+            datos = obtenerDatos();
+
+            System.out.println("Hora: " + datos[2]);
+
+            a.setDni(datos[0]);
+            a.setFecha(datos[1]);
+        }
+    }//GEN-LAST:event_tblAsistenciasMouseClicked
+
+    private void btnImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            String fileName = selectedFile.getAbsolutePath();
+
+            try {
+                ImpAsistencias.importData(fileName);
+            } catch (ParseException ex) {
+                Logger.getLogger(frmAsistencias.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnImportarActionPerformed
+
+    private String[] obtenerDatos() {
+        int fila = tblAsistencias.getSelectedRow();
+        String dni = lblDni.getText();
+        String fecha = tblAsistencias.getModel().getValueAt(fila, 1).toString();
+        String hora = tblAsistencias.getModel().getValueAt(lastSelectedRow, lastSelectedColumn) == null ? "" : tblAsistencias.getModel().getValueAt(lastSelectedRow, lastSelectedColumn).toString();
+
+        return new String[]{dni, fecha, hora};
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnImportar;
     private javax.swing.JComboBox<String> cboEmpleado;
     private javax.swing.JComboBox<String> cboPeriodo;
     private javax.swing.JLabel jLabel3;
