@@ -1,6 +1,9 @@
 package proyecto_gm;
 
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import proyecto_gm.Instituciones.frmInstituciones;
 import proyecto_gm.Tipo.frmTipo;
 import proyecto_gm.Facultades.frmFacultades;
@@ -10,6 +13,7 @@ import proyecto_gm.Cargo.frmCargo;
 import proyecto_gm.Area.frmArea;
 import proyecto_gm.Articulo.frmArticulo;
 import proyecto_gm.CabeceraComprobante.frmCabeceraComprobante;
+import proyecto_gm.CajaChica.frmCajaChica;
 import proyecto_gm.Categoria.frmCategoria;
 import proyecto_gm.Comunicacion.frmListaComunicacion;
 import proyecto_gm.Contactos.frmContacto;
@@ -46,6 +50,7 @@ public class menu extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         menuCargo = new javax.swing.JMenuItem();
         menuCabeceraComprobante = new javax.swing.JMenuItem();
+        menuCajaChica = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         MenuCategoria = new javax.swing.JMenuItem();
         menuComunicaciones = new javax.swing.JMenuItem();
@@ -119,6 +124,14 @@ public class menu extends javax.swing.JFrame {
             }
         });
         menuArticulo.add(menuCabeceraComprobante);
+
+        menuCajaChica.setText("Caja Chica");
+        menuCajaChica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCajaChicaActionPerformed(evt);
+            }
+        });
+        menuArticulo.add(menuCajaChica);
 
         jMenuItem3.setText("Carreras");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
@@ -458,6 +471,18 @@ public class menu extends javax.swing.JFrame {
         verventana.show();
     }//GEN-LAST:event_menuContactoActionPerformed
 
+    private void menuCajaChicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCajaChicaActionPerformed
+        // TODO add your handling code here:
+        frmCajaChica verventana = null;
+        try {
+            verventana = new frmCajaChica();
+        } catch (SQLException ex) {
+            Logger.getLogger(menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        escritorio.add(verventana);
+        verventana.show();
+    }//GEN-LAST:event_menuCajaChicaActionPerformed
+
    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -504,6 +529,7 @@ public class menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuArea;
     private javax.swing.JMenu menuArticulo;
     private javax.swing.JMenuItem menuCabeceraComprobante;
+    private javax.swing.JMenuItem menuCajaChica;
     private javax.swing.JMenuItem menuCampos;
     private javax.swing.JMenuItem menuCargo;
     private javax.swing.JMenuItem menuComunicaciones;

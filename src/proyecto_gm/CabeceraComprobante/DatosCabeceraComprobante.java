@@ -45,7 +45,7 @@ public class DatosCabeceraComprobante {
                 jComboBox.setEnabled(bloquear);
             } else if (component instanceof JButton jButton) {
                 String button = jButton.getName();
-                if (button.equals("guardar") || button.equals("deshacer") || button.equals("ingresar")) {
+                if (button.equals("guardar") || button.equals("deshacer") ) {
                     jButton.setEnabled(bloquear);
                 } else if (button.equals("agregar") || button.equals("editar") || button.equals("eliminar")) {
                     jButton.setEnabled(!bloquear); // aplicar logica inversa
@@ -161,7 +161,7 @@ public class DatosCabeceraComprobante {
     // Boton editar
     public static void Editar(Container contenedor, JTable tabla, JTextField[] camposTexto, JComboBox[] combos) {
 
-        // Obtener la fila seleccionada
+        // Obtener la fila seleccionadas
         int filaSeleccionada = tabla.getSelectedRow();
         if (filaSeleccionada >= 0) {
             // Obtener los valores de la fila seleccionada
