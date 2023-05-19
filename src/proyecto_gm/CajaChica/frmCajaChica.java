@@ -32,7 +32,6 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
 
         escritorio = new javax.swing.JPanel();
         btnAgregar = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         btnDeshacer = new javax.swing.JButton();
@@ -50,9 +49,6 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
                 btnAgregarActionPerformed(evt);
             }
         });
-
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
-        btnEditar.setName("editar"); // NOI18N
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/eliminar.png"))); // NOI18N
         btnEliminar.setName("eliminar"); // NOI18N
@@ -107,8 +103,6 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
                     .addGroup(escritorioLayout.createSequentialGroup()
                         .addComponent(btnAgregar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEditar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnEliminar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnGuardar)
@@ -122,7 +116,6 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnDeshacer)
-                    .addComponent(btnEditar)
                     .addComponent(btnAgregar)
                     .addComponent(btnEliminar)
                     .addComponent(btnGuardar))
@@ -214,7 +207,6 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnDeshacer;
-    private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JPanel escritorio;

@@ -61,9 +61,9 @@ public class DatosCajaChica {
         for (Component component : components) {
             if (component instanceof JButton jButton) {
                 String button = jButton.getName();
-                if (button.equals("guardar") || button.equals("deshacer")) {
+                if ( button.equals("deshacer")) {
                     jButton.setEnabled(bloquear);
-                } else if (button.equals("agregar") || button.equals("editar") || button.equals("eliminar")) {
+                } else if (button.equals("agregar") || button.equals("editar") || button.equals("eliminar") || button.equals("guardar")) {
                     jButton.setEnabled(!bloquear); // aplicar logica inversa
                 }
             } else {
