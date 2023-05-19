@@ -12,6 +12,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -32,9 +35,8 @@ public class DatosAsistencia {
         String periodo = mes.getSelectedItem().toString();
 
         // Parsea el período en mes y año
-        int month = Integer.parseInt(periodo.substring(0, 2));
-        int year = Integer.parseInt(periodo.substring(2, 6));
-
+        int month = Integer.parseInt(periodo.substring(0, 2)); // 05
+        int year = Integer.parseInt(periodo.substring(2, 6)); // 2023
         // Crea un objeto Calendar para el primer día del mes
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, year);
@@ -45,7 +47,7 @@ public class DatosAsistencia {
         int lastDayOfMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 
         // Crea una matriz bidimensional para almacenar los datos de la tabla
-        String[][] data = new String[lastDayOfMonth][4];
+        String[][] data = new String[lastDayOfMonth][5];
 
         // Utiliza un bucle para iterar sobre cada día del mes en el período seleccionado
         for (int i = 0; i < lastDayOfMonth; i++) {
@@ -77,13 +79,14 @@ public class DatosAsistencia {
             data[i][1] = date;
             data[i][2] = entrada;
             data[i][3] = salida;
+            data[i][4] = CalcularDuracion(entrada, salida);
 
             // Incrementa el objeto Calendar para apuntar al siguiente día del mes
             cal.add(Calendar.DAY_OF_MONTH, 1);
         }
 
         // Crea un nuevo modelo de tabla utilizando la matriz bidimensional
-        DefaultTableModel model = new DefaultTableModel(data, new String[]{"DÍA", "FECHA", "ENTRADA", "SALIDA"});
+        DefaultTableModel model = new DefaultTableModel(data, new String[]{"DÍA", "FECHA", "ENTRADA", "SALIDA", "DURACIÓN"});
 
         // Configura la tabla para utilizar el nuevo modelo de tabla
         tabla.setModel(model);
@@ -99,6 +102,32 @@ public class DatosAsistencia {
         } catch (SQLException e) {
 
         }
+    }
+
+    public static String CalcularDuracion(String horaEntrada, String horaSalida) {
+        if (horaEntrada == null) {
+            horaEntrada = "00:00:00";
+        }
+
+        if (horaSalida == null) {
+            horaSalida = "00:00:00";
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        LocalTime entrada = LocalTime.parse(horaEntrada, formatter);
+        LocalTime salida = LocalTime.parse(horaSalida, formatter);
+
+        // Obtener el tiempo transcurrido entre la hora de entrada y salida
+        Duration tiempoEnLaEmpresa = Duration.between(entrada, salida);
+
+        // Dividimos el tiempo transcurrido en horas, minutos y segundos
+        long horas = tiempoEnLaEmpresa.toHours();
+        long minutos = tiempoEnLaEmpresa.toMinutesPart();
+        long segundos = tiempoEnLaEmpresa.toSecondsPart();
+
+        String tiempoTotal = String.format("%02d:%02d:%02d", horas, minutos, segundos);
+
+        return tiempoTotal;
     }
 
     public static String ObtenerDNI(JComboBox combo) {

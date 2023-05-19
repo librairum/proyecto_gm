@@ -57,9 +57,14 @@ public class Exportar {
                         } else if (t.getValueAt(f, c) instanceof Float) {
                             celda.setCellValue(Float.parseFloat((String) t.getValueAt(f, c)));
                         } else {
-                            celda.setCellValue(String.valueOf(t.getValueAt(f, c)));
+                            Object value = t.getValueAt(f, c);
+                            if (value != null) {
+                                celda.setCellValue(String.valueOf(value));
+                            } else {
+                                celda.setCellValue("");
+                            }
                         }
-                        
+
                         hoja.autoSizeColumn(c);
                     }
                 }
@@ -70,5 +75,5 @@ public class Exportar {
                 throw e;
             }
         }
-    }   
+    }
 }
