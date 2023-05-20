@@ -27,11 +27,10 @@ public class ImpAsistencias {
     public static void importData(String fileName) throws ParseException {
         try {
             String sql = "INSERT INTO asistencias (Dni, Fecha, Hora) VALUES (?, ?, ?)";
-            try (PreparedStatement pstmt = conn.prepareStatement(sql);
-                    FileInputStream inputStream = new FileInputStream(fileName)) {
+            try ( PreparedStatement pstmt = conn.prepareStatement(sql);  FileInputStream inputStream = new FileInputStream(fileName)) {
                 Workbook workbook = new HSSFWorkbook(inputStream);
                 Sheet sheet = workbook.getSheetAt(0);
-                
+
                 for (Row row : sheet) {
                     if (row.getRowNum() == 0) {
                         // saltar la primera fila (encabezados de columna)
@@ -40,32 +39,38 @@ public class ImpAsistencias {
                     Cell dniCell = row.getCell(0);
                     Cell fechaCell = row.getCell(1);
                     Cell horaCell = row.getCell(2);
-                    
+
                     double dniDouble = dniCell.getNumericCellValue();
                     String dni = String.format("%.0f", dniDouble);
-                    
+
                     // Obtener la fecha como objeto de tipo Date
                     Date fecha = fechaCell.getDateCellValue();
-                    
+
                     // Formatear la fecha al formato "yyyy-MM-dd" para almacenar en la base de datos
                     SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
                     String fechaBD = outputFormat.format(fecha);
-                    
+
                     // Obtener la hora como objeto de tipo Date
                     Date horaDate = DateUtil.getJavaDate(horaCell.getNumericCellValue());
-                    
+
                     // Formatear la hora al formato "HH:mm:ss"
                     SimpleDateFormat horaFormat = new SimpleDateFormat("HH:mm:ss");
                     String hora = horaFormat.format(horaDate);
-                    
+
                     pstmt.setString(1, dni);
                     pstmt.setString(2, fechaBD);
                     pstmt.setString(3, hora);
                     pstmt.executeUpdate();
                 }
-                
+
             }
             JOptionPane.showMessageDialog(null, "Los datos han sido importados correctamente.", "Importación Exitosa", JOptionPane.INFORMATION_MESSAGE);
+            try ( PreparedStatement pstmt = conn.prepareStatement(" CALL generar_detalle_asistencia() ")) {
+                pstmt.execute();
+                System.out.println("Detalle de asistencias generado exitosamente");
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         } catch (SQLException | IOException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }

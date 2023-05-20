@@ -12,12 +12,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.time.Duration;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.ConexionBD;
 
@@ -29,7 +27,7 @@ public class DatosAsistencia {
 
     static final Connection conn = ConexionBD.getConnection();
 
-    public static void RellenarTabla(JTable tabla, JComboBox mes, JComboBox empleado) {
+    public static void RellenarTabla(JTable tabla, JComboBox mes, JComboBox empleado, JTextField totalHoras) {
         // Obtener el dni del empleado
         String dni = ObtenerDNI(empleado);
         String periodo = mes.getSelectedItem().toString();
@@ -47,7 +45,12 @@ public class DatosAsistencia {
         int lastDayOfMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 
         // Crea una matriz bidimensional para almacenar los datos de la tabla
-        String[][] data = new String[lastDayOfMonth][5];
+        String[][] data = new String[lastDayOfMonth][6];
+
+        // Variables para almacenar el total de horas, minutos y segundos
+        int totalHorasSum = 0;
+        int totalMinutosSum = 0;
+        int totalSegundosSum = 0;
 
         // Utiliza un bucle para iterar sobre cada día del mes en el período seleccionado
         for (int i = 0; i < lastDayOfMonth; i++) {
@@ -61,13 +64,18 @@ public class DatosAsistencia {
             // Consulta la base de datos para obtener los datos de entrada y salida para esta fecha
             String entrada = "";
             String salida = "";
+            String duracion = "";
+            String observaciones = "";
+
             try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_horario_empleado (?, ?) }")) {
                 cstmt.setString(1, dni);
                 cstmt.setString(2, date);
                 try ( ResultSet rs = cstmt.executeQuery();) {
                     if (rs.next()) {
-                        entrada = rs.getString("Entrada");
-                        salida = rs.getString("Salida");
+                        entrada = rs.getString("Hora_entrada");
+                        salida = rs.getString("Hora_salida");
+                        duracion = rs.getString("Duracion");
+                        observaciones = rs.getString("Observaciones");
                     }
                 }
             } catch (SQLException e) {
@@ -79,17 +87,42 @@ public class DatosAsistencia {
             data[i][1] = date;
             data[i][2] = entrada;
             data[i][3] = salida;
-            data[i][4] = CalcularDuracion(entrada, salida);
+            data[i][4] = duracion;
+            data[i][5] = observaciones;
+
+            // Suma las horas, minutos y segundos de la duración
+            if (!duracion.isEmpty()) {
+                String[] duracionParts = duracion.split(":");
+                int horas = Integer.parseInt(duracionParts[0]);
+                int minutos = Integer.parseInt(duracionParts[1]);
+                int segundos = Integer.parseInt(duracionParts[2]);
+                totalHorasSum += horas;
+                totalMinutosSum += minutos;
+                totalSegundosSum += segundos;
+            }
 
             // Incrementa el objeto Calendar para apuntar al siguiente día del mes
             cal.add(Calendar.DAY_OF_MONTH, 1);
         }
 
+        // Convierte los segundos adicionales a minutos y los minutos adicionales a horas si exceden 60
+        int additionalMinutes = totalSegundosSum / 60;
+        totalMinutosSum += additionalMinutes;
+        totalSegundosSum %= 60;
+
+        int additionalHours = totalMinutosSum / 60;
+        totalHorasSum += additionalHours;
+        totalMinutosSum %= 60;
+
         // Crea un nuevo modelo de tabla utilizando la matriz bidimensional
-        DefaultTableModel model = new DefaultTableModel(data, new String[]{"DÍA", "FECHA", "ENTRADA", "SALIDA", "DURACIÓN"});
+        DefaultTableModel model = new DefaultTableModel(data, new String[]{"DÍA", "FECHA", "ENTRADA", "SALIDA", "DURACIÓN", "OBSERVACIONES"});
 
         // Configura la tabla para utilizar el nuevo modelo de tabla
         tabla.setModel(model);
+
+        // Muestra el total de horas en el JTextField
+        String totalHorasText = String.format("%02d:%02d:%02d", totalHorasSum, totalMinutosSum, totalSegundosSum);
+        totalHoras.setText(totalHorasText);
     }
 
     public static void CargarEmpleados(JComboBox combo) {
@@ -102,32 +135,6 @@ public class DatosAsistencia {
         } catch (SQLException e) {
 
         }
-    }
-
-    public static String CalcularDuracion(String horaEntrada, String horaSalida) {
-        if (horaEntrada == null) {
-            horaEntrada = "00:00:00";
-        }
-
-        if (horaSalida == null) {
-            horaSalida = "00:00:00";
-        }
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        LocalTime entrada = LocalTime.parse(horaEntrada, formatter);
-        LocalTime salida = LocalTime.parse(horaSalida, formatter);
-
-        // Obtener el tiempo transcurrido entre la hora de entrada y salida
-        Duration tiempoEnLaEmpresa = Duration.between(entrada, salida);
-
-        // Dividimos el tiempo transcurrido en horas, minutos y segundos
-        long horas = tiempoEnLaEmpresa.toHours();
-        long minutos = tiempoEnLaEmpresa.toMinutesPart();
-        long segundos = tiempoEnLaEmpresa.toSecondsPart();
-
-        String tiempoTotal = String.format("%02d:%02d:%02d", horas, minutos, segundos);
-
-        return tiempoTotal;
     }
 
     public static String ObtenerDNI(JComboBox combo) {
@@ -165,7 +172,7 @@ public class DatosAsistencia {
         return id;
     }
 
-    public static void Actualizar(Asistencia a, String hora, JTable tabla, JComboBox periodo, JComboBox combo) {
+    public static void Actualizar(Asistencia a, String hora, JTable tabla, JComboBox periodo, JComboBox combo, JTextField totalHoras) {
         int id = ObtenerID(a.getDni(), a.getFecha(), hora);
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_asistencia(?, ?) }");) {
             cstmt.setInt(1, id);
@@ -176,13 +183,13 @@ public class DatosAsistencia {
             // Actualizamos la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
-            RellenarTabla(tabla, periodo, combo);
+            RellenarTabla(tabla, periodo, combo, totalHoras);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public static void Insertar(Asistencia a, JTable tabla, JComboBox periodo, JComboBox combo) {
+    public static void Insertar(Asistencia a, JTable tabla, JComboBox periodo, JComboBox combo, JTextField totalHoras) {
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL insertar_asistencia(?, ?, ?) }")) {
             cstmt.setString(1, a.getDni());
             cstmt.setString(2, a.getFecha());
@@ -193,7 +200,7 @@ public class DatosAsistencia {
             // Actualizamos la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
-            RellenarTabla(tabla, periodo, combo);
+            RellenarTabla(tabla, periodo, combo, totalHoras);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
