@@ -55,7 +55,8 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
                         float saldo = Math.round((entradaValue - salidaValue) * 100.0f) / 100.0f;
 
                         // Mostrar el saldo en la celda de saldo correspondiente
-                        tblCajaChica.setValueAt(saldo, tblCajaChica.getSelectedRow(), saldoColumn);
+                        String saldoString = String.format("%.2f", saldo);
+                        tblCajaChica.setValueAt(saldoString, tblCajaChica.getSelectedRow(), saldoColumn);
                     } catch (NumberFormatException ex) {
                         System.out.println("Error al convertir valores a float: " + ex.getMessage());
                         // Manejar la excepción si los valores no se pueden convertir a float
