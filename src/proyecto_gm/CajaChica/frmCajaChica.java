@@ -3,6 +3,7 @@ package proyecto_gm.CajaChica;
 import java.sql.SQLException;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -14,6 +15,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
 
     public frmCajaChica() throws SQLException {
         initComponents();
+        initializeTable();
 //  Crea un objeto ComboBox y asigna el modelo creado en el paso anterior
 
         DatosCajaChica.CargarCombo(cbotransferencias);
@@ -25,6 +27,43 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         DatosCajaChica.Mostrar(modelo);
         DatosCajaChica.Habilitar(escritorio, false);
 
+    }
+
+    private void initializeTable() {
+        final int entradaColumn = 4; // Número de columna de entrada
+        final int salidaColumn = 5; // Número de columna de salida
+        final int saldoColumn = 6; // Número de columna de saldo
+
+        // Establecer el CellEditor personalizado solo en la columna de salida
+        tblCajaChica.getColumnModel().getColumn(salidaColumn).setCellEditor(new DefaultCellEditor(new JTextField()) {
+            @Override
+            public boolean stopCellEditing() {
+                boolean result = super.stopCellEditing();
+                if (result) {
+                    // Obtener el valor de la celda editada en la columna de salida
+                    String salida = tblCajaChica.getModel().getValueAt(tblCajaChica.getSelectedRow(), salidaColumn).toString();
+
+                    // Obtener el valor de la celda de entrada en la misma fila
+                    String entrada = tblCajaChica.getModel().getValueAt(tblCajaChica.getSelectedRow(), entradaColumn).toString();
+
+                    try {
+                        // Convertir los valores de String a float
+                        float entradaValue = Float.parseFloat(entrada) * 100.0f / 100.0f;
+                        float salidaValue = Float.parseFloat(salida) * 100.0f / 100.0f;
+
+                        // Calcular el saldo
+                        float saldo = Math.round((entradaValue - salidaValue) * 100.0f) / 100.0f;
+
+                        // Mostrar el saldo en la celda de saldo correspondiente
+                        tblCajaChica.setValueAt(saldo, tblCajaChica.getSelectedRow(), saldoColumn);
+                    } catch (NumberFormatException ex) {
+                        System.out.println("Error al convertir valores a float: " + ex.getMessage());
+                        // Manejar la excepción si los valores no se pueden convertir a float
+                    }
+                }
+                return result;
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -175,12 +214,40 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         caj.setId((String) tblCajaChica.getValueAt(newRow, 0)); // Asigna el valor de la primera columna a campo1
 
         caj.setIdTransferenciasBancarias(transferencia);
-        caj.setDescripcion((String) tblCajaChica.getValueAt(newRow, 2));
-        caj.setEntrada(Float.parseFloat((String) tblCajaChica.getValueAt(newRow, 3)));
-//        System.out.println(caj.getEntrada());
+        caj.setFecha((String) tblCajaChica.getValueAt(newRow, 2));
+        caj.setDescripcion((String) tblCajaChica.getValueAt(newRow, 3));
+        // Validar y convertir el valor de entrada
+        Object entradaValue = tblCajaChica.getValueAt(newRow, 4);
+        if (entradaValue instanceof String) {
+            try {
+                caj.setEntrada(Float.parseFloat((String) entradaValue));
+            } catch (NumberFormatException ex) {
+                // Manejar la excepción si el valor no es un número válido
+                System.out.println("Error al convertir entrada a float: " + ex.getMessage());
+            }
+        }
 
-        caj.setSalida(Float.parseFloat((String) tblCajaChica.getValueAt(newRow, 4)));
-        caj.setSaldo(Float.parseFloat((String) tblCajaChica.getValueAt(newRow, 5)));
+        // Validar y convertir el valor de salida
+        Object salidaValue = tblCajaChica.getValueAt(newRow, 5);
+        if (salidaValue instanceof String) {
+            try {
+                caj.setSalida(Float.parseFloat((String) salidaValue));
+            } catch (NumberFormatException ex) {
+                // Manejar la excepción si el valor no es un número válido
+                System.out.println("Error al convertir salida a float: " + ex.getMessage());
+            }
+        }
+
+        // Validar y convertir el valor de saldo
+        Object saldoValue = tblCajaChica.getValueAt(newRow, 6);
+        if (saldoValue instanceof String) {
+            try {
+                caj.setSaldo(Float.parseFloat((String) saldoValue));
+            } catch (NumberFormatException ex) {
+                // Manejar la excepción si el valor no es un número válido
+                System.out.println("Error al convertir saldo a float: " + ex.getMessage());
+            }
+        }
 
         System.out.println(caj.getSaldo());
 
