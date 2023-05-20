@@ -1,9 +1,7 @@
 package proyecto_gm.CajaChica;
 
-import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import javax.swing.DefaultCellEditor;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -15,7 +13,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
     public frmCajaChica() throws SQLException {
         initComponents();
 //  Crea un objeto ComboBox y asigna el modelo creado en el paso anterior
-        JComboBox<String> cbotransferencias = new JComboBox<String>();
+
         DatosCajaChica.CargarCombo(cbotransferencias);
 
 //  Agrega el objeto ComboBox a la celda correspondiente en cada fila de la tabla tblCajaChica
@@ -38,6 +36,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         btnDeshacer = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCajaChica = new javax.swing.JTable();
+        cbotransferencias = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -94,6 +93,13 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
             tblCajaChica.getColumnModel().getColumn(6).setResizable(false);
         }
 
+        cbotransferencias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbotransferencias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbotransferenciasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
         escritorio.setLayout(escritorioLayout);
         escritorioLayout.setHorizontalGroup(
@@ -111,6 +117,11 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDeshacer)))
                 .addContainerGap(20, Short.MAX_VALUE))
+            .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(escritorioLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(cbotransferencias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,6 +135,11 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(73, Short.MAX_VALUE))
+            .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(escritorioLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(cbotransferencias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -139,21 +155,14 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    public void actionPerformed(ActionEvent e) {
-        // Obtener el elemento seleccionado
-        String opcionSeleccionada = (String) cbotransferencias.getSelectedItem();
-
-        // Código para manejar el evento
-        System.out.println("Opción seleccionada: " + opcionSeleccionada);
-        DatosCajaChica.Fecha(tblCajaChica);
-    }
+ 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
         CajaChica caj = new CajaChica();
 
         // Dentro del método donde capturas los datos de la nueva fila
         int newRow = tblCajaChica.getSelectedRow(); // Última fila ingresada
-        String transferencia = DatosCajaChica.Capturar(tblCajaChica.getValueAt(newRow, 1).toString());
+        String transferencia = DatosCajaChica.CapturarID(tblCajaChica.getValueAt(newRow, 1).toString());
 
         caj.setId((String) tblCajaChica.getValueAt(newRow, 0)); // Asigna el valor de la primera columna a campo1
 
@@ -212,12 +221,18 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         DatosCajaChica.Habilitar(escritorio, false);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
+    private void cbotransferenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbotransferenciasActionPerformed
+        // TODO add your handling code here:
+        DatosCajaChica.Fecha(tblCajaChica);
+    }//GEN-LAST:event_cbotransferenciasActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnDeshacer;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JComboBox<String> cbotransferencias;
     private javax.swing.JPanel escritorio;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblCajaChica;

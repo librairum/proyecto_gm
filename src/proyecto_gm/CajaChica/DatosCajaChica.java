@@ -192,10 +192,10 @@ public class DatosCajaChica {
         }
     }
 
-    public static String Capturar(String transferencia) {
+    public static String CapturarID(String transferencia) {
         String idTransferenciasBancarias = "";
         try {
-            // Capturar las opciones seleccionadas en los combo boxes
+            // CapturarID las opciones seleccionadas en los combo boxes
 
             // Obtener los id de modulo
             String consulta = "SELECT Id AS IdTransferenciasBancarias "
@@ -217,12 +217,15 @@ public class DatosCajaChica {
     }
 
     public static void Fecha(JTable tabla) {
+        // Obtener la fila seleccionada
+        int fila = tabla.getSelectedRow();
+        String nroOperacion = tabla.getModel().getValueAt(fila, 1).toString();
         try {
             // Preparamos la consulta
-            PreparedStatement pstmttransferencias = conn.prepareStatement("SELECT Fecha FROM transferenciasbancarias");
-
+            PreparedStatement pstmt = conn.prepareStatement("SELECT Fecha FROM transferenciasbancarias WHERE NroOperacion = ? ");
+            pstmt.setString(1, nroOperacion);
             // Ejecutamos la consulta
-            ResultSet rs = pstmttransferencias.executeQuery();
+            ResultSet rs = pstmt.executeQuery();
 
             // Creamos el modelo de la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
@@ -233,14 +236,13 @@ public class DatosCajaChica {
             // Agregamos las fechas a la tabla
             while (rs.next()) {
                 String fecha = rs.getString("Fecha");
-                // Obtener la fila seleccionada
-                int fila = tabla.getSelectedRow();
+
                 modelo.setValueAt(fecha, fila, 2);
             }
 
             // Cerramos recursos
             rs.close();
-            pstmttransferencias.close();
+            pstmt.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
