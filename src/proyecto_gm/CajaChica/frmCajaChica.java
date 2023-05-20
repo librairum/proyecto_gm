@@ -155,7 +155,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
- 
+
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
         CajaChica caj = new CajaChica();
@@ -220,9 +220,15 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         DatosCajaChica.Eliminar(tblCajaChica);
         DatosCajaChica.Habilitar(escritorio, false);
     }//GEN-LAST:event_btnEliminarActionPerformed
-
+    
+    private boolean primeraAccionIgnorada = false;
+    
     private void cbotransferenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbotransferenciasActionPerformed
-        // TODO add your handling code here:
+        if (!primeraAccionIgnorada) {
+            primeraAccionIgnorada = true;
+            return;
+        }
+
         DatosCajaChica.Fecha(tblCajaChica);
     }//GEN-LAST:event_cbotransferenciasActionPerformed
 

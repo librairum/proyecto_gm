@@ -225,7 +225,7 @@ public class DatosCajaChica {
             PreparedStatement pstmt = conn.prepareStatement("SELECT Fecha FROM transferenciasbancarias WHERE NroOperacion = ? ");
             pstmt.setString(1, nroOperacion);
             // Ejecutamos la consulta
-            ResultSet rs = pstmt.executeQuery();
+            ResultSet rs = pstmt.executeQuery(); // oh, i'm cumming
 
             // Creamos el modelo de la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
