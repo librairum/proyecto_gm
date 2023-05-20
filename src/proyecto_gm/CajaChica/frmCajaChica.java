@@ -83,6 +83,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
                 return; // Ignorar el primer evento
             }
             if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+                System.out.println("Click");
                 DatosCajaChica.Fecha(tblCajaChica, cbotransferencias);
             }
         }

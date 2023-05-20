@@ -217,34 +217,25 @@ public class DatosCajaChica {
     }
 
     public static void Fecha(JTable tabla, JComboBox combo) {
-        // Obtener la fila seleccionada
         int fila = tabla.getSelectedRow();
-        String nroOperacion = combo.getSelectedItem().toString();
-        System.out.println("nroOperacion = " + nroOperacion);
-        try {
-            // Preparamos la consulta
-            PreparedStatement pstmt = conn.prepareStatement("SELECT Fecha FROM transferenciasbancarias WHERE NroOperacion = ? ");
-            pstmt.setString(1, nroOperacion);
-            // Ejecutamos la consulta
-            ResultSet rs = pstmt.executeQuery(); // oh, i'm cumming
-
-            // Creamos el modelo de la tabla
-            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-
-            // Limpiamos los datos existentes en la tabla
-            modelo.setRowCount(0);
-
-            // Agregamos las fechas a la tabla
-            while (rs.next()) {
-                String fecha = rs.getString("Fecha");
-                modelo.setValueAt(fecha, fila, 2);
+        if (fila >= 0) {
+            String nroOperacion = combo.getSelectedItem().toString();
+            System.out.println("nroOperacion = " + nroOperacion);
+            try {
+                PreparedStatement pstmt = conn.prepareStatement("SELECT DATE_FORMAT(Fecha, '%d/%m/%Y') AS Fecha FROM transferenciasbancarias WHERE NroOperacion = ? ");
+                pstmt.setString(1, nroOperacion);
+                ResultSet rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    String fecha = rs.getString("Fecha");
+                    tabla.getModel().setValueAt(fecha, fila, 2);
+                }
+                rs.close();
+                pstmt.close();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-
-            // Cerramos recursos
-            rs.close();
-            pstmt.close();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }
 
