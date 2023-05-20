@@ -8,6 +8,8 @@ import javax.swing.table.TableColumn;
 
 public class frmCajaChica extends javax.swing.JInternalFrame {
 
+    private boolean primerEvento = false;
+
     boolean esNuevo = false;
 
     public frmCajaChica() throws SQLException {
@@ -74,6 +76,18 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
             }
         });
 
+        cbotransferencias.addItemListener(new java.awt.event.ItemListener() {
+        public void itemStateChanged(java.awt.event.ItemEvent evt) {
+            if (!primerEvento) {
+                primerEvento = true;
+                return; // Ignorar el primer evento
+            }
+            if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+                DatosCajaChica.Fecha(tblCajaChica, cbotransferencias);
+            }
+        }
+    });
+
         tblCajaChica.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -92,13 +106,6 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
             tblCajaChica.getColumnModel().getColumn(5).setResizable(false);
             tblCajaChica.getColumnModel().getColumn(6).setResizable(false);
         }
-
-        cbotransferencias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cbotransferencias.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbotransferenciasActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
         escritorio.setLayout(escritorioLayout);
@@ -220,17 +227,6 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         DatosCajaChica.Eliminar(tblCajaChica);
         DatosCajaChica.Habilitar(escritorio, false);
     }//GEN-LAST:event_btnEliminarActionPerformed
-    
-    private boolean primeraAccionIgnorada = false;
-    
-    private void cbotransferenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbotransferenciasActionPerformed
-        if (!primeraAccionIgnorada) {
-            primeraAccionIgnorada = true;
-            return;
-        }
-
-        DatosCajaChica.Fecha(tblCajaChica);
-    }//GEN-LAST:event_cbotransferenciasActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

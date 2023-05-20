@@ -176,14 +176,14 @@ public class DatosCajaChica {
     public static void CargarCombo(JComboBox cbotransferencias) {
         try {
             // Preparamos la consultas
-            PreparedStatement pstmttransferencias = conn.prepareStatement("SELECT NroOperacion FROM transferenciasbancarias");
+            PreparedStatement pstmt = conn.prepareStatement("SELECT NroOperacion FROM transferenciasbancarias");
 
             // Las ejecutamos
-            ResultSet proveedores = pstmttransferencias.executeQuery();
+            ResultSet rs = pstmt.executeQuery();
 
             // Agregamos los provedores
-            while (proveedores.next()) {
-                String nomtransferencias = proveedores.getString("NroOperacion");
+            while (rs.next()) {
+                String nomtransferencias = rs.getString("NroOperacion");
                 cbotransferencias.addItem(nomtransferencias);
             }
 
@@ -216,10 +216,11 @@ public class DatosCajaChica {
         return idTransferenciasBancarias;
     }
 
-    public static void Fecha(JTable tabla) {
+    public static void Fecha(JTable tabla, JComboBox combo) {
         // Obtener la fila seleccionada
         int fila = tabla.getSelectedRow();
-        String nroOperacion = tabla.getModel().getValueAt(fila, 1).toString();
+        String nroOperacion = combo.getSelectedItem().toString();
+        System.out.println("nroOperacion = " + nroOperacion);
         try {
             // Preparamos la consulta
             PreparedStatement pstmt = conn.prepareStatement("SELECT Fecha FROM transferenciasbancarias WHERE NroOperacion = ? ");
@@ -236,7 +237,6 @@ public class DatosCajaChica {
             // Agregamos las fechas a la tabla
             while (rs.next()) {
                 String fecha = rs.getString("Fecha");
-
                 modelo.setValueAt(fecha, fila, 2);
             }
 
