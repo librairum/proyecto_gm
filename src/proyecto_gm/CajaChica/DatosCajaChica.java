@@ -14,7 +14,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.ConexionBD;
 
-
 public class DatosCajaChica {
 
     static Connection conn = ConexionBD.getConnection();
@@ -35,6 +34,7 @@ public class DatosCajaChica {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Object[] row = new Object[]{rs.getString("Id"), rs.getString("NroOperacion"),
+                    rs.getString("Fecha"),
                     rs.getString("Descripcion"), rs.getString("Entrada"), rs.getString("Salida"),
                     rs.getString("Saldo")};
                 modelo.addRow(row);
@@ -61,9 +61,9 @@ public class DatosCajaChica {
         for (Component component : components) {
             if (component instanceof JButton jButton) {
                 String button = jButton.getName();
-                if ( button.equals("deshacer")) {
+                if (button.equals("deshacer")) {
                     jButton.setEnabled(bloquear);
-                } else if (button.equals("agregar") || button.equals("editar") || button.equals("eliminar") || button.equals("guardar")) {
+                } else if (button.equals("agregar") || button.equals("editar") || button.equals("eliminar")) {
                     jButton.setEnabled(!bloquear); // aplicar logica inversa
                 }
             } else {
@@ -74,14 +74,15 @@ public class DatosCajaChica {
 
     public static void Insertar(CajaChica caj, JTable tabla) {
         try {
-            CallableStatement cstmt =  conn.prepareCall("{ CALL insertar_cajachica(?, ?, ?, ?, ?, ?) }");
+            CallableStatement cstmt = conn.prepareCall("{ CALL insertar_cajachica(?,?, ?, ?, ?, ?, ?) }");
 
             cstmt.setString(1, caj.getId());
             cstmt.setString(2, caj.getIdTransferenciasBancarias());
-            cstmt.setString(3, caj.getDescripcion());
-            cstmt.setFloat(4, caj.getEntrada());
-            cstmt.setFloat(5, caj.getSalida());
-            cstmt.setFloat(6, caj.getSaldo());
+            cstmt.setString(3, caj.getFecha());
+            cstmt.setString(4, caj.getDescripcion());
+            cstmt.setFloat(5, caj.getEntrada());
+            cstmt.setFloat(6, caj.getSalida());
+            cstmt.setFloat(7, caj.getSaldo());
 
             cstmt.execute(); // se inserta los datos a la BD
 
@@ -97,14 +98,15 @@ public class DatosCajaChica {
 
     public static void Actualizar(CajaChica caj, JTable tabla) {
         try {
-            CallableStatement cstmt = conn.prepareCall("{CALL actualizar_cajachica(?, ?, ?, ?, ?, ?) }");
+            CallableStatement cstmt = conn.prepareCall("{CALL actualizar_cajachica(?, ?, ?, ?, ?, ?, ?) }");
 
             cstmt.setString(1, caj.getId());
             cstmt.setString(2, caj.getIdTransferenciasBancarias());
-            cstmt.setString(3, caj.getDescripcion());
-            cstmt.setFloat(4, caj.getEntrada());
-            cstmt.setFloat(5, caj.getSalida());
-            cstmt.setFloat(6, caj.getSaldo());
+            cstmt.setString(3, caj.getFecha());
+            cstmt.setString(4, caj.getDescripcion());
+            cstmt.setFloat(5, caj.getEntrada());
+            cstmt.setFloat(6, caj.getSalida());
+            cstmt.setFloat(7, caj.getSaldo());
 
             cstmt.execute();
 
@@ -138,6 +140,7 @@ public class DatosCajaChica {
         // Si todas las celdas están completadas, devuelve true
         return true;
     }
+
     public static void Eliminar(JTable tabla) {
         try {
             // Obtener el indice de la fila seleccionada
@@ -169,7 +172,7 @@ public class DatosCajaChica {
         }
 
     }
-    
+
     public static void CargarCombo(JComboBox cbotransferencias) {
         try {
             // Preparamos la consultas
@@ -183,13 +186,12 @@ public class DatosCajaChica {
                 String nomtransferencias = proveedores.getString("NroOperacion");
                 cbotransferencias.addItem(nomtransferencias);
             }
-            
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     public static String Capturar(String transferencia) {
         String idTransferenciasBancarias = "";
         try {
@@ -201,11 +203,11 @@ public class DatosCajaChica {
                     + "WHERE NroOperacion = ? ";
             PreparedStatement pstmt = conn.prepareStatement(consulta);
             pstmt.setString(1, transferencia);
-            
+
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                idTransferenciasBancarias = rs.getString("IdTransferenciasBancarias");   
+                idTransferenciasBancarias = rs.getString("IdTransferenciasBancarias");
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar Opciones", JOptionPane.ERROR_MESSAGE);
@@ -213,4 +215,35 @@ public class DatosCajaChica {
 
         return idTransferenciasBancarias;
     }
+
+    public static void Fecha(JTable tabla) {
+        try {
+            // Preparamos la consulta
+            PreparedStatement pstmttransferencias = conn.prepareStatement("SELECT Fecha FROM transferenciasbancarias");
+
+            // Ejecutamos la consulta
+            ResultSet rs = pstmttransferencias.executeQuery();
+
+            // Creamos el modelo de la tabla
+            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+
+            // Limpiamos los datos existentes en la tabla
+            modelo.setRowCount(0);
+
+            // Agregamos las fechas a la tabla
+            while (rs.next()) {
+                String fecha = rs.getString("Fecha");
+                // Obtener la fila seleccionada
+                int fila = tabla.getSelectedRow();
+                modelo.setValueAt(fecha, fila, 2);
+            }
+
+            // Cerramos recursos
+            rs.close();
+            pstmttransferencias.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 }

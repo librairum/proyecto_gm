@@ -6,21 +6,23 @@ public class CajaChica {
     //Atributos
     String Id;    
     String IdTransferenciasBancarias;
+    String Fecha;
     String Descripcion;
     float Entrada;
     float Salida;
     float Saldo;
 
-    public CajaChica(String Id, String IdTransferenciasBancarias, String Descripcion, float Entrada, float Salida, float Saldo) {
+    public CajaChica(String Id, String IdTransferenciasBancarias, String Fecha, String Descripcion, float Entrada, float Salida, float Saldo) {
         this.Id = Id;
         this.IdTransferenciasBancarias = IdTransferenciasBancarias;
+        this.Fecha = Fecha;
         this.Descripcion = Descripcion;
         this.Entrada = Entrada;
         this.Salida = Salida;
         this.Saldo = Saldo;
     }
-    public CajaChica () {
-        
+
+    public CajaChica() {
     }
 
     public String getId() {
@@ -37,6 +39,14 @@ public class CajaChica {
 
     public void setIdTransferenciasBancarias(String IdTransferenciasBancarias) {
         this.IdTransferenciasBancarias = IdTransferenciasBancarias;
+    }
+
+    public String getFecha() {
+        return Fecha;
+    }
+
+    public void setFecha(String Fecha) {
+        this.Fecha = Fecha;
     }
 
     public String getDescripcion() {
@@ -70,6 +80,7 @@ public class CajaChica {
     public void setSaldo(float Saldo) {
         this.Saldo = Saldo;
     }
-    
+
+  
     
 }

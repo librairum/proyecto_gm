@@ -1,5 +1,6 @@
 package proyecto_gm.CajaChica;
 
+import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
@@ -8,13 +9,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 public class frmCajaChica extends javax.swing.JInternalFrame {
-   
+
     boolean esNuevo = false;
 
     public frmCajaChica() throws SQLException {
         initComponents();
 //  Crea un objeto ComboBox y asigna el modelo creado en el paso anterior
-        JComboBox<String> cbotransferencias = new JComboBox<String>( );
+        JComboBox<String> cbotransferencias = new JComboBox<String>();
         DatosCajaChica.CargarCombo(cbotransferencias);
 
 //  Agrega el objeto ComboBox a la celda correspondiente en cada fila de la tabla tblCajaChica
@@ -79,7 +80,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Id", "NroOperacion", "Descripcion", "Entrada", "Salida", "Saldo"
+                "Id", "NroOperacion", "Fecha", "Descripcion", "Entrada", "Salida", "Saldo"
             }
         ));
         jScrollPane1.setViewportView(tblCajaChica);
@@ -90,6 +91,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
             tblCajaChica.getColumnModel().getColumn(3).setResizable(false);
             tblCajaChica.getColumnModel().getColumn(4).setResizable(false);
             tblCajaChica.getColumnModel().getColumn(5).setResizable(false);
+            tblCajaChica.getColumnModel().getColumn(6).setResizable(false);
         }
 
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
@@ -137,22 +139,29 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    public void actionPerformed(ActionEvent e) {
+        // Obtener el elemento seleccionado
+        String opcionSeleccionada = (String) cbotransferencias.getSelectedItem();
 
+        // Código para manejar el evento
+        System.out.println("Opción seleccionada: " + opcionSeleccionada);
+        DatosCajaChica.Fecha(tblCajaChica);
+    }
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
         CajaChica caj = new CajaChica();
 
         // Dentro del método donde capturas los datos de la nueva fila
         int newRow = tblCajaChica.getSelectedRow(); // Última fila ingresada
-        String transferencia= DatosCajaChica.Capturar(tblCajaChica.getValueAt(newRow, 1).toString());
+        String transferencia = DatosCajaChica.Capturar(tblCajaChica.getValueAt(newRow, 1).toString());
 
         caj.setId((String) tblCajaChica.getValueAt(newRow, 0)); // Asigna el valor de la primera columna a campo1
-        
+
         caj.setIdTransferenciasBancarias(transferencia);
         caj.setDescripcion((String) tblCajaChica.getValueAt(newRow, 2));
         caj.setEntrada(Float.parseFloat((String) tblCajaChica.getValueAt(newRow, 3)));
 //        System.out.println(caj.getEntrada());
-        
+
         caj.setSalida(Float.parseFloat((String) tblCajaChica.getValueAt(newRow, 4)));
         caj.setSaldo(Float.parseFloat((String) tblCajaChica.getValueAt(newRow, 5)));
 
@@ -188,7 +197,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         // TODO add your handling code
         DatosCajaChica.Habilitar(escritorio, true);
         DatosCajaChica.NuevaFila(tblCajaChica);
-        esNuevo=true;
+        esNuevo = true;
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
