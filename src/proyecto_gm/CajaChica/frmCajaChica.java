@@ -26,7 +26,26 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         comboColumn.setCellEditor(new DefaultCellEditor(cbotransferencias));
         DatosCajaChica.Mostrar(modelo);
         DatosCajaChica.Habilitar(escritorio, false);
+        calcularSumaTotal();
 
+    }
+
+    private void calcularSumaTotal() {
+        // Declarar una variable para almacenar la suma total
+        float total = 0.0f;
+
+        // Recorrer todas las filas de la tabla
+        for (int row = 0; row < tblCajaChica.getRowCount(); row++) {
+            // Obtener el valor de la columna 6 para la fila actual
+            Object value = tblCajaChica.getValueAt(row, 6);
+            if (value != null) {
+                float saldo = Float.parseFloat(value.toString());
+                total += saldo;
+            }
+        }
+
+        // Asignar el total al JTextField "txtTotal"
+        txtTotal.setText(String.valueOf(total));
     }
 
     private void initializeTable() {
@@ -79,10 +98,16 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCajaChica = new javax.swing.JTable();
         cbotransferencias = new javax.swing.JComboBox<>();
+        txtTotal = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        cboPeriodo = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
         setTitle("CAJA CHICA");
+
+        escritorio.setBackground(new java.awt.Color(255, 248, 239));
 
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
         btnAgregar.setName("agregar"); // NOI18N
@@ -115,7 +140,6 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
                 btnDeshacerActionPerformed(evt);
             }
         });
-
         cbotransferencias.addItemListener(new java.awt.event.ItemListener() {
         public void itemStateChanged(java.awt.event.ItemEvent evt) {
             if (!primerEvento) {
@@ -148,14 +172,19 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
             tblCajaChica.getColumnModel().getColumn(6).setResizable(false);
         }
 
+        txtTotal.setEnabled(false);
+
+        jLabel1.setText("Saldo Actual:");
+
+        jLabel2.setText("Periodo:");
+
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
         escritorio.setLayout(escritorioLayout);
         escritorioLayout.setHorizontalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(escritorioLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 746, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(escritorioLayout.createSequentialGroup()
                         .addComponent(btnAgregar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -163,7 +192,16 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnGuardar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDeshacer)))
+                        .addComponent(btnDeshacer)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(cboPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(129, 129, 129)
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 746, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(20, Short.MAX_VALUE))
             .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(escritorioLayout.createSequentialGroup()
@@ -179,10 +217,15 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
                     .addComponent(btnDeshacer)
                     .addComponent(btnAgregar)
                     .addComponent(btnEliminar)
-                    .addComponent(btnGuardar))
+                    .addComponent(btnGuardar)
+                    .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1)
+                        .addComponent(cboPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
             .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(escritorioLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -275,6 +318,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
                 tblCajaChica.setRowSelectionAllowed(true);
             }
         }
+        calcularSumaTotal();
 
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -283,6 +327,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         DatosCajaChica.Habilitar(escritorio, true);
         DatosCajaChica.NuevaFila(tblCajaChica);
         esNuevo = true;
+        calcularSumaTotal();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
@@ -295,6 +340,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         DatosCajaChica.Eliminar(tblCajaChica);
         DatosCajaChica.Habilitar(escritorio, false);
+        calcularSumaTotal();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
 
@@ -303,9 +349,13 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnDeshacer;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JComboBox<String> cboPeriodo;
     private javax.swing.JComboBox<String> cbotransferencias;
     private javax.swing.JPanel escritorio;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblCajaChica;
+    private javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables
 }

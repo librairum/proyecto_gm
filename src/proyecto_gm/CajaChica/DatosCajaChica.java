@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -55,6 +56,33 @@ public class DatosCajaChica {
         tabla.editCellAt(fila, 0);
 
     }
+//    public static String GenerarCodigo(String tabla, String prefijo, int longitud) {
+//        CallableStatement cstmt = null;
+//        String codigo_generado = "";
+//        try {
+//            cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?, ?) }");
+//            cstmt.setString(1, tabla);
+//            cstmt.setString(2, prefijo);
+//            cstmt.setInt(3, longitud);
+//            cstmt.registerOutParameter(4, Types.VARCHAR);
+//
+//            cstmt.execute();
+//
+//            codigo_generado = cstmt.getString(5);
+//        } catch (SQLException e) {
+//            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//        } finally {
+//            if (cstmt != null) {
+//                try {
+//                    cstmt.close();
+//                } catch (SQLException e) {
+//                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//                }
+//            }
+//        }
+//        return codigo_generado;
+//        
+//    }
 
     public static void Habilitar(Container contenedor, boolean bloquear) {
         Component[] components = contenedor.getComponents();
