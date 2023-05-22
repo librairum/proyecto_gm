@@ -69,13 +69,23 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
             public boolean stopCellEditing() {
                 boolean result = super.stopCellEditing();
                 if (result) {
-                    String hora = tblAsistencias.getModel().getValueAt(tblAsistencias.getSelectedRow(), tblAsistencias.getSelectedColumn()).toString();
-                    a.setHora(hora);
-                    if (datos[2].isEmpty()) {
-                        DatosAsistencia.Insertar(a, tblAsistencias, cboPeriodo, cboEmpleado, txtTotalHoras);
+                    if (tblAsistencias.getSelectedColumn() == 5) {
+                        String obs = tblAsistencias.getModel().getValueAt(tblAsistencias.getSelectedRow(), tblAsistencias.getSelectedColumn()).toString();
+                        System.out.println("obs = " + obs);
+                        System.out.println("datos[0] = " + datos[0]);
+                        System.out.println("datos[1] = " + datos[1]);
+                        System.out.println("horas[0] = " + horas[0]);
+                        DatosAsistencia.ColocarObservacion(datos[0], datos[1], horas[0], obs);
                     } else {
-                        DatosAsistencia.Actualizar(a, datos[2], tblAsistencias, cboPeriodo, cboEmpleado, txtTotalHoras);
+                        String hora = tblAsistencias.getModel().getValueAt(tblAsistencias.getSelectedRow(), tblAsistencias.getSelectedColumn()).toString();
+                        a.setHora(hora);
+                        if (datos[2].isEmpty()) {
+                            DatosAsistencia.Insertar(a, tblAsistencias, cboPeriodo, cboEmpleado, txtTotalHoras);
+                        } else {
+                            DatosAsistencia.Actualizar(a, datos[2], tblAsistencias, cboPeriodo, cboEmpleado, txtTotalHoras);
+                        }
                     }
+
                 }
                 return result;
             }
@@ -256,12 +266,13 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnExportar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnImportar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(txtTotalHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtTotalHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnExportar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnImportar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(24, 24, 24))
         );
 
@@ -321,6 +332,7 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
     private int lastSelectedRow = -1; // Variable para guardar el índice de la última fila seleccionada
     private int lastSelectedColumn = -1; // Variable para guardar el índice de la última columna seleccionada
     private String[] datos = new String[3]; // Arreglo para almacenar los datos de la fila seleccionada
+    private String[] horas = new String[2]; // Arreglo para almacenar las horas de entrada y salida
 
     private void tblAsistenciasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAsistenciasMouseClicked
         int selectedRow = tblAsistencias.getSelectedRow();
@@ -330,8 +342,13 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
             lastSelectedRow = selectedRow;
             lastSelectedColumn = selectedColumn;
             datos = obtenerDatos();
+            horas = obtenerHoras();
+            
+            for (String hora : horas) {
+                System.out.println("hora = " + hora);
+            }
 
-            System.out.println("Hora: " + datos[2]);
+            System.out.println("Dato: " + datos[2]);
 
             a.setDni(datos[0]);
             a.setFecha(datos[1]);
@@ -365,10 +382,17 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
     private String[] obtenerDatos() {
         int fila = tblAsistencias.getSelectedRow();
         String dni = lblDni.getText();
-        String fecha = tblAsistencias.getModel().getValueAt(fila, 1).toString();
-        String hora = tblAsistencias.getModel().getValueAt(lastSelectedRow, lastSelectedColumn) == null ? "" : tblAsistencias.getModel().getValueAt(lastSelectedRow, lastSelectedColumn).toString();
-
+        String fecha = tblAsistencias.getValueAt(fila, 1).toString();
+        String hora = tblAsistencias.getValueAt(lastSelectedRow, lastSelectedColumn) != null ? tblAsistencias.getModel().getValueAt(lastSelectedRow, lastSelectedColumn).toString() : "";
         return new String[]{dni, fecha, hora};
+    }
+    
+    private String[] obtenerHoras() {
+        int fila = tblAsistencias.getSelectedRow();
+        String horaEntrada = tblAsistencias.getValueAt(fila, 2).toString();
+        String horaSalida = tblAsistencias.getValueAt(fila, 3).toString();
+        
+        return new String[]{horaEntrada, horaSalida};
     }
 
 

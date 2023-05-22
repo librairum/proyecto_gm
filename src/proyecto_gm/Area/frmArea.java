@@ -1,14 +1,39 @@
 package proyecto_gm.Area;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.Toolkit;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 public class frmArea extends javax.swing.JInternalFrame {
     boolean esNuevo=false;
   
     public frmArea() {
         initComponents();
+        // Personalizar header
+        JTableHeader header = tblArea.getTableHeader();
+        header.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                    Object value,
+                    boolean isSelected,
+                    boolean hasFocus,
+                    int row,
+                    int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                setHorizontalAlignment(JLabel.CENTER);
+                setBackground(Color.DARK_GRAY);
+                setForeground(Color.WHITE);
+                setFont(getFont().deriveFont(Font.BOLD, 13));
+                return this;
+            }
+        });
         DefaultTableModel modelo = (DefaultTableModel) tblArea.getModel();
         
         btnGuardar.setEnabled(false);
@@ -95,12 +120,13 @@ public class frmArea extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Descripción:");
 
+        tblArea.setBackground(new java.awt.Color(255, 255, 255));
         tblArea.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Id", "Descripción"
+                "ID", "DESCRIPCIÓN"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -111,6 +137,11 @@ public class frmArea extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblArea.setFocusable(false);
+        tblArea.setRowHeight(25);
+        tblArea.setSelectionBackground(new java.awt.Color(153, 153, 153));
+        tblArea.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        tblArea.setShowGrid(true);
         jScrollPane1.setViewportView(tblArea);
         if (tblArea.getColumnModel().getColumnCount() > 0) {
             tblArea.getColumnModel().getColumn(0).setResizable(false);

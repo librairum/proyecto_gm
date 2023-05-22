@@ -65,6 +65,7 @@ public class ImpAsistencias {
 
             }
             JOptionPane.showMessageDialog(null, "Los datos han sido importados correctamente.", "Importación Exitosa", JOptionPane.INFORMATION_MESSAGE);
+
             try ( PreparedStatement pstmt = conn.prepareStatement(" CALL generar_detalle_asistencia() ")) {
                 pstmt.execute();
                 System.out.println("Detalle de asistencias generado exitosamente");

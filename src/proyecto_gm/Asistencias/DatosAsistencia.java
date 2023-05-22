@@ -73,8 +73,8 @@ public class DatosAsistencia {
                 try ( ResultSet rs = cstmt.executeQuery();) {
                     if (rs.next()) {
                         entrada = rs.getString("Hora_entrada");
-                        salida = rs.getString("Hora_salida");
-                        duracion = rs.getString("Duracion");
+                        salida = rs.getString("Hora_salida") != null ? rs.getString("Hora_salida") : "00:00:00";
+                        duracion = rs.getString("Duracion") != null ? rs.getString("Duracion") : "00:00:00";
                         observaciones = rs.getString("Observaciones");
                     }
                 }
@@ -154,9 +154,9 @@ public class DatosAsistencia {
         return dni;
     }
 
-    public static int ObtenerID(String dni, String fecha, String hora) {
+    public static int ObtenerIdAsistencia(String dni, String fecha, String hora) {
         int id = 0;
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_asistencia(?, ?, ?, ?) }");) {
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_id_asistencia(?, ?, ?, ?) }");) {
             cstmt.setString(1, dni);
             cstmt.setString(2, fecha);
             cstmt.setString(3, hora);
@@ -173,7 +173,7 @@ public class DatosAsistencia {
     }
 
     public static void Actualizar(Asistencia a, String hora, JTable tabla, JComboBox periodo, JComboBox combo, JTextField totalHoras) {
-        int id = ObtenerID(a.getDni(), a.getFecha(), hora);
+        int id = ObtenerIdAsistencia(a.getDni(), a.getFecha(), hora);
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_asistencia(?, ?) }");) {
             cstmt.setInt(1, id);
             cstmt.setString(2, a.getHora());
@@ -205,6 +205,32 @@ public class DatosAsistencia {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
+    }
+
+    public static void ColocarObservacion(String dni, String fecha, String entrada, String observacion) {
+        int id_detalle = 0;
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_id_detalle_asistencia(?, ?, ?, ?) }")) {
+            cstmt.setString(1, dni);
+            cstmt.setString(2, fecha);
+            cstmt.setString(3, entrada);
+            cstmt.registerOutParameter(4, Types.INTEGER);
+
+            cstmt.execute();
+
+            id_detalle = cstmt.getInt(4);
+
+            try ( CallableStatement castmt = conn.prepareCall("{ CALL actualizar_observacion(?, ?) }")) {
+                castmt.setInt(1, id_detalle);
+                castmt.setString(2, observacion);
+                
+                castmt.execute();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
 }
