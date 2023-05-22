@@ -207,6 +207,8 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Saldo Actual:");
 
+        cboPeriodo.setNextFocusableComponent(tblCajaChica);
+
         jLabel2.setText("Periodo:");
 
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
