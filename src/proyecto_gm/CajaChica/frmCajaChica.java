@@ -1,10 +1,17 @@
 package proyecto_gm.CajaChica;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.sql.SQLException;
 import javax.swing.DefaultCellEditor;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 
 public class frmCajaChica extends javax.swing.JInternalFrame {
@@ -27,6 +34,24 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         DatosCajaChica.Mostrar(modelo);
         DatosCajaChica.Habilitar(escritorio, false);
         calcularSumaTotal();
+        // Personalizar header
+        JTableHeader header = tblCajaChica.getTableHeader();
+        header.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                    Object value,
+                    boolean isSelected,
+                    boolean hasFocus,
+                    int row,
+                    int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                setHorizontalAlignment(JLabel.CENTER);
+                setBackground(Color.DARK_GRAY);
+                setForeground(Color.WHITE);
+                setFont(getFont().deriveFont(Font.BOLD, 13));
+                return this;
+            }
+        });
 
     }
 
@@ -140,6 +165,16 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
                 btnDeshacerActionPerformed(evt);
             }
         });
+
+        tblCajaChica.setBackground(new java.awt.Color(255, 255, 255));
+        tblCajaChica.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Id", "NroOperacion", "Fecha", "Descripcion", "Entrada", "Salida", "Saldo"
+            }
+        ));
         cbotransferencias.addItemListener(new java.awt.event.ItemListener() {
         public void itemStateChanged(java.awt.event.ItemEvent evt) {
             if (!primerEvento) {
@@ -152,15 +187,11 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
             }
         }
     });
-
-        tblCajaChica.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Id", "NroOperacion", "Fecha", "Descripcion", "Entrada", "Salida", "Saldo"
-            }
-        ));
+        tblCajaChica.setFocusable(false);
+        tblCajaChica.setRowHeight(25);
+        tblCajaChica.setSelectionBackground(new java.awt.Color(153, 153, 153));
+        tblCajaChica.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        tblCajaChica.setShowGrid(true);
         jScrollPane1.setViewportView(tblCajaChica);
         if (tblCajaChica.getColumnModel().getColumnCount() > 0) {
             tblCajaChica.getColumnModel().getColumn(0).setResizable(false);
