@@ -69,20 +69,23 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
             public boolean stopCellEditing() {
                 boolean result = super.stopCellEditing();
                 if (result) {
-                    if (tblAsistencias.getSelectedColumn() == 5) {
-                        String obs = tblAsistencias.getModel().getValueAt(tblAsistencias.getSelectedRow(), tblAsistencias.getSelectedColumn()).toString();
-                        System.out.println("obs = " + obs);
-                        System.out.println("datos[0] = " + datos[0]);
-                        System.out.println("datos[1] = " + datos[1]);
-                        System.out.println("horas[0] = " + horas[0]);
+                    if (lastSelectedColumn == 5) {
+                        String obs = tblAsistencias.getValueAt(lastSelectedRow, lastSelectedColumn).toString();
                         DatosAsistencia.ColocarObservacion(datos[0], datos[1], horas[0], obs);
                     } else {
-                        String hora = tblAsistencias.getModel().getValueAt(tblAsistencias.getSelectedRow(), tblAsistencias.getSelectedColumn()).toString();
+                        String hora = tblAsistencias.getValueAt(lastSelectedRow, lastSelectedColumn).toString();
+                        System.out.println("hora = " + hora);
                         a.setHora(hora);
                         if (datos[2].isEmpty()) {
                             DatosAsistencia.Insertar(a, tblAsistencias, cboPeriodo, cboEmpleado, txtTotalHoras);
+                            horas = obtenerHoras();
+                            System.out.println("Se registro nueva asistencia");
+                            if (!horas[0].isEmpty() && !horas[1].isEmpty()) {
+                                DatosAsistencia.GenerarDetalle(tblAsistencias, cboPeriodo, cboEmpleado, txtTotalHoras);
+                                System.out.println("Se genero el detalle.");
+                            }
                         } else {
-                            DatosAsistencia.Actualizar(a, datos[2], tblAsistencias, cboPeriodo, cboEmpleado, txtTotalHoras);
+                            DatosAsistencia.Actualizar(a, horas[0], tblAsistencias, cboPeriodo, cboEmpleado, txtTotalHoras);
                         }
                     }
 
@@ -344,11 +347,12 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
             datos = obtenerDatos();
             horas = obtenerHoras();
             
-            for (String hora : horas) {
-                System.out.println("hora = " + hora);
+            String[] horario = {"Entrada", "Salida"};
+            for (int i = 0; i < horas.length; i++) {
+                System.out.println(horario[i] + ": " + horas[i]);
             }
 
-            System.out.println("Dato: " + datos[2]);
+            System.out.println("Dato[2]: " + datos[2]);
 
             a.setDni(datos[0]);
             a.setFecha(datos[1]);

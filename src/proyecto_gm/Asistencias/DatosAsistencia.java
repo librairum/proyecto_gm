@@ -172,10 +172,10 @@ public class DatosAsistencia {
         return id;
     }
 
-    public static void Actualizar(Asistencia a, String hora, JTable tabla, JComboBox periodo, JComboBox combo, JTextField totalHoras) {
-        int id = ObtenerIdAsistencia(a.getDni(), a.getFecha(), hora);
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_asistencia(?, ?) }");) {
-            cstmt.setInt(1, id);
+    public static void Actualizar(Asistencia a, String entrada, JTable tabla, JComboBox periodo, JComboBox combo, JTextField totalHoras) {
+        int id_detalle = obtenerIdDetalleAsistencia(a.getDni(), a.getFecha(), entrada);
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_detalle_asistencia(?, ?) }");) {
+            cstmt.setInt(1, id_detalle);
             cstmt.setString(2, a.getHora());
 
             cstmt.execute();
@@ -196,11 +196,6 @@ public class DatosAsistencia {
             cstmt.setString(3, a.getHora());
 
             cstmt.execute();
-
-            // Actualizamos la tabla
-            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            modelo.setRowCount(0);
-            RellenarTabla(tabla, periodo, combo, totalHoras);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -208,7 +203,22 @@ public class DatosAsistencia {
     }
 
     public static void ColocarObservacion(String dni, String fecha, String entrada, String observacion) {
+        int id_detalle = obtenerIdDetalleAsistencia(dni, fecha, entrada);
+
+        if (id_detalle != 0) {
+            try ( CallableStatement castmt = conn.prepareCall("{ CALL actualizar_observacion(?, ?) }")) {
+                castmt.setInt(1, id_detalle);
+                castmt.setString(2, observacion);
+                castmt.execute();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private static int obtenerIdDetalleAsistencia(String dni, String fecha, String entrada) {
         int id_detalle = 0;
+
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_id_detalle_asistencia(?, ?, ?, ?) }")) {
             cstmt.setString(1, dni);
             cstmt.setString(2, fecha);
@@ -218,16 +228,17 @@ public class DatosAsistencia {
             cstmt.execute();
 
             id_detalle = cstmt.getInt(4);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
 
-            try ( CallableStatement castmt = conn.prepareCall("{ CALL actualizar_observacion(?, ?) }")) {
-                castmt.setInt(1, id_detalle);
-                castmt.setString(2, observacion);
-                
-                castmt.execute();
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
+        return id_detalle;
+    }
 
+    public static void GenerarDetalle(JTable tabla, JComboBox mes, JComboBox empleado, JTextField totalHoras) {
+        try ( PreparedStatement pstmt = conn.prepareStatement("{ CALL generar_detalle_asistencia() }")) {
+            pstmt.execute();
+            RellenarTabla(tabla, mes, empleado, totalHoras);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
