@@ -12,13 +12,18 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import proyecto_gm.ConexionBD;
 import proyecto_gm.Exportar;
 import proyecto_gm.ImpAsistencias;
 
@@ -29,6 +34,7 @@ import proyecto_gm.ImpAsistencias;
 public class frmAsistencias extends javax.swing.JInternalFrame {
 
     Asistencia a = new Asistencia();
+    static Connection conn = ConexionBD.getConnection();
 
     /**
      * Creates new form frmAsistencias
@@ -121,6 +127,23 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("ASISTENCIAS");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosed(evt);
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 248, 239));
 
@@ -346,7 +369,7 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
             lastSelectedColumn = selectedColumn;
             datos = obtenerDatos();
             horas = obtenerHoras();
-            
+
             String[] horario = {"Entrada", "Salida"};
             for (int i = 0; i < horas.length; i++) {
                 System.out.println(horario[i] + ": " + horas[i]);
@@ -383,6 +406,15 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnExportarActionPerformed
 
+    private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosed
+        try ( PreparedStatement pstmt = conn.prepareCall(" CALL generar_detalle_asistencia() ")) {
+            pstmt.execute();
+            System.out.println("Detalle generado al cerrar el form.");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_formInternalFrameClosed
+
     private String[] obtenerDatos() {
         int fila = tblAsistencias.getSelectedRow();
         String dni = lblDni.getText();
@@ -390,12 +422,12 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
         String hora = tblAsistencias.getValueAt(lastSelectedRow, lastSelectedColumn) != null ? tblAsistencias.getModel().getValueAt(lastSelectedRow, lastSelectedColumn).toString() : "";
         return new String[]{dni, fecha, hora};
     }
-    
+
     private String[] obtenerHoras() {
         int fila = tblAsistencias.getSelectedRow();
         String horaEntrada = tblAsistencias.getValueAt(fila, 2).toString();
         String horaSalida = tblAsistencias.getValueAt(fila, 3).toString();
-        
+
         return new String[]{horaEntrada, horaSalida};
     }
 

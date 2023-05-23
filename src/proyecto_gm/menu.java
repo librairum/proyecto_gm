@@ -1,6 +1,9 @@
 package proyecto_gm;
 
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 import proyecto_gm.Instituciones.frmInstituciones;
 import proyecto_gm.Tipo.frmTipo;
 import proyecto_gm.Facultades.frmFacultades;
@@ -27,6 +30,7 @@ import proyecto_gm.Viaticos.frmViaticos;
 
 public class menu extends javax.swing.JFrame {
 
+    static Connection conn = ConexionBD.getConnection();
     
     public menu() {
 
@@ -71,6 +75,11 @@ public class menu extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
         escritorio.setLayout(escritorioLayout);
@@ -473,6 +482,15 @@ public class menu extends javax.swing.JFrame {
         escritorio.add(verventana);
         verventana.show();
     }//GEN-LAST:event_menuAsistenciasActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        try ( PreparedStatement pstmt = conn.prepareCall(" CALL generar_detalle_asistencia() ")) {
+            pstmt.execute();
+            System.out.println("Detalle generado al cerrar el form.");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_formWindowClosing
 
    
     public static void main(String args[]) {
