@@ -19,19 +19,16 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
     private boolean primerEvento = false;
 
     boolean esNuevo = false;
-
+    String periodo;
+    
     public frmCajaChica() throws SQLException {
         initComponents();
         initializeTable();
-//  Crea un objeto ComboBox y asigna el modelo creado en el paso anterior
-
+        //  Crea un objeto ComboBox y asigna el modelo creado en el paso anterior
         DatosCajaChica.CargarCombo(cbotransferencias);
-
-//  Agrega el objeto ComboBox a la celda correspondiente en cada fila de la tabla tblCajaChica
-        DefaultTableModel modelo = (DefaultTableModel) tblCajaChica.getModel();
+        //  Agrega el objeto ComboBox a la celda correspondiente en cada fila de la tabla tblCajaChica
         TableColumn comboColumn = tblCajaChica.getColumnModel().getColumn(1); // Reemplaza "columna" por el índice de la columna donde deseas agregar el ComboBox
         comboColumn.setCellEditor(new DefaultCellEditor(cbotransferencias));
-        DatosCajaChica.Mostrar(modelo);
         DatosCajaChica.Habilitar(escritorio, false);
         calcularSumaTotal();
         // Personalizar header
@@ -125,8 +122,8 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         cbotransferencias = new javax.swing.JComboBox<>();
         txtTotal = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        cboPeriodo = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
+        cboPeriodo = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -207,9 +204,14 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Saldo Actual:");
 
-        cboPeriodo.setNextFocusableComponent(tblCajaChica);
-
         jLabel2.setText("Periodo:");
+
+        cboPeriodo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "012023", "022023", "032023", "042023", "052023" }));
+        cboPeriodo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboPeriodoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
         escritorio.setLayout(escritorioLayout);
@@ -229,8 +231,8 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(cboPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(129, 129, 129)
+                        .addComponent(cboPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(128, 128, 128)
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -254,8 +256,8 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
                     .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel1)
-                        .addComponent(cboPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel2)))
+                        .addComponent(jLabel2)
+                        .addComponent(cboPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(23, Short.MAX_VALUE))
@@ -279,7 +281,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
         CajaChica caj = new CajaChica();
@@ -332,7 +334,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         if (esNuevo) {
             // Insertar nuevo registro
             if (DatosCajaChica.validarCamposCompletados(tblCajaChica)) {
-                DatosCajaChica.Insertar(caj, tblCajaChica);
+                DatosCajaChica.Insertar(caj, tblCajaChica, periodo);
                 JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
                 DatosCajaChica.Habilitar(escritorio, false);
 
@@ -342,7 +344,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
             }
         } else {
             if (DatosCajaChica.validarCamposCompletados(tblCajaChica)) {
-                DatosCajaChica.Actualizar(caj, tblCajaChica);
+                DatosCajaChica.Actualizar(caj, tblCajaChica, periodo);
                 JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
                 DatosCajaChica.Habilitar(escritorio, false);
 
@@ -376,6 +378,16 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         calcularSumaTotal();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
+    private void cboPeriodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboPeriodoActionPerformed
+        // TODO add your handling code here:}
+        DefaultTableModel modelo = (DefaultTableModel) tblCajaChica.getModel();
+        modelo.setRowCount(0);
+        String periodo = cboPeriodo.getSelectedItem().toString();
+        DatosCajaChica.Mostrar(modelo, periodo);
+
+        calcularSumaTotal();
+
+    }//GEN-LAST:event_cboPeriodoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;

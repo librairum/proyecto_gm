@@ -29,9 +29,11 @@ public class DatosCajaChica {
     }
 
     // Mostrar datos
-    public static void Mostrar(DefaultTableModel modelo) {
+    public static void Mostrar(DefaultTableModel modelo , String periodo) {
+        
         try {
-            PreparedStatement pstmt = conn.prepareStatement("CALL listar_cajachica()");
+            PreparedStatement pstmt = conn.prepareStatement("CALL listar_cajachica(?)");
+            pstmt.setString(1, periodo);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Object[] row = new Object[]{rs.getString("Id"), rs.getString("NroOperacion"),
@@ -100,7 +102,7 @@ public class DatosCajaChica {
         }
     }
 
-    public static void Insertar(CajaChica caj, JTable tabla) {
+    public static void Insertar(CajaChica caj, JTable tabla, String periodo) {
         try {
             CallableStatement cstmt = conn.prepareCall("{ CALL insertar_cajachica(?,?, ?, ?, ?, ?, ?) }");
 
@@ -117,14 +119,14 @@ public class DatosCajaChica {
             // Actualizamos la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
-            DatosCajaChica.Mostrar(modelo);
+            DatosCajaChica.Mostrar(modelo, periodo);
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public static void Actualizar(CajaChica caj, JTable tabla) {
+    public static void Actualizar(CajaChica caj, JTable tabla, String periodo) {
         try {
             CallableStatement cstmt = conn.prepareCall("{CALL actualizar_cajachica(?, ?, ?, ?, ?, ?, ?) }");
 
@@ -142,7 +144,7 @@ public class DatosCajaChica {
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
 
-            DatosCajaChica.Mostrar(modelo);
+            DatosCajaChica.Mostrar(modelo, periodo);
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
