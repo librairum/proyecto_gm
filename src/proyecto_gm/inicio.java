@@ -4,8 +4,12 @@
  */
 package proyecto_gm;
 
+import java.sql.Connection;
 import javax.swing.JOptionPane;
-//import proyecto_gm.principal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 
 /**
  *
@@ -18,7 +22,35 @@ public class inicio extends javax.swing.JFrame {
     public inicio() {
         initComponents();
     }
-
+    static Connection conn = ConexionBD.getConnection();
+    
+    public void ingresar(){
+        Connection con1 = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        String User = txtusuario.getText();
+        String Pass = txtcontraseña.getText();
+        if (User.equals("") || Pass.equals("")){
+            JOptionPane.showMessageDialog(this, "Llenar completamente los campos");
+        }else {
+            try {
+                
+                pst = conn.prepareStatement("select username, pass from usuario where username='" + User + 
+                        "'and pass = '" + Pass + "'");
+                rs = (ResultSet) pst.executeQuery();
+                if (rs.next()){
+                    this.dispose();
+                    new menu().setVisible(true);
+                }else {
+                    JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrecta, vuelva a intentarlo");
+                }
+                
+            }catch (SQLException e){
+                System.err.print(e.toString());
+                JOptionPane.showMessageDialog(this, "Ocurrio un error inesperado");
+            }
+        }
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -38,11 +70,21 @@ public class inicio extends javax.swing.JFrame {
         usuario.setText("USUARIO");
 
         txtusuario.setText("gmingenieros");
+        txtusuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtusuarioKeyTyped(evt);
+            }
+        });
 
         txtcontraseña.setText("12345678");
         txtcontraseña.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtcontraseñaActionPerformed(evt);
+            }
+        });
+        txtcontraseña.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtcontraseñaKeyTyped(evt);
             }
         });
 
@@ -121,32 +163,27 @@ public class inicio extends javax.swing.JFrame {
 
     private void btningresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btningresarActionPerformed
         // TODO add your handling code here:
-        String user, pwd;
-        user = txtusuario.getText();
-        pwd = txtcontraseña.getText();
-
-        if (user.equals("gmingenieros") && pwd.equals("12345678")) {
-            menu acceso = new menu();
-            acceso.setVisible(true);
-            this.setVisible(false);
-        } else if (intentos == 3) {
-            JOptionPane.showMessageDialog(null, "Has excedido el numero de intentos");
-            System.exit(0);
-
-        } else {
-            JOptionPane.showMessageDialog(null, "Usuario y/o contraseña incorrectos \n Te quedan: " + (3 - intentos) + " intentos");
-            txtusuario.setText("");
-            txtcontraseña.setText("");
-            txtusuario.requestFocus();
-            intentos = intentos + 1;
-        }
-
+    ingresar();
     }//GEN-LAST:event_btningresarActionPerformed
 
     private void btnsalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsalirActionPerformed
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_btnsalirActionPerformed
+
+    private void txtusuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtusuarioKeyTyped
+        // TODO add your handling code here:
+        if(txtusuario.getText().length() == 20){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtusuarioKeyTyped
+
+    private void txtcontraseñaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcontraseñaKeyTyped
+        // TODO add your handling code here:
+        if(txtcontraseña.getText().length() == 20){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtcontraseñaKeyTyped
 
     /**
      * @param args the command line arguments
