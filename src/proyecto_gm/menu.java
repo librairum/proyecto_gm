@@ -487,6 +487,7 @@ public class menu extends javax.swing.JFrame {
         try ( PreparedStatement pstmt = conn.prepareCall(" CALL generar_detalle_asistencia() ")) {
             pstmt.execute();
             System.out.println("Detalle generado al cerrar el form.");
+            ConexionBD.closeConnection(); // Cerramos la conexion a la base de datos
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }

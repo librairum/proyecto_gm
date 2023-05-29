@@ -87,11 +87,11 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
                             horas = obtenerHoras();
                             System.out.println("Se registro nueva asistencia");
                             if (!horas[0].isEmpty() && !horas[1].isEmpty()) {
-                                DatosAsistencia.GenerarDetalle(tblAsistencias, cboPeriodo, cboEmpleado, txtTotalHoras);
+                                DatosAsistencia.GenerarDetalle(tblAsistencias, cboPeriodo, cboEmpleado, txtTotalHoras, totalAsistencias);
                                 System.out.println("Se genero el detalle.");
                             }
                         } else {
-                            DatosAsistencia.Actualizar(a, horas[0], tblAsistencias, cboPeriodo, cboEmpleado, txtTotalHoras);
+                            DatosAsistencia.Actualizar(a, horas[0], tblAsistencias, cboPeriodo, cboEmpleado, txtTotalHoras, totalAsistencias);
                         }
                     }
 
@@ -123,6 +123,8 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
         btnExportar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtTotalHoras = new javax.swing.JTextField();
+        totalAsistencias = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -202,7 +204,7 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
         lblEmpleado.setText("jLabel1");
         lblEmpleado.setHorizontalAlignment(JLabel.CENTER);
 
-        cboPeriodo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "102022", "112022" }));
+        cboPeriodo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "102022", "022023", "042023" }));
         cboPeriodo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboPeriodoActionPerformed(evt);
@@ -242,6 +244,12 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
         txtTotalHoras.setBackground(new java.awt.Color(255, 255, 255));
         txtTotalHoras.setForeground(new java.awt.Color(0, 0, 0));
 
+        totalAsistencias.setEditable(false);
+        totalAsistencias.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel2.setText("DÍAS ASISTIDOS:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -265,9 +273,13 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnExportar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(totalAsistencias, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(33, 33, 33)
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtTotalHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtTotalHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(370, 370, 370)
                         .addComponent(lblDni, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -295,7 +307,9 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(txtTotalHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtTotalHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(totalAsistencias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnExportar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnImportar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -334,7 +348,7 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
         if (!empleadoSeleccionado.equals(ultimoEmpleadoSeleccionado) || !periodoSeleccionado.equals(ultimoPeriodoSeleccionado)) {
             actualizarEmpleadoSeleccionado();
 
-            DatosAsistencia.RellenarTabla(tblAsistencias, cboPeriodo, cboEmpleado, txtTotalHoras);
+            DatosAsistencia.RellenarTabla(tblAsistencias, cboPeriodo, cboEmpleado, txtTotalHoras, totalAsistencias);
 
             ultimoEmpleadoSeleccionado = empleadoSeleccionado;
             ultimoPeriodoSeleccionado = periodoSeleccionado;
@@ -348,7 +362,7 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
         if (!periodoSeleccionado.equals(ultimoPeriodoSeleccionado) || !empleadoSeleccionado.equals(ultimoEmpleadoSeleccionado)) {
             actualizarEmpleadoSeleccionado();
 
-            DatosAsistencia.RellenarTabla(tblAsistencias, cboPeriodo, cboEmpleado, txtTotalHoras);
+            DatosAsistencia.RellenarTabla(tblAsistencias, cboPeriodo, cboEmpleado, txtTotalHoras, totalAsistencias);
 
             ultimoPeriodoSeleccionado = periodoSeleccionado;
             ultimoEmpleadoSeleccionado = empleadoSeleccionado;
@@ -438,6 +452,7 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> cboEmpleado;
     private javax.swing.JComboBox<String> cboPeriodo;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
@@ -445,6 +460,7 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblDni;
     private javax.swing.JLabel lblEmpleado;
     private javax.swing.JTable tblAsistencias;
+    private javax.swing.JTextField totalAsistencias;
     private javax.swing.JTextField txtTotalHoras;
     // End of variables declaration//GEN-END:variables
 }

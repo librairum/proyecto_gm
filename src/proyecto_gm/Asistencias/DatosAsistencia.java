@@ -27,7 +27,7 @@ public class DatosAsistencia {
 
     static final Connection conn = ConexionBD.getConnection();
 
-    public static void RellenarTabla(JTable tabla, JComboBox mes, JComboBox empleado, JTextField totalHoras) {
+    public static void RellenarTabla(JTable tabla, JComboBox mes, JComboBox empleado, JTextField totalHoras, JTextField totalAsistencias) {
         // Obtener el dni del empleado
         String dni = ObtenerDNI(empleado);
         String periodo = mes.getSelectedItem().toString();
@@ -47,10 +47,11 @@ public class DatosAsistencia {
         // Crea una matriz bidimensional para almacenar los datos de la tabla
         String[][] data = new String[lastDayOfMonth][6];
 
-        // Variables para almacenar el total de horas, minutos y segundos
+        // Variables para almacenar el total de horas, minutos, segundos y numero de asistencias
         int totalHorasSum = 0;
         int totalMinutosSum = 0;
         int totalSegundosSum = 0;
+        int asistencias = 0;
 
         // Utiliza un bucle para iterar sobre cada día del mes en el período seleccionado
         for (int i = 0; i < lastDayOfMonth; i++) {
@@ -123,6 +124,21 @@ public class DatosAsistencia {
         // Muestra el total de horas en el JTextField
         String totalHorasText = String.format("%02d:%02d:%02d", totalHorasSum, totalMinutosSum, totalSegundosSum);
         totalHoras.setText(totalHorasText);
+        
+        // Muestra la cantidad de asistencias durante el periodo seleccionado
+        try (CallableStatement cstmt = conn.prepareCall("{ CALL obtener_cantidad_asistencias(?, ?, ?) }")){
+            cstmt.setString(1, dni);
+            cstmt.setString(2, periodo);
+            cstmt.registerOutParameter(3, Types.INTEGER);
+            
+            cstmt.execute();
+            asistencias = cstmt.getInt(3);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        String cantidad_asistencias = String.valueOf(asistencias);
+        totalAsistencias.setText(cantidad_asistencias);
     }
 
     public static void CargarEmpleados(JComboBox combo) {
@@ -133,7 +149,7 @@ public class DatosAsistencia {
                 combo.addItem(nombre_completo);
             }
         } catch (SQLException e) {
-
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -172,7 +188,7 @@ public class DatosAsistencia {
         return id;
     }
 
-    public static void Actualizar(Asistencia a, String entrada, JTable tabla, JComboBox periodo, JComboBox combo, JTextField totalHoras) {
+    public static void Actualizar(Asistencia a, String entrada, JTable tabla, JComboBox periodo, JComboBox combo, JTextField totalHoras, JTextField totalAsistencias) {
         int id_detalle = obtenerIdDetalleAsistencia(a.getDni(), a.getFecha(), entrada);
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_detalle_asistencia(?, ?) }");) {
             cstmt.setInt(1, id_detalle);
@@ -183,7 +199,7 @@ public class DatosAsistencia {
             // Actualizamos la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
-            RellenarTabla(tabla, periodo, combo, totalHoras);
+            RellenarTabla(tabla, periodo, combo, totalHoras, totalAsistencias);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -235,10 +251,10 @@ public class DatosAsistencia {
         return id_detalle;
     }
 
-    public static void GenerarDetalle(JTable tabla, JComboBox mes, JComboBox empleado, JTextField totalHoras) {
+    public static void GenerarDetalle(JTable tabla, JComboBox mes, JComboBox empleado, JTextField totalHoras, JTextField totalAsistencias) {
         try ( PreparedStatement pstmt = conn.prepareStatement("{ CALL generar_detalle_asistencia() }")) {
             pstmt.execute();
-            RellenarTabla(tabla, mes, empleado, totalHoras);
+            RellenarTabla(tabla, mes, empleado, totalHoras, totalAsistencias);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }

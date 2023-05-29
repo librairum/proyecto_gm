@@ -10,7 +10,7 @@ package proyecto_gm.Asistencias;
  */
 public class Asistencia {
 
-    String dni, fecha, hora;
+    private String dni, fecha, hora;
 
     public Asistencia() {
         // constructor vacio

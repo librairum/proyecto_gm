@@ -71,7 +71,7 @@ public class DatosViaticos {
         ResultSet rsPer = null;
         try {
             // Preparamos la consultas
-            pstmtEmp = conn.prepareStatement("SELECT Nombres FROM empleados");
+            pstmtEmp = conn.prepareStatement("SELECT CONCAT(Nombres, ' ', Apellidos) AS NombreCompleto FROM empleados ORDER BY Nombres ASC");
             pstmtPer = conn.prepareStatement("SELECT Id FROM periodos");
 
             // Las ejecutamos
@@ -80,7 +80,7 @@ public class DatosViaticos {
 
             // Agregamos las areas en cbxArea
             while (rsEmp.next()) {
-                String nomEmp = rsEmp.getString("Nombres");
+                String nomEmp = rsEmp.getString("NombreCompleto");
                 cboEmpleado.addItem(nomEmp);
             }
 
@@ -92,7 +92,7 @@ public class DatosViaticos {
 
             // Contenido vacio en los combo boxes
             cboEmpleado.setSelectedIndex(-1);
-            cboPeriodo.setSelectedIndex(-1);
+            cboPeriodo.setSelectedIndex(-1); // cambio para agilizar inserciones
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
