@@ -135,7 +135,7 @@
                       <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="398" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -223,6 +223,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtSede">
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtSedeKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtRuc">
           <Events>
@@ -235,6 +238,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtRazon">
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtRazonKeyTyped"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane1">
           <AuxValues>

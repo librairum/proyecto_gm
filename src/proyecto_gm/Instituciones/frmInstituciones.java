@@ -119,6 +119,12 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Sede:");
 
+        txtSede.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtSedeKeyTyped(evt);
+            }
+        });
+
         txtRuc.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtRucKeyTyped(evt);
@@ -126,6 +132,12 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
         });
 
         jLabel3.setText("Razon Social:");
+
+        txtRazon.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtRazonKeyTyped(evt);
+            }
+        });
 
         tblInstituciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -222,7 +234,7 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
                     .addComponent(txtSede, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
 
@@ -371,6 +383,22 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
             
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtSedeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSedeKeyTyped
+        // TODO add your handling code here:
+        if (txtSede.getText().length() >= 100) {
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }//GEN-LAST:event_txtSedeKeyTyped
+
+    private void txtRazonKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRazonKeyTyped
+        // TODO add your handling code here:
+        if (txtRazon.getText().length() >= 100) {
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }//GEN-LAST:event_txtRazonKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

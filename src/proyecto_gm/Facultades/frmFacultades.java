@@ -117,6 +117,12 @@ public class frmFacultades extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Descripcion:");
 
+        txtDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDescripcionKeyTyped(evt);
+            }
+        });
+
         tblFacultades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -317,6 +323,14 @@ public class frmFacultades extends javax.swing.JInternalFrame {
             
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtDescripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyTyped
+        // TODO add your handling code here:
+        if (txtDescripcion.getText().length() >= 100) {
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }//GEN-LAST:event_txtDescripcionKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

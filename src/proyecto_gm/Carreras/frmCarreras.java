@@ -117,6 +117,12 @@ public class frmCarreras extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Descripcion:");
 
+        txtDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDescripcionKeyTyped(evt);
+            }
+        });
+
         tblCarreras.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -316,6 +322,14 @@ public class frmCarreras extends javax.swing.JInternalFrame {
         btnAgregar.setEnabled(true);
         DatosFacultades.bloquearCampos(escritorio);
     }//GEN-LAST:event_btnDeshacerActionPerformed
+
+    private void txtDescripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyTyped
+        // TODO add your handling code here:
+        if (txtDescripcion.getText().length() >= 100) {
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }//GEN-LAST:event_txtDescripcionKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
