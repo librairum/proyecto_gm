@@ -143,7 +143,6 @@ public class DatosCajaChica {
             // Actualizamos la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
-
             DatosCajaChica.Mostrar(modelo, periodo);
 
         } catch (SQLException ex) {
