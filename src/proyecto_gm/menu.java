@@ -1,9 +1,9 @@
 package proyecto_gm;
 
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import proyecto_gm.Instituciones.frmInstituciones;
 import proyecto_gm.Tipo.frmTipo;
 import proyecto_gm.Facultades.frmFacultades;
@@ -12,8 +12,8 @@ import proyecto_gm.Empleado.frmEmpleado;
 import proyecto_gm.Cargo.frmCargo;
 import proyecto_gm.Area.frmArea;
 import proyecto_gm.Articulo.frmArticulo;
+import proyecto_gm.Asistencias.frmAsistencias;
 import proyecto_gm.CabeceraComprobante.frmCabeceraComprobante;
-import proyecto_gm.CajaChica.frmCajaChica;
 import proyecto_gm.Categoria.frmCategoria;
 import proyecto_gm.Comunicacion.frmListaComunicacion;
 import proyecto_gm.Contactos.frmContacto;
@@ -30,6 +30,7 @@ import proyecto_gm.Viaticos.frmViaticos;
 
 public class menu extends javax.swing.JFrame {
 
+    static Connection conn = ConexionBD.getConnection();
     
     public menu() {
 
@@ -46,11 +47,11 @@ public class menu extends javax.swing.JFrame {
         escritorio = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArticulo = new javax.swing.JMenu();
+        menuAsistencias = new javax.swing.JMenuItem();
         menuArea = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         menuCargo = new javax.swing.JMenuItem();
         menuCabeceraComprobante = new javax.swing.JMenuItem();
-        menuCajaChica = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         MenuCategoria = new javax.swing.JMenuItem();
         menuComunicaciones = new javax.swing.JMenuItem();
@@ -74,6 +75,11 @@ public class menu extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
         escritorio.setLayout(escritorioLayout);
@@ -92,6 +98,14 @@ public class menu extends javax.swing.JFrame {
                 menuArticuloActionPerformed(evt);
             }
         });
+
+        menuAsistencias.setText("Asistencias");
+        menuAsistencias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuAsistenciasActionPerformed(evt);
+            }
+        });
+        menuArticulo.add(menuAsistencias);
 
         menuArea.setText("Area");
         menuArea.addActionListener(new java.awt.event.ActionListener() {
@@ -124,14 +138,6 @@ public class menu extends javax.swing.JFrame {
             }
         });
         menuArticulo.add(menuCabeceraComprobante);
-
-        menuCajaChica.setText("Caja Chica");
-        menuCajaChica.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuCajaChicaActionPerformed(evt);
-            }
-        });
-        menuArticulo.add(menuCajaChica);
 
         jMenuItem3.setText("Carreras");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
@@ -471,17 +477,21 @@ public class menu extends javax.swing.JFrame {
         verventana.show();
     }//GEN-LAST:event_menuContactoActionPerformed
 
-    private void menuCajaChicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCajaChicaActionPerformed
-        // TODO add your handling code here:
-        frmCajaChica verventana = null;
-        try {
-            verventana = new frmCajaChica();
-        } catch (SQLException ex) {
-            Logger.getLogger(menu.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    private void menuAsistenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAsistenciasActionPerformed
+        frmAsistencias verventana = new frmAsistencias();
         escritorio.add(verventana);
         verventana.show();
-    }//GEN-LAST:event_menuCajaChicaActionPerformed
+    }//GEN-LAST:event_menuAsistenciasActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        try ( PreparedStatement pstmt = conn.prepareCall(" CALL generar_detalle_asistencia() ")) {
+            pstmt.execute();
+            System.out.println("Detalle generado al cerrar el form.");
+            ConexionBD.closeConnection(); // Cerramos la conexion a la base de datos
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_formWindowClosing
 
    
     public static void main(String args[]) {
@@ -528,8 +538,8 @@ public class menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem menuArea;
     private javax.swing.JMenu menuArticulo;
+    private javax.swing.JMenuItem menuAsistencias;
     private javax.swing.JMenuItem menuCabeceraComprobante;
-    private javax.swing.JMenuItem menuCajaChica;
     private javax.swing.JMenuItem menuCampos;
     private javax.swing.JMenuItem menuCargo;
     private javax.swing.JMenuItem menuComunicaciones;

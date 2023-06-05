@@ -16,6 +16,24 @@ public class frmArea extends javax.swing.JInternalFrame {
   
     public frmArea() {
         initComponents();
+        // Personalizar header
+        JTableHeader header = tblArea.getTableHeader();
+        header.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                    Object value,
+                    boolean isSelected,
+                    boolean hasFocus,
+                    int row,
+                    int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                setHorizontalAlignment(JLabel.CENTER);
+                setBackground(Color.DARK_GRAY);
+                setForeground(Color.WHITE);
+                setFont(getFont().deriveFont(Font.BOLD, 13));
+                return this;
+            }
+        });
         DefaultTableModel modelo = (DefaultTableModel) tblArea.getModel();
         
         btnGuardar.setEnabled(false);
@@ -127,7 +145,7 @@ public class frmArea extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Id", "Descripción"
+                "ID", "DESCRIPCIÓN"
             }
         ) {
             boolean[] canEdit = new boolean [] {

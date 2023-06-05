@@ -93,18 +93,21 @@ public class frmContacto extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Personas Rel.");
 
+        txtNombre.setNextFocusableComponent(txtFecha);
         txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtNombreKeyTyped(evt);
             }
         });
 
+        txtFecha.setNextFocusableComponent(txtPersonas);
         txtFecha.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtFechaKeyTyped(evt);
             }
         });
 
+        txtPersonas.setNextFocusableComponent(txtEmpresa);
         txtPersonas.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtPersonasKeyTyped(evt);
@@ -117,18 +120,21 @@ public class frmContacto extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Correo");
 
+        txtEmpresa.setNextFocusableComponent(txtCargo);
         txtEmpresa.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtEmpresaKeyTyped(evt);
             }
         });
 
+        txtCargo.setNextFocusableComponent(txtCorreo);
         txtCargo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCargoKeyTyped(evt);
             }
         });
 
+        txtCorreo.setNextFocusableComponent(txtTelefono);
         txtCorreo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCorreoKeyTyped(evt);
@@ -141,12 +147,16 @@ public class frmContacto extends javax.swing.JInternalFrame {
 
         jLabel9.setText("Direccion");
 
+        txtTelefono.setNextFocusableComponent(cboDepartamento);
         txtTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtTelefonoKeyTyped(evt);
             }
         });
 
+        cboDepartamento.setNextFocusableComponent(txtDireccion);
+
+        txtDireccion.setNextFocusableComponent(txtNota);
         txtDireccion.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtDireccionKeyTyped(evt);
@@ -249,7 +259,7 @@ public class frmContacto extends javax.swing.JInternalFrame {
                             .addComponent(txtPersonas, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE))
                         .addGap(41, 41, 41))
                     .addGroup(escritorioLayout.createSequentialGroup()
-                        .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 59, Short.MAX_VALUE)
                         .addGap(107, 107, 107)))
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(escritorioLayout.createSequentialGroup()
@@ -380,6 +390,7 @@ public class frmContacto extends javax.swing.JInternalFrame {
         btnGuardar.setEnabled(true);
         btnDeshacer.setEnabled(true);
         btnAgregar.setEnabled(false);
+        txtNombre.requestFocus();
         esNuevo = true;
     }//GEN-LAST:event_btnAgregarActionPerformed
 
@@ -436,8 +447,8 @@ public class frmContacto extends javax.swing.JInternalFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
         Contacto f = new Contacto(txtId.getText(), txtNombre.getText(), txtFecha.getText(), txtPersonas.getText()
-                , txtEmpresa.getText(), txtCargo.getText(), txtCorreo.getText(), txtTelefono.getText(), txtDireccion.getText(), 
-                txtNota.getText(), cboDepartamento.getSelectedItem().toString());
+                , txtEmpresa.getText(), txtCargo.getText(), txtCorreo.getText(), txtTelefono.getText(), cboDepartamento.getSelectedItem().toString(), txtDireccion.getText(), 
+                txtNota.getText());
         if (esNuevo) {
             // Insertar nuevo registro
             if (txtId.getText().isEmpty() || txtNombre.getText().isEmpty()

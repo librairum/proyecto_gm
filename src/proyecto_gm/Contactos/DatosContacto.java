@@ -74,7 +74,7 @@ public class DatosContacto {
     public static void CargarCombos(JComboBox cboidCat) {
         try {
             // Preparamos la consultas
-            PreparedStatement pstmtArea = conn.prepareStatement("SELECT Departamento FROM departamento");
+            PreparedStatement pstmtArea = conn.prepareStatement("SELECT Descripcion FROM departamentos");
             //PreparedStatement pstmtCargo = conn.prepareStatement("SELECT Descripcion FROM cargos");
 
             // Las ejecutamos
@@ -83,7 +83,7 @@ public class DatosContacto {
 
             // Agregamos las areas en cbxArea
             while (categoria.next()) {
-                String nomCat = categoria.getString("Departamento");
+                String nomCat = categoria.getString("Descripcion");
                 cboidCat.addItem(nomCat);
             }
 
@@ -98,7 +98,7 @@ public class DatosContacto {
     //metodo para insertar datos (nuevo cambio)
     public static void insertarDatos(Contacto contacto, JTable tabla) {
         try {
-            PreparedStatement cstmt = conn.prepareCall("{ CALL insertar_contactos(?, ?, ?,?, ?, ?,?, ?, ?,?,?) }");
+            PreparedStatement cstmt = conn.prepareCall("{ CALL insertar_contacto(?, ?, ?,?, ?, ?,?, ?, ?,?,?) }");
             if (contacto.getId().equals("")) {
                 JOptionPane.showMessageDialog(null, "Ingrese un Id", "Sistema", JOptionPane.WARNING_MESSAGE);
                 return;
@@ -154,7 +154,7 @@ public class DatosContacto {
     // Actualizar datos
     public static void actualizarDatos(Contacto contacto, JTable tabla) {
         try {
-            PreparedStatement cstmt = conn.prepareCall("{ CALL actualizar_contactos(?, ?, ?,?,?,?,?,?,?,?,?) }");
+            PreparedStatement cstmt = conn.prepareCall("{ CALL actualizar_contacto(?, ?, ?,?,?,?,?,?,?,?,?) }");
             cstmt.setString(1, contacto.getId());
             cstmt.setString(2, contacto.getNombre());
             cstmt.setString(3, contacto.getFechaNacimiento());
@@ -195,7 +195,7 @@ public class DatosContacto {
                     String id = tabla.getModel().getValueAt(fila, 0).toString();  //Se asume que el ID se encuentra en la primera columna
 
                     // Ejecutar el procedimiento almacenado
-                    PreparedStatement stmt = conn.prepareCall("{ CALL eliminar_contactos(?) }");
+                    PreparedStatement stmt = conn.prepareCall("{ CALL eliminar_contacto(?) }");
                     stmt.setString(1, id);
                     stmt.execute();
 

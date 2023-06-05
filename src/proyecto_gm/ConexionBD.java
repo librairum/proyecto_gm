@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConexionBD {
+
     // Datos de la conexión
     private static final String USERNAME = "root";
     private static final String PASSWORD = "1234";
@@ -25,9 +26,20 @@ public class ConexionBD {
                 conn = DriverManager.getConnection(CONN_STRING, USERNAME, PASSWORD);
             } catch (ClassNotFoundException | SQLException e) {
                 // Manejo de errores
-                e.printStackTrace();
+                System.err.println("Error en la conexión: " + e.getMessage());
             }
         }
         return conn;
+    }
+
+    public static void closeConnection() {
+        if (conn != null) {
+            try {
+                conn.close();
+                conn = null;
+            } catch (SQLException e) {
+                System.err.println("Error al cerra la conexión: " + e.getMessage());
+            }
+        }
     }
 }
