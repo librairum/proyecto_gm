@@ -233,7 +233,10 @@ public class DatosComunicacion {
         while(rs.next()){                    
             
                 String[] campos = rs.getString("Fecha").split("/");
-            String fechaFormato =  campos[2]+"/"+campos[1]+"/"+ campos[0]; // anio
+                //String dia, mes, anio;
+                //dia = campos[0]; mes = campos[1];
+            //String fechaFormato =  campos[2]+"/"+campos[1]+"/"+ campos[0]; // anio
+            String fechaFormato = rs.getString("Fecha");
             //agrego el resultado de la consulta al arreglo de tipo object
             Object registro[]  = new Object[] {  
                 rs.getString("NombreProyecto"), //0
@@ -325,7 +328,7 @@ public class DatosComunicacion {
                 rs.getInt("Estado"), 
                 rs.getString("EstadoDesc"), 
                 rs.getString("Dias")};
-            
+             String fechaformateado = rs.getDate("Fecha").toString();
            //insertar al modelo de la tabla la variable tipo objeto
          modelo.addRow(registro);
         }
