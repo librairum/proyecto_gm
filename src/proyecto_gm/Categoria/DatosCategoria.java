@@ -74,12 +74,12 @@ public class DatosCategoria {
     public static void insertarDatos(Categoria categoria, JTable tabla) {
         try {
             CallableStatement cstmt = conn.prepareCall("{ CALL insertar_categorias(?, ?) }");
-            if (categoria.getId().equals("")) {
+            if (categoria.getId()== 0) {
                 JOptionPane.showMessageDialog(null, "Ingrese un Id", "Sistema", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            cstmt.setString(1, categoria.getId());
+            cstmt.setInt(1, categoria.getId());
             cstmt.setString(2, categoria.getDescripcion());
             cstmt.execute(); // se inserta los datos a la BD
 
@@ -117,7 +117,7 @@ public class DatosCategoria {
     public static void actualizarDatos(Categoria categoria, JTable tabla) {
         try {
             CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_categorias(?, ?) }");
-            cstmt.setString(1, categoria.getId());
+            cstmt.setInt(1, categoria.getId());
             cstmt.setString(2, categoria.getDescripcion());
 
             

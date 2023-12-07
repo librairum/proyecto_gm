@@ -98,23 +98,27 @@ public class DatosContacto {
     //metodo para insertar datos (nuevo cambio)
     public static void insertarDatos(Contacto contacto, JTable tabla) {
         try {
-            PreparedStatement cstmt = conn.prepareCall("{ CALL insertar_contacto(?, ?, ?,?, ?, ?,?, ?, ?,?,?) }");
-            if (contacto.getId().equals("")) {
+            PreparedStatement cstmt = conn.prepareCall("{ CALL insertar_contactos(?, ?, ?,?, ?, ?,?, ?, ?,?,?,?,?) }");
+            if(contacto.getId() == 0){
                 JOptionPane.showMessageDialog(null, "Ingrese un Id", "Sistema", JOptionPane.WARNING_MESSAGE);
                 return;
             }
+            
 
-            cstmt.setString(1, contacto.getId());
+            cstmt.setInt(1, contacto.getId());
             cstmt.setString(2, contacto.getNombre());
             cstmt.setString(3, contacto.getFechaNacimiento());
             cstmt.setString(4, contacto.getPersonasRelacionadas());
             cstmt.setString(5, contacto.getEmpresa());
-            cstmt.setString(6, contacto.getCargo());
-            cstmt.setString(7, contacto.getCorreo());
-            cstmt.setString(8, contacto.getTelefono());
-            cstmt.setString(9, contacto.getDepartamento());
-            cstmt.setString(10, contacto.getDireccion());
-            cstmt.setString(11, contacto.getNotas());
+            cstmt.setString(6, contacto.getCuenta());
+            cstmt.setString(7, contacto.getClave());
+            
+            cstmt.setString(8, contacto.getCargo());
+            cstmt.setString(9, contacto.getCorreo());
+            cstmt.setString(10, contacto.getTelefono());
+            cstmt.setString(11, contacto.getDepartamento());
+            cstmt.setString(12, contacto.getDireccion());
+            cstmt.setString(13, contacto.getNotas());
 
                         
             cstmt.execute(); // se inserta los datos a la BD
@@ -140,7 +144,7 @@ public class DatosContacto {
             PreparedStatement stmt = conn.prepareStatement("CALL listar_contactos()");
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Object[] row = new Object[]{rs.getString("Id"), rs.getString("Nombre"), rs.getString("FechaNacimiento"),
+                Object[] row = new Object[]{rs.getInt("IdContacto"), rs.getString("Nombre"), rs.getString("FechaNacimiento"),
                     rs.getString("PersonasRelacionadas"), rs.getString("Empresa"), rs.getString("Cargo"),rs.getString("Correo"), rs.getString("Telefono"), rs.getString("Departamento"),
                     rs.getString("Direccion"), rs.getString("Notas")};
                 modelo.addRow(row);
@@ -154,18 +158,20 @@ public class DatosContacto {
     // Actualizar datos
     public static void actualizarDatos(Contacto contacto, JTable tabla) {
         try {
-            PreparedStatement cstmt = conn.prepareCall("{ CALL actualizar_contacto(?, ?, ?,?,?,?,?,?,?,?,?) }");
-            cstmt.setString(1, contacto.getId());
+            PreparedStatement cstmt = conn.prepareCall("{ CALL actualizar_contacto(?, ?, ?,?,?,?,?,?,?,?,?,?,?) }");
+            cstmt.setInt(1, contacto.getId());
             cstmt.setString(2, contacto.getNombre());
             cstmt.setString(3, contacto.getFechaNacimiento());
             cstmt.setString(4, contacto.getPersonasRelacionadas());
             cstmt.setString(5, contacto.getEmpresa());
-            cstmt.setString(6, contacto.getCargo());
-            cstmt.setString(7, contacto.getCorreo());
-            cstmt.setString(8, contacto.getTelefono());
-            cstmt.setString(9, contacto.getDepartamento());
-            cstmt.setString(10, contacto.getDireccion());
-            cstmt.setString(11, contacto.getNotas());
+            cstmt.setString(6, contacto.getCuenta());
+            cstmt.setString(7, contacto.getClave());
+            cstmt.setString(8, contacto.getCargo());
+            cstmt.setString(9, contacto.getCorreo());
+            cstmt.setString(10, contacto.getTelefono());
+            cstmt.setString(11, contacto.getDepartamento());
+            cstmt.setString(12, contacto.getDireccion());
+            cstmt.setString(13, contacto.getNotas());
 
             
             cstmt.execute(); // se actualiza los datos en la BD
@@ -192,11 +198,11 @@ public class DatosContacto {
                 int opcion = JOptionPane.showOptionDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
                 if (opcion == JOptionPane.YES_OPTION) {
                     // Obtener los datos de fila seleccionada
-                    String id = tabla.getModel().getValueAt(fila, 0).toString();  //Se asume que el ID se encuentra en la primera columna
-
+                    //String id = ;  //Se asume que el ID se encuentra en la primera columna
+                    int id =  Integer.parseInt(tabla.getModel().getValueAt(fila, 0).toString());
                     // Ejecutar el procedimiento almacenado
                     PreparedStatement stmt = conn.prepareCall("{ CALL eliminar_contacto(?) }");
-                    stmt.setString(1, id);
+                    stmt.setInt(1, id);
                     stmt.execute();
 
                     // Actualizar el JTable
@@ -285,7 +291,30 @@ public class DatosContacto {
 
         return valoresFila;
     }
-     
+     public static String GenerarCodigoEntero(String tabla){
+         CallableStatement cstmt = null;
+         String codigo_generado = "";
+         
+         try{
+            cstmt = conn.prepareCall("{ CALL generar_codigoentero(?, ?) }");
+            cstmt.setString(1, tabla);
+            cstmt.registerOutParameter(2, Types.INTEGER);
+            cstmt.execute();
+            
+            codigo_generado = cstmt.getString(2);
+         }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+         }finally{
+             if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+         }
+         return codigo_generado;
+     }
      public static String GenerarCodigo(String tabla, String prefijo, int longitud) {
         CallableStatement cstmt = null;
         String codigo_generado = "";

@@ -1,22 +1,22 @@
 package proyecto_gm.Categoria;
 
 public class Categoria {
-
-    protected String id, descripcion;
+    protected int IdCategoria;
+    protected String  descripcion;
 
     // Constructor
-    public Categoria(String id, String descripcion) {
-        this.id = id;
+    public Categoria(int idCategoria, String descripcion) {
+        this.IdCategoria = idCategoria;
         this.descripcion = descripcion;
     }
 
     // Getters & Setters
-    public String getId() {
-        return id;
+    public int getId() {
+        return IdCategoria;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(int id) {
+        this.IdCategoria = id;
     }
 
     public String getDescripcion() {

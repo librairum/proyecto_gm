@@ -7,10 +7,12 @@ package proyecto_gm.Articulo;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.HeadlessException;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -71,20 +73,32 @@ public class DatosArticulo {
         }
 
     
-    
+    public static void CargarMarcas(JComboBox cboMarca){
+        try{
+         PreparedStatement pstmtMarcas = conn.prepareStatement("Select descripcion from marca");
+         ResultSet marcas = pstmtMarcas.executeQuery();
+         
+         while(marcas.next()){
+             String nomMarca = marcas.getString("descripcion");
+             cboMarca.addItem(nomMarca);
+         }
+        }catch(SQLException ex){
+        
+        }
+    }
     public static void CargarCombos(JComboBox cboidCat) {
         try {
             // Preparamos la consultas
-            PreparedStatement pstmtArea = conn.prepareStatement("SELECT id FROM categorias");
+            PreparedStatement pstmtArea = conn.prepareStatement("SELECT  descripcion FROM categorias");
             //PreparedStatement pstmtCargo = conn.prepareStatement("SELECT Descripcion FROM cargos");
-
+            
             // Las ejecutamos
             ResultSet categoria = pstmtArea.executeQuery();
             //ResultSet cargos = pstmtCargo.executeQuery();
 
             // Agregamos las areas en cbxArea
             while (categoria.next()) {
-                String nomCat = categoria.getString("id");
+                String nomCat = categoria.getString("descripcion");
                 cboidCat.addItem(nomCat);
             }
 
@@ -101,14 +115,18 @@ public class DatosArticulo {
     public static void insertarDatos(Articulo articulo, JTable tabla) {
         try {
             PreparedStatement cstmt = conn.prepareCall("{ CALL insertar_articulos(?, ?, ?) }");
-            if (articulo.getId().equals("")) {
+            if (articulo.getIdArticulo()== 0) {
                 JOptionPane.showMessageDialog(null, "Ingrese un Id", "Sistema", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            cstmt.setString(1, articulo.getId());
+            cstmt.setInt(1, articulo.getIdArticulo());
             cstmt.setString(2, articulo.getDescripcion());
-            cstmt.setString(3, articulo.getIdCategoria());
+            cstmt.setInt(3, articulo.getIdCategoria());
+            cstmt.setInt(4, articulo.getIdMarca());
+            cstmt.setString(5, articulo.getCaracteristicas());
+            cstmt.setInt(6, articulo.getCantidad());
+            
             cstmt.execute(); // se inserta los datos a la BD
 
             // Actualiza el modelo de tabla con los nuevos datos
@@ -131,8 +149,19 @@ public class DatosArticulo {
         try {
             PreparedStatement stmt = conn.prepareStatement("CALL listar_articulos()");
             ResultSet rs = stmt.executeQuery();
+            
             while (rs.next()) {
-                Object[] row = new Object[]{rs.getString("Id"), rs.getString("descripcion"), rs.getString("IdCategorias")};
+                Object[] row = new Object[]{rs.getInt("idarticulo"), 
+                                            rs.getInt("idcategoria"),
+                                            rs.getString("categoriadescripcion"),
+                                            
+                                            rs.getInt("idmarca"),
+                                            rs.getString("marcadescripcion"),
+                                            rs.getString("caracteristicas"),
+                                            rs.getString("descripcion"), 
+                                            rs.getString("cantidad") 
+                                            
+                                            };
                 modelo.addRow(row);
             }
         } catch (SQLException ex) {
@@ -145,10 +174,12 @@ public class DatosArticulo {
     public static void actualizarDatos(Articulo articulo, JTable tabla) {
         try {
             PreparedStatement cstmt = conn.prepareCall("{ CALL actualizar_articulos(?, ?, ?) }");
-            cstmt.setString(1, articulo.getId());
+            cstmt.setInt(1, articulo.getIdCategoria());
             cstmt.setString(2, articulo.getDescripcion());
-            cstmt.setString(3, articulo.getIdCategoria());
-
+            cstmt.setInt(3, articulo.getIdCategoria());
+            cstmt.setInt(4, articulo.getIdMarca());
+            cstmt.setString(5, articulo.getCaracteristicas());
+            cstmt.setInt(6, articulo.getCantidad());
             
             cstmt.execute(); // se actualiza los datos en la BD
 
@@ -174,11 +205,11 @@ public class DatosArticulo {
                 int opcion = JOptionPane.showOptionDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
                 if (opcion == JOptionPane.YES_OPTION) {
                     // Obtener los datos de fila seleccionada
-                    String id = tabla.getModel().getValueAt(fila, 0).toString();  //Se asume que el ID se encuentra en la primera columna
+                    int id =  Integer.parseInt(tabla.getModel().getValueAt(fila, 0).toString());  //Se asume que el ID se encuentra en la primera columna
 
                     // Ejecutar el procedimiento almacenado
                     PreparedStatement stmt = conn.prepareCall("{ CALL eliminar_articulos(?) }");
-                    stmt.setString(1, id);
+                    stmt.setInt(1, id);
                     stmt.execute();
 
                     // Actualizar el JTable
@@ -287,5 +318,31 @@ public class DatosArticulo {
 
         return valoresFila;
     }
+     
+     
+     public static String GenerarCodigoEntero(String tabla){
+         CallableStatement cstmt = null;
+         String codigo_generado = "";
+         
+         try{
+            cstmt = conn.prepareCall("{ CALL generar_codigoentero(?, ?) }");
+            cstmt.setString(1, tabla);
+            cstmt.registerOutParameter(2, Types.INTEGER);
+            cstmt.execute();
+            
+            codigo_generado = cstmt.getString(2);
+         }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+         }finally{
+             if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+         }
+         return codigo_generado;
+     }
 
 }

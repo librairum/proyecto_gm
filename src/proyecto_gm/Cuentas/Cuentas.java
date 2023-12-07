@@ -9,19 +9,20 @@ package proyecto_gm.Cuentas;
  * @author jeanv
  */
 public class Cuentas {
-    private String id, tipoPropietario, nombres, nroCuenta, nroCuentaInterbancaria, tipoMoneda;
+    private int IdCuenta;
+    private String  tipoPropietario, nombres, nroCuenta, nroCuentaInterbancaria, tipoMoneda;
     private int idBanco;
     
     public Cuentas() {
         // Constructo vacio
     }
 
-    public String getId() {
-        return id;
+    public int getIdCuenta() {
+        return IdCuenta;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdCuenta(int id) {
+        this.IdCuenta = id;
     }
 
     public String getTipoPropietario() {

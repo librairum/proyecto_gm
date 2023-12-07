@@ -1,8 +1,11 @@
 package proyecto_gm;
 
+import java.awt.Graphics;
+import java.awt.Image;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import proyecto_gm.Instituciones.frmInstituciones;
 import proyecto_gm.Tipo.frmTipo;
@@ -25,7 +28,8 @@ import proyecto_gm.RecibosHonorarios.frmRecibosHonorarios;
 import proyecto_gm.TipoDocumento.frmTipoDocumento;
 import proyecto_gm.Transferencias.frmTransferencias;
 import proyecto_gm.Viaticos.frmViaticos;
-
+import proyecto_gm.CajaChica.frmCajaChica;
+import proyecto_gm.credencial.frmCredencial;
 
 
 public class menu extends javax.swing.JFrame {
@@ -34,45 +38,64 @@ public class menu extends javax.swing.JFrame {
     
     public menu() {
 
-        initComponents();
+        initComponents();        
         setSize(1100, 700);
         this.setLocationRelativeTo(null);
+        
+        
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        escritorio = new javax.swing.JDesktopPane();
+        ImageIcon icon = new ImageIcon(getClass().getResource("/iconos/fondogm.png"));
+        Image img = icon.getImage();
+        escritorio = new javax.swing.JDesktopPane(){
+            public void paintComponent(Graphics g){
+                int x = (this.getWidth() - img.getWidth(null))/2;
+                int y = (this.getHeight()-img.getHeight(null))/2;
+                g.drawImage(img, x, y, null);
+            }
+        };
         jMenuBar1 = new javax.swing.JMenuBar();
-        menuArticulo = new javax.swing.JMenu();
-        menuAsistencias = new javax.swing.JMenuItem();
-        menuArea = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        menuCargo = new javax.swing.JMenuItem();
-        menuCabeceraComprobante = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        MenuCategoria = new javax.swing.JMenuItem();
-        menuComunicaciones = new javax.swing.JMenuItem();
-        menuContacto = new javax.swing.JMenuItem();
-        menuCuentasBancarias = new javax.swing.JMenuItem();
-        menuEmpleado = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        menuModulo = new javax.swing.JMenuItem();
-        menuPeriodos = new javax.swing.JMenuItem();
-        menuproveedores = new javax.swing.JMenuItem();
-        menuRecibosHonorarios = new javax.swing.JMenuItem();
-        menuViaticos = new javax.swing.JMenuItem();
-        menuTipo = new javax.swing.JMenuItem();
-        menuTipoDocumento = new javax.swing.JMenuItem();
-        menuTransferencias = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        menuRegistros = new javax.swing.JMenuItem();
-        menuGastos = new javax.swing.JMenuItem();
-        menuCampos = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
+        menuAdministracion = new javax.swing.JMenu();
+        subMenuCargos = new javax.swing.JMenuItem();
+        subMenuAreas = new javax.swing.JMenuItem();
+        subMenuTipoEmpleado = new javax.swing.JMenuItem();
+        submenuAsistencia = new javax.swing.JMenuItem();
+        subMenuTipoDocumento = new javax.swing.JMenuItem();
+        submenuContratosPersonal = new javax.swing.JMenuItem();
+        menuFacturacion = new javax.swing.JMenu();
+        subMenuReciboHonorario = new javax.swing.JMenuItem();
+        subMenuComprobante = new javax.swing.JMenuItem();
+        subMenuTransferencia = new javax.swing.JMenuItem();
+        menuLogistica = new javax.swing.JMenu();
+        subMenuCategoria = new javax.swing.JMenuItem();
+        subMenuArticulos = new javax.swing.JMenuItem();
+        menuProyecto = new javax.swing.JMenu();
+        subMenuClientes = new javax.swing.JMenuItem();
+        subMenuComunicaciones = new javax.swing.JMenuItem();
+        subMenuContactos = new javax.swing.JMenuItem();
+        submenuContratoProyecto = new javax.swing.JMenuItem();
+        menuRecursosHumanos = new javax.swing.JMenu();
+        subMenuExpLaboral = new javax.swing.JMenuItem();
+        subMenuCarreras = new javax.swing.JMenuItem();
+        subMenuInstituciones = new javax.swing.JMenuItem();
+        subMenuFacultades = new javax.swing.JMenuItem();
+        subMenuProveedores = new javax.swing.JMenuItem();
+        subMenuEmpleados = new javax.swing.JMenuItem();
+        menuTesoreria = new javax.swing.JMenu();
+        subMenuBancos = new javax.swing.JMenuItem();
+        subMenuFlujoCaja = new javax.swing.JMenuItem();
+        subMenuCuentasBancarias = new javax.swing.JMenuItem();
+        subMenuViaticos = new javax.swing.JMenuItem();
+        menuConfiguracion = new javax.swing.JMenu();
+        subMenuPeriodos = new javax.swing.JMenuItem();
+        subMenuModulos = new javax.swing.JMenuItem();
+        subMenuDepartamentos = new javax.swing.JMenuItem();
+        subMenuCredencial = new javax.swing.JMenuItem();
+        menuSeguridad = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -92,213 +115,260 @@ public class menu extends javax.swing.JFrame {
             .addGap(0, 761, Short.MAX_VALUE)
         );
 
-        menuArticulo.setText("Mantenimiento");
-        menuArticulo.addActionListener(new java.awt.event.ActionListener() {
+        menuAdministracion.setText("Administracion");
+
+        subMenuCargos.setText("Cargos");
+        subMenuCargos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuArticuloActionPerformed(evt);
+                subMenuCargosActionPerformed(evt);
             }
         });
+        menuAdministracion.add(subMenuCargos);
 
-        menuAsistencias.setText("Asistencias");
-        menuAsistencias.addActionListener(new java.awt.event.ActionListener() {
+        subMenuAreas.setText("Areas");
+        subMenuAreas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuAsistenciasActionPerformed(evt);
+                subMenuAreasActionPerformed(evt);
             }
         });
-        menuArticulo.add(menuAsistencias);
+        menuAdministracion.add(subMenuAreas);
 
-        menuArea.setText("Area");
-        menuArea.addActionListener(new java.awt.event.ActionListener() {
+        subMenuTipoEmpleado.setText("Tipos de empleados");
+        subMenuTipoEmpleado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuAreaActionPerformed(evt);
+                subMenuTipoEmpleadoActionPerformed(evt);
             }
         });
-        menuArticulo.add(menuArea);
+        menuAdministracion.add(subMenuTipoEmpleado);
 
-        jMenuItem4.setText("Articulo");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        submenuAsistencia.setText("Asistencia");
+        submenuAsistencia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                submenuAsistenciaActionPerformed(evt);
             }
         });
-        menuArticulo.add(jMenuItem4);
+        menuAdministracion.add(submenuAsistencia);
 
-        menuCargo.setText("Cargo");
-        menuCargo.addActionListener(new java.awt.event.ActionListener() {
+        subMenuTipoDocumento.setText("Tipos de documentos");
+        subMenuTipoDocumento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuCargoActionPerformed(evt);
+                subMenuTipoDocumentoActionPerformed(evt);
             }
         });
-        menuArticulo.add(menuCargo);
+        menuAdministracion.add(subMenuTipoDocumento);
 
-        menuCabeceraComprobante.setText("Cabecera de Comprobante");
-        menuCabeceraComprobante.addActionListener(new java.awt.event.ActionListener() {
+        submenuContratosPersonal.setText("Contratos personal");
+        submenuContratosPersonal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuCabeceraComprobanteActionPerformed(evt);
+                submenuContratosPersonalActionPerformed(evt);
             }
         });
-        menuArticulo.add(menuCabeceraComprobante);
+        menuAdministracion.add(submenuContratosPersonal);
 
-        jMenuItem3.setText("Carreras");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        jMenuBar1.add(menuAdministracion);
+
+        menuFacturacion.setText("Facturacion");
+
+        subMenuReciboHonorario.setText("Recibo por honorarios");
+        subMenuReciboHonorario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                subMenuReciboHonorarioActionPerformed(evt);
             }
         });
-        menuArticulo.add(jMenuItem3);
+        menuFacturacion.add(subMenuReciboHonorario);
 
-        MenuCategoria.setText("Categoria");
-        MenuCategoria.addActionListener(new java.awt.event.ActionListener() {
+        subMenuComprobante.setText("Comprobantes");
+        subMenuComprobante.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MenuCategoriaActionPerformed(evt);
+                subMenuComprobanteActionPerformed(evt);
             }
         });
-        menuArticulo.add(MenuCategoria);
+        menuFacturacion.add(subMenuComprobante);
 
-        menuComunicaciones.setText("Comunicaciones");
-        menuComunicaciones.addActionListener(new java.awt.event.ActionListener() {
+        subMenuTransferencia.setText("Transferencias");
+        subMenuTransferencia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuComunicacionesActionPerformed(evt);
+                subMenuTransferenciaActionPerformed(evt);
             }
         });
-        menuArticulo.add(menuComunicaciones);
+        menuFacturacion.add(subMenuTransferencia);
 
-        menuContacto.setText("Contacto");
-        menuContacto.addActionListener(new java.awt.event.ActionListener() {
+        jMenuBar1.add(menuFacturacion);
+
+        menuLogistica.setText("Logistica");
+
+        subMenuCategoria.setText("Categorias");
+        subMenuCategoria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuContactoActionPerformed(evt);
+                subMenuCategoriaActionPerformed(evt);
             }
         });
-        menuArticulo.add(menuContacto);
+        menuLogistica.add(subMenuCategoria);
 
-        menuCuentasBancarias.setText("Cuentas Bancarias");
-        menuCuentasBancarias.addActionListener(new java.awt.event.ActionListener() {
+        subMenuArticulos.setText("Articulos");
+        subMenuArticulos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuCuentasBancariasActionPerformed(evt);
+                subMenuArticulosActionPerformed(evt);
             }
         });
-        menuArticulo.add(menuCuentasBancarias);
+        menuLogistica.add(subMenuArticulos);
 
-        menuEmpleado.setText("Empleado");
-        menuEmpleado.addActionListener(new java.awt.event.ActionListener() {
+        jMenuBar1.add(menuLogistica);
+
+        menuProyecto.setText("Proyecto");
+
+        subMenuClientes.setText("Clientes");
+        subMenuClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuEmpleadoActionPerformed(evt);
+                subMenuClientesActionPerformed(evt);
             }
         });
-        menuArticulo.add(menuEmpleado);
+        menuProyecto.add(subMenuClientes);
 
-        jMenuItem2.setText("Facultades");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        subMenuComunicaciones.setText("Comunicaciones");
+        subMenuComunicaciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                subMenuComunicacionesActionPerformed(evt);
             }
         });
-        menuArticulo.add(jMenuItem2);
+        menuProyecto.add(subMenuComunicaciones);
 
-        jMenuItem1.setText("Instituciones");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        subMenuContactos.setText("Contactos");
+        subMenuContactos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                subMenuContactosActionPerformed(evt);
             }
         });
-        menuArticulo.add(jMenuItem1);
+        menuProyecto.add(subMenuContactos);
 
-        menuModulo.setText("Modulo");
-        menuModulo.addActionListener(new java.awt.event.ActionListener() {
+        submenuContratoProyecto.setText("Contrato proyectos");
+        submenuContratoProyecto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuModuloActionPerformed(evt);
+                submenuContratoProyectoActionPerformed(evt);
             }
         });
-        menuArticulo.add(menuModulo);
+        menuProyecto.add(submenuContratoProyecto);
 
-        menuPeriodos.setText("Periodos");
-        menuPeriodos.addActionListener(new java.awt.event.ActionListener() {
+        jMenuBar1.add(menuProyecto);
+
+        menuRecursosHumanos.setText("Recursos humanos");
+
+        subMenuExpLaboral.setText("Experiencia laboral");
+        subMenuExpLaboral.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuPeriodosActionPerformed(evt);
+                subMenuExpLaboralActionPerformed(evt);
             }
         });
-        menuArticulo.add(menuPeriodos);
+        menuRecursosHumanos.add(subMenuExpLaboral);
 
-        menuproveedores.setText("Proveedores");
-        menuproveedores.addActionListener(new java.awt.event.ActionListener() {
+        subMenuCarreras.setText("Carreras");
+        subMenuCarreras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuproveedoresActionPerformed(evt);
+                subMenuCarrerasActionPerformed(evt);
             }
         });
-        menuArticulo.add(menuproveedores);
+        menuRecursosHumanos.add(subMenuCarreras);
 
-        menuRecibosHonorarios.setText("Recibos por Honorarios");
-        menuRecibosHonorarios.addActionListener(new java.awt.event.ActionListener() {
+        subMenuInstituciones.setText("Instituciones");
+        subMenuInstituciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuRecibosHonorariosActionPerformed(evt);
+                subMenuInstitucionesActionPerformed(evt);
             }
         });
-        menuArticulo.add(menuRecibosHonorarios);
+        menuRecursosHumanos.add(subMenuInstituciones);
 
-        menuViaticos.setText("Viáticos");
-        menuViaticos.addActionListener(new java.awt.event.ActionListener() {
+        subMenuFacultades.setText("Facultades");
+        subMenuFacultades.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuViaticosActionPerformed(evt);
+                subMenuFacultadesActionPerformed(evt);
             }
         });
-        menuArticulo.add(menuViaticos);
+        menuRecursosHumanos.add(subMenuFacultades);
 
-        menuTipo.setText("Tipo de empleado");
-        menuTipo.addActionListener(new java.awt.event.ActionListener() {
+        subMenuProveedores.setText("Proveedores");
+        subMenuProveedores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuTipoActionPerformed(evt);
+                subMenuProveedoresActionPerformed(evt);
             }
         });
-        menuArticulo.add(menuTipo);
+        menuRecursosHumanos.add(subMenuProveedores);
 
-        menuTipoDocumento.setText("Tipo Documento");
-        menuTipoDocumento.addActionListener(new java.awt.event.ActionListener() {
+        subMenuEmpleados.setText("Empleados");
+        subMenuEmpleados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuTipoDocumentoActionPerformed(evt);
+                subMenuEmpleadosActionPerformed(evt);
             }
         });
-        menuArticulo.add(menuTipoDocumento);
+        menuRecursosHumanos.add(subMenuEmpleados);
 
-        menuTransferencias.setText("Transferencias");
-        menuTransferencias.addActionListener(new java.awt.event.ActionListener() {
+        jMenuBar1.add(menuRecursosHumanos);
+
+        menuTesoreria.setText("Tesoreria");
+
+        subMenuBancos.setText("Bancos");
+        subMenuBancos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuTransferenciasActionPerformed(evt);
+                subMenuBancosActionPerformed(evt);
             }
         });
-        menuArticulo.add(menuTransferencias);
+        menuTesoreria.add(subMenuBancos);
 
-        jMenuBar1.add(menuArticulo);
-
-        jMenu2.setText("Proceso");
-
-        menuRegistros.setText("Registros");
-        menuRegistros.addActionListener(new java.awt.event.ActionListener() {
+        subMenuFlujoCaja.setText("Flujo de caja");
+        subMenuFlujoCaja.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuRegistrosActionPerformed(evt);
+                subMenuFlujoCajaActionPerformed(evt);
             }
         });
-        jMenu2.add(menuRegistros);
+        menuTesoreria.add(subMenuFlujoCaja);
 
-        menuGastos.setText("Gastos");
-        menuGastos.addActionListener(new java.awt.event.ActionListener() {
+        subMenuCuentasBancarias.setText("Cuentas bancarias");
+        subMenuCuentasBancarias.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuGastosActionPerformed(evt);
+                subMenuCuentasBancariasActionPerformed(evt);
             }
         });
-        jMenu2.add(menuGastos);
+        menuTesoreria.add(subMenuCuentasBancarias);
 
-        menuCampos.setText("Campos");
-        menuCampos.addActionListener(new java.awt.event.ActionListener() {
+        subMenuViaticos.setText("Viaticos");
+        subMenuViaticos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuCamposActionPerformed(evt);
+                subMenuViaticosActionPerformed(evt);
             }
         });
-        jMenu2.add(menuCampos);
+        menuTesoreria.add(subMenuViaticos);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(menuTesoreria);
 
-        jMenu3.setText("Reportes");
-        jMenuBar1.add(jMenu3);
+        menuConfiguracion.setText("Configuracion");
+
+        subMenuPeriodos.setText("Periodos");
+        subMenuPeriodos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuPeriodosActionPerformed(evt);
+            }
+        });
+        menuConfiguracion.add(subMenuPeriodos);
+
+        subMenuModulos.setText("Modulos");
+        subMenuModulos.setEnabled(false);
+        menuConfiguracion.add(subMenuModulos);
+
+        subMenuDepartamentos.setText("Departamentos");
+        subMenuDepartamentos.setEnabled(false);
+        menuConfiguracion.add(subMenuDepartamentos);
+
+        subMenuCredencial.setText("Credencial");
+        subMenuCredencial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuCredencialActionPerformed(evt);
+            }
+        });
+        menuConfiguracion.add(subMenuCredencial);
+
+        jMenuBar1.add(menuConfiguracion);
+
+        menuSeguridad.setText("Seguridad");
+        jMenuBar1.add(menuSeguridad);
 
         setJMenuBar(jMenuBar1);
 
@@ -316,182 +386,303 @@ public class menu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void menuEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEmpleadoActionPerformed
-        // TODO add your handling code here:
-        frmEmpleado verventana = new frmEmpleado();
+        private void Abrirareas(){
+             frmArea verventana = new frmArea();
         escritorio.add(verventana);
         verventana.show();
-
-    }//GEN-LAST:event_menuEmpleadoActionPerformed
-
-    private void menuCargoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCargoActionPerformed
-        // TODO add your handling code here:
+        }
+        
+        private void Abrirarticulos(){
+         frmArticulo verventana = new frmArticulo();
+        escritorio.add(verventana);
+        verventana.show();
+        }
+        
+        private void Abrirasistencias(){
+           frmAsistencias verventana = new frmAsistencias();
+        escritorio.add(verventana);
+        verventana.show(); 
+            
+        }
+        
+        
+        private void Abrirbancos(){
+        }
+        
+        private void Abrircabeceracomprobante(){
+            frmCabeceraComprobante verventana = new frmCabeceraComprobante();
+        escritorio.add(verventana);
+        
+        verventana.show();
+        }
+        
+        private void Abrircajachica(){
+             frmCajaChica verventana = new frmCajaChica();
+            escritorio.add((verventana));
+            verventana.show();
+        }
+        
+        private void Abrircargos(){
         frmCargo verventana = new frmCargo();
         escritorio.add(verventana);
         verventana.show();
-    }//GEN-LAST:event_menuCargoActionPerformed
-
-    private void menuArticuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuArticuloActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_menuArticuloActionPerformed
-
-    private void menuAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAreaActionPerformed
-        // TODO add your handling code here:
-        frmArea verventana = new frmArea();
-        escritorio.add(verventana);
-        verventana.show();
-    }//GEN-LAST:event_menuAreaActionPerformed
-
-    private void menuRegistrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRegistrosActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_menuRegistrosActionPerformed
-
-    private void menuGastosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuGastosActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_menuGastosActionPerformed
-
-    private void menuCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCamposActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_menuCamposActionPerformed
-
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
-        frmCarreras verventana = new frmCarreras();
-        escritorio.add(verventana);
-        verventana.show();
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
-
-    private void menuTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuTipoActionPerformed
-        // TODO add your handling code here:
-        frmTipo verventana = new frmTipo();
-        escritorio.add(verventana);
-        verventana.show();
-    }//GEN-LAST:event_menuTipoActionPerformed
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-        frmInstituciones verventana = new frmInstituciones();
-        escritorio.add(verventana);
-        verventana.show();
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
-        frmFacultades verventana = new frmFacultades();
-        escritorio.add(verventana);
-        verventana.show();
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void menuModuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModuloActionPerformed
-        // TODO add your handling code here:
-        frmModulo verventana = new frmModulo();
-        escritorio.add(verventana);
-        verventana.show();
-    }//GEN-LAST:event_menuModuloActionPerformed
-
-    private void menuTipoDocumentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuTipoDocumentoActionPerformed
-        // TODO add your handling code here:
-        frmTipoDocumento verventana = new frmTipoDocumento();
-        escritorio.add(verventana);
-        verventana.show();
-    }//GEN-LAST:event_menuTipoDocumentoActionPerformed
-
-    private void menuComunicacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuComunicacionesActionPerformed
-        frmListaComunicacion verventana = new frmListaComunicacion();
-        escritorio.add(verventana);
-        verventana.AsignarPadre(escritorio);
-        verventana.show();
+        }
         
-    }//GEN-LAST:event_menuComunicacionesActionPerformed
-
-    private void menuproveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuproveedoresActionPerformed
-        // TODO add your handling code here:
-        frmProveedores verventana = new frmProveedores();
+        private void Abrircarreras(){
+         frmCarreras verventana = new frmCarreras();
         escritorio.add(verventana);
+        verventana.show();
+        }
         
-        verventana.show();
-    }//GEN-LAST:event_menuproveedoresActionPerformed
-
-    private void menuCabeceraComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCabeceraComprobanteActionPerformed
-        // TODO add your handling code here:
-        frmCabeceraComprobante verventana = new frmCabeceraComprobante();
+        private void Abrircategorias(){
+         frmCategoria verventana = new frmCategoria();
         escritorio.add(verventana);
+        verventana.show();
+        }
+        private void Abrircomprobantes(){}
+        private void Abrirclientes(){
         
-        verventana.show();
-    }//GEN-LAST:event_menuCabeceraComprobanteActionPerformed
-
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
-        frmArticulo verventana = new frmArticulo();
-        escritorio.add(verventana);
-        verventana.show();
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
-
-    private void MenuCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuCategoriaActionPerformed
-        // TODO add your handling code here:
-        frmCategoria verventana = new frmCategoria();
-        escritorio.add(verventana);
-        verventana.show();
-    }//GEN-LAST:event_MenuCategoriaActionPerformed
-
-    private void menuRecibosHonorariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRecibosHonorariosActionPerformed
-        // TODO add your handling code here:
-        frmRecibosHonorarios verventana = new frmRecibosHonorarios();
-        escritorio.add(verventana);
-        verventana.show();
-    }//GEN-LAST:event_menuRecibosHonorariosActionPerformed
-
-    private void menuViaticosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuViaticosActionPerformed
-        // TODO add your handling code here:
-        frmViaticos verventana = new frmViaticos();
-        escritorio.add(verventana);
-        verventana.show();
-    }//GEN-LAST:event_menuViaticosActionPerformed
-
-    private void menuPeriodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPeriodosActionPerformed
-        // TODO add your handling code here:
-        frmPeriodos verventana = new frmPeriodos();
-        escritorio.add(verventana);
-        verventana.show();
-    }//GEN-LAST:event_menuPeriodosActionPerformed
-
-    private void menuCuentasBancariasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCuentasBancariasActionPerformed
-        // TODO add your handling code here:
-        frmCuentas verventana = new frmCuentas();
-        escritorio.add(verventana);
-        verventana.show();
-    }//GEN-LAST:event_menuCuentasBancariasActionPerformed
-
-    private void menuTransferenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuTransferenciasActionPerformed
-        frmTransferencias verventana = new frmTransferencias();
-        escritorio.add(verventana);
-        verventana.show();
-    }//GEN-LAST:event_menuTransferenciasActionPerformed
-
-    private void menuContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuContactoActionPerformed
+        }
+        
+        private void Abrircomunicaciones(){
+        
+            frmListaComunicacion verventana = new frmListaComunicacion();
+            escritorio.add(verventana);
+            verventana.AsignarPadre(escritorio);
+            verventana.show();
+        }
+        
+        private void Abrircontactos(){
         frmContacto verventana = new frmContacto();
         escritorio.add(verventana);
         verventana.show();
-    }//GEN-LAST:event_menuContactoActionPerformed
-
-    private void menuAsistenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAsistenciasActionPerformed
-        frmAsistencias verventana = new frmAsistencias();
+        }
+        
+        private void Abrircontratos(){
+        
+        }
+        
+        private void Abrircuentasbancarias(){
+        frmCuentas verventana = new frmCuentas();
         escritorio.add(verventana);
         verventana.show();
-    }//GEN-LAST:event_menuAsistenciasActionPerformed
-
+        }
+        
+        private void Abrirdepartamentos(){
+        
+        }
+        
+        private void Abrirdetalles_asistencia(){
+        
+        }
+        
+        private void Abrirempleados(){
+        frmEmpleado verventana = new frmEmpleado();
+        escritorio.add(verventana);
+        verventana.show();
+        }
+        
+        private void Abrirexperiencialaboral(){
+        
+        }
+        
+        private void Abrirfacultades(){
+        frmFacultades verventana = new frmFacultades();
+        escritorio.add(verventana);
+        verventana.show();
+        }
+        
+        
+        private void Abririnstitucioneseducativas(){
+         frmInstituciones verventana = new frmInstituciones();
+        escritorio.add(verventana);
+        verventana.show();
+        }
+        
+        private void Abrirmodulos(){
+        frmModulo verventana = new frmModulo();
+        escritorio.add(verventana);
+        verventana.show();
+        }
+        
+        private void Abrirperiodos(){
+        frmPeriodos verventana = new frmPeriodos();
+        escritorio.add(verventana);
+        verventana.show();
+        }
+        
+        private void Abrirproveedores(){
+             frmProveedores verventana = new frmProveedores();
+            escritorio.add(verventana);
+        
+            verventana.show();
+        }
+        
+        private void Abrirreciboshonorarios(){
+         frmRecibosHonorarios verventana = new frmRecibosHonorarios();
+        escritorio.add(verventana);
+        verventana.show();
+        }
+        
+        private void Abrirtiposdocumentos(){
+            frmTipoDocumento verventana = new frmTipoDocumento();
+            escritorio.add(verventana);
+            verventana.show();
+        }
+        
+        private void Abrirtiposempleados(){
+            
+         frmTipo verventana = new frmTipo();
+        escritorio.add(verventana);
+        verventana.show();
+        }
+        
+        private void Abrirtransferenciasbancarias(){
+         frmTransferencias verventana = new frmTransferencias();
+        escritorio.add(verventana);
+        verventana.show();
+        }
+        
+        private void Abrirusuarios(){
+        
+        }
+        
+        private void Abrirviaticos(){
+            frmViaticos verventana = new frmViaticos();
+        escritorio.add(verventana);
+        verventana.show();
+        }
+        private void Abrircredencial(){
+            proyecto_gm.credencial.frmCredencial verventana = new frmCredencial();
+            escritorio.add(verventana);
+            verventana.show();
+        }
+    private void menuCajaChicaActionPerformed (java.awt.event.ActionEvent evt){
+       
+    }
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        try ( PreparedStatement pstmt = conn.prepareCall(" CALL generar_detalle_asistencia() ")) {
+        /*    
+        try ( 
+            
+            PreparedStatement pstmt = conn.prepareCall(" CALL generar_detalle_asistencia() ")) {
             pstmt.execute();
             System.out.println("Detalle generado al cerrar el form.");
             ConexionBD.closeConnection(); // Cerramos la conexion a la base de datos
+            
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+                */
     }//GEN-LAST:event_formWindowClosing
+
+    private void subMenuTipoEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuTipoEmpleadoActionPerformed
+        Abrirtiposempleados();
+    }//GEN-LAST:event_subMenuTipoEmpleadoActionPerformed
+
+    private void subMenuCargosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuCargosActionPerformed
+        Abrircargos();
+    }//GEN-LAST:event_subMenuCargosActionPerformed
+
+    private void subMenuAreasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuAreasActionPerformed
+        Abrirareas();
+    }//GEN-LAST:event_subMenuAreasActionPerformed
+
+    private void submenuAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submenuAsistenciaActionPerformed
+        Abrirasistencias();
+    }//GEN-LAST:event_submenuAsistenciaActionPerformed
+
+    private void subMenuTipoDocumentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuTipoDocumentoActionPerformed
+        Abrirtiposdocumentos();
+    }//GEN-LAST:event_subMenuTipoDocumentoActionPerformed
+
+    private void submenuContratosPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submenuContratosPersonalActionPerformed
+        Abrircontratos();
+    }//GEN-LAST:event_submenuContratosPersonalActionPerformed
+
+    private void subMenuReciboHonorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuReciboHonorarioActionPerformed
+        Abrirreciboshonorarios();
+    }//GEN-LAST:event_subMenuReciboHonorarioActionPerformed
+
+    private void subMenuComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuComprobanteActionPerformed
+        Abrircomprobantes();
+    }//GEN-LAST:event_subMenuComprobanteActionPerformed
+
+    private void subMenuTransferenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuTransferenciaActionPerformed
+        Abrirtransferenciasbancarias();
+    }//GEN-LAST:event_subMenuTransferenciaActionPerformed
+
+    private void subMenuCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuCategoriaActionPerformed
+        Abrircategorias();
+    }//GEN-LAST:event_subMenuCategoriaActionPerformed
+
+    private void subMenuArticulosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuArticulosActionPerformed
+        Abrirarticulos();
+    }//GEN-LAST:event_subMenuArticulosActionPerformed
+
+    private void subMenuClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuClientesActionPerformed
+        Abrirclientes();
+    }//GEN-LAST:event_subMenuClientesActionPerformed
+
+    private void subMenuComunicacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuComunicacionesActionPerformed
+        Abrircomunicaciones();
+    }//GEN-LAST:event_subMenuComunicacionesActionPerformed
+
+    private void subMenuContactosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuContactosActionPerformed
+        Abrircontactos();
+        
+    }//GEN-LAST:event_subMenuContactosActionPerformed
+
+    private void submenuContratoProyectoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submenuContratoProyectoActionPerformed
+        Abrircontratos();
+    }//GEN-LAST:event_submenuContratoProyectoActionPerformed
+
+    private void subMenuExpLaboralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuExpLaboralActionPerformed
+        Abrirexperiencialaboral();
+    }//GEN-LAST:event_subMenuExpLaboralActionPerformed
+
+    private void subMenuCarrerasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuCarrerasActionPerformed
+        Abrircarreras();
+    }//GEN-LAST:event_subMenuCarrerasActionPerformed
+
+    private void subMenuInstitucionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuInstitucionesActionPerformed
+        Abririnstitucioneseducativas();
+    }//GEN-LAST:event_subMenuInstitucionesActionPerformed
+
+    private void subMenuFacultadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuFacultadesActionPerformed
+        Abrirfacultades();
+    }//GEN-LAST:event_subMenuFacultadesActionPerformed
+
+    private void subMenuProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuProveedoresActionPerformed
+        Abrirproveedores();
+    }//GEN-LAST:event_subMenuProveedoresActionPerformed
+
+    private void subMenuEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuEmpleadosActionPerformed
+        Abrirempleados();
+    }//GEN-LAST:event_subMenuEmpleadosActionPerformed
+
+    private void subMenuBancosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuBancosActionPerformed
+        Abrirbancos();
+    }//GEN-LAST:event_subMenuBancosActionPerformed
+
+    private void subMenuFlujoCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuFlujoCajaActionPerformed
+        Abrircajachica();
+    }//GEN-LAST:event_subMenuFlujoCajaActionPerformed
+
+    private void subMenuCuentasBancariasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuCuentasBancariasActionPerformed
+        Abrircuentasbancarias();
+    }//GEN-LAST:event_subMenuCuentasBancariasActionPerformed
+
+    private void subMenuViaticosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuViaticosActionPerformed
+        Abrirviaticos();
+    }//GEN-LAST:event_subMenuViaticosActionPerformed
+
+    private void subMenuPeriodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuPeriodosActionPerformed
+        Abrirperiodos();
+    }//GEN-LAST:event_subMenuPeriodosActionPerformed
+
+    private void subMenuCredencialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuCredencialActionPerformed
+        Abrircredencial();
+    }//GEN-LAST:event_subMenuCredencialActionPerformed
 
    
     public static void main(String args[]) {
@@ -527,34 +718,44 @@ public class menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem MenuCategoria;
     private javax.swing.JDesktopPane escritorio;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem menuArea;
-    private javax.swing.JMenu menuArticulo;
-    private javax.swing.JMenuItem menuAsistencias;
-    private javax.swing.JMenuItem menuCabeceraComprobante;
-    private javax.swing.JMenuItem menuCampos;
-    private javax.swing.JMenuItem menuCargo;
-    private javax.swing.JMenuItem menuComunicaciones;
-    private javax.swing.JMenuItem menuContacto;
-    private javax.swing.JMenuItem menuCuentasBancarias;
-    private javax.swing.JMenuItem menuEmpleado;
-    private javax.swing.JMenuItem menuGastos;
-    private javax.swing.JMenuItem menuModulo;
-    private javax.swing.JMenuItem menuPeriodos;
-    private javax.swing.JMenuItem menuRecibosHonorarios;
-    private javax.swing.JMenuItem menuRegistros;
-    private javax.swing.JMenuItem menuTipo;
-    private javax.swing.JMenuItem menuTipoDocumento;
-    private javax.swing.JMenuItem menuTransferencias;
-    private javax.swing.JMenuItem menuViaticos;
-    private javax.swing.JMenuItem menuproveedores;
+    private javax.swing.JMenu menuAdministracion;
+    private javax.swing.JMenu menuConfiguracion;
+    private javax.swing.JMenu menuFacturacion;
+    private javax.swing.JMenu menuLogistica;
+    private javax.swing.JMenu menuProyecto;
+    private javax.swing.JMenu menuRecursosHumanos;
+    private javax.swing.JMenu menuSeguridad;
+    private javax.swing.JMenu menuTesoreria;
+    private javax.swing.JMenuItem subMenuAreas;
+    private javax.swing.JMenuItem subMenuArticulos;
+    private javax.swing.JMenuItem subMenuBancos;
+    private javax.swing.JMenuItem subMenuCargos;
+    private javax.swing.JMenuItem subMenuCarreras;
+    private javax.swing.JMenuItem subMenuCategoria;
+    private javax.swing.JMenuItem subMenuClientes;
+    private javax.swing.JMenuItem subMenuComprobante;
+    private javax.swing.JMenuItem subMenuComunicaciones;
+    private javax.swing.JMenuItem subMenuContactos;
+    private javax.swing.JMenuItem subMenuCredencial;
+    private javax.swing.JMenuItem subMenuCuentasBancarias;
+    private javax.swing.JMenuItem subMenuDepartamentos;
+    private javax.swing.JMenuItem subMenuEmpleados;
+    private javax.swing.JMenuItem subMenuExpLaboral;
+    private javax.swing.JMenuItem subMenuFacultades;
+    private javax.swing.JMenuItem subMenuFlujoCaja;
+    private javax.swing.JMenuItem subMenuInstituciones;
+    private javax.swing.JMenuItem subMenuModulos;
+    private javax.swing.JMenuItem subMenuPeriodos;
+    private javax.swing.JMenuItem subMenuProveedores;
+    private javax.swing.JMenuItem subMenuReciboHonorario;
+    private javax.swing.JMenuItem subMenuTipoDocumento;
+    private javax.swing.JMenuItem subMenuTipoEmpleado;
+    private javax.swing.JMenuItem subMenuTransferencia;
+    private javax.swing.JMenuItem subMenuViaticos;
+    private javax.swing.JMenuItem submenuAsistencia;
+    private javax.swing.JMenuItem submenuContratoProyecto;
+    private javax.swing.JMenuItem submenuContratosPersonal;
     // End of variables declaration//GEN-END:variables
 }

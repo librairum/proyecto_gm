@@ -4,11 +4,13 @@
  */
 package proyecto_gm;
 
+import java.awt.Frame;
 import java.sql.Connection;
 import javax.swing.JOptionPane;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.UIManager;
 
 
 /**
@@ -20,7 +22,9 @@ public class inicio extends javax.swing.JFrame {
     int intentos;
 
     public inicio() {
+        
         initComponents();
+        
     }
     static Connection conn = ConexionBD.getConnection();
     
@@ -30,17 +34,21 @@ public class inicio extends javax.swing.JFrame {
         ResultSet rs = null;
         String User = txtusuario.getText();
         String Pass = txtcontraseña.getText();
+        menu contenedor = new menu();
         if (User.equals("") || Pass.equals("")){
             JOptionPane.showMessageDialog(this, "Llenar completamente los campos");
         }else {
             try {
                 
-                pst = conn.prepareStatement("select username, pass from usuario where username='" + User + 
+                pst = conn.prepareStatement("select username, pass from usuarios where username='" + User + 
                         "'and pass = '" + Pass + "'");
                 rs = (ResultSet) pst.executeQuery();
                 if (rs.next()){
                     this.dispose();
-                    new menu().setVisible(true);
+                    contenedor.setExtendedState(Frame.MAXIMIZED_BOTH);
+                    contenedor.setVisible(true);
+                    /*new menu().setVisible(true);*/
+                    
                 }else {
                     JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrecta, vuelva a intentarlo");
                 }
@@ -76,7 +84,7 @@ public class inicio extends javax.swing.JFrame {
             }
         });
 
-        txtcontraseña.setText("12345678");
+        txtcontraseña.setText("123456789");
         txtcontraseña.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtcontraseñaActionPerformed(evt);
@@ -216,7 +224,13 @@ public class inicio extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 //new inicio().setVisible(true);
-                new inicio().show();
+                try{
+                    UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+                    new inicio().show();
+                }catch(Exception e){
+                
+                }
+                
             }
         });
     }

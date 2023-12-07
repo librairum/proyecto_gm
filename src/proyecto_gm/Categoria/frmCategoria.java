@@ -243,7 +243,7 @@ public class frmCategoria extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        Categoria f = new Categoria(txtId.getText(), txtDescripcion.getText());
+        Categoria f = new Categoria( Integer.parseInt(txtId.getText()) , txtDescripcion.getText());
         if (esNuevo) {
             // Insertar nuevo registro
             if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {

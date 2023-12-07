@@ -9,15 +9,49 @@ package proyecto_gm.Contactos;
  * @author USUARIO
  */
 public class Contacto {
-    protected String Id, Nombre, FechaNacimiento, PersonasRelacionadas, Empresa, Cargo, Correo, Telefono, Departamento, Direccion, Notas;
+
+    /**
+     * @return the cuenta
+     */
+    public String getCuenta() {
+        return cuenta;
+    }
+
+    /**
+     * @param cuenta the cuenta to set
+     */
+    public void setCuenta(String cuenta) {
+        this.cuenta = cuenta;
+    }
+
+    /**
+     * @return the clave
+     */
+    public String getClave() {
+        return clave;
+    }
+
+    /**
+     * @param clave the clave to set
+     */
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
+    private int Id;
+    protected String  Nombre, FechaNacimiento, PersonasRelacionadas, Empresa, Cargo, Correo, Telefono, Departamento, Direccion, Notas;
+    private String cuenta;
+    private String clave;
 
     // Constructor
-    public Contacto(String Id, String Nombre, String FechaNacimiento, String PersonasRelacionadas, String Empresa, String Cargo, String Correo, String Telefono, String Departamento, String Direccion, String Notas) {
+    public Contacto(int Id, String Nombre, String FechaNacimiento, String PersonasRelacionadas, String Empresa, String cuenta, String clave,
+                            String Cargo, String Correo, String Telefono, String Departamento, String Direccion, String Notas) {
         this.Id=Id;
         this.Nombre=Nombre;
         this.FechaNacimiento=FechaNacimiento;
         this.PersonasRelacionadas=PersonasRelacionadas;
         this.Empresa=Empresa;
+        this.cuenta = cuenta;
+        this.clave = clave;
         this.Cargo=Cargo;
         this.Correo=Correo;
         this.Telefono=Telefono;
@@ -29,11 +63,11 @@ public class Contacto {
     
     //get y set
 
-    public String getId() {
+    public int getId() {
         return Id;
     }
 
-    public void setId(String Id) {
+    public void setId(int Id) {
         this.Id = Id;
     }
     

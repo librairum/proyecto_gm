@@ -47,7 +47,8 @@ public class frmArea extends javax.swing.JInternalFrame {
         tblArea.setRowSelectionAllowed(true);
         
         // Personalizar header
-        JTableHeader header = tblArea.getTableHeader();
+        //JTableHeader header = tblArea.getTableHeader();
+        //JTableHeader header = tblArea.getTableHeader();
         header.setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table,

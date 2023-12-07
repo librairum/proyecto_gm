@@ -100,7 +100,7 @@ public class DatosCuentas {
                 String tipoPropietarioTexto = tipoPropietario.equals("P") ? "Persona Natural" : "Empresa";
                 String tipoMoneda = rs.getString("TipoMoneda");
                 String tipoMonedaTexto = tipoMoneda.equals("S") ? "Soles" : "Dólares";
-                Object[] row = new Object[]{rs.getString("Id"), tipoPropietarioTexto, rs.getString("Nombres"),
+                Object[] row = new Object[]{rs.getString("IdCuentaBancaria"), tipoPropietarioTexto, rs.getString("Nombres"),
                     rs.getString("Banco"), rs.getString("CCC"), rs.getString("CCI"), tipoMonedaTexto};
                 modelo.addRow(row);
             }
@@ -126,7 +126,7 @@ public class DatosCuentas {
         try {
             cstmt = conn.prepareCall("{ CALL insertar_cuenta(?, ?, ?, ?, ?, ?, ?) }");
 
-            cstmt.setString(1, cuenta.getId());
+            cstmt.setInt(1, cuenta.getIdCuenta());
             cstmt.setString(2, cuenta.getTipoPropietario());
             cstmt.setString(3, cuenta.getNombres());
             cstmt.setInt(4, cuenta.getIdBanco());
@@ -196,7 +196,7 @@ public class DatosCuentas {
         try {
             cstmt = conn.prepareCall("{ CALL actualizar_cuenta(?, ?, ?, ?, ?, ?, ?) }");
 
-            cstmt.setString(1, cuenta.getId());
+            cstmt.setInt(1, cuenta.getIdCuenta());
             cstmt.setString(2, cuenta.getTipoPropietario());
             cstmt.setString(3, cuenta.getNombres());
             cstmt.setInt(4, cuenta.getIdBanco());
@@ -236,11 +236,11 @@ public class DatosCuentas {
                 int opcion = JOptionPane.showOptionDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
                 if (opcion == JOptionPane.YES_OPTION) {
                     // Obtener los datos de fila seleccionada
-                    String id = tabla.getModel().getValueAt(fila, 0).toString(); //Se asume que el ID se encuentra en la primera columna
+                    int id = Integer.parseInt(tabla.getModel().getValueAt(fila, 0).toString()); //Se asume que el ID se encuentra en la primera columna
 
                     // Ejecutar el procedimiento almacenado
                     cstmt = conn.prepareCall("{ CALL eliminar_cuenta(?) }");
-                    cstmt.setString(1, id);
+                    cstmt.setInt(1, id);
                     cstmt.execute();
 
                     // Actualizamos la tabla
@@ -277,7 +277,8 @@ public class DatosCuentas {
                 return false;
             }
         }
-
+        
+        /*
         if (campos[1].getText().length() != 14) {
             JOptionPane.showMessageDialog(null, "El número de cuenta debe contener 14 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             campos[1].requestFocus();
@@ -289,10 +290,34 @@ public class DatosCuentas {
             campos[2].requestFocus();
             return false;
         }
-
+        */
         return true;
     }
 
+    public static String GenerarCodigoEntero(String tabla){
+         CallableStatement cstmt = null;
+         String codigo_generado = "";
+         
+         try{
+            cstmt = conn.prepareCall("{ CALL generar_codigoentero(?, ?) }");
+            cstmt.setString(1, tabla);
+            cstmt.registerOutParameter(2, Types.INTEGER);
+            cstmt.execute();
+            
+            codigo_generado = cstmt.getString(2);
+         }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+         }finally{
+             if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+         }
+         return codigo_generado;
+     }
     // Generar código
     public static String GenerarCodigo(String tabla, String prefijo, int longitud) {
         CallableStatement cstmt = null;

@@ -1,23 +1,30 @@
 package proyecto_gm.Articulo;
 
 public class Articulo {
-
-    protected String id, descripcion, idCategoria;
+    protected int IdArticulo;
+    protected int IdCategoria;
+    private int IdMarca;
+    private String caracteristicas;
+    
+    protected String  descripcion;
+    private int cantidad;
+    protected String categoriadescripcion;
+    protected String marcadescripcion;
 
     // Constructor
-    public Articulo(String id, String descripcion, String idCategoria) {
-        this.id = id;
+    public Articulo(int idArticulo, String descripcion, int idCategoria) {
+        this.IdArticulo = idArticulo;
         this.descripcion = descripcion;
-        this.idCategoria = idCategoria;
+        this.IdCategoria = idCategoria;
     }
 
     //get y set
-    public String getId() {
-        return id;
+    public int getIdArticulo() {
+        return IdArticulo;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdArticulo(int IdArticulo) {
+        this.IdArticulo = IdArticulo;
     }
 
     public String getDescripcion() {
@@ -28,12 +35,54 @@ public class Articulo {
         this.descripcion = descripcion;
     }
 
-    public String getIdCategoria() {
-        return idCategoria;
+    public int getIdCategoria() {
+        return IdCategoria;
     }
 
-    public void setIdCategoria(String idCategoria) {
-        this.idCategoria = idCategoria;
+    public void setIdCategoria(int idCategoria) {
+        this.IdCategoria = idCategoria;
+    }
+
+    /**
+     * @return the IdMarca
+     */
+    public int getIdMarca() {
+        return IdMarca;
+    }
+
+    /**
+     * @param IdMarca the IdMarca to set
+     */
+    public void setIdMarca(int IdMarca) {
+        this.IdMarca = IdMarca;
+    }
+
+    /**
+     * @return the caracteristicas
+     */
+    public String getCaracteristicas() {
+        return caracteristicas;
+    }
+
+    /**
+     * @param caracteristicas the caracteristicas to set
+     */
+    public void setCaracteristicas(String caracteristicas) {
+        this.caracteristicas = caracteristicas;
+    }
+
+    /**
+     * @return the cantidad
+     */
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    /**
+     * @param cantidad the cantidad to set
+     */
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 
 }

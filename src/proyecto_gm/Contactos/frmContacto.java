@@ -373,7 +373,8 @@ public class frmContacto extends javax.swing.JInternalFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         DatosContacto.habilitarCampos(escritorio);
-        String codigo = DatosContacto.GenerarCodigo("contactos", "CO", 4);
+        //String codigo = DatosContacto.GenerarCodigo("contactos", "CO", 4);
+        String codigo = DatosContacto.GenerarCodigoEntero("contactos");
         txtId.setText(codigo);
         txtNombre.setEnabled(true);
         txtFecha.setEnabled(true);
@@ -445,10 +446,13 @@ public class frmContacto extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-
-        Contacto f = new Contacto(txtId.getText(), txtNombre.getText(), txtFecha.getText(), txtPersonas.getText()
-                , txtEmpresa.getText(), txtCargo.getText(), txtCorreo.getText(), txtTelefono.getText(), cboDepartamento.getSelectedItem().toString(), txtDireccion.getText(), 
-                txtNota.getText());
+          
+        Contacto f = new Contacto(Integer.parseInt(txtId.getText()), txtNombre.getText(), 
+                     txtFecha.getText(), txtPersonas.getText(), txtEmpresa.getText(), "","",
+                     txtCargo.getText(), txtCorreo.getText(), txtTelefono.getText(), 
+                     cboDepartamento.getSelectedItem().toString(), txtDireccion.getText(), 
+                                  txtNota.getText());
+        
         if (esNuevo) {
             // Insertar nuevo registro
             if (txtId.getText().isEmpty() || txtNombre.getText().isEmpty()

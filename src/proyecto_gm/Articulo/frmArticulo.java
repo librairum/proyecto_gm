@@ -36,6 +36,7 @@ public class frmArticulo extends javax.swing.JInternalFrame {
         // Poder seleccionar fila(s) de la tabla
         tblarticulo.setRowSelectionAllowed(true);
         DatosArticulo.CargarCombos(cboidCat);
+        DatosArticulo.CargarMarcas(cboMarca);
     }
 
     /**
@@ -62,6 +63,12 @@ public class frmArticulo extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblarticulo = new javax.swing.JTable();
         btnExportar = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        cboMarca = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        txtCaracteristicas = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtCantidad = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -128,7 +135,7 @@ public class frmArticulo extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Id", "Descripcion", "Id_Categoria"
+                "IdArticulo", "IdCategoria", "categoriadescripcion", "IdMarca", "marcadescripcion", "Caracteristicas", "Descripcion", "Cantidad"
             }
         ));
         jScrollPane1.setViewportView(tblarticulo);
@@ -140,39 +147,78 @@ public class frmArticulo extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel4.setText("Marca");
+
+        jLabel5.setText("Caracteristicas");
+
+        txtCaracteristicas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCaracteristicasKeyTyped(evt);
+            }
+        });
+
+        jLabel6.setText("Cantidad");
+
+        txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCantidadKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
         escritorio.setLayout(escritorioLayout);
         escritorioLayout.setHorizontalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1)
             .addGroup(escritorioLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(escritorioLayout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2)
-                        .addGap(29, 29, 29)
-                        .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(cboidCat, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(escritorioLayout.createSequentialGroup()
+                                .addComponent(btnAgregar)
+                                .addGap(3, 3, 3)
+                                .addComponent(btnEditar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnEliminar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnGuardar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnDeshacer))
+                            .addGroup(escritorioLayout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cboidCat, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(escritorioLayout.createSequentialGroup()
+                                .addGap(120, 120, 120)
+                                .addComponent(btnExportar)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(escritorioLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cboMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(escritorioLayout.createSequentialGroup()
-                        .addComponent(btnAgregar)
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEditar)
+                        .addComponent(txtDescripcion))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioLayout.createSequentialGroup()
+                        .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEliminar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnGuardar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDeshacer)
+                        .addComponent(txtCaracteristicas, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnExportar)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane1)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCantidad)))
+                .addContainerGap())
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,17 +230,30 @@ public class frmArticulo extends javax.swing.JInternalFrame {
                     .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnDeshacer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnExportar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnExportar))
                 .addGap(23, 23, 23)
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(cboidCat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboidCat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(cboMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(escritorioLayout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5)
+                        .addComponent(txtCaracteristicas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -202,7 +261,9 @@ public class frmArticulo extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -212,11 +273,57 @@ public class frmArticulo extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    private void Habilitar(boolean estado){
+        txtId.setEnabled(false);
+        txtDescripcion.setEnabled(estado);
+        txtCaracteristicas.setEnabled(estado);
+        txtCantidad.setEnabled(estado);
+        cboidCat.setEnabled(estado);
+        cboMarca.setEnabled(estado);
+    }
+    
+    private void Limpiar(){
+        txtId.setText("");
+        txtDescripcion.setText("");
+        txtCaracteristicas.setText("");
+        txtCantidad.setText("0");
+        cboMarca.setSelectedIndex(0);
+        cboidCat.setSelectedIndex(0);
+    }
+    
+    private void SeleccionarDatos(){
+        DefaultTableModel modelo = (DefaultTableModel) this.tblarticulo.getModel();
+        int filaSeleccionada  = this.tblarticulo.getSelectedRow();
+        int IdArticulo = Integer.parseInt(modelo.getValueAt(filaSeleccionada,0).toString());
+        int idcategoria =  Integer.parseInt(modelo.getValueAt(filaSeleccionada, 1).toString()) ;
+        String descripcionCategoria = modelo.getValueAt(filaSeleccionada, 2).toString();
+        int idMarca = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 3).toString());
+        String descripcionMarca = modelo.getValueAt(filaSeleccionada, 4).toString();
+        String caracteristicas = modelo.getValueAt(filaSeleccionada, 5).toString();
+        String descripcion = modelo.getValueAt(filaSeleccionada, 6).toString();
+        int cantidad = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 7).toString());
+        
+        txtId.setText(String.valueOf(IdArticulo));
+        
+        cboidCat.setSelectedIndex(idcategoria);
+        
+        cboMarca.setSelectedIndex(idMarca);
+        
+        txtDescripcion.setText(descripcion);
+        txtCaracteristicas.setText(caracteristicas);
+        txtCantidad.setText(String.valueOf(cantidad));
+        
+    }
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        DatosArticulo.habilitarCampos(escritorio);
-        txtId.setEnabled(true);
-        txtDescripcion.setEnabled(true);
-        cboidCat.setEnabled(true);
+        /*DatosArticulo.habilitarCampos(escritorio);*/
+        Limpiar();
+        Habilitar(true);
+        
+        String codigo = DatosArticulo.GenerarCodigoEntero("articulos");
+        this.txtId.setText(codigo);
+        
+        
         btnEditar.setEnabled(false);
         btnEliminar.setEnabled(false);
         btnGuardar.setEnabled(true);
@@ -228,24 +335,26 @@ public class frmArticulo extends javax.swing.JInternalFrame {
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
         // Habilitamos los campos:
+        
+        
         btnAgregar.setEnabled(false);
         btnEliminar.setEnabled(false);
         btnGuardar.setEnabled(true);
         btnDeshacer.setEnabled(true);
         btnEditar.setEnabled(false);
-        txtId.setEnabled(true);
-        txtDescripcion.setEnabled(true);
-        cboidCat.setEnabled(true);
-        
+        Habilitar(true);
+        /*
         DatosArticulo.habilitarCampos(escritorio);
-
+        */
+        SeleccionarDatos();
+        /*
         // Agrupar las cajas de texto
         JTextField[] camposTexto = {txtId, txtDescripcion};
 
 
         JComboBox[] combos = {cboidCat};
         DatosArticulo.Editar(tblarticulo, camposTexto, combos);
-        
+        */
         esNuevo = false;
         
     }//GEN-LAST:event_btnEditarActionPerformed
@@ -262,7 +371,14 @@ public class frmArticulo extends javax.swing.JInternalFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
-        Articulo f = new Articulo(txtId.getText(), txtDescripcion.getText(), cboidCat.getSelectedItem().toString());
+        
+        Articulo f = new Articulo(Integer.parseInt(txtId.getText()), 
+                        txtDescripcion.getText(), cboidCat.getSelectedIndex()+1);
+        /*
+        Articulo f = new Articulo( Integer.parseInt(txtId.getText()) , 
+                                  txtDescripcion.getText(), 
+                                  Integer.parseInt(cboidCat.getSelectedItem().toString()) );
+        */
         if (esNuevo) {
             // Insertar nuevo registro
             if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
@@ -290,17 +406,24 @@ public class frmArticulo extends javax.swing.JInternalFrame {
         btnEditar.setEnabled(true);
         btnEliminar.setEnabled(true);
         btnAgregar.setEnabled(true);
+        /*
         DatosArticulo.LimpiarCampos(escritorio);
         DatosArticulo.BloquearCampos(escritorio);
+        */
+        Habilitar(false);
+        Limpiar();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
         // TODO add your handling code here:
-
+        Limpiar();
+        Habilitar(false);
+/*
         DatosCategoria.limpiarCampos(escritorio);
         
         
         DatosArticulo.BloquearCampos(escritorio);
+  */      
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
         btnEditar.setEnabled(true);
@@ -334,6 +457,14 @@ public class frmArticulo extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txtDescripcionKeyTyped
 
+    private void txtCaracteristicasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCaracteristicasKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCaracteristicasKeyTyped
+
+    private void txtCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCantidadKeyTyped
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
@@ -342,13 +473,19 @@ public class frmArticulo extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnExportar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JComboBox<String> cboMarca;
     private javax.swing.JComboBox<String> cboidCat;
     private javax.swing.JPanel escritorio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblarticulo;
+    private javax.swing.JTextField txtCantidad;
+    private javax.swing.JTextField txtCaracteristicas;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtId;
     // End of variables declaration//GEN-END:variables

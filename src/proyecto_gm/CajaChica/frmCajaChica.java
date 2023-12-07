@@ -21,7 +21,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
     boolean esNuevo = false;
     String periodo;
     
-    public frmCajaChica() throws SQLException {
+    public frmCajaChica()  {
         initComponents();
         initializeTable();
         //  Crea un objeto ComboBox y asigna el modelo creado en el paso anterior
