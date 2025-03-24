@@ -5,21 +5,26 @@
 package proyecto_gm.Empleado;
 
 import java.awt.Component;
-import java.sql.*;
+import java.awt.Container;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import proyecto_gm.ConexionBD;
 
 /**
@@ -31,13 +36,13 @@ public class DatosEmpleados {
     static Connection conn = ConexionBD.getConnection();
 
     // Limpiar campos
-    public static void LimpiarCampos(JDesktopPane desktopPane, JRadioButton porDefecto) {
-        Component[] components = desktopPane.getComponents();
+    public static void Limpiar(Container contenedor, JRadioButton porDefecto) {
+        Component[] components = contenedor.getComponents();
         for (Component component : components) {
-            if (component instanceof JTextField jTextField) {
-                jTextField.setText("");
-            } else if (component instanceof JComboBox jComboBox) {
-                jComboBox.setSelectedIndex(0);
+            if (component instanceof JTextField ) {
+                ((JTextField)component).setText("");
+            } else if (component instanceof JComboBox) {
+                ((JComboBox)component).setSelectedIndex(0);
             } else {
                 // No hace nada para otros tipos de componentes
             }
@@ -46,84 +51,113 @@ public class DatosEmpleados {
         porDefecto.setSelected(true);
     }
 
-    // Bloquear campos
-    public static void BloquearCampos(JDesktopPane desktopPane, ButtonGroup opciones) {
-        Component[] components = desktopPane.getComponents();
+    // Habilitar o bloquear campos y botones
+    public static void Habilitar(Container contenedor, ButtonGroup opciones, boolean bloquear) {
+        Component[] components = contenedor.getComponents();
         for (Component component : components) {
-            if (component instanceof JTextField jTextField) {
-                jTextField.setEnabled(false);
-            } else if (component instanceof JComboBox jComboBox) {
-                jComboBox.setEnabled(false);
+            if (component instanceof JTextField) {
+                ((JTextField)component).setEnabled(bloquear);
+            } else if (component instanceof JComboBox ) {
+                ((JComboBox)component).setEnabled(bloquear);
+            } else if (component instanceof JButton ) {
+                String button = ((JButton)component).getName();
+                if (button.equals("guardar") || button.equals("cancelar")) {
+                    ((JButton)component).setEnabled(bloquear);
+                } else if (button.equals("nuevo") || button.equals("editar") || button.equals("eliminar")) {
+                    ((JButton)component).setEnabled(!bloquear); // aplicar logica inversa
+                }
             } else {
                 // No hace nada para otros tipos de componentes
             }
         }
+
         for (Enumeration<AbstractButton> buttons = opciones.getElements(); buttons.hasMoreElements();) {
-            buttons.nextElement().setEnabled(false);
+            buttons.nextElement().setEnabled(bloquear);
         }
-
-    }
-
-    // Habilitar campos
-    public static void HabilitarCampos(JDesktopPane desktopPane, ButtonGroup opciones) {
-        Component[] components = desktopPane.getComponents();
-        for (Component component : components) {
-            if (component instanceof JTextField jTextField) {
-                jTextField.setEnabled(true);
-            } else if (component instanceof JComboBox jComboBox) {
-                jComboBox.setEnabled(true);
-            } else {
-                // No hace nada para otros tipos de componentes
-            }
-        }
-        for (Enumeration<AbstractButton> buttons = opciones.getElements(); buttons.hasMoreElements();) {
-            buttons.nextElement().setEnabled(true);
-        }
-
     }
 
     // Cargar opciones para los combo boxes
     public static void CargarCombos(JComboBox cboArea, JComboBox cboCargo) {
+        PreparedStatement pstmtArea = null;
+        PreparedStatement pstmtCargo = null;
+        ResultSet rsAreas = null;
+        ResultSet rsCargos = null;
         try {
             // Preparamos la consultas
-            PreparedStatement pstmtArea = conn.prepareStatement("SELECT Descripcion FROM areas");
-            PreparedStatement pstmtCargo = conn.prepareStatement("SELECT Descripcion FROM cargos");
+            pstmtArea = conn.prepareStatement("SELECT Descripcion FROM areas");
+            pstmtCargo = conn.prepareStatement("SELECT Descripcion FROM cargos");
 
             // Las ejecutamos
-            ResultSet areas = pstmtArea.executeQuery();
-            ResultSet cargos = pstmtCargo.executeQuery();
+            rsAreas = pstmtArea.executeQuery();
+            rsCargos = pstmtCargo.executeQuery();
 
             // Agregamos las areas en cbxArea
-            while (areas.next()) {
-                String nomArea = areas.getString("Descripcion");
+            while (rsAreas.next()) {
+                String nomArea = rsAreas.getString("Descripcion");
                 cboArea.addItem(nomArea);
             }
 
             // Agregamos los cargos a cbxCargo
-            while (cargos.next()) {
-                String nomCargo = cargos.getString("Descripcion");
+            while (rsCargos.next()) {
+                String nomCargo = rsCargos.getString("Descripcion");
                 cboCargo.addItem(nomCargo);
             }
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            // Cerramos los recursos
+            try {
+                if (rsAreas != null) {
+                    rsAreas.close();
+                }
+                if (rsCargos != null) {
+                    rsCargos.close();
+                }
+                if (pstmtArea != null) {
+                    pstmtArea.close();
+                }
+                if (pstmtCargo != null) {
+                    pstmtCargo.close();
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
-    // Mostrar datos
-    public static void MostrarDatos(DefaultTableModel modelo) {
+    // Listar datos
+    public static void Listar(DefaultTableModel modelo) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement pstmt = conn.prepareStatement("CALL listar_emple()");
-            ResultSet rs = pstmt.executeQuery();
+            pstmt = conn.prepareStatement("CALL listar_emple()");
+            rs = pstmt.executeQuery();
             while (rs.next()) {
                 Object[] row = new Object[]{rs.getString("Id"), rs.getString("Apellidos"),
                     rs.getString("Nombres"), rs.getString("FechaNacimiento"), rs.getString("Correo"),
-                    rs.getString("Dni"), rs.getString("Celular"), rs.getString("Direccion"),
-                    rs.getString("Area"), rs.getString("Cargo"), rs.getString("Tip. Empleado")};
+                    rs.getString("Dni"), rs.getString("Celular"), rs.getString("Distrito"),
+                    rs.getString("Direccion"), rs.getString("Area"), rs.getString("Cargo"), rs.getString("Tip. Empleado")};
                 modelo.addRow(row);
             }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
     }
 
@@ -131,6 +165,8 @@ public class DatosEmpleados {
     public static String[] CapturarOpciones(JComboBox cbxArea, JComboBox cbxCargo, ButtonGroup opciones) {
         String[] ids = new String[3];
         String idArea = "", idCargo = "", idTipoEmpleado = "";
+        CallableStatement cstmt = null;
+        ResultSet rs = null;
         try {
             // Capturar las opciones seleccionadas en los combo boxes
             String selectArea = cbxArea.getSelectedItem().toString();
@@ -141,14 +177,11 @@ public class DatosEmpleados {
             String tipoEmpleado = selectedRadioButton.getActionCommand();
 
             // Obtener los id de las elecciones en area, cargo y tipo de empleado
-            String consulta = "SELECT a.Id AS Id_area, c.Id AS Id_cargo, t.Id AS Id_tipo "
-                    + "FROM areas a, cargos c, tiposempleados t "
-                    + "WHERE a.Descripcion = ? AND c.Descripcion = ? AND t.Descripcion = ?";
-            PreparedStatement pstmt = conn.prepareStatement(consulta);
-            pstmt.setString(1, selectArea);
-            pstmt.setString(2, selectCargo);
-            pstmt.setString(3, tipoEmpleado);
-            ResultSet rs = pstmt.executeQuery();
+            cstmt = conn.prepareCall("{ CALL consulta_areas_cargos_tipos(?, ?, ?) }");
+            cstmt.setString(1, selectArea);
+            cstmt.setString(2, selectCargo);
+            cstmt.setString(3, tipoEmpleado);
+            rs = cstmt.executeQuery();
 
             while (rs.next()) {
                 idArea = rs.getString("Id_area");
@@ -160,17 +193,34 @@ public class DatosEmpleados {
             ids[1] = idCargo;
             ids[2] = idTipoEmpleado;
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar Opciones", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error al procesar las opciones seleccionadas.", JOptionPane.ERROR_MESSAGE);
+        } finally { // Finalmente cerramos el ResultSet y el CallableStatement
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
 
         return ids;
     }
 
     // Insertar datos
-    public static void InsertarDatos(Empleados empleado, JTable tabla) {
+    public static void Insertar(Empleados empleado, JTable tabla) {
+        CallableStatement cstmt = null;
         try {
-            CallableStatement cstmt = conn.prepareCall("{ CALL insertar_datos_empleado(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+            cstmt = conn.prepareCall("{ CALL insertar_datos_empleado(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
             cstmt.setString(1, empleado.getId());
             cstmt.setString(2, empleado.getApellidos());
             cstmt.setString(3, empleado.getNombres());
@@ -178,105 +228,79 @@ public class DatosEmpleados {
             cstmt.setString(5, empleado.getCorreo());
             cstmt.setString(6, empleado.getDni());
             cstmt.setString(7, empleado.getCelular());
-            cstmt.setString(8, empleado.getDireccion());
-            cstmt.setString(9, empleado.getIdArea());
-            cstmt.setString(10, empleado.getIdCargo());
-            cstmt.setString(11, empleado.getIdTipo());
+            cstmt.setString(8, empleado.getDistrito());
+            cstmt.setString(9, empleado.getDireccion());
+            cstmt.setString(10, empleado.getIdArea());
+            cstmt.setString(11, empleado.getIdCargo());
+            cstmt.setString(12, empleado.getIdTipo());
 
             cstmt.execute(); // se inserta los datos a la BD
+            JOptionPane.showMessageDialog(null, "Empleado registrado satisfactoriamente.", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
 
             // Actualizamos la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
-            DatosEmpleados.MostrarDatos(modelo);
+            DatosEmpleados.Listar(modelo);
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
 
-    }
-
-    // Obtener datos de una fila seleccionada
-    private static Object[] ObtenerValoresFila(int filaSeleccionada, JTable tabla) {
-        // Obtener el modelo de la tabla
-        TableModel modelo = tabla.getModel();
-
-        // Obtener el número de columnas de la tabla
-        int numColumnas = modelo.getColumnCount();
-
-        // Crear un arreglo de objetos para almacenar los valores de la fila
-        Object[] valoresFila = new Object[numColumnas];
-
-        // Obtener los valores de la fila seleccionada y guardarlos en el arreglo
-        for (int i = 0; i < numColumnas; i++) {
-            valoresFila[i] = modelo.getValueAt(filaSeleccionada, i);
-        }
-
-        return valoresFila;
     }
 
     // Boton Editar
-    public static void Editar(JTable tabla, JTextField[] camposTexto, JComboBox[] combos, ButtonGroup grupoBotones) {
-        // Bloqueamos lo siguientes botones del formulario:
-        frmEmpleado.btnNuevo.setEnabled(false);
-        frmEmpleado.btnEliminar.setEnabled(false);
-        // Habilitamos lo siguientes botontes del formulario:
-        frmEmpleado.btnGuardar.setEnabled(true);
-        frmEmpleado.btnCancelar.setEnabled(true);
-        // Deshabilitamos la seleccion de filas de la tabla
-        tabla.setRowSelectionAllowed(false);
+    public static void Editar(Container contenedor, JTable tabla, JTextField[] camposTexto, JComboBox[] combos, ButtonGroup grupoBotones) {
 
         // Obtener la fila seleccionada
-        int filaSeleccionada = tabla.getSelectedRow();
-        if (filaSeleccionada >= 0) {
-            // Obtener los valores de la fila seleccionada
-            Object[] valoresFila = ObtenerValoresFila(filaSeleccionada, tabla); // Usamos el método para obtener los valores de la fila seleccionada de la tabla
+        int fila = tabla.getSelectedRow();
+        if (fila >= 0) {
+            DatosEmpleados.Habilitar(contenedor, grupoBotones, true);
+            tabla.clearSelection();
+            tabla.setRowSelectionAllowed(false);
 
             // Llenar los campos de texto con los valores de la fila
             for (int i = 0; i < camposTexto.length; i++) {
-                if (valoresFila[i] != null) {
-                    camposTexto[i].setText(valoresFila[i].toString());
-                } else {
-                    camposTexto[i].setText("");
-                }
-
+                Object valor = tabla.getModel().getValueAt(fila, i);
+                String dato = (valor != null) ? valor.toString() : "";
+                // Si "valor" no es nulo, se almacenara en "dato" como un string
+                // Si no, se almacenara una cadena vacia
+                camposTexto[i].setText(dato);
             }
 
             camposTexto[0].setEnabled(false);
             camposTexto[1].requestFocus();
 
-            // Llenar los combos con los valores de la fila
+            // Seleccionar las opciones de los combos
             for (int i = 0; i < combos.length; i++) {
-                combos[i].setSelectedItem(valoresFila[camposTexto.length + i].toString());
+                combos[i].setSelectedItem(tabla.getModel().getValueAt(fila, camposTexto.length + i).toString());
             }
 
-            // Llenar el grupo de botones con los valores de la fila
+            // Seleccionar las opciones de los radio buttons
             for (Enumeration<AbstractButton> botones = grupoBotones.getElements(); botones.hasMoreElements();) {
                 AbstractButton boton = botones.nextElement();
-                if (boton.getText().equals(valoresFila[camposTexto.length + combos.length].toString())) {
+                if (boton.getText().equals(tabla.getModel().getValueAt(fila, camposTexto.length + combos.length).toString())) {
                     boton.setSelected(true);
                     break;
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.");
-
-            // Habilitamos lo siguientes botones del formulario:
-            frmEmpleado.btnNuevo.setEnabled(true);
-            frmEmpleado.btnEliminar.setEnabled(true);
-            // Bloqueamos lo siguientes botontes del formulario:
-            frmEmpleado.btnGuardar.setEnabled(false);
-            frmEmpleado.btnCancelar.setEnabled(false);
-            
-            // Habilitamos la seleccion de fila(s) en la tabla
-            tabla.setRowSelectionAllowed(true);
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }
     // Actualizar datos
 
-    public static void ActualizarDatos(Empleados empleado, JTable tabla) {
+    public static void Actualizar(Empleados empleado, JTable tabla) {
+        CallableStatement cstmt = null;
         try {
-            CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_datos_empleado(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+            cstmt = conn.prepareCall("{ CALL actualizar_datos_empleado(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
             cstmt.setString(1, empleado.getId());
             cstmt.setString(2, empleado.getApellidos());
             cstmt.setString(3, empleado.getNombres());
@@ -284,31 +308,35 @@ public class DatosEmpleados {
             cstmt.setString(5, empleado.getCorreo());
             cstmt.setString(6, empleado.getDni());
             cstmt.setString(7, empleado.getCelular());
-            cstmt.setString(8, empleado.getDireccion());
-            cstmt.setString(9, empleado.getIdArea());
-            cstmt.setString(10, empleado.getIdCargo());
-            cstmt.setString(11, empleado.getIdTipo());
+            cstmt.setString(8, empleado.getDistrito());
+            cstmt.setString(9, empleado.getDireccion());
+            cstmt.setString(10, empleado.getIdArea());
+            cstmt.setString(11, empleado.getIdCargo());
+            cstmt.setString(12, empleado.getIdTipo());
 
-            String[] options = {"Sí", "No", "Cancelar"};
-            int opcion = JOptionPane.showOptionDialog(null, "¿Está seguro de que quiere actualizar la fila seleccionada?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
+            cstmt.execute(); // se actualiza los datos en la BD
 
-            if (opcion == JOptionPane.YES_OPTION) {
-                cstmt.execute(); // se actualiza los datos en la BD
+            // Actualizamos la tabla
+            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+            modelo.setRowCount(0);
+            DatosEmpleados.Listar(modelo);
 
-                // Actualizamos la tabla
-                DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-                modelo.setRowCount(0);
-
-                DatosEmpleados.MostrarDatos(modelo);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     // Eliminar datos
-    public static void EliminarDatos(JTable tabla) {
+    public static void Eliminar(JTable tabla) {
+        CallableStatement cstmt = null;
         try {
             // Obtener el indice de la fila seleccionada
             int fila = tabla.getSelectedRow();
@@ -321,114 +349,140 @@ public class DatosEmpleados {
                     String id = tabla.getModel().getValueAt(fila, 0).toString(); //Se asume que el ID se encuentra en la primera columna
 
                     // Ejecutar el procedimiento almacenado
-                    CallableStatement stmt = conn.prepareCall("{ CALL eliminar_empleados(?) }");
-                    stmt.setString(1, id);
-                    stmt.execute();
+                    cstmt = conn.prepareCall("{ CALL eliminar_empleados(?) }");
+                    cstmt.setString(1, id);
+                    cstmt.execute();
 
                     // Actualizar el JTable
-                    DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-                    model.removeRow(fila);
+                    DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+                    modelo.setRowCount(0);
+                    DatosEmpleados.Listar(modelo);
+
                     // JOptionPane.showMessageDialog(null, "La fila ha sido eliminada exitosamente");                
+                } else {
+                    tabla.clearSelection();
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para eliminar.");
+                JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
 
-    }
-
-    // Boton registrar datos academicos
-    // Debemos capturar el nombre completo y el dni de la fila seleccionada
-    public static boolean ObtenerEmpleado(JTable tabla) {
-        // Obtener el indice de la fila seleccionada
-        boolean correcto = true;
-        int fila = tabla.getSelectedRow();
-        String nombreCompleto = "", dni = "";
-
-        if (fila >= 0) {
-            // Obtener los valores de la fila seleccionada
-            Object[] valoresFila = ObtenerValoresFila(fila, tabla);
-            nombreCompleto = valoresFila[2].toString() + " " + valoresFila[1].toString();
-            dni = valoresFila[5].toString();
-
-            Datosacad.txtNomCom.setText(nombreCompleto);
-            Datosacad.txtDni.setText(dni);
-        } else {
-            correcto = false;
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para registrar sus datos académicos.");
-        }
-
-        return correcto;
     }
 
     // Validar campos
-    public static boolean ValidarCampos(Empleados emp) {
-        boolean validar = true;
-        String[] campos = {emp.getId(), emp.getApellidos(), emp.getNombres(), emp.getfNacimiento(),
-            emp.getCorreo(), emp.getDni(), emp.getCelular(), emp.getDireccion()
-        };
-
-        // Validamos si los campos estan vacios
-        for (String campo : campos) {
-            if (campo.equals("")) {
-                validar = false;
+    public static boolean Validar(JTextField[] campos) {
+        for (JTextField campo : campos) {
+            if (campo.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                campo.requestFocus();
+                return false;
             }
         }
 
-        if (!validar) {
-            JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos.");
+        if (!campos[3].getText().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            JOptionPane.showMessageDialog(null, "El formato de correo es el siguiente: someone@mail.com\nInténtelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            campos[3].requestFocus();
+            return false;
         }
 
-        // Validamos uno por uno
-        // Validamos ID:
-        if (!emp.getId().matches("^[A-Z]{2}[0-9]{2}$") || emp.getId().length() != 4) {
-            validar = false;
-            JOptionPane.showMessageDialog(null, "El formato del ID es el siguiente: AA00. Inténtelo de nuevo.");
+        if (campos[4].getText().length() != 8) {
+            JOptionPane.showMessageDialog(null, "El DNI debe contener 8 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            campos[4].requestFocus();
+            return false;
         }
 
-        // Validamos fecha
-        // Verificar que el string tenga longitud 10
-        if (emp.getfNacimiento().length() == 10) {
-            // Definir el formato de fecha
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-            sdf.setLenient(false); // no permitir fechas inválidas
+        if (campos[5].getText().length() != 9) {
+            JOptionPane.showMessageDialog(null, "El celular debe contener 9 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            campos[5].requestFocus();
+            return false;
+        }
 
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            sdf.setLenient(false);
+            sdf.parse(campos[2].getText());
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd/mm/aaaa. Inténtelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            campos[2].requestFocus();
+            return false;
+        }
+
+        // Si se llega aquí, todos los campos son válidos
+        return true;
+    }
+
+    // Obtener datos académicos del empleado
+    public static String[] DatAcadEmpleado(String dni) {
+        String[] datos = new String[5];
+        CallableStatement cstmt = null;
+        ResultSet rs = null;
+        try {
+            cstmt = conn.prepareCall("{ CALL obtener_datos_academicos(?) }");
+            cstmt.setString(1, dni);
+            rs = cstmt.executeQuery();
+
+            if (rs.next()) {
+                datos[0] = rs.getString("Institucion");
+                datos[1] = rs.getString("Facultad");
+                datos[2] = rs.getString("Carrera");
+                datos[3] = rs.getString("Ciclo");
+                datos[4] = rs.getString("Codigo");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error al cargar datos", JOptionPane.ERROR_MESSAGE);
+        } finally {
             try {
-                // Intentar parsear el string como una fecha
-                sdf.parse(emp.getfNacimiento());
-                validar = true;
-            } catch (ParseException e) {
-                validar = false;
-                JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd-mm-aaaa. Inténtelo de nuevo.");
+                if (cstmt != null) {
+                    cstmt.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-
-        } else {
-            validar = false;
-            JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd-mm-aaaa. Inténtelo de nuevo.");
-        }
-        
-        // Validamos correo
-        // Expresión regular para validar el formato de un correo electrónico
-        String regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
-        
-        if (!emp.getCorreo().matches(regex)) {
-            validar = false;
-            JOptionPane.showMessageDialog(null, "El formato de correo es el siguiente: someone@mail.com\nInténtelo de nuevo.");
-        }
-        
-        // Validamos el dni
-        if (emp.getDni().length() != 8) {
-            JOptionPane.showMessageDialog(null, "El DNI debe contener 8 dígitos.");
-        }
-        
-        // Validamos el celular
-        if (emp.getCelular().length() != 9) {
-            JOptionPane.showMessageDialog(null, "El celular debe contener 9 dígitos.");
         }
 
-        return validar;
+        return datos;
+    }
+
+    public static String GenerarCodigo(String tabla, String prefijo, int longitud) {
+        CallableStatement cstmt = null;
+        String codigo_generado = "";
+        try {
+            cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }");
+            cstmt.setString(1, tabla);
+            cstmt.setString(2, prefijo);
+            cstmt.setInt(3, longitud);
+            cstmt.registerOutParameter(4, Types.VARCHAR);
+
+            cstmt.execute();
+
+            codigo_generado = cstmt.getString(4);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+
+        return codigo_generado;
     }
 }

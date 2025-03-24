@@ -1,13 +1,16 @@
 package proyecto_gm.Instituciones;
 
 import java.awt.Toolkit;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import proyecto_gm.Exportar;
 import proyecto_gm.Facultades.DatosFacultades;
 import static proyecto_gm.Instituciones.DatosInstituciones.validarNumeros;
 
 public class frmInstituciones extends javax.swing.JInternalFrame {
+    Exportar obj;
 
     DefaultTableModel modelo;
     boolean esNuevo = false;
@@ -53,10 +56,13 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
         txtRazon = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblInstituciones = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
         setTitle("INSTITUCIONES");
+
+        jPanel2.setBackground(new java.awt.Color(255, 248, 239));
 
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -113,6 +119,12 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Sede:");
 
+        txtSede.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtSedeKeyTyped(evt);
+            }
+        });
+
         txtRuc.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtRucKeyTyped(evt);
@@ -120,6 +132,12 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
         });
 
         jLabel3.setText("Razon Social:");
+
+        txtRazon.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtRazonKeyTyped(evt);
+            }
+        });
 
         tblInstituciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -130,6 +148,13 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
             }
         ));
         jScrollPane1.setViewportView(tblInstituciones);
+
+        jButton1.setText("Exportar Datos");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -177,7 +202,10 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
                                     .addComponent(jLabel5)
                                     .addComponent(jLabel2))
                                 .addGap(18, 18, 18)
-                                .addComponent(txtSede, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtSede, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(130, 130, 130)
+                                .addComponent(jButton1)
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(48, 48, 48))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -203,9 +231,10 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4)
                     .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
-                    .addComponent(txtSede, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSede, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
 
@@ -239,6 +268,7 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
         btnEliminar.setEnabled(false);
         btnGuardar.setEnabled(true);
         btnDeshacer.setEnabled(true);
+        btnEditar.setEnabled(false);
         // Habilitar campos
         DatosFacultades.habilitarCampos(jPanel2);
 
@@ -314,6 +344,12 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
         DatosFacultades.limpiarCampos(jPanel2);
         //limpiarCampos(); bloquearCampos();
+        btnGuardar.setEnabled(false);
+        btnDeshacer.setEnabled(false);
+        btnEditar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+        btnAgregar.setEnabled(true);
+        DatosFacultades.bloquearCampos(jPanel2);
 
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
@@ -338,6 +374,32 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_txtDireccionKeyTyped
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        try{
+            obj = new Exportar(); //mandamos a llamar a la clase
+            obj.exportarExcel(tblInstituciones); //llamamos el metodo desde la clase DatosEmpleados
+        } catch (IOException ex){
+            
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtSedeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSedeKeyTyped
+        // TODO add your handling code here:
+        if (txtSede.getText().length() >= 100) {
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }//GEN-LAST:event_txtSedeKeyTyped
+
+    private void txtRazonKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRazonKeyTyped
+        // TODO add your handling code here:
+        if (txtRazon.getText().length() >= 100) {
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }//GEN-LAST:event_txtRazonKeyTyped
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
@@ -345,6 +407,7 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

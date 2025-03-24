@@ -95,13 +95,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="gmingenieros"/>
       </Properties>
+      <Events>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtusuarioKeyTyped"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JPasswordField" name="txtcontrase&#xf1;a">
       <Properties>
-        <Property name="text" type="java.lang.String" value="12345678"/>
+        <Property name="text" type="java.lang.String" value="123456789"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtcontrase&#xf1;aActionPerformed"/>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtcontrase&#xf1;aKeyTyped"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="contrase&#xf1;a">

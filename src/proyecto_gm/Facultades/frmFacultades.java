@@ -5,12 +5,15 @@
 package proyecto_gm.Facultades;
 
 import java.awt.Toolkit;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.Carreras.DatosCarrera;
+import proyecto_gm.Exportar;
 
 public class frmFacultades extends javax.swing.JInternalFrame {
+    Exportar obj;
 
     DefaultTableModel modelo;
     boolean esNuevo = false;
@@ -50,6 +53,7 @@ public class frmFacultades extends javax.swing.JInternalFrame {
         txtDescripcion = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblFacultades = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -65,6 +69,8 @@ public class frmFacultades extends javax.swing.JInternalFrame {
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 407, Short.MAX_VALUE)
         );
+
+        jPanel1.setBackground(new java.awt.Color(255, 248, 239));
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -111,6 +117,12 @@ public class frmFacultades extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Descripcion:");
 
+        txtDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDescripcionKeyTyped(evt);
+            }
+        });
+
         tblFacultades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -120,6 +132,13 @@ public class frmFacultades extends javax.swing.JInternalFrame {
             }
         ));
         jScrollPane1.setViewportView(tblFacultades);
+
+        jButton1.setText("Exportar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -146,7 +165,9 @@ public class frmFacultades extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1))))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 561, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         jPanel1Layout.setVerticalGroup(
@@ -163,7 +184,8 @@ public class frmFacultades extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1)
                     .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
         );
@@ -203,6 +225,7 @@ public class frmFacultades extends javax.swing.JInternalFrame {
         btnEliminar.setEnabled(false);
         btnGuardar.setEnabled(true);
         btnDeshacer.setEnabled(true);
+        btnEditar.setEnabled(false);
         // Habilitar camposS
         DatosFacultades.habilitarCampos(jPanel1);
 
@@ -271,11 +294,16 @@ public class frmFacultades extends javax.swing.JInternalFrame {
         // Limpiar datos
         DatosFacultades.limpiarCampos(jPanel1);
         // Bloquear campos
-        DatosFacultades.bloquearCampos(jPanel1);
+        //DatosFacultades.bloquearCampos(jPanel1);
 
         // Deshabilitar los botones Guardar y Deshacer
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
+        btnEditar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+        btnNuevo.setEnabled(true);
+        DatosFacultades.bloquearCampos(jPanel1);
+
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped
@@ -286,6 +314,24 @@ public class frmFacultades extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txtIdKeyTyped
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        try{
+            obj = new Exportar(); //mandamos a llamar a la clase
+            obj.exportarExcel(tblFacultades); //llamamos el metodo desde la clase DatosEmpleados
+        } catch (IOException ex){
+            
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtDescripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyTyped
+        // TODO add your handling code here:
+        if (txtDescripcion.getText().length() >= 100) {
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }//GEN-LAST:event_txtDescripcionKeyTyped
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDeshacer;
@@ -293,6 +339,7 @@ public class frmFacultades extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton jButton1;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

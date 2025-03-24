@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -27,15 +29,51 @@ public class DatosModulo {
             }
         }  
     }
-    
-    public static void Bloquear(Container contenedor){
-        for (Component componente: contenedor.getComponents()){
-            if(componente instanceof JTextField){
-                ((JTextField)componente).setEditable(false);
-            }else if( componente instanceof Container){
-                Limpiar((Container)componente);
+    public static String GenerarCodigo(String tabla, String prefijo, int longitud) {
+        CallableStatement cstmt = null;
+        String codigo_generado = "";
+        try {
+            cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }");
+            cstmt.setString(1, tabla);
+            cstmt.setString(2, prefijo);
+            cstmt.setInt(3, longitud);
+            cstmt.registerOutParameter(4, Types.VARCHAR);
+
+            cstmt.execute();
+
+            codigo_generado = cstmt.getString(4);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
-        }  
+        }
+        return codigo_generado;
+        
+    }
+    // Habilitar o bloquear campos y botones
+    public static void Habilitar(Container contenedor,  boolean bloquear) {
+        Component[] components = contenedor.getComponents();
+        for (Component component : components) {
+            if (component instanceof JTextField ) {
+                ((JTextField)component).setEnabled(bloquear);
+            
+            } else if (component instanceof JButton ) {
+                String button = ((JButton)component).getName();
+                if (button.equals("guardar") || button.equals("deshacer")) {
+                    ((JButton)component).setEnabled(bloquear);
+                } else if (button.equals("agregar") || button.equals("editar") || button.equals("eliminar"))  {
+                    ((JButton)component).setEnabled(!bloquear); // aplicar logica inversa
+                }
+            } else {
+                // No hace nada para otros tipos de componentes
+            }
+        }
     }
     
     public static void Mostrar(DefaultTableModel modelo) {
@@ -78,7 +116,11 @@ public class DatosModulo {
             ate.setString(1, mod.Id);
             ate.setString(2, mod.Descripcion);
             ate.executeUpdate();
-            
+            // Actualizamos la tabla
+                DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+                modelo.setRowCount(0);
+
+                DatosModulo.Mostrar(modelo);
           
             ate.close();
         } catch (SQLException ex) {
@@ -92,7 +134,8 @@ public class DatosModulo {
             int fila = tabla.getSelectedRow();
 
             if (fila >= 0) {
-                int opcion = JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?");
+                String[] options = {"Sí", "No", "Cancelar"};
+                int opcion = JOptionPane.showOptionDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
                 if (opcion == JOptionPane.YES_OPTION) {
                     // Obtener los datos de fila seleccionada
                     String id = tabla.getModel().getValueAt(fila, 0).toString(); //Se asume que el ID se encuentra en la primera columna
@@ -106,9 +149,9 @@ public class DatosModulo {
                     DefaultTableModel model = (DefaultTableModel) tabla.getModel();
                     model.removeRow(fila);
                     // JOptionPane.showMessageDialog(null, "La fila ha sido eliminada exitosamente");                
+                } 
                 } else {
-                    JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para eliminar.");
-                }
+                JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para eliminar.");
             }
 
         } catch (SQLException ex) {
@@ -117,14 +160,23 @@ public class DatosModulo {
 
     }
       
-    public static void Editar(JTable tabla, JTextField [] cod){
-        int selectedRow = tabla.getSelectedRow();
-        if (selectedRow != -1) {
+    public static boolean Editar(Container contenedor,  JTable tabla, JTextField [] cod){
+        int fila = tabla.getSelectedRow();
+        if (fila != -1) {
+            DatosModulo.Habilitar(contenedor, true);
+            tabla.clearSelection();
+            tabla.setRowSelectionAllowed(false);
             for (int i = 0; i < cod.length; i++) {
-                cod[i].setText(tabla.getValueAt(selectedRow, i).toString());
+                
+                String dato= tabla.getModel().getValueAt(fila, i).toString();
+                cod[i].setText(dato);
             }
+            cod[0].setEnabled(false);
+            cod[1].requestFocus();
+            return true;
         }else{
             JOptionPane.showMessageDialog(null,"No seleciono una fila" );
+            return false;
         }
     }
 }

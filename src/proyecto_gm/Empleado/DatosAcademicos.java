@@ -4,13 +4,14 @@
  */
 package proyecto_gm.Empleado;
 
-import java.awt.Component;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import static proyecto_gm.Empleado.DatosEmpleados.conn;
+import proyecto_gm.ConexionBD;
 
 /**
  *
@@ -18,98 +19,116 @@ import static proyecto_gm.Empleado.DatosEmpleados.conn;
  */
 public class DatosAcademicos {
 
-    // Limpiar campos
-    public static void LimpiarCampos(JPanel panel) {
-        Component[] components = panel.getComponents();
-        for (Component component : components) {
-            if (component instanceof JComboBox jComboBox) {
-                jComboBox.setSelectedIndex(-1);
-            } else {
-                // No hace nada para otros tipos de componentes
-            }
-        }
-    }
+    static Connection conn = ConexionBD.getConnection();
 
     // Cargar opciones para los combo boxes
-    public static void CargarCombos(JComboBox cbxInstitucion, JComboBox cbxFacultad, JComboBox cbxCarrera, JComboBox cbxCiclo) {
+    public static void CargarCombos(JComboBox cboInstitucion, JComboBox cboFacultad, JComboBox cboCarrera) {
+        PreparedStatement pstmtIns = null;
+        PreparedStatement pstmtFac = null;
+        PreparedStatement pstmtCar = null;
+
+        ResultSet rsIns = null;
+        ResultSet rsFac = null;
+        ResultSet rsCar = null;
         try {
             // Preparamos la consultas
-            PreparedStatement pstmtInst = conn.prepareStatement("SELECT RazonSocial FROM institucioneseducativas");
-            PreparedStatement pstmtFac = conn.prepareStatement("SELECT Descripcion FROM facultades");
-            PreparedStatement pstmtCar = conn.prepareStatement("SELECT Descripcion FROM carreras");
-            PreparedStatement pstmtCic = conn.prepareStatement("SELECT Descripcion FROM ciclos");
+            pstmtIns = conn.prepareStatement("SELECT RazonSocial FROM institucioneseducativas");
+            pstmtFac = conn.prepareStatement("SELECT Descripcion FROM facultades");
+            pstmtCar = conn.prepareStatement("SELECT Descripcion FROM carreras");
 
             // Ejecutamos
-            ResultSet instituciones = pstmtInst.executeQuery();
-            ResultSet facultades = pstmtFac.executeQuery();
-            ResultSet carreras = pstmtCar.executeQuery();
-            ResultSet ciclos = pstmtCic.executeQuery();
+            rsIns = pstmtIns.executeQuery();
+            rsFac = pstmtFac.executeQuery();
+            rsCar = pstmtCar.executeQuery();
 
             // Llenamos cbxInstitucion
-            while (instituciones.next()) {
-                String inst = instituciones.getString("RazonSocial");
-                cbxInstitucion.addItem(inst);
+            while (rsIns.next()) {
+                String inst = rsIns.getString("RazonSocial");
+                cboInstitucion.addItem(inst);
             }
 
             // Llenamos cbxFacultad
-            while (facultades.next()) {
-                String fac = facultades.getString("Descripcion");
-                cbxFacultad.addItem(fac);
+            while (rsFac.next()) {
+                String fac = rsFac.getString("Descripcion");
+                cboFacultad.addItem(fac);
             }
 
             // Llenamos cbxCarrera
-            while (carreras.next()) {
-                String car = carreras.getString("Descripcion");
-                cbxCarrera.addItem(car);
+            while (rsCar.next()) {
+                String car = rsCar.getString("Descripcion");
+                cboCarrera.addItem(car);
             }
 
-            // Llenamos cbxCiclo
-            while (ciclos.next()) {
-                String cic = ciclos.getString("Descripcion");
-                cbxCiclo.addItem(cic);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (rsIns != null) {
+                    rsIns.close();
+                }
+                if (rsFac != null) {
+                    rsFac.close();
+                }
+                if (rsCar != null) {
+                    rsCar.close();
+                }
+                if (pstmtIns != null) {
+                    pstmtIns.close();
+                }
+                if (pstmtFac != null) {
+                    pstmtFac.close();
+                }
+                if (pstmtCar != null) {
+                    pstmtCar.close();
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     // Capturar las opciones de los radio buttons y de los combo boxes
-    public static String[] CapturarOpciones(JComboBox cbxIns, JComboBox cbxFac, JComboBox cbxCar, JComboBox cbxCic) {
-        String[] ids = new String[4];
-        String idIns = "", idFac = "", idCar = "", idCic = "";
+    public static String[] CapturarOpciones(JComboBox cbxIns, JComboBox cbxFac, JComboBox cbxCar) {
+        String[] ids = new String[3];
+        String idIns = "", idFac = "", idCar = "";
+        CallableStatement cstmt = null;
+        ResultSet rs = null;
         try {
             // Capturar las opciones seleccionadas en los combo boxes
             String selectIns = cbxIns.getSelectedItem().toString();
             String selectFac = cbxFac.getSelectedItem().toString();
             String selectCar = cbxCar.getSelectedItem().toString();
-            String selectCic = cbxCic.getSelectedItem().toString();
 
-            // Obtener los id de las elecciones en area, cargo y tipo de empleado
-            String consulta = "SELECT i.Id AS id_ins, f.Id AS id_fac, c.Id AS id_car, s.Id AS id_cic "
-                    + "FROM institucioneseducativas i, facultades f, carreras c, ciclos s "
-                    + "WHERE i.RazonSocial = ? AND f.Descripcion = ? AND c.Descripcion = ? AND s.Descripcion = ?";
-            PreparedStatement pstmt = conn.prepareStatement(consulta);
-            pstmt.setString(1, selectIns);
-            pstmt.setString(2, selectFac);
-            pstmt.setString(3, selectCar);
-            pstmt.setString(4, selectCic);
-            ResultSet rs = pstmt.executeQuery();
+            // Obtener los id de las instituciones, facultades y carreras
+            cstmt = conn.prepareCall("{ CALL consulta_inst_facu_carr(?, ?, ?) }");
+            cstmt.setString(1, selectIns);
+            cstmt.setString(2, selectFac);
+            cstmt.setString(3, selectCar);
+            rs = cstmt.executeQuery();
 
             while (rs.next()) {
-                idIns = rs.getString("id_ins");
-                idFac = rs.getString("id_fac");
-                idCar = rs.getString("id_car");
-                idCic = rs.getString("id_cic");
+                idIns = rs.getString("Id_ins");
+                idFac = rs.getString("Id_fac");
+                idCar = rs.getString("Id_car");
             }
 
             ids[0] = idIns;
             ids[1] = idFac;
             ids[2] = idCar;
-            ids[3] = idCic;
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar Opciones", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error en Capturar Opciones", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (cstmt != null) {
+                    cstmt.close();
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
 
         return ids;
@@ -117,25 +136,34 @@ public class DatosAcademicos {
 
     // Boton Guardar
     public static void InsertarDatos(Datosacad obj, String dni, String inst, String fac, String car, String cic, String codEstudiante) {
+        CallableStatement cstmt = null;
         try {
-            CallableStatement cstmt = conn.prepareCall("{ CALL insertar_datos_academicos(?, ?, ?, ?, ?, ?) }");
+            cstmt = conn.prepareCall("{ CALL insertar_datos_academicos(?, ?, ?, ?, ?, ?) }");
             cstmt.setString(1, dni);
             cstmt.setString(2, inst);
             cstmt.setString(3, fac);
             cstmt.setString(4, car);
             cstmt.setString(5, cic);
             cstmt.setString(6, codEstudiante);
-            
-            if (cstmt.execute() != true) {
-                JOptionPane.showMessageDialog(null, "Datos académicos registrados exitosamente.");
-                obj.dispose();
-            } else {
-                JOptionPane.showMessageDialog(null, "No se pudieron registrar los datos académicos.");
-            }
-            
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            if (cstmt.execute() != true) {
+                JOptionPane.showMessageDialog(null, "Datos académicos registrados exitosamente.", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
+                obj.dispose(); // Cerramos la ventana
+
+            } else {
+                JOptionPane.showMessageDialog(null, "No se pudieron registrar los datos académicos.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
     }
 
