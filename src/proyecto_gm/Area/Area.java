@@ -2,32 +2,39 @@ package proyecto_gm.Area;
 
 public class Area {
     //Atributos
-    String Id;
-    String Descripcion;
+    int idArea;  
+    String codigoArea;
+    String descripcionArea;
 
-    public Area(String Id, String Descripcion) {
-        this.Id = Id;
-        this.Descripcion = Descripcion;
+    public Area() {   
+    }
+     
+    public Area(int idArea,String codigoArea, String descripcionArea) {
+        this.idArea = idArea;
+        this.descripcionArea = descripcionArea;
+    }
+    
+    public int getIdArea() {
+        return idArea;
     }
 
-    public Area() {
-        
+    public void setIdArea(int idArea) {
+        this.idArea = idArea;
+    }
+    
+    public String getDescripcionArea() {
+        return descripcionArea;
     }
 
-    public String getId() {
-        return Id;
+    public String getCodigoArea() {
+        return codigoArea;
     }
 
-    public void setId(String Id) {
-        this.Id = Id;
+    public void setCodigoArea(String codigoArea) {
+        this.codigoArea = codigoArea;
     }
 
-    public String getDescripcion() {
-        return Descripcion;
+    public void setDescripcionArea(String descripcionArea) {
+        this.descripcionArea = descripcionArea;
     }
-
-    public void setDescripcion(String Descripcion) {
-        this.Descripcion = Descripcion;
-    }
-
 }

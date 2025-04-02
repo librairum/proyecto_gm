@@ -16,7 +16,6 @@ public class frmArea extends javax.swing.JInternalFrame {
   
     public frmArea() {
         initComponents();
-        // Personalizar header
         JTableHeader header = tblArea.getTableHeader();
         header.setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
@@ -38,33 +37,11 @@ public class frmArea extends javax.swing.JInternalFrame {
         
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
-        DatosArea.Habilitar(escritorio, false);
+        DatosArea.HabilitarArea(escritorio, false);
         
-        DatosArea.Mostrar(modelo);
-        // Quitar la edicion de las celdas
+        DatosArea.MostrarArea(modelo);
         tblArea.setCellSelectionEnabled(false);
-        // Poder seleccionar fila(s) de la tabla
         tblArea.setRowSelectionAllowed(true);
-        
-        // Personalizar header
-        //JTableHeader header = tblArea.getTableHeader();
-        //JTableHeader header = tblArea.getTableHeader();
-        header.setDefaultRenderer(new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table,
-                    Object value,
-                    boolean isSelected,
-                    boolean hasFocus,
-                    int row,
-                    int column) {
-                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                setHorizontalAlignment(JLabel.CENTER);
-                setBackground(Color.DARK_GRAY);
-                setForeground(Color.WHITE);
-                setFont(getFont().deriveFont(Font.BOLD, 13));
-                return this;
-            }
-        });
     }  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -77,7 +54,7 @@ public class frmArea extends javax.swing.JInternalFrame {
         btnGuardar = new javax.swing.JButton();
         btnDeshacer = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        txtId = new javax.swing.JTextField();
+        txtCodigo = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtDescripcion = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -132,15 +109,14 @@ public class frmArea extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Id:");
 
-        txtId.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtIdKeyTyped(evt);
+                txtCodigoKeyTyped(evt);
             }
         });
 
         jLabel2.setText("Descripción:");
 
-        tblArea.setBackground(new java.awt.Color(255, 255, 255));
         tblArea.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -160,7 +136,6 @@ public class frmArea extends javax.swing.JInternalFrame {
         tblArea.setFocusable(false);
         tblArea.setRowHeight(25);
         tblArea.setSelectionBackground(new java.awt.Color(153, 153, 153));
-        tblArea.setSelectionForeground(new java.awt.Color(0, 0, 0));
         tblArea.setShowGrid(true);
         jScrollPane1.setViewportView(tblArea);
         if (tblArea.getColumnModel().getColumnCount() > 0) {
@@ -200,7 +175,7 @@ public class frmArea extends javax.swing.JInternalFrame {
                                     .addComponent(btnDeshacer)
                                     .addGap(0, 0, Short.MAX_VALUE)))
                             .addGroup(escritorioLayout.createSequentialGroup()
-                                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(180, 180, 180)))))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
@@ -216,7 +191,7 @@ public class frmArea extends javax.swing.JInternalFrame {
                     .addComponent(btnDeshacer, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -241,92 +216,98 @@ public class frmArea extends javax.swing.JInternalFrame {
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
         // TODO add your handling code here:
-        DatosArea.Limpiar(rootPane);
-        DatosArea.Habilitar(escritorio, false);
+        DatosArea.LimpiarArea(rootPane);
+        DatosArea.HabilitarArea(escritorio, false);
         tblArea.clearSelection();
         // Habilitamos la seleccion de filas de la tabla
         tblArea.setRowSelectionAllowed(true);
+        
         
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         Area are= new Area();
-        are.setId(txtId.getText());
-        are.setDescripcion(txtDescripcion.getText());
-        //verificar si debo ingresar o actualizar
+        String idTexto = txtCodigo.getText().replaceAll("[^0-9]", "");
+        try {
+            are.setIdArea(Integer.parseInt(idTexto));
+        } catch (NumberFormatException e) {
+            are.setIdArea(0);
+        }
+
+        are.setDescripcionArea(txtDescripcion.getText());
         if (esNuevo) {
-            // Insertar nuevo registro
-            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                    return;
-                } 
-            else if(!txtId.getText().matches("^[A-Z]{2}[0-9]{2}$")){
-                JOptionPane.showMessageDialog(null, "El formato del Id es el siguente: AR00. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                txtId.requestFocus();
-            }
-            else {
-                    DatosArea.Insertar(are, tblArea);
+            if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Completar bien los campos");
+                return;
+            } else if (!txtCodigo.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
+                JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                txtCodigo.requestFocus();
+            } else {
+                if (DatosArea.InsertarArea(are, tblArea)) {
                     JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-                    DatosArea.Limpiar(escritorio);
-                    DatosArea.Habilitar(escritorio, false);
+                    DatosArea.LimpiarArea(escritorio);
+                    DatosArea.HabilitarArea(escritorio, false);
                     tblArea.clearSelection();
-                    // Habilitamos la seleccion de filas de la tabla
                     tblArea.setRowSelectionAllowed(true);
-        
-                }
-            
-        } else {
-            // Actualizar registro existente
-            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                    return;
                 } else {
-                    DatosArea.Actualizar(are, tblArea);
-                    JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
-                    DatosArea.Limpiar(escritorio);
-                    DatosArea.Habilitar(escritorio, false);
-                    tblArea.clearSelection();
-                    // Habilitamos la seleccion de filas de la tabla
-                    tblArea.setRowSelectionAllowed(true);
+                    JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
-        
+        } else {
+            if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Completar bien los campos");
+                return;
+            } else {
+                are.setCodigoArea(txtCodigo.getText());
+                DatosArea.ActualizarArea(are, tblArea);
+                JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
+                DatosArea.LimpiarArea(escritorio);
+                DatosArea.HabilitarArea(escritorio, false);
+                tblArea.clearSelection();
+                tblArea.setRowSelectionAllowed(true);
+            }
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        DatosArea.Eliminar(tblArea);
-        DatosArea.Habilitar(escritorio, false);
+        DatosArea.EliminarArea(tblArea);
+        DatosArea.HabilitarArea(escritorio, false);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
         JTextField [] cod= new JTextField [2];
-        cod[0] = txtId;
+        cod[0] = txtCodigo;
         cod[1] = txtDescripcion;
-        DatosArea.Editar(escritorio, tblArea, cod);
+        DatosArea.EditarArea(escritorio, tblArea, cod);
 
         esNuevo=false;
     }//GEN-LAST:event_btnEditarActionPerformed
 
-    private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped
+    private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
         // TODO add your handling code here:
-        if (txtId.getText().length() >= 4) {
+        if (txtCodigo.getText().length() >= 4) {
             evt.consume();
             Toolkit.getDefaultToolkit().beep();
         }
-    }//GEN-LAST:event_txtIdKeyTyped
+    }//GEN-LAST:event_txtCodigoKeyTyped
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        DatosArea.Habilitar(escritorio, true);
-        String codigo = DatosArea.GenerarCodigo("areas", "AR" , 4);
-        txtId.setText(codigo);
-        txtId.setEnabled(false);
-        
-        txtDescripcion.requestFocus();
-        esNuevo=true;
-        tblArea.setRowSelectionAllowed(false);
+        DatosArea.HabilitarArea(escritorio, true);
+        String codigo = DatosArea.GenerarCodigoArea();
 
+        if (codigo != null) {
+            txtCodigo.setText(codigo);
+            txtCodigo.setEnabled(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        txtDescripcion.requestFocus();
+        esNuevo = true;
+        tblArea.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnAgregarActionPerformed
     
     
@@ -342,7 +323,7 @@ public class frmArea extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTable tblArea;
+    public static javax.swing.JTextField txtCodigo;
     public static javax.swing.JTextField txtDescripcion;
-    public static javax.swing.JTextField txtId;
     // End of variables declaration//GEN-END:variables
 }
