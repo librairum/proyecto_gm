@@ -255,46 +255,38 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
 
         String opcion = DatosTipoDocumento.Capturar(cboModulo);
         // Creamos un objeto tipo Empleado
-        TipoDocumento tip = new TipoDocumento(txtId.getText(),
-                txtDescripcion.getText(), opcion);
+        TipoDocumento tip = new TipoDocumento(txtId.getText(), opcion, txtDescripcion.getText());
 
-        //Preguntamos si haremos un INSERT o un UPDATE
+        tip.setDescripcion(txtDescripcion.getText());
         if (esNuevo) {
-            // Insertar nuevo registro
             if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Completar bien los campos");
                 return;
-            } else if (!txtId.getText().matches("^[A-Z]{2}[0-9]{2}$")) {
-                JOptionPane.showMessageDialog(null, "El formato del Id es el siguente: AR00. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            } else if (!txtId.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
+                JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto. Debe ser 'CAR0002'.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 txtId.requestFocus();
             } else {
-                DatosTipoDocumento.Insertar(tip, tblTipoDocumento);
-                JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-                DatosTipoDocumento.Limpiar(escritorio);
-                DatosTipoDocumento.Habilitar(escritorio, false);
-                // Limpiamos alguna seleccion previa de alguna fila de la tabla
-                tblTipoDocumento.clearSelection();
-                // Habilitamos la seleccion de filas de la tabla
-                tblTipoDocumento.setRowSelectionAllowed(true);
-
+                if (DatosTipoDocumento.Insertar(tip, tblTipoDocumento)) {
+                    DatosTipoDocumento.Limpiar(escritorio);
+                    DatosTipoDocumento.Habilitar(escritorio, false);
+                    tblTipoDocumento.clearSelection();
+                    tblTipoDocumento.setRowSelectionAllowed(true);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         } else {
-            // Actualizar registro existente
             if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Completar bien los campos");
                 return;
             } else {
-                DatosTipoDocumento.Actualizar(tip, tblTipoDocumento);
-                JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
+                tip.setCodigoTipoDoc(txtId.getText());
+                DatosTipoDocumento.Actualizar(tip, tblTipoDocumento, cboModulo);
                 DatosTipoDocumento.Limpiar(escritorio);
                 DatosTipoDocumento.Habilitar(escritorio, false);
-                // Limpiamos alguna seleccion previa de alguna fila de la tabla
                 tblTipoDocumento.clearSelection();
-                // Habilitamos la seleccion de filas de la tabla
                 tblTipoDocumento.setRowSelectionAllowed(true);
-
             }
-
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -328,18 +320,7 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtIdKeyTyped
 
     private void txtDescripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyTyped
-        // TODO add your handling code here:
-//        String texto = txtDescripcion.getText();
-//    char c = evt.getKeyChar();
-//    if (Character.isLetter(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE) {
-//        // Validar texto ingresado
-//        String nuevoTexto = texto.substring(0, txtDescripcion.getCaretPosition()) + c + texto.substring(txtDescripcion.getCaretPosition());
-//        if (!nuevoTexto.matches("^[a-zA-Z]+$")) {
-//            evt.consume();
-//        }
-//    } else {
-//        evt.consume();
-//    }
+
     }//GEN-LAST:event_txtDescripcionKeyTyped
 
     private void escritorioComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_escritorioComponentMoved
@@ -348,11 +329,18 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         DatosTipoDocumento.Habilitar(escritorio, true);
-        String codigo = DatosTipoDocumento.GenerarCodigo("areas", "TD" , 4);
-        txtId.setText(codigo);
-        txtId.setEnabled(false);
+        String codigo = DatosTipoDocumento.GenerarCodigo();
+
+        if (codigo != null) {
+            txtId.setText(codigo);
+            txtId.setEnabled(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         txtDescripcion.requestFocus();
-        esNuevo=true;
+        esNuevo = true;
         tblTipoDocumento.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnAgregarActionPerformed
 

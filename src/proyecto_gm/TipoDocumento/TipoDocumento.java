@@ -1,43 +1,40 @@
-
 package proyecto_gm.TipoDocumento;
 
 public class TipoDocumento {
-    String Id;
-    String IdModulo;
-    String Descripcion;
-    
+    private String codigoTipoDoc;
+    private String idModulo;
+    private String descripcion;
 
-    public TipoDocumento(String Id, String IdModulo,  String Descripcion) {
-        this.Id = Id;
-        this.IdModulo=IdModulo;
-        this.Descripcion = Descripcion;
-        
+    // Constructor
+    public TipoDocumento(String codigoTipoDoc, String idModulo, String descripcion) {
+        this.codigoTipoDoc = codigoTipoDoc;
+        this.idModulo = idModulo;
+        this.descripcion = descripcion;
     }
 
-    public TipoDocumento() {
-        
+    // Getters
+    public String getCodigoTipoDoc() {
+        return codigoTipoDoc;
     }
 
-    public String getId() {
-        return Id;
-    }
-
-    public void setId(String Id) {
-        this.Id = Id;
-    }
     public String getIdModulo() {
-        return IdModulo;
-    }
-
-    public void setIdModulo(String IdModulo) {
-        this.IdModulo = IdModulo;
+        return idModulo;
     }
 
     public String getDescripcion() {
-        return Descripcion;
+        return descripcion;
     }
 
-    public void setDescripcion(String Descripcion) {
-        this.Descripcion = Descripcion;
+    // Setters
+    public void setCodigoTipoDoc(String codigoTipoDoc) {
+        this.codigoTipoDoc = codigoTipoDoc;
+    }
+
+    public void setIdModulo(String idModulo) {
+        this.idModulo = idModulo;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 }

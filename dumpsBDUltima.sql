@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `gmingenieros` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `gmingenieros`;
 -- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
 --
 -- Host: localhost    Database: gmingenieros
@@ -807,9 +805,10 @@ DROP TABLE IF EXISTS `facultades`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `facultades` (
   `IdFacultad` int NOT NULL AUTO_INCREMENT,
+  `codigoFacultad` varchar(50) DEFAULT NULL,
   `Descripcion` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`IdFacultad`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -830,12 +829,13 @@ DROP TABLE IF EXISTS `institucioneseducativas`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `institucioneseducativas` (
   `IdInstitucionEducativa` int NOT NULL AUTO_INCREMENT,
+  `codigoInstituciones` varchar(50) DEFAULT NULL,
   `Ruc` char(20) DEFAULT NULL,
   `RazonSocial` varchar(100) DEFAULT NULL,
   `Direccion` varchar(100) DEFAULT NULL,
   `Sede` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`IdInstitucionEducativa`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3214 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -844,6 +844,7 @@ CREATE TABLE `institucioneseducativas` (
 
 LOCK TABLES `institucioneseducativas` WRITE;
 /*!40000 ALTER TABLE `institucioneseducativas` DISABLE KEYS */;
+INSERT INTO `institucioneseducativas` VALUES (1,'INS000001','2121122','dweqwss','dwqa','eqwewqaa');
 /*!40000 ALTER TABLE `institucioneseducativas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1132,12 +1133,13 @@ DROP TABLE IF EXISTS `tiposdocumentos`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tiposdocumentos` (
   `IdTipoDocumento` int NOT NULL AUTO_INCREMENT,
+  `CodigoTipoDoc` varchar(50) DEFAULT NULL,
   `IdModulo` int DEFAULT NULL,
   `Descripcion` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`IdTipoDocumento`),
   KEY `IdModulo` (`IdModulo`),
   CONSTRAINT `tiposdocumentos_ibfk_1` FOREIGN KEY (`IdModulo`) REFERENCES `modulos` (`IdModulo`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1146,7 +1148,7 @@ CREATE TABLE `tiposdocumentos` (
 
 LOCK TABLES `tiposdocumentos` WRITE;
 /*!40000 ALTER TABLE `tiposdocumentos` DISABLE KEYS */;
-INSERT INTO `tiposdocumentos` VALUES (1,2,'Carta'),(2,2,'Correo'),(3,2,'Llamada'),(4,3,'Factura'),(5,3,'Boleta');
+INSERT INTO `tiposdocumentos` VALUES (6,'TDO0001',3,'dasdawwwwvsa'),(7,'TDO0007',1,'das'),(8,'TDO0008',2,'dsada'),(13,'TDO0009',1,'dsad'),(17,'TDO0014',1,'a'),(18,'TDO0018',1,'dd'),(19,'TDO0019',1,'da'),(20,'TDO0020',1,'dsa');
 /*!40000 ALTER TABLE `tiposdocumentos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1780,12 +1782,12 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_facultades`(
-IN xId int,
+IN xId VARCHAR(20),
 IN xDescripcion VARCHAR(100)
 )
 BEGIN
 UPDATE facultades SET Descripcion = xDescripcion
-WHERE Id = xId;
+WHERE codigoFacultad = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1803,16 +1805,16 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_instituciones`(
-IN xId int,
-IN xRuc CHAR(20),
-IN xRazonSocial VARCHAR(100),
-IN xDireccion VARCHAR(100),
-IN xSede VARCHAR(100)
+    IN xId VARCHAR(20),
+    IN xRuc CHAR(20),
+    IN xRazonSocial VARCHAR(100),
+    IN xDireccion VARCHAR(100),
+    IN xSede VARCHAR(100)
 )
 BEGIN
-UPDATE institucioneseducativas
-SET Ruc = xRuc, RazonSocial = xRazonSocial, Direccion = xDireccion, Sede = xSede
-WHERE Id = xId;
+    UPDATE institucioneseducativas
+    SET Ruc = xRuc, RazonSocial = xRazonSocial, Direccion = xDireccion, Sede = xSede
+    WHERE codigoInstituciones = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1993,11 +1995,16 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_tipodocumento`(IN `xId` int, IN `xDescripcion` VARCHAR(100), IN `xIdModulo` int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_tipodocumento`(
+IN xCodigo VARCHAR(20),
+IN xModulo int,
+    IN p_descripcion VARCHAR(100)
+)
 BEGIN
-UPDATE tiposdocumentos SET  Descripcion = xDescripcion,
- IdModulo = xIdModulo
-WHERE Id = xId;
+    UPDATE tiposdocumentos 
+    SET Descripcion = p_descripcion, 
+    IdModulo = xModulo
+    WHERE CodigoTipoDoc = xCodigo ;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2400,10 +2407,10 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_facultades`(
-IN xId int
+IN xId VARCHAR(100)
 )
 BEGIN
-DELETE FROM facultades WHERE Id = xId;
+DELETE FROM facultades WHERE codigoFacultad = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2421,11 +2428,11 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_instituciones`(
-IN xId int
+    IN xId varchar(100)
 )
 BEGIN
-DELETE FROM institucioneseducativas
-WHERE Id = xId;
+    DELETE FROM institucioneseducativas
+    WHERE codigoInstituciones = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2522,9 +2529,12 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_tipodocumento`(IN `xId` int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_tipodocumento`(
+    IN xCodigo VARCHAR(10)
+)
 BEGIN
-DELETE FROM tiposdocumentos WHERE Id= xId;
+    DELETE FROM tiposdocumentos
+    WHERE CodigoTipoDoc = xCodigo;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3214,7 +3224,11 @@ IN xId int,
 IN xDescripcion VARCHAR(100)
 )
 BEGIN
-INSERT INTO facultades VALUES (xId, xDescripcion);
+INSERT INTO facultades(IdFacultad, Descripcion)  VALUES (xId, xDescripcion);
+
+UPDATE facultades
+SET codigoFacultad = CONCAT('FAC000', LPAD(CAST(xId AS CHAR), 3, '0'))
+WHERE IdFacultad = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3232,15 +3246,20 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_instituciones`(
-IN xId int,
-IN xRuc CHAR(20),
-IN xRazonSocial VARCHAR(100),
-IN xDireccion VARCHAR(100),
-IN xSede VARCHAR(100)
+    IN xIdInstitucion INT, 
+    IN xRuc VARCHAR(20),
+    IN xRazonSocial VARCHAR(100),
+    IN xDireccion VARCHAR(200),
+    IN xSede VARCHAR(100)
 )
 BEGIN
-INSERT INTO institucioneseducativas
-VALUES (xId, xRuc, xRazonSocial, xDireccion, xSede);
+
+    INSERT INTO institucioneseducativas (IdInstitucionEducativa, Ruc, RazonSocial, Direccion, Sede) 
+    VALUES (xIdInstitucion, xRuc, xRazonSocial, xDireccion, xSede);
+    
+    UPDATE institucioneseducativas 
+    SET codigoInstituciones = CONCAT('INS000', LPAD(CAST(xIdInstitucion AS CHAR), 3, '0'))
+    WHERE IdInstitucionEducativa = xIdInstitucion;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3386,10 +3405,14 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_tipodocumento`(IN `xId` int, IN `xIdModulo` int,
-IN `xDescripcion` VARCHAR(100))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_tipodocumento`(
+    IN xCodigo VARCHAR(10),
+    IN xId VARCHAR(10),
+    IN xDescripcion VARCHAR(100)
+)
 BEGIN
-INSERT INTO tiposdocumentos VALUES (xId, xIdModulo, xDescripcion);
+    INSERT INTO tiposdocumentos (CodigoTipoDoc, IdModulo, Descripcion)
+    VALUES (xCodigo, xId, xDescripcion);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -4117,9 +4140,12 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_tipodocumento`()
 BEGIN
-SELECT T.IdTipoDocumento, T.Descripcion,  
-		M.Descripcion AS Modulo, M.IdModulo
-FROM tiposdocumentos T INNER JOIN modulos M ON T.IdModulo = M.IdModulo;
+    SELECT 
+        t.CodigoTipoDoc AS xCodigo,         
+        t.Descripcion AS xDescripcion,      
+        m.Descripcion AS xModulo           
+    FROM tiposdocumentos t
+    JOIN modulos m ON t.IdModulo = m.IdModulo;  
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -4317,6 +4343,29 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `obtener_facultad` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_facultad`(
+    IN p_idInstitucion INT
+)
+BEGIN
+    SELECT codigoFacultad, Descripcion
+    FROM facultades
+    WHERE IdFacultad = p_idInstitucion;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `obtener_horario_empleado` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -4394,6 +4443,29 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `obtener_institucion` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_institucion`(
+    IN p_idInstitucion INT
+)
+BEGIN
+    SELECT codigoInstituciones, Ruc, RazonSocial, Direccion, Sede 
+    FROM institucioneseducativas 
+    WHERE IdInstitucionEducativa = p_idInstitucion;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `obtener_proyectosxcontratante` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -4463,4 +4535,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-02 18:11:33
+-- Dump completed on 2025-04-03 18:47:53
