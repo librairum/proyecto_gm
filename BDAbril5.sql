@@ -139,7 +139,7 @@ CREATE TABLE `articulos` (
   KEY `IdMarca` (`IdMarca`),
   CONSTRAINT `articulos_ibfk_1` FOREIGN KEY (`IdCategoria`) REFERENCES `categorias` (`IdCategoria`),
   CONSTRAINT `articulos_ibfk_2` FOREIGN KEY (`IdMarca`) REFERENCES `marcas` (`IdMarca`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,6 +148,7 @@ CREATE TABLE `articulos` (
 
 LOCK TABLES `articulos` WRITE;
 /*!40000 ALTER TABLE `articulos` DISABLE KEYS */;
+INSERT INTO `articulos` VALUES (3,'ART0003',4,2,'DSDAdsad','DASdsadas',1.00,NULL,NULL),(4,'ART0004',4,2,'ASD','AS',12.00,NULL,NULL),(5,'ART0005',3,1,'das','dassasad',12.00,NULL,NULL),(7,'ART0006',3,1,'dsada','dsad',12.00,NULL,NULL);
 /*!40000 ALTER TABLE `articulos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -817,6 +818,7 @@ CREATE TABLE `facultades` (
 
 LOCK TABLES `facultades` WRITE;
 /*!40000 ALTER TABLE `facultades` DISABLE KEYS */;
+INSERT INTO `facultades` VALUES (1,'FAC000001','e2eqw');
 /*!40000 ALTER TABLE `facultades` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1139,7 +1141,7 @@ CREATE TABLE `tiposdocumentos` (
   PRIMARY KEY (`IdTipoDocumento`),
   KEY `IdModulo` (`IdModulo`),
   CONSTRAINT `tiposdocumentos_ibfk_1` FOREIGN KEY (`IdModulo`) REFERENCES `modulos` (`IdModulo`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1148,7 +1150,7 @@ CREATE TABLE `tiposdocumentos` (
 
 LOCK TABLES `tiposdocumentos` WRITE;
 /*!40000 ALTER TABLE `tiposdocumentos` DISABLE KEYS */;
-INSERT INTO `tiposdocumentos` VALUES (6,'TDO0001',3,'dasdawwwwvsa'),(7,'TDO0007',1,'das'),(8,'TDO0008',2,'dsada'),(13,'TDO0009',1,'dsad'),(17,'TDO0014',1,'a'),(18,'TDO0018',1,'dd'),(19,'TDO0019',1,'da'),(20,'TDO0020',1,'dsa');
+INSERT INTO `tiposdocumentos` VALUES (6,'TDO0001',3,'dasdawwwwvsa'),(7,'TDO0007',1,'das'),(8,'TDO0008',2,'dsada'),(13,'TDO0009',1,'dsad'),(17,'TDO0014',1,'a'),(18,'TDO0018',1,'dd'),(19,'TDO0019',1,'da'),(20,'TDO0020',1,'dsa'),(21,'TDO0021',1,'dsa'),(22,'TDO0022',4,'aa');
 /*!40000 ALTER TABLE `tiposdocumentos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1347,21 +1349,21 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_articulos`(
-    IN p_Id INT,
-    IN p_Descripcion VARCHAR(100),
-    IN p_IdCategoria INT,
-    IN p_IdMarca INT,
-    IN p_Caracteristicas VARCHAR(100),
-    IN p_Cantidad INT
+IN xCodigo VARCHAR(20),
+IN xIdCat int,
+IN xIdMar int, 
+IN xCaracteristicas VARCHAR(100),
+IN xDescripcion VARCHAR(100),
+IN xCantidad int
 )
 BEGIN
-    UPDATE articulos SET 
-		descripcion = p_Descripcion,
-		IdCategoria = p_Idcategoria,
-        IdMarca = p_IdMarca,
-        caracteristicas = p_Caracteristicas,
-        cantidad = p_Cantidad
-    WHERE idArticulo = p_Id;
+    UPDATE articulos 
+    SET descripcion = xDescripcion, 
+		IdCategoria = xIdCat,
+        IdMarca = xIdMar,
+        caracteristicas = xCaracteristicas,
+        cantidad = xCantidad
+    WHERE CodigoArticulo = xCodigo ;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2223,10 +2225,10 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_articulos`(
-    IN p_IdArticulo INT
+    IN xCodigo VARCHAR(10)
 )
 BEGIN
-    DELETE FROM articulos WHERE idArticulo = p_IdArticulo;
+    DELETE FROM articulos WHERE CodigoArticulo = xCodigo;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2853,20 +2855,16 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_articulos`(
-    IN p_Id INT,
-    IN p_descripcion VARCHAR(100),
-    IN p_IdCategoria INT,
-    IN p_IdMarca INT,
-    IN p_caracteristicas VARCHAR(255),
-    IN p_Cantidad INT
+    IN xCodigo VARCHAR(10),
+    IN xIdCat VARCHAR(10),
+    IN xIdMar VARCHAR(10),
+    IN xCaracteristicas VARCHAR(100),
+    IN xDescripcion VARCHAR(100),
+    IN xCantidad INT
 )
 BEGIN
-    IF (SELECT COUNT(*) FROM marcas WHERE IdMarca = p_IdMarca) = 0 THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La marca especificada no existe';
-    END IF;
-
-    INSERT INTO articulos (IdArticulo, IdCategoria, IdMarca, caracteristicas, descripcion, cantidad)
-    VALUES (p_Id, p_IdCategoria, p_IdMarca, p_caracteristicas, p_descripcion, p_Cantidad);
+    INSERT INTO articulos (CodigoArticulo, IdCategoria, IdMarca, caracteristicas, descripcion, cantidad)
+    VALUES (xCodigo, xIdCat, xIdMar, xCaracteristicas, xDescripcion, xCantidad);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3528,17 +3526,15 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_articulos`()
 BEGIN
     SELECT 
-        art.idarticulo,
-        art.idcategoria,
-		cat.descripcion as categoriaDescripcion,
-        art.idmarca,
-        mar.descripcion as marcaDescripcion,
-        caracteristicas,
-        art.descripcion,
-        cantidad
-    FROM articulos art left join categorias cat 
-    ON art.idcategoria = cat.idcategoria
-    LEFT JOIN marcas mar on art.idmarca = mar.idmarca;
+        a.CodigoArticulo AS xCodigo,         
+        a.descripcion AS xDescripcion, 
+        c.Descripcion AS xDescripcionCat,
+        mar.descripcion as xDescripcionMar,
+        a.caracteristicas AS xCaracteristicas,
+        a.cantidad AS xCantidad
+    FROM articulos a left join categorias c 
+    ON a.IdCategoria = c.IdCategoria 
+    LEFT JOIN marcas mar ON a.IdMarca = mar.IdMarca;  
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -4292,6 +4288,29 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `obtener_carrera` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_carrera`(
+    IN p_idCarrera INT
+)
+BEGIN
+    SELECT codigoCarrera, descripcion 
+    FROM carreras 
+    WHERE IdCarrera = p_idCarrera;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `obtener_datos_academicos` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -4535,4 +4554,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-03 18:47:53
+-- Dump completed on 2025-04-05 10:56:27

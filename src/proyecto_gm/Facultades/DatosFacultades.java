@@ -194,10 +194,8 @@ public class DatosFacultades {
             PreparedStatement stmt = conn.prepareStatement("CALL listar_facultades()");
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                // El registro ya existe, se debe realizar una actualización
                 DatosFacultades.actualizarDatos(facultad, tabla);
             } else {
-                // El registro no existe, se debe realizar una inserción
                 DatosFacultades.insertarDatos(facultad, tabla);
             }
         } catch (SQLException ex) {

@@ -1,30 +1,31 @@
 package proyecto_gm.Articulo;
 
 public class Articulo {
-    protected int IdArticulo;
-    protected int IdCategoria;
-    private int IdMarca;
+    protected String CodigoArticulo;
+    protected String IdCategoria;
+    private String IdMarca;
     private String caracteristicas;
-    
     protected String  descripcion;
-    private int cantidad;
+    private Double cantidad;
     protected String categoriadescripcion;
     protected String marcadescripcion;
 
-    // Constructor
-    public Articulo(int idArticulo, String descripcion, int idCategoria) {
-        this.IdArticulo = idArticulo;
+    public Articulo(String CodigoArticulo, String IdCategoria, String IdMarca, String caracteristicas, String descripcion, Double cantidad) {
+        this.CodigoArticulo = CodigoArticulo;
+        this.IdCategoria = IdCategoria;
+        this.IdMarca = IdMarca;
+        this.caracteristicas = caracteristicas;
         this.descripcion = descripcion;
-        this.IdCategoria = idCategoria;
+        this.cantidad = cantidad;
     }
-
+    
     //get y set
-    public int getIdArticulo() {
-        return IdArticulo;
+    public String getcodigoArticulo() {
+        return CodigoArticulo;
     }
 
-    public void setIdArticulo(int IdArticulo) {
-        this.IdArticulo = IdArticulo;
+    public void setCodigoArticulo(String CodigoArticulo) {
+        this.CodigoArticulo = CodigoArticulo;
     }
 
     public String getDescripcion() {
@@ -35,53 +36,35 @@ public class Articulo {
         this.descripcion = descripcion;
     }
 
-    public int getIdCategoria() {
+    public String getIdCategoria() {
         return IdCategoria;
     }
 
-    public void setIdCategoria(int idCategoria) {
+    public void setIdCategoria(String idCategoria) {
         this.IdCategoria = idCategoria;
     }
 
-    /**
-     * @return the IdMarca
-     */
-    public int getIdMarca() {
+    public String getIdMarca() {
         return IdMarca;
     }
 
-    /**
-     * @param IdMarca the IdMarca to set
-     */
-    public void setIdMarca(int IdMarca) {
+    public void setIdMarca(String IdMarca) {
         this.IdMarca = IdMarca;
     }
 
-    /**
-     * @return the caracteristicas
-     */
     public String getCaracteristicas() {
         return caracteristicas;
     }
 
-    /**
-     * @param caracteristicas the caracteristicas to set
-     */
     public void setCaracteristicas(String caracteristicas) {
         this.caracteristicas = caracteristicas;
     }
 
-    /**
-     * @return the cantidad
-     */
-    public int getCantidad() {
+    public double getCantidad() {
         return cantidad;
     }
 
-    /**
-     * @param cantidad the cantidad to set
-     */
-    public void setCantidad(int cantidad) {
+    public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
     }
 
