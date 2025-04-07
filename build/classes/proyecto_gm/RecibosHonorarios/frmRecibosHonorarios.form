@@ -78,43 +78,36 @@
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="txtImpNeto" min="-2" pref="72" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="cboDistrito" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
                               <Component id="txtDirec" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
-                              <Component id="cboPago" alignment="0" min="-2" pref="110" max="-2" attributes="0"/>
+                              <Component id="cboPago" alignment="0" min="-2" pref="159" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="173" max="32767" attributes="0"/>
+                          <EmptySpace pref="203" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                              <Group type="103" alignment="0" groupAlignment="1" attributes="0">
                                   <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="txtIR" min="-2" pref="72" max="-2" attributes="0"/>
+                                  <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jLabel12" alignment="1" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel13" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="txtImpTotal" min="-2" pref="72" max="-2" attributes="0"/>
-                                      <Component id="txtFecEmi" min="-2" pref="72" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
+                              <Component id="jLabel13" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="txtFecEmi" min="-2" pref="72" max="-2" attributes="0"/>
+                              <Component id="txtIR" min="-2" pref="72" max="-2" attributes="0"/>
+                              <Component id="txtImpTotal" min="-2" pref="72" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="209" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
-                          <Component id="txtConcepto" min="-2" pref="330" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="txtImpNeto" alignment="0" min="-2" pref="72" max="-2" attributes="0"/>
+                              <Component id="txtConcepto" alignment="0" min="-2" pref="330" max="-2" attributes="0"/>
+                          </Group>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="btnExportar" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -190,23 +183,30 @@
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtNom" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtImpNeto" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtNom" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtImpNeto" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtApe" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtConcepto" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                          <Component id="jScrollPane1" min="-2" pref="274" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                          <Component id="btnExportar" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtApe" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtConcepto" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnExportar" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" pref="274" max="-2" attributes="0"/>
                   <EmptySpace pref="10" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -405,12 +405,15 @@
         <Component class="javax.swing.JComboBox" name="cboPago">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] { &quot;Transferencia&quot;, &quot;Al contado&quot; })" type="code"/>
+              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] { &quot;&lt;&lt;Seleccionar&gt;&gt;&quot;,  &quot;Transferencia&quot;, &quot;Al contado&quot; })" type="code"/>
             </Property>
             <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
               <ComponentRef name="txtImpNeto"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboPagoActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
@@ -418,7 +421,7 @@
         <Component class="javax.swing.JComboBox" name="cboDistrito">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] {&#xa;    &quot;Anc&#xf3;n&quot;,&#xa;    &quot;Ate&quot;,&#xa;    &quot;Barranco&quot;,&#xa;    &quot;Bre&#xf1;a&quot;,&#xa;    &quot;Carabayllo&quot;,&#xa;    &quot;Chaclacayo&quot;,&#xa;    &quot;Chorrillos&quot;,&#xa;    &quot;Cieneguilla&quot;,&#xa;    &quot;Comas&quot;,&#xa;    &quot;El Agustino&quot;,&#xa;    &quot;Independencia&quot;,&#xa;    &quot;Jes&#xfa;s Mar&#xed;a&quot;,&#xa;    &quot;La Molina&quot;,&#xa;    &quot;La Victoria&quot;,&#xa;    &quot;Lima&quot;,&#xa;    &quot;Lince&quot;,&#xa;    &quot;Los Olivos&quot;,&#xa;    &quot;Lurigancho&quot;,&#xa;    &quot;Lurin&quot;,&#xa;    &quot;Magdalena del Mar&quot;,&#xa;    &quot;Miraflores&quot;,&#xa;    &quot;Pachacamac&quot;,&#xa;    &quot;Pucusana&quot;,&#xa;    &quot;Pueblo Libre&quot;,&#xa;    &quot;Puente Piedra&quot;,&#xa;    &quot;Punta Hermosa&quot;,&#xa;    &quot;Punta Negra&quot;,&#xa;    &quot;R&#xed;mac&quot;,&#xa;    &quot;San Bartolo&quot;,&#xa;    &quot;San Borja&quot;,&#xa;    &quot;San Isidro&quot;,&#xa;    &quot;San Juan de Lurigancho&quot;,&#xa;    &quot;San Juan de Miraflores&quot;,&#xa;    &quot;San Luis&quot;,&#xa;    &quot;San Mart&#xed;n de Porres&quot;,&#xa;    &quot;San Miguel&quot;,&#xa;    &quot;Santa Anita&quot;,&#xa;    &quot;Santa Mar&#xed;a del Mar&quot;,&#xa;    &quot;Santa Rosa&quot;,&#xa;    &quot;Santiago de Surco&quot;,&#xa;    &quot;Surquillo&quot;,&#xa;    &quot;Villa El Salvador&quot;,&#xa;    &quot;Villa Mar&#xed;a del Triunfo&quot;&#xa;})" type="code"/>
+              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] {&#xa;    &quot;&lt;&lt;Seleccionar&gt;&gt;&quot;,&#xa;    &quot;Anc&#xf3;n&quot;,&#xa;    &quot;Ate&quot;,&#xa;    &quot;Barranco&quot;,&#xa;    &quot;Bre&#xf1;a&quot;,&#xa;    &quot;Carabayllo&quot;,&#xa;    &quot;Chaclacayo&quot;,&#xa;    &quot;Chorrillos&quot;,&#xa;    &quot;Cieneguilla&quot;,&#xa;    &quot;Comas&quot;,&#xa;    &quot;El Agustino&quot;,&#xa;    &quot;Independencia&quot;,&#xa;    &quot;Jes&#xfa;s Mar&#xed;a&quot;,&#xa;    &quot;La Molina&quot;,&#xa;    &quot;La Victoria&quot;,&#xa;    &quot;Lima&quot;,&#xa;    &quot;Lince&quot;,&#xa;    &quot;Los Olivos&quot;,&#xa;    &quot;Lurigancho&quot;,&#xa;    &quot;Lurin&quot;,&#xa;    &quot;Magdalena del Mar&quot;,&#xa;    &quot;Miraflores&quot;,&#xa;    &quot;Pachacamac&quot;,&#xa;    &quot;Pucusana&quot;,&#xa;    &quot;Pueblo Libre&quot;,&#xa;    &quot;Puente Piedra&quot;,&#xa;    &quot;Punta Hermosa&quot;,&#xa;    &quot;Punta Negra&quot;,&#xa;    &quot;R&#xed;mac&quot;,&#xa;    &quot;San Bartolo&quot;,&#xa;    &quot;San Borja&quot;,&#xa;    &quot;San Isidro&quot;,&#xa;    &quot;San Juan de Lurigancho&quot;,&#xa;    &quot;San Juan de Miraflores&quot;,&#xa;    &quot;San Luis&quot;,&#xa;    &quot;San Mart&#xed;n de Porres&quot;,&#xa;    &quot;San Miguel&quot;,&#xa;    &quot;Santa Anita&quot;,&#xa;    &quot;Santa Mar&#xed;a del Mar&quot;,&#xa;    &quot;Santa Rosa&quot;,&#xa;    &quot;Santiago de Surco&quot;,&#xa;    &quot;Surquillo&quot;,&#xa;    &quot;Villa El Salvador&quot;,&#xa;    &quot;Villa Mar&#xed;a del Triunfo&quot;&#xa;})" type="code"/>
             </Property>
             <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
               <ComponentRef name="txtDirec"/>
@@ -458,9 +461,6 @@
           <SubComponents>
             <Component class="javax.swing.JTable" name="tblHonorarios">
               <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="13" rowCount="0">
                     <Column editable="false" title="ID" type="java.lang.Object"/>
@@ -480,67 +480,67 @@
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="30" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="90" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="125" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="160" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="170" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="0" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="105" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="200" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="60" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="60" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="60" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>

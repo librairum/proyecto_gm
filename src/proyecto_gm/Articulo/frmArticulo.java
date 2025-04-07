@@ -12,8 +12,6 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
-import proyecto_gm.Categoria.Categoria;
-import proyecto_gm.Categoria.DatosCategoria;
 import proyecto_gm.Exportar;
 
 public class frmArticulo extends javax.swing.JInternalFrame {

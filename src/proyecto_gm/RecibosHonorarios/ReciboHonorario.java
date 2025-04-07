@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package proyecto_gm.RecibosHonorarios;
 
 /**
@@ -10,19 +7,36 @@ package proyecto_gm.RecibosHonorarios;
  */
 public class ReciboHonorario {
 
-    String id, nroRecibo, ruc, nombres, apellidos, distrito, direccion, formaPago, concepto, fecha;
+    String codigoRecibo, nroRecibo, ruc, nombres, apellidos, distrito, direccion, formaPago, concepto, fecha;
     float importeNeto, retencionIr, importeTotal;
 
+    public ReciboHonorario(String codigoRecibo, String nroRecibo, String ruc, String nombres, String apellidos, String distrito, String direccion, String formaPago, String concepto, String fecha, float importeNeto, float retencionIr, float importeTotal) {
+        this.codigoRecibo = codigoRecibo;
+        this.nroRecibo = nroRecibo;
+        this.ruc = ruc;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.distrito = distrito;
+        this.direccion = direccion;
+        this.formaPago = formaPago;
+        this.concepto = concepto;
+        this.fecha = fecha;
+        this.importeNeto = importeNeto;
+        this.retencionIr = retencionIr;
+        this.importeTotal = importeTotal;
+    }
+
+    
     public ReciboHonorario() {
         // Constructor vacio
     }
 
-    public String getId() {
-        return id;
+    public String getCodigoRecibo() {
+        return codigoRecibo;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setCodigoRecibo(String id) {
+        this.codigoRecibo = codigoRecibo;
     }
 
     public String getNroRecibo() {

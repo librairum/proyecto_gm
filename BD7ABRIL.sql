@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `gmingenieros` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `gmingenieros`;
 -- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
 --
 -- Host: localhost    Database: gmingenieros
@@ -879,6 +881,30 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Table structure for table `marca`
+--
+
+DROP TABLE IF EXISTS `marca`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `marca` (
+  `IdMarca` int NOT NULL AUTO_INCREMENT,
+  `Descripcion` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`IdMarca`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `marca`
+--
+
+LOCK TABLES `marca` WRITE;
+/*!40000 ALTER TABLE `marca` DISABLE KEYS */;
+INSERT INTO `marca` VALUES (1,'generico'),(2,'Faber castell'),(3,'Layconsa'),(4,'mixtro');
+/*!40000 ALTER TABLE `marca` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `marcas`
 --
 
@@ -1101,6 +1127,7 @@ DROP TABLE IF EXISTS `reciboshonorarios`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reciboshonorarios` (
   `IdReciboHonorario` int NOT NULL AUTO_INCREMENT,
+  `codigoHonorarios` varchar(50) DEFAULT NULL,
   `NroRecibo` varchar(20) DEFAULT NULL,
   `Ruc` char(11) DEFAULT NULL,
   `Nombres` varchar(100) DEFAULT NULL,
@@ -1114,7 +1141,7 @@ CREATE TABLE `reciboshonorarios` (
   `ImporteTotal` decimal(18,2) DEFAULT NULL,
   `FechaEmision` date DEFAULT NULL,
   PRIMARY KEY (`IdReciboHonorario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1123,6 +1150,7 @@ CREATE TABLE `reciboshonorarios` (
 
 LOCK TABLES `reciboshonorarios` WRITE;
 /*!40000 ALTER TABLE `reciboshonorarios` DISABLE KEYS */;
+INSERT INTO `reciboshonorarios` VALUES (4,'REH0001','NUM-1','11111111111','a','a','Ancón','aaa','Transferencia','aaa',112.00,8.96,103.04,'1111-11-11'),(5,'REH0005','NUM-2','22222222222','b','b','Ate','aaa','Al contado','1111',1231.00,198.48,1032.52,'2003-12-12'),(6,'REH0006','NUM-3','33333333333','c','c','Ancón','asd','Transferencia','32sda',12341.00,987.28,11353.72,'1111-11-11');
 /*!40000 ALTER TABLE `reciboshonorarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3356,7 +3384,7 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_recibo_honorario`(
-    IN xId int,
+    IN xCodigoRecibo VARCHAR(20),
     IN xNroRecibo VARCHAR(20),
     IN xRuc CHAR(11),
     IN xNombres VARCHAR(100),
@@ -3371,9 +3399,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_recibo_honorario`(
     IN xFechaEmision CHAR(10)
 )
 BEGIN
-	INSERT INTO reciboshonorarios
+	INSERT INTO reciboshonorarios (codigoHonorarios, NroRecibo, Ruc, Nombres, Apellidos, Distrito, Direccion, FormaPago, Concepto, ImporteNeto, RetencionIr, ImporteTotal, FechaEmision)
     VALUES (
-		xId,
+		xCodigoRecibo,
 		xNroRecibo,
 		xRuc,
 		xNombres,
@@ -4112,11 +4140,11 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_recibos_honorarios`()
 BEGIN
-    SELECT IdReciboHonorario as Id, NroRecibo, Ruc, Nombres, Apellidos, Distrito, Direccion, 
+    SELECT codigoHonorarios, NroRecibo, Ruc, Nombres, Apellidos, Distrito, Direccion, 
    FormaPago, Concepto, ImporteNeto, RetencionIr, 
    ImporteTotal, 
    DATE_FORMAT(FechaEmision, '%d/%m/%Y') AS FechaEmision
-    FROM reciboshonorarios;
+    FROM reciboshonorarios ORDER BY codigoHonorarios;
     
 END ;;
 DELIMITER ;
@@ -4554,4 +4582,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-05 10:56:27
+-- Dump completed on 2025-04-07 13:21:28
