@@ -61,8 +61,8 @@ public class DatosTipoDocumento {
     }
 
     public static void CargarCombo(JComboBox<String> cboModulo) {
-        try ( PreparedStatement pstmt = conn.prepareStatement("SELECT Descripcion FROM modulos")) {
-            ResultSet rs = pstmt.executeQuery();
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_modulos() }")) {
+            ResultSet rs = cstmt.executeQuery();
             while (rs.next()) {
                 cboModulo.addItem(rs.getString("Descripcion"));
             }
@@ -84,9 +84,9 @@ public class DatosTipoDocumento {
 
     public static String Capturar(JComboBox<String> cboModulo) {
         String idModulo = "";
-        try ( PreparedStatement pstmt = conn.prepareStatement("SELECT IdModulo FROM modulos WHERE Descripcion = ?")) {
-            pstmt.setString(1, cboModulo.getSelectedItem().toString());
-            ResultSet rs = pstmt.executeQuery();
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_id_modulo(?) }")) {
+            cstmt.setString(1, cboModulo.getSelectedItem().toString());
+            ResultSet rs = cstmt.executeQuery();
             if (rs.next()) {
                 idModulo = rs.getString("IdModulo");
             }
@@ -105,11 +105,11 @@ public class DatosTipoDocumento {
 
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
-            Mostrar(modelo); 
-            return true; 
+            Mostrar(modelo);
+            return true;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            return false; 
+            return false;
         }
     }
 
@@ -137,16 +137,16 @@ public class DatosTipoDocumento {
     public static void Actualizar(TipoDocumento tip, JTable tabla, JComboBox<String> cboModulo) {
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_tipodocumento(?, ?, ?) }")) {
             // Capturar el IdModulo del ComboBox seleccionado
-            String idModulo = Capturar(cboModulo); 
+            String idModulo = Capturar(cboModulo);
 
-            cstmt.setString(1, tip.getCodigoTipoDoc()); 
+            cstmt.setString(1, tip.getCodigoTipoDoc());
             cstmt.setInt(2, Integer.parseInt(idModulo));
-            cstmt.setString(3, tip.getDescripcion());   
+            cstmt.setString(3, tip.getDescripcion());
             cstmt.execute();
 
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            modelo.setRowCount(0);  
-            Mostrar(modelo);        
+            modelo.setRowCount(0);
+            Mostrar(modelo);
 
             JOptionPane.showMessageDialog(null, "Datos actualizados correctamente.");
         } catch (SQLException ex) {

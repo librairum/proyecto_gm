@@ -522,8 +522,9 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         // Agrupar las cajas de texto
         JTextField[] camposTexto = {txtId, txtNroRecibo, txtRuc, txtNom, txtApe,
             txtDirec, txtConcepto, txtImpNeto, txtIR, txtImpTotal, txtFecEmi};
+        JComboBox[] combos = {cboDistrito, cboPago};
 
-        DatosRecibosHonorarios.Editar(escritorio, tblHonorarios, camposTexto, cboDistrito, cboPago);
+        DatosRecibosHonorarios.Editar(escritorio, tblHonorarios, camposTexto, combos);
         esNuevo = false; // Indicamos que no sera un nuevo registro
     }//GEN-LAST:event_btnEditarActionPerformed
 
@@ -533,8 +534,37 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        String distrito = cboDistrito.getSelectedItem().toString();
-        String pago = cboPago.getSelectedItem().toString();
+        String distrito = null;
+        String pago = null;
+
+        if (cboDistrito.getSelectedItem() == null || cboPago.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(null, "Por favor, selecciona un valor en los combo boxes.");
+            return; // Se detiene el proceso si algún combo box no tiene selección
+        } else {
+            distrito = cboDistrito.getSelectedItem().toString();
+            pago = cboPago.getSelectedItem().toString();
+        }
+
+        if (txtImpNeto.getText().isEmpty() || txtIR.getText().isEmpty() || txtImpTotal.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, completa los campos de importe.");
+            return; // Se detiene el proceso si algún campo de importe está vacío
+        }
+
+        if (txtId == null || txtNroRecibo == null || txtRuc == null || txtNom == null || txtApe == null || txtDirec == null || txtImpNeto == null || txtConcepto == null || txtFecEmi == null) {
+            JOptionPane.showMessageDialog(null, "Alguno de los campos no está inicializado.");
+            return; // Se detiene el proceso si algún campo no está inicializado
+        }
+
+        if (txtId.getText().isEmpty() || txtRuc.getText().isEmpty() || txtNom.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Completar bien los campos");
+            return; // Se detiene el proceso si los campos requeridos están vacíos
+        }
+
+        if (!txtId.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
+            JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto. Debe ser 'CAR0002'.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            txtId.requestFocus();
+            return; // Se detiene el proceso si el formato del Id no es correcto
+        }
 
         ReciboHonorario rec = new ReciboHonorario(
                 txtId.getText(),
@@ -542,9 +572,9 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
                 txtRuc.getText(),
                 txtNom.getText(),
                 txtApe.getText(),
-                distrito,
+                distrito, // Asignación del distrito seleccionado
                 txtDirec.getText(),
-                pago,
+                pago, // Asignación del pago seleccionado
                 txtConcepto.getText(),
                 txtFecEmi.getText(),
                 Float.parseFloat(txtImpNeto.getText()),
@@ -556,16 +586,15 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         JComboBox[] combos = {cboDistrito, cboPago};
 
         if (!DatosRecibosHonorarios.Validar(campos, combos)) {
-            return; // se corta la ejecucion del boton
+            return; // Se corta la ejecución del botón si la validación no es exitosa
         }
+
         if (esNuevo) {
             if (txtId.getText().isEmpty() || txtRuc.getText().isEmpty() || txtNom.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            } else if (!txtId.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
-                JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto. Debe ser 'CAR0002'.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                txtId.requestFocus();
+                return; // Se detiene el proceso si los campos están vacíos
             } else {
+                // Se realiza la inserción del nuevo recibo
                 if (DatosRecibosHonorarios.Insertar(rec, tblHonorarios)) {
                     DatosRecibosHonorarios.Limpiar(escritorio);
                     DatosRecibosHonorarios.Habilitar(escritorio, false);
@@ -576,9 +605,10 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
                 }
             }
         } else {
+            // Actualiza el recibo existente
             if (txtId.getText().isEmpty() || txtRuc.getText().isEmpty() || txtNom.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
+                return; // Se detiene el proceso si los campos están vacíos
             } else {
                 rec.setCodigoRecibo(txtId.getText());
                 DatosRecibosHonorarios.Actualizar(rec, tblHonorarios);
@@ -588,6 +618,7 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
                 tblHonorarios.setRowSelectionAllowed(true);
             }
         }
+
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

@@ -129,74 +129,85 @@ public class DatosRecibosHonorarios {
         }
     }
 
-    public static void Editar(Container contenedor, JTable tabla, JTextField[] cajas, JComboBox cboDistrito, JComboBox cboPago) {
-        // Obtener el indice de la fila seleccionada
-        int fila = tabla.getSelectedRow();
+    public static void Editar(Container contenedor, JTable tabla, JTextField[] camposTexto, JComboBox[] combos) {
+        int filaSeleccionada = tabla.getSelectedRow();
+        if (filaSeleccionada >= 0) {
+            Habilitar(contenedor, true);
+            camposTexto[0].setEnabled(false);
+            camposTexto[1].requestFocus();
 
-        if (fila >= 0) {
-            DatosRecibosHonorarios.Habilitar(contenedor, true);
-            tabla.clearSelection();
-            tabla.setRowSelectionAllowed(false);
+            camposTexto[0].setText(tabla.getValueAt(filaSeleccionada, 0).toString());
+            camposTexto[1].setText(tabla.getValueAt(filaSeleccionada, 1).toString());
+            camposTexto[2].setText(tabla.getValueAt(filaSeleccionada, 2).toString());
+            camposTexto[3].setText(tabla.getValueAt(filaSeleccionada, 3).toString());
+            camposTexto[4].setText(tabla.getValueAt(filaSeleccionada, 4).toString());
+            camposTexto[5].setText(tabla.getValueAt(filaSeleccionada, 6).toString());
+            camposTexto[6].setText(tabla.getValueAt(filaSeleccionada, 8).toString());
+            camposTexto[7].setText(tabla.getValueAt(filaSeleccionada, 9).toString());
+            camposTexto[8].setText(tabla.getValueAt(filaSeleccionada, 10).toString());
+            camposTexto[9].setText(tabla.getValueAt(filaSeleccionada, 11).toString());
+            camposTexto[10].setText(tabla.getValueAt(filaSeleccionada, 12).toString());
+            
+            String distrito = tabla.getValueAt(filaSeleccionada, 1).toString();
+            String pago = tabla.getValueAt(filaSeleccionada, 2).toString();
 
-            cajas[0].setText(tabla.getModel().getValueAt(fila, 0).toString());
-            cajas[1].setText(tabla.getModel().getValueAt(fila, 1).toString());
-            cajas[2].setText(tabla.getModel().getValueAt(fila, 2).toString());
-            cajas[3].setText(tabla.getModel().getValueAt(fila, 3).toString());
-            cajas[4].setText(tabla.getModel().getValueAt(fila, 4).toString());
-            cajas[5].setText(tabla.getModel().getValueAt(fila, 6).toString()); 
-            cajas[6].setText(tabla.getModel().getValueAt(fila, 8).toString()); 
-            cajas[7].setText(tabla.getModel().getValueAt(fila, 9).toString()); 
-            cajas[8].setText(tabla.getModel().getValueAt(fila, 10).toString()); 
-            cajas[9].setText(tabla.getModel().getValueAt(fila, 11).toString()); 
-            cajas[10].setText(tabla.getModel().getValueAt(fila, 12).toString());
+            for (int i = 0; i < combos[0].getItemCount(); i++) {
+                if (combos[0].getItemAt(i).equals(distrito)) {
+                    combos[0].setSelectedIndex(i);  // Seleccionar la categoría correspondiente
+                    break;
+                }
+            }
 
-            cajas[0].setEnabled(false);
-            cajas[1].requestFocus();
-
-            cboDistrito.setSelectedItem(tabla.getModel().getValueAt(fila, 5).toString());
-            cboPago.setSelectedItem(tabla.getModel().getValueAt(fila, 7).toString()); 
-
+            for (int i = 0; i < combos[1].getItemCount(); i++) {
+                if (combos[1].getItemAt(i).equals(pago)) {
+                    combos[1].setSelectedIndex(i);
+                    break;
+                }
+            }
         } else {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.");
         }
     }
 
     public static void Actualizar(ReciboHonorario recibo, JTable tabla) {
-        CallableStatement cstmt = null;
+    CallableStatement cstmt = null;
+    try {
+        cstmt = conn.prepareCall("{ CALL actualizar_recibo_honorario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+
+        cstmt.setString(1, recibo.getCodigoRecibo());
+        cstmt.setString(2, recibo.getNroRecibo());
+        cstmt.setString(3, recibo.getRuc());
+        cstmt.setString(4, recibo.getNombres());
+        cstmt.setString(5, recibo.getApellidos());
+        cstmt.setString(6, recibo.getDistrito());
+        cstmt.setString(7, recibo.getDireccion());
+        cstmt.setString(8, recibo.getFormaPago());
+        cstmt.setString(9, recibo.getConcepto());
+        cstmt.setFloat(10, recibo.getImporteNeto());
+        cstmt.setFloat(11, recibo.getRetencionIr());
+        cstmt.setFloat(12, recibo.getImporteTotal());
+        cstmt.setString(13, recibo.getFecha());
+
+        cstmt.execute(); // <<--- ESTA LÍNEA FALTABA 🔥🔥🔥
+
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        modelo.setRowCount(0);
+
+        DatosRecibosHonorarios.Mostrar(modelo);
+
+        JOptionPane.showMessageDialog(null, "Recibo actualizado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    } finally {
         try {
-            cstmt = conn.prepareCall("{ CALL actualizar_recibo_honorario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
-
-            cstmt.setString(1, recibo.getCodigoRecibo());
-            cstmt.setString(2, recibo.getNroRecibo());
-            cstmt.setString(3, recibo.getRuc());
-            cstmt.setString(4, recibo.getNombres());
-            cstmt.setString(5, recibo.getApellidos());
-            cstmt.setString(6, recibo.getDistrito());
-            cstmt.setString(7, recibo.getDireccion());
-            cstmt.setString(8, recibo.getFormaPago());
-            cstmt.setString(9, recibo.getConcepto());
-            cstmt.setFloat(10, recibo.getImporteNeto());
-            cstmt.setFloat(11, recibo.getRetencionIr());
-            cstmt.setFloat(12, recibo.getImporteTotal());
-            cstmt.setString(13, recibo.getFecha());
-
-            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            modelo.setRowCount(0);
-
-            DatosRecibosHonorarios.Mostrar(modelo);
-
+            if (cstmt != null) {
+                cstmt.close();
+            }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            try {
-                if (cstmt != null) {
-                    cstmt.close();
-                }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
         }
     }
+}
 
     public static void Eliminar(JTable tabla) {
         CallableStatement cstmt = null;

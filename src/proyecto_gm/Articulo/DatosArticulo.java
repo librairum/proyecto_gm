@@ -72,8 +72,8 @@ public class DatosArticulo {
     }
 
     public static void CargarCategoria(JComboBox<String> cmbCategoria) {
-        try ( PreparedStatement pstmt = conn.prepareStatement("SELECT Descripcion FROM categorias")) {
-            ResultSet rs = pstmt.executeQuery();
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_categorias() }")) {
+            ResultSet rs = cstmt.executeQuery();
             while (rs.next()) {
                 cmbCategoria.addItem(rs.getString("Descripcion"));
             }
@@ -83,8 +83,8 @@ public class DatosArticulo {
     }
 
     public static void CargarMarcas(JComboBox<String> cboMarca) {
-        try ( PreparedStatement pstmt = conn.prepareStatement("SELECT Descripcion FROM marcas")) {
-            ResultSet rs = pstmt.executeQuery();
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_marcas() }")) {
+            ResultSet rs = cstmt.executeQuery();
             while (rs.next()) {
                 cboMarca.addItem(rs.getString("Descripcion"));
             }
@@ -110,31 +110,31 @@ public class DatosArticulo {
     }
 
     public static String CapturarCat(JComboBox<String> cmbCategoria) {
-        String idModulo = "";
-        try ( PreparedStatement pstmt = conn.prepareStatement("SELECT IdCategoria FROM categorias WHERE Descripcion = ?")) {
-            pstmt.setString(1, cmbCategoria.getSelectedItem().toString());
-            ResultSet rs = pstmt.executeQuery();
+        String idCategoria = "";
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_id_categoria(?) }")) {
+            cstmt.setString(1, cmbCategoria.getSelectedItem().toString());
+            ResultSet rs = cstmt.executeQuery();
             if (rs.next()) {
-                idModulo = rs.getString("IdCategoria");
+                idCategoria = rs.getString("IdCategoria");
             }
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar Opciones", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar Categoría", JOptionPane.ERROR_MESSAGE);
         }
-        return idModulo;
+        return idCategoria;
     }
 
     public static String CapturarMarca(JComboBox<String> cboMarca) {
-        String idModulo = "";
-        try ( PreparedStatement pstmt = conn.prepareStatement("SELECT IdMarca FROM marcas WHERE Descripcion = ?")) {
-            pstmt.setString(1, cboMarca.getSelectedItem().toString());
-            ResultSet rs = pstmt.executeQuery();
+        String idMarca = "";
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_id_marca(?) }")) {
+            cstmt.setString(1, cboMarca.getSelectedItem().toString());
+            ResultSet rs = cstmt.executeQuery();
             if (rs.next()) {
-                idModulo = rs.getString("IdMarca");
+                idMarca = rs.getString("IdMarca");
             }
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar Opciones", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar Marca", JOptionPane.ERROR_MESSAGE);
         }
-        return idModulo;
+        return idMarca;
     }
 
     public static boolean Insertar(Articulo art, JTable tabla) {
@@ -217,7 +217,7 @@ public class DatosArticulo {
         int fila = tabla.getSelectedRow();
         if (fila >= 0) {
             String codigoTipo = tabla.getModel().getValueAt(fila, 0).toString();
-            int confirm = JOptionPane.showConfirmDialog(null, "¿Eliminar tipo de empleado?", "Confirmar", JOptionPane.YES_NO_OPTION);
+            int confirm = JOptionPane.showConfirmDialog(null, "¿Eliminar articulo?", "Confirmar", JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
                 try ( CallableStatement stmt = conn.prepareCall("{ CALL eliminar_articulos(?) }")) {
                     stmt.setString(1, codigoTipo);
@@ -228,7 +228,7 @@ public class DatosArticulo {
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Seleccione un área para eliminar.");
+            JOptionPane.showMessageDialog(null, "Seleccione un articulo para eliminar.");
         }
     }
 }
