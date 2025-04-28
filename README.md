@@ -19,3 +19,4 @@ Cambios realizado por Emerson Apaza:
 - Cambios en el paquete cuentasbancarias (Funciona)
 - Cambios en el paquete viaticos (Funciona)
 - Cambios en el paquete contactos (Funciona)
+- Cambios en el paquete articulos (Funciona)
