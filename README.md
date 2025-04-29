@@ -20,3 +20,6 @@ Cambios realizado por Emerson Apaza:
 - Cambios en el paquete viaticos (Funciona)
 - Cambios en el paquete contactos (Funciona)
 - Cambios en el paquete articulos (Funciona)
+
+Cambios realizado por Percy Barrenechea:
+- Cambios en el paquete Transferencias (Funciona)
