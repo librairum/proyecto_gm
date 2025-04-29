@@ -2143,7 +2143,7 @@ BEGIN
         CuentaOrigen = xCuentaOrigen,
         CuentaDestino = xCuentaDestino,
         Fecha = STR_TO_DATE(xFecha, '%d/%m/%Y')
-    WHERE Id = xId;
+    WHERE IdTransferenciaBancaria = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2699,7 +2699,7 @@ xId INT
 )
 BEGIN
 	DELETE FROM transferenciasbancarias
-    WHERE Id = xId;
+    WHERE IdTransferenciaBancaria = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -4419,13 +4419,15 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_transferencias`()
 BEGIN
-SELECT t.IdTransferenciaBancaria as Id, 
-		t.IdPeriodo AS 'Periodo', t.NroOperacion, 
-        c1.Nombres AS 'CuentaOrigen', 
-        c2.Nombres AS 'CuentaDestino', DATE_FORMAT(t.Fecha, '%d/%m/%Y') AS 'Fecha'
-  FROM transferenciasbancarias t 
-  INNER JOIN cuentasbancarias c1 ON t.CuentaOrigen = c1.IdCuentaBancaria
-  INNER JOIN cuentasbancarias c2 ON t.CuentaDestino = c2.IdCuentaBancaria;
+    SELECT 
+        tb.IdTransferenciaBancaria,
+        tb.IdPeriodo,
+        tb.NroOperacion,
+        tb.CuentaOrigen,
+        tb.CuentaDestino,
+        tb.Fecha
+    FROM 
+        transferenciasbancarias tb;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;

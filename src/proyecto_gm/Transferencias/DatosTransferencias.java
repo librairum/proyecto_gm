@@ -86,7 +86,7 @@ public class DatosTransferencias {
     public static void Listar(DefaultTableModel modelo) {
         try ( PreparedStatement pstmt = conn.prepareStatement("CALL listar_transferencias");  ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
-                Object[] row = new Object[]{rs.getString("Id"), rs.getString("Periodo"),
+                Object[] row = new Object[]{rs.getString("IdTransferenciaBancaria"), rs.getString("IdPeriodo"),
                     rs.getString("NroOperacion"), rs.getString("CuentaOrigen"), rs.getString("CuentaDestino"),
                     rs.getString("Fecha")};
                 modelo.addRow(row);
