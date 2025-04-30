@@ -21,3 +21,7 @@ Cambios realizado por Emerson Apaza:
 - Cambios en el paquete contactos (Funciona)
 - Cambios en el paquete articulos (Funciona)
 - Cambios en el paquete Empleados(datos academicos) (Funcionando)
+
+Cambios realizado por Percy Barrenechea:
+- Cambios en el paquete Transferencias (Funciona)
+

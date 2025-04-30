@@ -11,9 +11,13 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group>
             <file>file:/D:/1.%20PROYECTO_GM_INGENIEROS/src/proyecto_gm/Empleado/DatosEmpleados.java</file>
             <file>file:/D:/1.%20PROYECTO_GM_INGENIEROS/src/proyecto_gm/Empleado/frmEmpleado.java</file>
         </group>
+=======
+        <group/>
+>>>>>>> ddcba64447092dc56f9fa7249d3cf389f102b08c
     </open-files>
 </project-private>
