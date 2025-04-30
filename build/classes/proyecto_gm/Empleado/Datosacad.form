@@ -261,6 +261,9 @@
               <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] { &quot;Por definir...&quot;, &quot;1ro&quot;, &quot;2do&quot;, &quot;3ro&quot;, &quot;4to&quot;, &quot;5to&quot;, &quot;6to&quot;, &quot;7mo&quot;, &quot;8vo&quot;, &quot;9no&quot;, &quot;10mo&quot;, &quot;Egresado&quot; })" type="code"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboCicloActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>

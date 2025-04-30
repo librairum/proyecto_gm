@@ -94,6 +94,11 @@ public class Datosacad extends javax.swing.JInternalFrame {
         jLabel6.setText("Ciclo:");
 
         cboCiclo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Por definir...", "1ro", "2do", "3ro", "4to", "5to", "6to", "7mo", "8vo", "9no", "10mo", "Egresado" }));
+        cboCiclo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboCicloActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
@@ -217,6 +222,10 @@ public class Datosacad extends javax.swing.JInternalFrame {
             evt.consume();
         }
     }//GEN-LAST:event_txtCodEsKeyTyped
+
+    private void cboCicloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCicloActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboCicloActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
