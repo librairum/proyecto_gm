@@ -2847,7 +2847,7 @@ set @prefijo = 'CG';
 set  @cantidadRegistros = (select count(*) from comunicaciones limit 1);
 
 -- se obtiene el ultimo, en caso de no tener registors en la tabla asignar CG0000, si no CG00001
-set @ultimocodigo = ( case when @cantidadRegistros = 0 then  'CG0000' else (select Id from comunicaciones order by Id desc limit 1) end);
+set @ultimocodigo = ( case when @cantidadRegistros = 0 then  'CG0000' else (select IdComunicacion from comunicaciones order by IdComunicacion desc limit 1) end);
  
 -- retirar el prefijo del codigo CF0001 obtenido a traves de a consulta
 -- el ultimo codigo ingresado convertir a enter y sumar en 1 para obtener el siguiente codigo.
