@@ -29,17 +29,20 @@ public class DatosCajaChica {
     }
 
     // Mostrar datos
-    public static void Mostrar(DefaultTableModel modelo , String periodo) {
-        
+    public static void Mostrar(DefaultTableModel modelo) {
         try {
-            PreparedStatement pstmt = conn.prepareStatement("CALL listar_cajachica(?)");
-            pstmt.setString(1, periodo);
+            PreparedStatement pstmt = conn.prepareStatement("CALL listar_cajachica()");
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                Object[] row = new Object[]{rs.getString("Id"), rs.getString("NroOperacion"),
+                Object[] row = new Object[]{
+                    rs.getString("Id"),
+                    rs.getString("NroOperacion"),
                     rs.getString("Fecha"),
-                    rs.getString("Descripcion"), rs.getString("Entrada"), rs.getString("Salida"),
-                    rs.getString("Saldo")};
+                    rs.getString("Descripcion"),
+                    rs.getString("Entrada"),
+                    rs.getString("Salida"),
+                    rs.getString("Saldo")
+                };
                 modelo.addRow(row);
             }
         } catch (SQLException ex) {
@@ -47,6 +50,20 @@ public class DatosCajaChica {
         }
     }
 
+    public static String ObtenerSiguienteIdCajaChica() {
+        String siguienteId = "";
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_siguiente_id_cajachica() }")) {
+            ResultSet rs = cstmt.executeQuery();
+            if (rs.next()) {
+                siguienteId = rs.getString("SiguienteId");
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error al obtener el siguiente ID", JOptionPane.ERROR_MESSAGE);
+        }
+        return siguienteId;
+    }
+
+    /*
     public static void NuevaFila(JTable tabla) {
         // Obtener el modelo de la tabla
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
@@ -58,6 +75,7 @@ public class DatosCajaChica {
         tabla.editCellAt(fila, 0);
 
     }
+     */
 //    public static String GenerarCodigo(String tabla, String prefijo, int longitud) {
 //        CallableStatement cstmt = null;
 //        String codigo_generado = "";
@@ -85,16 +103,15 @@ public class DatosCajaChica {
 //        return codigo_generado;
 //        
 //    }
-
     public static void Habilitar(Container contenedor, boolean bloquear) {
         Component[] components = contenedor.getComponents();
         for (Component component : components) {
-            if (component instanceof JButton ) {
-                String button = ((JButton)component).getName();
+            if (component instanceof JButton) {
+                String button = ((JButton) component).getName();
                 if (button.equals("deshacer")) {
-                    ((JButton)component).setEnabled(bloquear);
+                    ((JButton) component).setEnabled(bloquear);
                 } else if (button.equals("agregar") || button.equals("editar") || button.equals("eliminar")) {
-                    ((JButton)component).setEnabled(!bloquear); // aplicar logica inversa
+                    ((JButton) component).setEnabled(!bloquear); // aplicar logica inversa
                 }
             } else {
                 // No hace nada para otros tipos de componentes
@@ -114,12 +131,23 @@ public class DatosCajaChica {
             cstmt.setFloat(6, caj.getSalida());
             cstmt.setFloat(7, caj.getSaldo());
 
-            cstmt.execute(); // se inserta los datos a la BD
+            cstmt.execute(); // Se inserta los datos a la BD
 
-            // Actualizamos la tabla
+            // Mostrar mensaje de éxito
+            JOptionPane.showMessageDialog(null, "¡Registro guardado correctamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            // Actualizamos la tabla sin borrar las filas existentes
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            modelo.setRowCount(0);
-            DatosCajaChica.Mostrar(modelo, periodo);
+            Object[] fila = {
+                caj.getId(),
+                caj.getIdTransferenciasBancarias(),
+                caj.getFecha(),
+                caj.getDescripcion(),
+                caj.getEntrada(),
+                caj.getSalida(),
+                caj.getSaldo()
+            };
+            modelo.addRow(fila);
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -143,14 +171,14 @@ public class DatosCajaChica {
             // Actualizamos la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
-
-            DatosCajaChica.Mostrar(modelo, periodo);
-
+            
+            //DatosCajaChica.Mostrar(modelo, periodo);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    /*
     public static boolean validarCamposCompletados(JTable table) {
         DefaultTableModel modelo = (DefaultTableModel) table.getModel();
         int rowCount = modelo.getRowCount();
@@ -170,7 +198,7 @@ public class DatosCajaChica {
         // Si todas las celdas están completadas, devuelve true
         return true;
     }
-
+     */
     public static void Eliminar(JTable tabla) {
         try {
             // Obtener el indice de la fila seleccionada
@@ -203,25 +231,32 @@ public class DatosCajaChica {
 
     }
 
-    public static void CargarCombo(JComboBox cbotransferencias) {
-        try {
-            // Preparamos la consultas
-            PreparedStatement pstmt = conn.prepareStatement("SELECT NroOperacion FROM transferenciasbancarias");
-
-            // Las ejecutamos
-            ResultSet rs = pstmt.executeQuery();
-
-            // Agregamos los provedores
+    public static void CargarCombo(JComboBox<String> cboNroOperacion) {
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_operacion() }")) {
+            ResultSet rs = cstmt.executeQuery();
             while (rs.next()) {
-                String nomtransferencias = rs.getString("NroOperacion");
-                cbotransferencias.addItem(nomtransferencias);
+                cboNroOperacion.addItem(rs.getString("NroOperacion"));
             }
-
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    public static String CapturarIdOperacion(JComboBox<String> cboNroOperacion) {
+        String idCategoria = "";
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_id_Operacion(?) }")) {
+            cstmt.setString(1, cboNroOperacion.getSelectedItem().toString());
+            ResultSet rs = cstmt.executeQuery();
+            if (rs.next()) {
+                idCategoria = rs.getString("IdTransferenciaBancaria");
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar Categoría", JOptionPane.ERROR_MESSAGE);
+        }
+        return idCategoria;
+    }
+
+    /*
     public static String CapturarID(String transferencia) {
         String idTransferenciasBancarias = "";
         try {
@@ -244,8 +279,8 @@ public class DatosCajaChica {
         }
 
         return idTransferenciasBancarias;
-    }
-
+    }*/
+ /*
     public static void Fecha(JTable tabla, JComboBox combo) {
         int fila = tabla.getSelectedRow();
         if (fila >= 0) {
@@ -268,5 +303,5 @@ public class DatosCajaChica {
             JOptionPane.showMessageDialog(null, "Debe seleccionar una fila.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }
-
+     */
 }
