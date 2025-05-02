@@ -1,10 +1,10 @@
-CREATE DATABASE  IF NOT EXISTS `gmingenieros` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `gmingenieros`;
 -- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
 --
 -- Host: localhost    Database: gmingenieros
 -- ------------------------------------------------------
 -- Server version	8.0.41
+
+USE `gmingenieros`;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -67,7 +67,6 @@ CREATE TABLE `almacenxarticulo` (
 
 LOCK TABLES `almacenxarticulo` WRITE;
 /*!40000 ALTER TABLE `almacenxarticulo` DISABLE KEYS */;
-INSERT INTO `almacenxarticulo` VALUES (2,1,'2017','08',0.00,'E'),(2,1,'2023','06',0.00,'E'),(2,2,'2017','08',2.00,'E'),(2,2,'2023','06',0.00,'E'),(1,3,'2017','08',0.00,'E'),(1,3,'2023','06',2.00,'E'),(2,4,'2017','08',1.00,'E'),(2,4,'2023','06',0.00,'E'),(3,5,'2017','08',0.00,'E'),(3,5,'2023','06',2.00,'E'),(3,6,'2017','08',1.00,'E'),(3,6,'2023','06',1.00,'E'),(2,7,'2017','08',0.00,'E'),(2,7,'2023','06',1.00,'E'),(2,8,'2017','08',0.00,'E'),(2,8,'2023','06',1.00,'E'),(2,9,'2017','08',0.00,'E'),(2,9,'2023','06',1.00,'E'),(1,10,'2017','08',1.00,'E'),(1,10,'2023','06',0.00,'E'),(1,11,'2017','08',0.00,'E'),(1,11,'2023','06',1.00,'E'),(3,12,'2017','08',0.00,'E'),(3,12,'2023','06',1.00,'E'),(3,13,'2017','08',1.00,'E'),(3,13,'2023','06',0.00,'E'),(3,14,'2017','08',0.00,'E'),(3,14,'2023','06',2.00,'E'),(3,15,'2017','08',0.00,'E'),(3,15,'2023','06',2.00,'E'),(3,16,'2017','08',2.00,'E'),(3,16,'2023','06',0.00,'E'),(3,17,'2017','08',0.00,'E'),(3,17,'2023','06',2.00,'E'),(3,18,'2017','08',0.00,'E'),(3,18,'2023','06',1.00,'E'),(3,19,'2017','08',0.00,'E'),(3,19,'2023','06',1.00,'E'),(3,20,'2017','08',0.00,'E'),(3,20,'2023','06',2.00,'E'),(3,21,'2017','08',0.00,'E'),(3,21,'2023','06',4.00,'E'),(1,22,'2017','08',0.00,'E'),(1,22,'2023','06',2.00,'E'),(1,23,'2017','08',1.00,'E'),(1,23,'2023','06',0.00,'E'),(1,24,'2017','08',0.00,'E'),(1,24,'2023','06',2.00,'E'),(2,25,'2017','08',0.00,'E'),(2,25,'2023','06',0.00,'E'),(1,26,'2017','08',0.00,'E'),(1,26,'2023','06',1.00,'E'),(1,27,'2017','08',1.00,'E'),(1,27,'2023','06',0.00,'E'),(1,28,'2017','08',1.00,'E'),(1,28,'2023','06',1.00,'E'),(1,29,'2017','08',3.00,'E'),(1,29,'2023','06',0.00,'E'),(1,30,'2017','08',1.00,'E'),(1,30,'2023','06',1.00,'E'),(2,31,'2017','08',0.00,'E'),(2,31,'2023','06',2.00,'E'),(1,32,'2017','08',0.00,'E'),(1,32,'2023','06',3.00,'E'),(1,33,'2017','08',1.00,'E'),(1,33,'2023','06',0.00,'E'),(1,34,'2017','08',0.00,'E'),(1,34,'2023','06',4.00,'E'),(2,35,'2017','08',1.00,'E'),(2,35,'2023','06',0.00,'E'),(1,36,'2017','08',0.00,'E'),(1,36,'2023','06',3.00,'E'),(1,37,'2017','08',0.00,'E'),(1,37,'2023','06',3.00,'E'),(1,38,'2017','08',0.00,'E'),(1,38,'2023','06',1.00,'E'),(1,39,'2017','08',0.00,'E'),(1,39,'2023','06',1.00,'E'),(3,40,'2017','08',1.00,'E'),(3,40,'2023','06',0.00,'E'),(3,41,'2017','08',1.00,'E'),(3,41,'2023','06',0.00,'E'),(3,42,'2017','08',1.00,'E'),(3,42,'2023','06',0.00,'E'),(3,43,'2017','08',0.00,'E'),(3,43,'2023','06',1.00,'E'),(1,44,'2017','08',2.00,'E'),(1,44,'2023','06',0.00,'E'),(1,45,'2017','08',0.00,'E'),(1,45,'2023','06',2.00,'E'),(1,46,'2017','08',0.00,'E'),(1,46,'2023','06',4.00,'E'),(1,47,'2017','08',2.00,'E'),(1,47,'2023','06',0.00,'E'),(1,48,'2017','08',0.00,'E'),(1,48,'2023','06',2.00,'E'),(3,49,'2017','08',1.00,'E'),(3,49,'2023','06',0.00,'E'),(1,50,'2017','08',0.00,'E'),(1,50,'2023','06',2.00,'E'),(3,51,'2017','08',2.00,'E'),(3,51,'2023','06',0.00,'E'),(3,52,'2017','08',1.00,'E'),(3,52,'2023','06',0.00,'E'),(2,53,'2017','08',1.00,'E'),(2,53,'2023','06',0.00,'E'),(2,54,'2017','08',2.00,'E'),(2,54,'2023','06',0.00,'E'),(3,55,'2017','08',0.00,'E'),(3,55,'2023','06',1.00,'E'),(3,56,'2017','08',1.00,'E'),(3,56,'2023','06',0.00,'E'),(3,57,'2017','08',1.00,'E'),(3,57,'2023','06',0.00,'E'),(3,58,'2017','08',0.00,'E'),(3,58,'2023','06',3.00,'E'),(1,59,'2017','08',1.00,'E'),(1,59,'2023','06',0.00,'E'),(3,60,'2017','08',0.00,'E'),(3,60,'2023','06',5.00,'E'),(3,61,'2017','08',0.00,'E'),(3,61,'2023','06',7.00,'E'),(3,62,'2017','08',2.00,'E'),(3,62,'2023','06',0.00,'E'),(1,63,'2017','08',0.00,'E'),(1,63,'2023','06',1.00,'E'),(1,64,'2017','08',0.00,'E'),(1,64,'2023','06',2.00,'E'),(1,65,'2017','08',1.00,'E'),(1,65,'2023','06',0.00,'E'),(1,66,'2017','08',1.00,'E'),(1,66,'2023','06',0.00,'E'),(3,67,'2017','08',0.00,'E'),(3,67,'2023','06',3.00,'E'),(2,68,'2017','08',1.00,'E'),(2,68,'2023','06',0.00,'E'),(2,69,'2017','08',1.00,'E'),(2,69,'2023','06',0.00,'E'),(1,70,'2017','08',1.00,'E'),(1,70,'2023','06',0.00,'E'),(1,71,'2017','08',0.00,'E'),(1,71,'2023','06',4.00,'E'),(1,72,'2017','08',1.00,'E'),(1,72,'2023','06',0.00,'E'),(1,73,'2017','08',0.00,'E'),(1,73,'2023','06',4.00,'E'),(1,74,'2017','08',0.00,'E'),(1,74,'2023','06',41.00,'E'),(1,75,'2017','08',7.00,'E'),(1,75,'2023','06',0.00,'E'),(3,76,'2017','08',2.00,'E'),(3,76,'2023','06',0.00,'E'),(3,77,'2017','08',0.00,'E'),(3,77,'2023','06',2.00,'E'),(2,78,'2017','08',0.00,'E'),(2,78,'2023','06',0.00,'E'),(1,79,'2017','08',0.00,'E'),(1,79,'2023','06',3.00,'E'),(3,80,'2017','08',0.00,'E'),(3,80,'2023','06',1.00,'E'),(3,81,'2017','08',0.00,'E'),(3,81,'2023','06',2.00,'E');
 /*!40000 ALTER TABLE `almacenxarticulo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -80,9 +79,10 @@ DROP TABLE IF EXISTS `areas`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `areas` (
   `IdArea` int NOT NULL AUTO_INCREMENT,
+  `CodigoArea` varchar(50) DEFAULT NULL,
   `descripcion` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`IdArea`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,7 +91,7 @@ CREATE TABLE `areas` (
 
 LOCK TABLES `areas` WRITE;
 /*!40000 ALTER TABLE `areas` DISABLE KEYS */;
-INSERT INTO `areas` VALUES (1,'Por Definir...'),(2,'Administración'),(3,'Tecnico de Proyectos'),(4,'Contabilidad'),(5,'Gerencia'),(6,'Sistemas');
+INSERT INTO `areas` VALUES (1,'ARE0001','Administración'),(2,'ARE0002','Tecnico de Proyectos'),(3,'ARE0003','Contabilidad'),(4,'ARE0004','Gerencia'),(5,'ARE0005','Sistemas');
 /*!40000 ALTER TABLE `areas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -128,6 +128,7 @@ DROP TABLE IF EXISTS `articulos`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `articulos` (
   `IdArticulo` int NOT NULL AUTO_INCREMENT,
+  `CodigoArticulo` varchar(50) DEFAULT NULL,
   `IdCategoria` int DEFAULT NULL,
   `IdMarca` int DEFAULT NULL,
   `caracteristicas` varchar(400) DEFAULT NULL,
@@ -140,7 +141,7 @@ CREATE TABLE `articulos` (
   KEY `IdMarca` (`IdMarca`),
   CONSTRAINT `articulos_ibfk_1` FOREIGN KEY (`IdCategoria`) REFERENCES `categorias` (`IdCategoria`),
   CONSTRAINT `articulos_ibfk_2` FOREIGN KEY (`IdMarca`) REFERENCES `marcas` (`IdMarca`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -149,7 +150,7 @@ CREATE TABLE `articulos` (
 
 LOCK TABLES `articulos` WRITE;
 /*!40000 ALTER TABLE `articulos` DISABLE KEYS */;
-INSERT INTO `articulos` VALUES (1,2,NULL,NULL,'ADAPTADOR DE DVI A HDMI',1.00,1,'NO DEFINIDO'),(2,2,NULL,NULL,'ADAPTADORES UNIVERSALES PARA ENCHUFES',2.00,1,'NO DEFINIDO'),(3,1,NULL,NULL,'AUTONUMBER',2.00,1,'NO DEFINIDO'),(4,2,NULL,NULL,'BATERIA PORTATIL PARA CELULAR',1.00,1,'NO DEFINIDO'),(5,3,NULL,NULL,'BOLSAS DE DORMIR',2.00,1,'NO DEFINIDO'),(6,3,NULL,NULL,'CABLE BLANCO PARA RECARGAR GPS',1.00,1,'NO DEFINIDO'),(7,2,NULL,NULL,'CABLE DE VIDEO HDMI',1.00,1,'NO DEFINIDO'),(8,2,NULL,NULL,'CABLE RED',1.00,1,'NO DEFINIDO'),(9,2,NULL,NULL,'CABLE VIDEO VGA',1.00,1,'NO DEFINIDO'),(10,1,NULL,NULL,'CAJA DE GRAPAS',5.00,1,'NO DEFINIDO'),(11,1,NULL,NULL,'CAJA DE TIZA',1.00,1,'NO DEFINIDO'),(12,3,NULL,NULL,'CAMARA FOTOGRAFICA PLATAEADA SONY + FUNDA NEGRA',1.00,1,'NO DEFINIDO'),(13,3,NULL,NULL,'CARGADOR (NUEVO) DE PILAS',2.00,1,'NO DEFINIDO'),(14,3,NULL,NULL,'CASACA AZUL',2.00,1,'NO DEFINIDO'),(15,3,NULL,NULL,'CASACA FOSFORECENTE VERDE',3.00,1,'NO DEFINIDO'),(16,3,NULL,NULL,'CASCOS BLANCOS',2.00,1,'NO DEFINIDO'),(17,3,NULL,NULL,'CHALECO FOSFORECENTE NARANJA',2.00,1,'NO DEFINIDO'),(18,3,NULL,NULL,'CHALECO FOSFORECENTE VERDE',1.00,1,'NO DEFINIDO'),(19,3,NULL,NULL,'CHALECO GRIS',1.00,1,'NO DEFINIDO'),(20,3,NULL,NULL,'CHALECO NARANJA DE MALLA',2.00,1,'NO DEFINIDO'),(21,3,NULL,NULL,'CHALECO NARANJA GENERICO',4.00,1,'NO DEFINIDO'),(22,1,NULL,NULL,'CHINCHES CAJA',2.00,1,'NO DEFINIDO'),(23,1,NULL,NULL,'CINTA DE EMBALAJE',1.00,1,'NO DEFINIDO'),(24,1,NULL,NULL,'COLCHONETA NEGRA',2.00,1,'NO DEFINIDO'),(25,2,NULL,NULL,'CONECTOR DE RED INAHALBRICO TP LINK',0.00,1,'NO DEFINIDO'),(26,1,NULL,NULL,'CORREA NEGRA',1.00,1,'NO DEFINIDO'),(27,1,NULL,NULL,'CORRECTOR DE CINTA',2.00,1,'NO DEFINIDO'),(28,1,NULL,NULL,'CORRECTOR LIQUIDO',3.00,1,'NO DEFINIDO'),(29,1,NULL,NULL,'CUADERNOS',3.00,1,'NO DEFINIDO'),(30,1,NULL,NULL,'CUCHILLA',1.00,1,'NO DEFINIDO'),(31,2,NULL,NULL,'DISCO DURO WESTERN DIGITAL',2.00,1,'NO DEFINIDO'),(32,1,NULL,NULL,'ENGRAMPADORA',3.00,1,'NO DEFINIDO'),(33,1,NULL,NULL,'ENGRAPADOR GRANDE CON SACA GRAPAS',1.00,1,'NO DEFINIDO'),(34,1,NULL,NULL,'ETIQUETAS PLANTILLA',4.00,1,'NO DEFINIDO'),(35,2,NULL,NULL,'EXTENSION DE 15 M CON 3 SALIDAS ELECTRICAS (NUEVO)',1.00,1,'NO DEFINIDO'),(36,1,NULL,NULL,'FASTENER CAJA',3.00,1,'NO DEFINIDO'),(37,1,NULL,NULL,'GANCHOS GRANDES',3.00,1,'NO DEFINIDO'),(38,1,NULL,NULL,'GANCHOS PEQUEÑOS',1.00,1,'NO DEFINIDO'),(39,1,NULL,NULL,'GOMA EN BOTELLA',1.00,1,'NO DEFINIDO'),(40,3,NULL,NULL,'GORRO DE LANA AZUL',1.00,1,'NO DEFINIDO'),(41,3,NULL,NULL,'GPX ETREX 20',1.00,1,'NO DEFINIDO'),(42,3,NULL,NULL,'GPX MOUNTAN 650',1.00,1,'NO DEFINIDO'),(43,3,NULL,NULL,'HILO DE PESCAR',1.00,1,'NO DEFINIDO'),(44,1,NULL,NULL,'HUELLEROS DIGITAL',2.00,1,'NO DEFINIDO'),(45,1,NULL,NULL,'HUMEDECEDOR DACTILAR',2.00,1,'NO DEFINIDO'),(46,1,NULL,NULL,'LAPICERO',55.00,1,'NO DEFINIDO'),(47,1,NULL,NULL,'LAPICEROS MAGICOS PILOT',2.00,1,'NO DEFINIDO'),(48,1,NULL,NULL,'LAPICES',9.00,1,'NO DEFINIDO'),(49,3,NULL,NULL,'LENTE DE SEGURIDAD OSCUROS',1.00,1,'NO DEFINIDO'),(50,1,NULL,NULL,'LIMPIATIPO',2.00,1,'NO DEFINIDO'),(51,3,NULL,NULL,'LINTERNAS',2.00,1,'NO DEFINIDO'),(52,3,NULL,NULL,'MAMELUCO BLANCO PARA MUESTREO DE AGUA',1.00,1,'NO DEFINIDO'),(53,2,NULL,NULL,'MEMORIA SONY 4GB',1.00,1,'NO DEFINIDO'),(54,2,NULL,NULL,'MICROCHIP MEMORIA KING 16GB',1.00,1,'NO DEFINIDO'),(55,3,NULL,NULL,'PAQUETE DE BOLSA DE VACIO',1.00,1,'NO DEFINIDO'),(56,3,NULL,NULL,'GUANTE AMARILLOS (PAR)',1.00,1,'NO DEFINIDO'),(57,3,NULL,NULL,'GUANTES QUIRURGICOS COLOR AZUL (PAR)',1.00,1,'NO DEFINIDO'),(58,3,NULL,NULL,'BOTAS (PAR)',3.00,1,'NO DEFINIDO'),(59,1,NULL,NULL,'PERFORADOR',4.00,1,'NO DEFINIDO'),(60,3,NULL,NULL,'PILA AA',5.00,1,'NO DEFINIDO'),(61,3,NULL,NULL,'PILA AAA',7.00,1,'NO DEFINIDO'),(62,3,NULL,NULL,'PILAS RECARGABLES AA',5.00,1,'NO DEFINIDO'),(63,1,NULL,NULL,'PISTOLA DE SILICONA',1.00,1,'NO DEFINIDO'),(64,1,NULL,NULL,'PLUMÓN DELGADO',2.00,1,'NO DEFINIDO'),(65,1,NULL,NULL,'PLUMÓN GRUESO',9.00,1,'NO DEFINIDO'),(66,1,NULL,NULL,'PORTAMINAS FABER CASTELL',1.00,1,'NO DEFINIDO'),(67,3,NULL,NULL,'PROTECTOR FACIAL',3.00,1,'NO DEFINIDO'),(68,2,NULL,NULL,'PROYECTOR EN CAJA COMPLETO, NUEVO',1.00,1,'NO DEFINIDO'),(69,2,NULL,NULL,'PUNTERO LAZER',1.00,1,'NO DEFINIDO'),(70,1,NULL,NULL,'RESALTADOR COLOR NARANJA',1.00,1,'NO DEFINIDO'),(71,1,NULL,NULL,'RESALTADORES',4.00,1,'NO DEFINIDO'),(72,1,NULL,NULL,'RESPIRADOR DE GASES',1.00,1,'NO DEFINIDO'),(73,1,NULL,NULL,'SACAGRAPAS',4.00,1,'NO DEFINIDO'),(74,1,NULL,NULL,'SELLO',41.00,1,'NO DEFINIDO'),(75,1,NULL,NULL,'SOBRE',8.00,1,'NO DEFINIDO'),(76,3,NULL,NULL,'TABLEROS DE MADERA',2.00,1,'NO DEFINIDO'),(77,3,NULL,NULL,'TAPASOL',2.00,1,'NO DEFINIDO'),(78,2,NULL,NULL,'TARJETA DE VIDEO RED INALAMBRICA',0.00,1,'NO DEFINIDO'),(79,1,NULL,NULL,'TINTE DE TAMPON',7.00,1,'NO DEFINIDO'),(80,3,NULL,NULL,'WINCHA 50M',2.00,1,'NO DEFINIDO'),(81,3,NULL,NULL,'WINCHA DE 100M',2.00,1,'NO DEFINIDO');
+INSERT INTO `articulos` VALUES (2,NULL,2,1,'ninguna','ninguna',2.00,NULL,NULL),(3,NULL,1,1,'ninguna','ninguna',34.00,NULL,NULL),(4,NULL,2,1,'ninguna','ninguna',12.00,NULL,NULL);
 /*!40000 ALTER TABLE `articulos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -222,7 +223,7 @@ CREATE TABLE `bancos` (
 
 LOCK TABLES `bancos` WRITE;
 /*!40000 ALTER TABLE `bancos` DISABLE KEYS */;
-INSERT INTO `bancos` VALUES (1,'BCP'),(2,'BBVA'),(3,'IBK'),(4,'BN'),(5,'OTRO');
+INSERT INTO `bancos` VALUES (1,'BCP'),(2,'BBVA'),(3,'IBK'),(4,'BN'),(5,'OTRO'),(6,'SCOTIABANK');
 /*!40000 ALTER TABLE `bancos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -303,7 +304,7 @@ CREATE TABLE `cajachica` (
   PRIMARY KEY (`IdCajaChica`),
   KEY `IdTransferenciaBancaria` (`IdTransferenciaBancaria`),
   CONSTRAINT `cajachica_ibfk_1` FOREIGN KEY (`IdTransferenciaBancaria`) REFERENCES `transferenciasbancarias` (`IdTransferenciaBancaria`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -312,6 +313,7 @@ CREATE TABLE `cajachica` (
 
 LOCK TABLES `cajachica` WRITE;
 /*!40000 ALTER TABLE `cajachica` DISABLE KEYS */;
+INSERT INTO `cajachica` VALUES (1,1,'2025-03-25','s','s','s',12.00),(2,1,'2025-03-25','ninguna','12','6',6.00),(3,1,'2025-02-10','ninguna','10','5',5.00),(4,1,'2025-05-22','ninguna','25','20',5.00),(5,1,'2025-02-20','ninguna','20','10',10.00),(6,1,'2025-02-12','ninguna','20','10',10.00),(7,1,'2025-03-23','ninguna','23','20',3.00);
 /*!40000 ALTER TABLE `cajachica` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -324,9 +326,10 @@ DROP TABLE IF EXISTS `cargos`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cargos` (
   `IdCargo` int NOT NULL AUTO_INCREMENT,
+  `CodigoCargo` varchar(50) DEFAULT NULL,
   `Descripcion` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`IdCargo`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -335,7 +338,7 @@ CREATE TABLE `cargos` (
 
 LOCK TABLES `cargos` WRITE;
 /*!40000 ALTER TABLE `cargos` DISABLE KEYS */;
-INSERT INTO `cargos` VALUES (1,'Administracion');
+INSERT INTO `cargos` VALUES (1,'CAR0001','Administración');
 /*!40000 ALTER TABLE `cargos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -349,8 +352,9 @@ DROP TABLE IF EXISTS `carreras`;
 CREATE TABLE `carreras` (
   `IdCarrera` int NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(100) DEFAULT NULL,
+  `codigoCarrera` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`IdCarrera`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1232 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -359,6 +363,7 @@ CREATE TABLE `carreras` (
 
 LOCK TABLES `carreras` WRITE;
 /*!40000 ALTER TABLE `carreras` DISABLE KEYS */;
+INSERT INTO `carreras` VALUES (1,'Ing. sistemas','CAR000001'),(3,'Contabilidad','CAR000003'),(4,'Administración','CAR000004');
 /*!40000 ALTER TABLE `carreras` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -371,9 +376,10 @@ DROP TABLE IF EXISTS `categorias`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `categorias` (
   `IdCategoria` int NOT NULL AUTO_INCREMENT,
+  `CodigoCategoria` varchar(50) DEFAULT NULL,
   `Descripcion` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`IdCategoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -382,7 +388,7 @@ CREATE TABLE `categorias` (
 
 LOCK TABLES `categorias` WRITE;
 /*!40000 ALTER TABLE `categorias` DISABLE KEYS */;
-INSERT INTO `categorias` VALUES (1,'oficina'),(2,'tecnologico'),(3,'campo');
+INSERT INTO `categorias` VALUES (1,'CAT0001','Bizcochito'),(2,'CAT0002','Frente');
 /*!40000 ALTER TABLE `categorias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -431,7 +437,7 @@ CREATE TABLE `clientes` (
 
 LOCK TABLES `clientes` WRITE;
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
-INSERT INTO `clientes` VALUES (1,'NAYLAMP INGENIEROS S.A.C','ESTUDIO DEFINITIVO DE LA VARIANTE DEL QAPAQ ÑAM AUTOPISTA PUNO-JULIACA, COMPONENTE PACRI','J'),(2,'CESEL S.A.','ELABORACION DEL ESTUDIO DE PERFIL , EVALUACION PRELIMINAR- EVAP Y LA INGENIERIA DE DETALLE DEL PROYECTO DEL CORREDOR VIAL APURIMAC-CUSCO  TRAMO 3','J'),(3,'NAYLAMP INGENIEROS S.A.C',' ESTUDIO DE PRE INVERSION A NIVEL DE FACTIBILIDAD DEL PROYECTO: MEJORAMIENTO A NIVEL DE AUTOPISTA Y/O PAR VIAL SECTOR 3 AREQUIPA-YURA','J'),(4,'NAYLAMP INGENIEROS S.A.C','ESTUDIO DE PRE INVERSION A NIVEL DE FACTIBILIDAD DEL PROYECTO: MEJORAMIENTO A NIVEL DE AUTOPISTA Y/O PAR VIAL SECTOR 4 YURA - PATAHUASI.','J'),(5,'NAYLAMP INGENIEROS S.A.C','ESTUDIO DEFINITIVO DE LA VARIANTE DE INGENIERIA DE LA SEGUNDA CALZADA DE LA AUTOPISTA PUNO JULIACA, AVANCE PACRI SEGUN PROPUESTA 0101020','J'),(6,'NAYLAMP INGENIEROS S.A.C','PROPUESTA TECNICA ECONOMICA DEL PROYECTO REHABILITACION DEL EJE VIAL NO. 1PIURA-GUAYAQUIL(06 OBRAS-14 PUENTES)','J'),(7,'NAYLAMP INGENIEROS S.A.C','PROPUESTA TECNICA ECONOMICA DEL PROYECTO CONSTRUCCION DE PUENTES POR REEMPLAZO EN LA ZONA NORTE DEL PAIS (02 OBRAS - 12 PUENTES)','J'),(8,'NAYLAMP INGENIEROS S.A.C','ESTUDIO DEFINITIVO DE LA VARIANTE DEINGENIERIA DE LA SEGUNDA CALZADA DE LA AUTOPISTA PUNO JULIACA - EXPEDIENTES INDIVIDUALES, CPE, ANALISIS SEGÚN DL 1192','J'),(9,'CONSORCIO HIDRO-NAYLAMP','REFORMULACION DEL ESTUDIO DE PREINVERSION A NIVEL DE PERFIL: CONSTRUCCION DE LAVIA DE EVITAMIENTO A LA CIUDAD DE JUANJUI','J'),(10,'CESEL S.A.','ELABORACIÓN DEL COMPONENTE DE AFECTACIONES SEGÚN DL 1192N Y MODIFICATORIAS DEL ESTUDIO DEFINITIVO PARA EL MEJORAMIENTO DEL CORREDOR VIAL APURÍMAC-CUSCO. TRAMO 3, SUBTRAMO 3','J'),(11,'PM PERU','ESTUDIO DE PREINVERSIÓN A NIVEL DE PERFIL DEL PROYECTO DE LA CARRETERA HUANCAVELICA – EMP. PE – 3S, TRAMO: LIRCAY – LAGUNILLAS – EMP. RUTA PE – 3S','J'),(12,'PM PERU','ESTUDIO DE PRE INVERSIÓN A NIVEL DE PERFIL DE LA CARRETERA PTE PALLAR – PTE CHAGUAL','J'),(13,'GEOCONSULT-PM PERU','ESTUDIO DE PREINVERSION A NIVEL DE PERFIL, CARRETERA LONGITUDINAL DE LA SIERRA, TRAMO IV, PROYECTO GE 006 – 17 HUANCAYO - IZCUCHACA','J'),(14,'EPCM - CONSULTING SAC','Elaboracion del estudio de interferencias para el proyecto del puente Pichari.','J'),(15,'CONSORCIO EPCM-GEOCONSULT','PAC estudio definitivo para la construccion y mejoramiento de la via evitamiento de Huancayo.','J'),(16,'ECOCEL SAC','Servicio de monitoreo ambiental en el paso a desnivel de cerro blanco.','J'),(17,'ECOCEL SAC','Servicio de monitoreo ambiental 8 puentes.','J'),(18,'SIGT','Mejoramiento del corredor vial Apurimac.','J'),(19,'CROVISA','Mejoramiento de los jirones Oyón, Iquitos, Víctor Andrés.','J'),(20,'GEOMETRICA','Estudio de afectaciones Prediales','J'),(21,'CONSORCIO PERUANO PUENTES PIURA','Estudio de plan de afectaciones y compensaciones prediales.','J'),(23,'GEOMETRICA','Proyecto cumbil chotano','J'),(24,'CONSORCIO PERUANO PUENTES PIURA','Construcción de 11 puentes de carretera en la red vial nacional, ruta PE-1NR en el tramo Tambogrande-Morropon-Chulucanas, departamento Piura.','J'),(25,'CONSORCIO PUENTES  Norte (Jack Lopez y Naylamp)','Construcción de Puentes por reemplazo en Ancash','J'),(26,'PM PERU','Estudio definitivo para la rehabilitación y mejoramiento de la carretera empalme ruta AN111-Huamnin-Progreso-Poque-Llata-Cochapata (Túnal Taytamayo)- Nuevas Flores-Quivilla-Tingo Chico  ','J'),(27,'PM PERU','Construcción de 11 puentes en la red víal nacional, ruta PE-1NR en el tramo Tambogrande hasta Puente la Peña km 60+000.','J'),(28,'NAYLAMP INGENIEROS S.A.C','Estudio definitivo de la variante de ingeniería de la segunda calzada de la autopista Puno Juliaca.','J'),(29,'PM PERU','Estudio de preinversion a nivel de perfil de la carretera PE-5NC, nuevo Siasme-Saramiriza','J');
+INSERT INTO `clientes` VALUES (1,'NAYLAMP INGENIEROS S.A.C','ESTUDIO DEFINITIVO DE LA VARIANTE DEL QAPAQ Ã‘AM AUTOPISTA PUNO-JULIACA, COMPONENTE PACRI','J'),(2,'CESEL S.A.','ELABORACION DEL ESTUDIO DE PERFIL , EVALUACION PRELIMINAR- EVAP Y LA INGENIERIA DE DETALLE DEL PROYECTO DEL CORREDOR VIAL APURIMAC-CUSCO  TRAMO 3','J'),(3,'NAYLAMP INGENIEROS S.A.C',' ESTUDIO DE PRE INVERSION A NIVEL DE FACTIBILIDAD DEL PROYECTO: MEJORAMIENTO A NIVEL DE AUTOPISTA Y/O PAR VIAL SECTOR 3 AREQUIPA-YURA','J'),(4,'NAYLAMP INGENIEROS S.A.C','ESTUDIO DE PRE INVERSION A NIVEL DE FACTIBILIDAD DEL PROYECTO: MEJORAMIENTO A NIVEL DE AUTOPISTA Y/O PAR VIAL SECTOR 4 YURA - PATAHUASI.','J'),(5,'NAYLAMP INGENIEROS S.A.C','ESTUDIO DEFINITIVO DE LA VARIANTE DE INGENIERIA DE LA SEGUNDA CALZADA DE LA AUTOPISTA PUNO JULIACA, AVANCE PACRI SEGUN PROPUESTA 0101020','J'),(6,'NAYLAMP INGENIEROS S.A.C','PROPUESTA TECNICA ECONOMICA DEL PROYECTO REHABILITACION DEL EJE VIAL NO. 1PIURA-GUAYAQUIL(06 OBRAS-14 PUENTES)','J'),(7,'NAYLAMP INGENIEROS S.A.C','PROPUESTA TECNICA ECONOMICA DEL PROYECTO CONSTRUCCION DE PUENTES POR REEMPLAZO EN LA ZONA NORTE DEL PAIS (02 OBRAS - 12 PUENTES)','J'),(8,'NAYLAMP INGENIEROS S.A.C','ESTUDIO DEFINITIVO DE LA VARIANTE DEINGENIERIA DE LA SEGUNDA CALZADA DE LA AUTOPISTA PUNO JULIACA - EXPEDIENTES INDIVIDUALES, CPE, ANALISIS SEGÃšN DL 1192','J'),(9,'CONSORCIO HIDRO-NAYLAMP','REFORMULACION DEL ESTUDIO DE PREINVERSION A NIVEL DE PERFIL: CONSTRUCCION DE LAVIA DE EVITAMIENTO A LA CIUDAD DE JUANJUI','J'),(10,'CESEL S.A.','ELABORACIÃ“N DEL COMPONENTE DE AFECTACIONES SEGÃšN DL 1192N Y MODIFICATORIAS DEL ESTUDIO DEFINITIVO PARA EL MEJORAMIENTO DEL CORREDOR VIAL APURÃMAC-CUSCO. TRAMO 3, SUBTRAMO 3','J'),(11,'PM PERU','ESTUDIO DE PREINVERSIÃ“N A NIVEL DE PERFIL DEL PROYECTO DE LA CARRETERA HUANCAVELICA â€“ EMP. PE â€“ 3S, TRAMO: LIRCAY â€“ LAGUNILLAS â€“ EMP. RUTA PE â€“ 3S','J'),(12,'PM PERU','ESTUDIO DE PRE INVERSIÃ“N A NIVEL DE PERFIL DE LA CARRETERA PTE PALLAR â€“ PTE CHAGUAL','J'),(13,'GEOCONSULT-PM PERU','ESTUDIO DE PREINVERSION A NIVEL DE PERFIL, CARRETERA LONGITUDINAL DE LA SIERRA, TRAMO IV, PROYECTO GE 006 â€“ 17 HUANCAYO - IZCUCHACA','J'),(14,'EPCM - CONSULTING SAC','Elaboracion del estudio de interferencias para el proyecto del puente Pichari.','J'),(15,'CONSORCIO EPCM-GEOCONSULT','PAC estudio definitivo para la construccion y mejoramiento de la via evitamiento de Huancayo.','J'),(16,'ECOCEL SAC','Servicio de monitoreo ambiental en el paso a desnivel de cerro blanco.','J'),(17,'ECOCEL SAC','Servicio de monitoreo ambiental 8 puentes.','J'),(18,'SIGT','Mejoramiento del corredor vial Apurimac.','J'),(19,'CROVISA','Mejoramiento de los jirones OyÃ³n, Iquitos, VÃ­ctor AndrÃ©s.','J'),(20,'GEOMETRICA','Estudio de afectaciones Prediales','J'),(21,'CONSORCIO PERUANO PUENTES PIURA','Estudio de plan de afectaciones y compensaciones prediales.','J'),(23,'GEOMETRICA','Proyecto cumbil chotano','J'),(24,'CONSORCIO PERUANO PUENTES PIURA','ConstrucciÃ³n de 11 puentes de carretera en la red vial nacional, ruta PE-1NR en el tramo Tambogrande-Morropon-Chulucanas, departamento Piura.','J'),(25,'CONSORCIO PUENTES  Norte (Jack Lopez y Naylamp)','ConstrucciÃ³n de Puentes por reemplazo en Ancash','J'),(26,'PM PERU','Estudio definitivo para la rehabilitaciÃ³n y mejoramiento de la carretera empalme ruta AN111-Huamnin-Progreso-Poque-Llata-Cochapata (TÃºnal Taytamayo)- Nuevas Flores-Quivilla-Tingo Chico  ','J'),(27,'PM PERU','ConstrucciÃ³n de 11 puentes en la red vÃ­al nacional, ruta PE-1NR en el tramo Tambogrande hasta Puente la PeÃ±a km 60+000.','J'),(28,'NAYLAMP INGENIEROS S.A.C','Estudio definitivo de la variante de ingenierÃ­a de la segunda calzada de la autopista Puno Juliaca.','J'),(29,'PM PERU','Estudio de preinversion a nivel de perfil de la carretera PE-5NC, nuevo Siasme-Saramiriza','J');
 /*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -493,7 +499,7 @@ CREATE TABLE `contactos` (
   `Direccion` varchar(100) DEFAULT NULL,
   `Notas` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`IdContacto`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -502,7 +508,7 @@ CREATE TABLE `contactos` (
 
 LOCK TABLES `contactos` WRITE;
 /*!40000 ALTER TABLE `contactos` DISABLE KEYS */;
-INSERT INTO `contactos` VALUES (1,'Ivan','','','GM Ingenieros','','','Tecnico','ivan.atanacio@gmail.com','923227609','Lima','Av. Venezuela 685 Of. 1012',''),(2,'Yuri César Atanacio Anchiraico','','','GM Ingenieros','','','Director General','yuri.atanacio@gmingenieros.com.pe','991231114','Lima','Av. Venezuela 685 Of. 1013',''),(3,'Raul Peña Olano','','','OHLA','','','Gerente Legal ','rpena@ohla-peru.pe','986670093','Lima','Av. 28 de Julio N°150 Planta 7','Proyecto Red Vial y Rio Lacramarca'),(4,'Milagros Gutierrez Mendoza','','','OHLA','','','null','mgutierrez@ohla-peru.pe',' null','Lima','Av. 28 de Julio N°150 Planta 7','Proyecto Red Vial y Rio Lacramarca'),(5,'Josseline Gianina Llerena Morales De Estrada','','','OHLA','','','null','JOSSELINE.LLERENA@ohla-peru.pe',' null','Lima','Av. 28 de Julio N°150 Planta 7','Proyecto Red Vial y Rio Lacramarca'),(6,'Cintya Escobar Masco','','','OHLA','','','Jefa de Administracion','cintya.escobar@ohla-peru.pe','516257200','Lima','Av. 28 de Julio N°150 Planta 8','Proyecto Red Vial y Rio Lacramarca'),(7,'Jose A. Mayoral Vicente','','','OHLA','','','Coordinador de Proyectos','jmayoral@ohla-peru.pe','949091367','Lima','Av. 28 de Julio N°150 Planta 7','Proyecto Red Vial y Rio Lacramarca'),(8,'Cary Vilchez Castañeda','','','FCISA','','','Gerente General','cary.vilchez@fcisa.com','987119201','Lima','Av.Tacna 685, oficinas 174 y 181','Proyecto Santa Rosa'),(9,'Eveling Baca Custodio','','','FCISA','','','Gestor Legal','eveling.baca@fcisa.com','984785709','Lima','Av.Tacna 685, oficinas 174,181 y 182','Proyecto Santa Rosa'),(10,'Jennifer Guadalupe Rowe','','','FCISA','','','Gerente de Operaciones ','jennifer.guadalupe@fcisa.com','943603594','Lima','Av.Tacna 685, oficinas 174,181 y 182','Proyecto Santa Rosa'),(11,'Wilder Casimir Manuelo ','','','FCISA','','','Gestor de Proyectos Ambientales','wilder.casimir@fcisa.com','987734508','Lima','Av.Tacna 685, oficinas 174,181 y 182','Proyecto Santa Rosa'),(12,'Jose Miguel Manco Allende','','','FCISA','','','Contabilidad','contabilidad@fcisa.com','978046942','Lima','Av.Tacna 685, oficinas 174,181 y 182','Proyecto Santa Rosa'),(13,'Heyssy Mendoza Campos ','','','FCISA','','','Asistente Ssoma','ssoma@fcisa.com','4286301','Lima','Av.Tacna 685, oficinas 174,181 y 182','Proyecto Santa Rosa'),(14,'Yvan Diaz Velasquez','','','FCISA','','','Administrador','administracion@fcisa.com','4286301','Lima','Av.Tacna 685, oficinas 174,181 y 182','Proyecto Santa Rosa'),(15,'Juan Flores Mango','','','GrupoTYPSA','','','Departamento de Obras Lineales','jpflores@typsa.es ','997502924','Lima','Av. 28 de Julio 1044, piso 5 ','Proyecto TYPSA'),(16,'Johanna Guevara De la Cruz','','','GrupoTYPSA','','','Asistente Administrativa','mjguevara@typsa.es ','979394568','Lima','Av. 28 de Julio 1044, piso 5 ','Proyecto TYPSA'),(17,'Rosario Hernández Cabrera','','','GrupoTYPSA','','','Coordinación de Proyectos','mhernandez@typsa.es','955971203','Lima','Av. 28 de Julio 1044, piso 5 ','Proyecto TYPSA'),(18,'Giannina Gonzales Martinez','','','GrupoTYPSA','','','Control Documentario','gpgonzales@typsa.es','936018303','Lima','Av. 28 de Julio 1044, piso 5 ','Proyecto TYPSA'),(19,'Luis Andres Vicente Luyo','','','GrupoTYPSA','','','Coordinador de diseño MT/BT','lavicente@typsa.es','953258438','Lima','Av. 28 de Julio 1044, piso 5 ','Proyecto TYPSA'),(20,'Maria Anabell Rodriguez Sueros','','','CONSORCIO NAYLAMP','','','Coordinadora de Administracion','administracion@naylampingenieros.pe','16975082','Lima','Jr. Luis Saenz N°150 Urb.Santa Catalina','PROYECTO 11 PUENTES'),(21,'Jorge Fernando Luna Huaman','','','PM PERU','','','Representante Legal','jluna@pmperu.com.pe','14400783','Lima','Av. Los Quechuas N°1336 of. 301- Ate','Proy Lircay, Pte Pallar, Saramiriza'),(22,'Nathy Alfaro Muñoz','','','Geometrica SAC','','','Coordinador de Proyectos','nathy.alfaro@geometrica.com','null','Lima','Av. Paz Soldan 170 INT. 207','Proyecto Quinua y Puente Cumbil'),(23,'Julissa Mejia Camacho','','','Geometrica SAC','','','Administrativa','julissa.camacho@geometrica.com.pe','2217719','Lima','Av. Paz Soldan 170 INT. 208','Proyecto Quinua y Puente Cumbil'),(24,'Marco Antonio Quispe Berrocal','','','GBO INGENIEROS SAC','','','null','gboingenieros@gmail.com','964765184','Callao','Otr. Los Angeles de Oquendo - Prov Callao','Proyecto San Marcos'),(25,'Miguel Yapuchura Cayllahua','','','HARIUS SAC','','','null','ing.mayapuchura@gmail.com','null','Lima','Cal. Santiago Crespo 100 Urb El Trebol','Proyecto Puquina y Anda'),(26,'Victor Salinas','','','FRESNILLO PERU SAC','','','Jefe de Exploraciones','null','null','Cajamarca','Av. Republica de Colombia N° 643 INT 901 B','Estudio de culminacion de carretara de la Sierra'),(27,'Jandy Sanchez','','','FRESNILLO PERU SAC','','','Area Legal','null','null','Cajamarca','Av. Republica de Colombia N° 643 INT 901 B','Estudio de culminacion de carretara de la Sierra'),(28,'Lexsy Vidal','','','null','','','null','lexsyvidal3@gmail.com','null','null','null','Proyecto Puente Ashaninca'),(29,'Andres Galan','','','CESEL SAC','','','Coordinador de Proyectos ','Agalan@cesel.com.pe','7055000','Lima','Av. Jose Galvez Barrenechea N° 6346 Urb. ','Revision sobre la gestion Socio Ambiental'),(30,'Julio Vildoso ','','','CONSORCIO EPCM ','','','null','jvildoso@epcm.pe','null','Lima','Av. Del Parque Norte 1174 Urb. Corpac Frente al Parque Familia','Estudio para la Construccion y Manten. de la Via Evt. Huancayo');
+INSERT INTO `contactos` VALUES (1,'Ivan','25/04/2025','','GM Ingenieros','','','Tecnico','ivan.atanacio@gmail.com','923227609','Loreto','Av. Venezuela 685 Of. 1012',''),(2,'Yuri Cesar Atanacio Anchiraico','25/04/2025','','GM Ingenieros','','','Director General','yuri.atanacio@gmingenieros.com.pe','991231114','Lima','Av. Venezuela 685 Of. 1013',''),(3,'Raul PeÃ±a Olano','','','OHLA','','','Gerente Legal ','rpena@ohla-peru.pe','986670093','Lima','Av. 28 de Julio NÂ°150 Planta 7','Proyecto Red Vial y Rio Lacramarca'),(4,'Milagros Gutierrez Mendoza','','','OHLA','','','null','mgutierrez@ohla-peru.pe',' null','Lima','Av. 28 de Julio NÂ°150 Planta 7','Proyecto Red Vial y Rio Lacramarca'),(5,'Josseline Gianina Llerena Morales De Estrada','','','OHLA','','','null','JOSSELINE.LLERENA@ohla-peru.pe',' null','Lima','Av. 28 de Julio NÂ°150 Planta 7','Proyecto Red Vial y Rio Lacramarca'),(6,'Cintya Escobar Masco','','','OHLA','','','Jefa de Administracion','cintya.escobar@ohla-peru.pe','516257200','Lima','Av. 28 de Julio NÂ°150 Planta 8','Proyecto Red Vial y Rio Lacramarca'),(7,'Jose A. Mayoral Vicente','','','OHLA','','','Coordinador de Proyectos','jmayoral@ohla-peru.pe','949091367','Lima','Av. 28 de Julio NÂ°150 Planta 7','Proyecto Red Vial y Rio Lacramarca'),(8,'Cary Vilchez CastaÃ±eda','','','FCISA','','','Gerente General','cary.vilchez@fcisa.com','987119201','Lima','Av.Tacna 685, oficinas 174 y 181','Proyecto Santa Rosa'),(9,'Eveling Baca Custodio','','','FCISA','','','Gestor Legal','eveling.baca@fcisa.com','984785709','Lima','Av.Tacna 685, oficinas 174,181 y 182','Proyecto Santa Rosa'),(10,'Jennifer Guadalupe Rowe','','','FCISA','','','Gerente de Operaciones ','jennifer.guadalupe@fcisa.com','943603594','Lima','Av.Tacna 685, oficinas 174,181 y 182','Proyecto Santa Rosa'),(11,'Wilder Casimir Manuelo ','','','FCISA','','','Gestor de Proyectos Ambientales','wilder.casimir@fcisa.com','987734508','Lima','Av.Tacna 685, oficinas 174,181 y 182','Proyecto Santa Rosa'),(12,'Jose Miguel Manco Allende','','','FCISA','','','Contabilidad','contabilidad@fcisa.com','978046942','Lima','Av.Tacna 685, oficinas 174,181 y 182','Proyecto Santa Rosa'),(13,'Heyssy Mendoza Campos ','','','FCISA','','','Asistente Ssoma','ssoma@fcisa.com','4286301','Lima','Av.Tacna 685, oficinas 174,181 y 182','Proyecto Santa Rosa'),(14,'Yvan Diaz Velasquez','','','FCISA','','','Administrador','administracion@fcisa.com','4286301','Lima','Av.Tacna 685, oficinas 174,181 y 182','Proyecto Santa Rosa'),(15,'Juan Flores Mango','','','GrupoTYPSA','','','Departamento de Obras Lineales','jpflores@typsa.es ','997502924','Lima','Av. 28 de Julio 1044, piso 5Â ','Proyecto TYPSA'),(16,'Johanna Guevara De la Cruz','','','GrupoTYPSA','','','Asistente Administrativa','mjguevara@typsa.esÂ ','979394568','Lima','Av. 28 de Julio 1044, piso 5Â ','Proyecto TYPSA'),(17,'Rosario HernÃ¡ndez Cabrera','','','GrupoTYPSA','','','CoordinaciÃ³n de Proyectos','mhernandez@typsa.es','955971203','Lima','Av. 28 de Julio 1044, piso 5Â ','Proyecto TYPSA'),(18,'Giannina Gonzales Martinez','','','GrupoTYPSA','','','Control Documentario','gpgonzales@typsa.es','936018303','Lima','Av. 28 de Julio 1044, piso 5Â ','Proyecto TYPSA'),(19,'Luis Andres Vicente Luyo','','','GrupoTYPSA','','','Coordinador de diseÃ±o MT/BT','lavicente@typsa.es','953258438','Lima','Av. 28 de Julio 1044, piso 5Â ','Proyecto TYPSA'),(20,'Maria Anabell Rodriguez Sueros','','','CONSORCIO NAYLAMP','','','Coordinadora de Administracion','administracion@naylampingenieros.pe','16975082','Lima','Jr. Luis Saenz NÂ°150 Urb.Santa Catalina','PROYECTO 11 PUENTES'),(21,'Jorge Fernando Luna Huaman','','','PM PERU','','','Representante Legal','jluna@pmperu.com.pe','14400783','Lima','Av. Los Quechuas NÂ°1336 of. 301- Ate','Proy Lircay, Pte Pallar, Saramiriza'),(22,'Nathy Alfaro MuÃ±oz','','','Geometrica SAC','','','Coordinador de Proyectos','nathy.alfaro@geometrica.com','null','Lima','Av. Paz Soldan 170 INT. 207','Proyecto Quinua y Puente Cumbil'),(23,'Julissa Mejia Camacho','','','Geometrica SAC','','','Administrativa','julissa.camacho@geometrica.com.pe','2217719','Lima','Av. Paz Soldan 170 INT. 208','Proyecto Quinua y Puente Cumbil'),(24,'Marco Antonio Quispe Berrocal','','','GBO INGENIEROS SAC','','','null','gboingenieros@gmail.com','964765184','Callao','Otr. Los Angeles de Oquendo - Prov Callao','Proyecto San Marcos'),(25,'Miguel Yapuchura Cayllahua','','','HARIUS SAC','','','null','ing.mayapuchura@gmail.com','null','Lima','Cal. Santiago Crespo 100 Urb El Trebol','Proyecto Puquina y Anda'),(26,'Victor Salinas','','','FRESNILLO PERU SAC','','','Jefe de Exploraciones','null','null','Cajamarca','Av. Republica de Colombia NÂ° 643 INT 901 B','Estudio de culminacion de carretara de la Sierra'),(27,'Jandy Sanchez','','','FRESNILLO PERU SAC','','','Area Legal','null','null','Cajamarca','Av. Republica de Colombia NÂ° 643 INT 901 B','Estudio de culminacion de carretara de la Sierra'),(28,'sss','','ss','sss','','','sss','sss','111','Ucayali','s','sss');
 /*!40000 ALTER TABLE `contactos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -611,10 +617,9 @@ CREATE TABLE `credenciales` (
   `Clave` varchar(200) DEFAULT NULL,
   `Alias` varchar(100) DEFAULT NULL,
   `Descripcion` varchar(200) DEFAULT NULL,
-  `fechacreacion` date DEFAULT NULL,
-  `fechaactualizacion` date DEFAULT NULL,
+  `codigoCredencial` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`IdCredencial`)
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -623,7 +628,7 @@ CREATE TABLE `credenciales` (
 
 LOCK TABLES `credenciales` WRITE;
 /*!40000 ALTER TABLE `credenciales` DISABLE KEYS */;
-INSERT INTO `credenciales` VALUES (24,'comunicación@issoma.edu.pe','audiovisual2021','correo issoma','','2023-09-01',NULL),(25,'edgar54','M@nt@ro2022','Wifi hogar','','2023-09-01',NULL),(26,'GM_Ingenieros','gm2020@net','Wifi empresa','','2023-09-01',NULL),(27,'10682483','232354','cuenta banco nacion','Banco nacion cta cta. 00-012-026633','2023-09-01',NULL),(28,'info@gmingenieros.com.pe','53123674318411','Info correo','correo empresarial gm ingenieros','2023-09-01',NULL),(29,'GMINGENIEROSYCONSULTORES@GMAIL.COM','53123674318411','','','2023-09-01',NULL),(30,'GMINGENIEROSYCONSULTORES@GMAIL.COM','53123674318411','pagalo pe','https://pagalo.pe/usuarios/sessionTerminada.action','2023-09-01',NULL),(31,'GMINGENIEROSYCONSULTORES@GMAIL.COM','53123674318411','Correo empresa gmail','activo 14.12.2022','2023-09-01',NULL),(32,'','','certicat','Certificado digital de busqueda catastral , creado por yuri cesar  http://app.sbn.gob.pe/certicat/solicitud','2023-09-01',NULL),(33,'info@gmingenieros.com.pe','18112021','senace','Link acceso : https://enlinea.senace.gob.pe/mpd/','2023-09-01',NULL),(34,'Ingresar numero dni Eagard Atanacio','Adri2016','banco continental','Banco continental BBVA EAS Banca internet actualizacion 24-11-2021','2023-09-01',NULL),(35,'administracion@gmingenieros.com.pe','admin@2022','Correo empresarial gm ingenieros 04-02-2022','','2023-09-01',NULL),(36,'info@gmingenieros.com.pe','18112021','senace','senace plataforma  Link acceso : https://enlinea.senace.gob.pe/mpd/ actualizacion 18-11-2021','2023-09-01',NULL),(37,'info@gmingenieros.com.pe','53123674318411','Correo empresarial gm ingenieros','actualizacion enero 2022','2023-09-01',NULL),(38,'GM_Ingenieros','gm2020@net','wifi oficina breña','actualizacion 24-05-2022','2023-09-01',NULL),(39,'20555841095','GM5552022','RNP-OSCE','actualizacion 14-09-2022','2023-09-01',NULL),(40,'adm0001','AFP:01032016','AFPNET','cambio de clave eas - jul23, actualizacion 01-04-2023','2023-09-01',NULL),(41,'yuriatanacioa@gmail.com','43184115312367**','correo gmail YCA','actualizacion 19-04-2022','2023-09-01',NULL),(42,'','Gm5312367','sunat','actualizacion 01-04-2023','2023-09-01',NULL),(43,'10682483','GMiv4nser - GMiva4nser','reniec','actualizacion 29-03-2023','2023-09-01',NULL),(44,'1052928','GMEA2016','BBVA - gm ingenieros','actualizacion 19-05-2023','2023-09-01',NULL),(45,'ADMIN001','GMEA2016','BBVA - gm ingenieros','codigo usuario','2023-09-01',NULL),(46,'10682483','232354','banco de la nacion','CTA. CTE. 00-012-026633','2023-09-01',NULL),(47,'dni','Adri2016','BBVA','banca intern actualizacion 24-11-2021','2023-09-01',NULL),(48,'administracion@gmingenieros.com.pe','admin@2022','Gm ingenieros','creado 04-02-2022','2023-09-01',NULL),(49,'info@gmingenieros.com.pe','18112021','senace','Link acceso : https://enlinea.senace.gob.pe/mpd/','2023-09-01',NULL),(50,'yuriatanacioa@gmingenieros.com.pe','449259445312367**','correo gmingenieros','','2023-09-01',NULL),(51,'GMINGENIEROSYCONSULTORES@GMAIL.COM','53123674318411','pagalo pe','https://pagalo.pe/usuarios/sessionTerminada.action','2023-09-01',NULL),(52,'info@gmingenieros.com.pe','18112021','SENACE','Link acceso : https://enlinea.senace.gob.pe/mpd/','2023-09-01',NULL),(53,'yuriatanacioa@hotmail.com','449259441988**','correo personal Yuri Cesar hotmail','','2023-09-01',NULL),(54,'yuriatanacioa@gmail.com','449259441988**','correo perosnal yuri gmail','','2023-09-01',NULL),(55,'ycatanacio@typsa.es','tJ1aacio','correo personal yuri typsa','','2023-09-01',NULL),(56,'GMINGENIEROS001','123456789a','sunarp','cuenta sunarp asociado a yuriatanacioa@gmail.com','2023-09-01',NULL),(57,'GMICONSULTOR001','123456789a','sunarp','correo sunarp asociado yuriatanacioa@gmail.com, actual esta usando ev.hyo 25-05-2021','2023-09-01',NULL),(58,'GMACONSULTA01','123456789a','sunarp','correo sunarp asociado a ivan.atanacio@gmail.com, sunarp cuenta para terceros','2023-09-01',NULL),(59,'GMSUNARP01','123456789a','sunarp','correo sunarp asociado a tramites.gmingenieros@hotmail.com','2023-09-01',NULL),(60,'tramites.gmingenieros@gmail.com','55584109a','hotmail para sunarp','','2023-09-01',NULL),(61,'GMINGSUNARP02','20160301a','sunarp','correo sunarp asociado a tramites20212@gmail.com','2023-09-01',NULL),(62,'tramites20212@gmail.com','46631233a','hotmail para sunarp','','2023-09-01',NULL),(63,'ycatanacio@typsa.es','GrupoTypsa$2023$','Correo para uso de proyecto santa rosa callao','Correo yuri para uso de proyecto santa rosa callao',NULL,NULL);
+INSERT INTO `credenciales` VALUES (1,'gmingenieros@gmingenieros.com','221322','ninguno','ninguno','CRE000001'),(2,'carlossa@gmail.com','332121','ninguno','ninguno','CRE000002'),(3,'gomezibiza@gmail.com','221343','ninguno','ninguno','CRE000003'),(4,'datatech@gmail.com','332121','ninguno','ninguno','CRE000004');
 /*!40000 ALTER TABLE `credenciales` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -646,7 +651,7 @@ CREATE TABLE `cuentasbancarias` (
   PRIMARY KEY (`IdCuentaBancaria`),
   KEY `IdBanco` (`IdBanco`),
   CONSTRAINT `cuentasbancarias_ibfk_1` FOREIGN KEY (`IdBanco`) REFERENCES `bancos` (`IdBanco`)
-) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -655,7 +660,7 @@ CREATE TABLE `cuentasbancarias` (
 
 LOCK TABLES `cuentasbancarias` WRITE;
 /*!40000 ALTER TABLE `cuentasbancarias` DISABLE KEYS */;
-INSERT INTO `cuentasbancarias` VALUES (1,1,'P','KENNY','191-92174478-0-31',NULL,'s','2023-09-06'),(2,1,'P','IVAN SERGIO','191-96524364-0-55',NULL,'s','2023-09-06'),(3,1,'P','YURI CESAR','191-71091888-0-86',NULL,'s','2023-09-06'),(4,2,'P','YURI CESAR','0011-0814-0231102006','011-814-000231102006-15','s','2023-09-06'),(5,1,'P','EDGARD SICINIO','191-40013271-0-44',NULL,'s','2023-09-06'),(6,2,'P','EDGARD SICINIO','0011-0140-0200488549',NULL,'s','2023-09-06'),(7,1,'e',NULL,'192-90715681-0-98',NULL,'s','2023-09-06'),(8,5,'e',NULL,'20304312271',NULL,'s','2023-09-06'),(9,1,'p',NULL,'191-33524530-0-60',NULL,'s','2023-09-06'),(10,5,'p',NULL,'355-93465904-0-40',NULL,'s','2023-09-06'),(11,5,'p',NULL,'475-38848209-0-72',NULL,'s','2023-09-06'),(12,1,'P','ERIKSSON','191-02519147-0-91',NULL,'s','2023-09-06'),(13,1,'P','Rosa Luz','191-90366763-0-56',NULL,'s','2023-09-06'),(14,1,'P','WILSON JOEL','191-95037200-0-70',NULL,'s','2023-09-06'),(15,1,'P','MARGARITA','191-93817876-0-28',NULL,'s','2023-09-06'),(16,1,'P','ABEL ISMAEL','191-24291248-0-13',NULL,'s','2023-09-06'),(17,2,'P','EMERSON ABRAHAM','0011-0137-0200164348',NULL,'s','2023-09-06'),(18,1,'P','CELINDA IRENE','191-16665821-0-61',NULL,'s','2023-09-06'),(19,1,'P','alex -Abog.','191-95379260-0-84',NULL,'s','2023-09-06'),(20,1,'P','DONATO ARMANDO','191-38434077-0-98',NULL,'s','2023-09-06'),(21,5,'p','JUAN VICTOR','445-93497163-0-05',NULL,'s','2023-09-06'),(22,1,'P','JORGE LUIS PAC','191-99761416-0-05',NULL,'s','2023-09-06'),(23,5,'P','Julio César','310-06891149-0-48',NULL,'s','2023-09-06'),(24,1,'e','JACKELINE MAGGY','191-17100728-0-62',NULL,'s','2023-09-06'),(25,1,'P','JORGE ANDRE','191-93338715-0-28',NULL,'s','2023-09-06'),(26,3,'P','ELMER','898-3204627012','389-801-3204627010-00','s','2023-09-06'),(27,1,'P','JOSE LUIS','191-93871919-0-18',NULL,'s','2023-09-06'),(28,1,'P','JUAN CARLOS','191-93046833-0-98',NULL,'s','2023-09-06'),(29,1,'P','JORGE LUIS','192-94866484-0-28',NULL,'s','2023-09-06'),(30,1,'P','JENNY ELIZABETH','191-37372975-0-78',NULL,'s','2023-09-06'),(31,1,'p','FRANCISCO JAVIER-cad','193-38425812-0-50',NULL,'s','2023-09-06'),(32,1,'P','GERSON','191-02840423-0-13','002-191-102840423013-58','s','2023-09-06'),(33,1,'P','JESUS ISAI','191-31852697-0-39',NULL,'s','2023-09-06'),(34,2,'P','AGUSTIN GILBERTO','0011-0130-0201011105',NULL,'s','2023-09-06'),(35,1,'P','ELENA','191-98705820-0-46',NULL,'s','2023-09-06'),(36,1,'P','Gherly Yadira','191-40406240-0-82',NULL,'s','2023-09-06'),(37,1,'P','CARLOS ITAMAR','191-36645783-0-40',NULL,'s','2023-09-06'),(38,1,'P','Luis Mauricio','191-39913636-0-02',NULL,'s','2023-09-06'),(39,1,'P','ALLISON','191-40041289-0-45',NULL,'s','2023-09-06'),(40,2,'P','ALEJANDRO EFRAIN','0011-0814-0200156264','011-814-000200156264-10','s','2023-09-06'),(41,1,'P','ROSARIO','191-94301153-0-88',NULL,'s','2023-09-06'),(42,1,'P','MERIANM MILAGROS','191-94658388-0-30',NULL,'s','2023-09-06'),(43,1,'p','VICTOR FERNANDO','193-31526905-0-57',NULL,'s','2023-09-06'),(44,1,'P','LILIANA SOLEDAD','191-36095227-0-24',NULL,'s','2023-09-06'),(45,1,'P','CHRISTIAN ALEXANDER','191-95889709-0-89',NULL,'s','2023-09-06'),(46,1,'p','Daniel Enrique-Biolog','194-33768693-0-88',NULL,'s','2023-09-06'),(47,5,'P','Augusto','220-96001868-0-84',NULL,'s','2023-09-06'),(48,3,'P','Freddy','440-3211062447',NULL,'s','2023-09-06'),(49,2,'P','TONY','0011-0352-0200341540','011-352-000200341540-29','s','2023-09-06'),(50,1,'p','ANDREA CAROLINA (CADISTA-TASADOR)','193-30008778-0-95',NULL,'s','2023-09-06'),(51,1,'P','OSCAR','191-00646636-0-66',NULL,'s','2023-09-06'),(52,1,'P','José Alfred','191-33603986-0-18',NULL,'s','2023-09-06'),(53,1,'P','MICHAEL JOHNATAN-cad','193-36541801-0-09',NULL,'s','2023-09-06'),(54,1,'p','YELA KARINA','191-37501129-0-27',NULL,'s','2023-09-06'),(55,1,'P','FELICIANO ISAIAS','191-99257638-0-38',NULL,'s','2023-09-06'),(56,1,'P','MIRSA ISABEL','191-94268578-0-83',NULL,'s','2023-09-06'),(57,1,'P','NATHALY MISHELL','191-04840102-0-91',NULL,'s','2023-09-06'),(58,1,'P','KEITH ALEJANDRO','191-37832178-0-19',NULL,'s','2023-09-06'),(59,1,'P','AARON RODRIGO','191-94530408-0-59',NULL,'s','2023-09-06'),(60,5,'p','JONATHAN MARTIN','535-00227748-0-67',NULL,'s','2023-09-06'),(61,1,'P','YERLI','194-24133097-0-64',NULL,'s','2023-09-06'),(62,1,'e',NULL,'191-2367489-0-28',NULL,'s','2023-09-06'),(63,2,'e',NULL,'0011-0396-0100021778',NULL,'s','2023-09-06'),(64,2,'e',NULL,'0011-0396-01000217',NULL,'s','2023-09-06'),(65,1,'P','Kevin German','192-35698537-0-26',NULL,'s','2023-09-06'),(66,1,'P','Patricia Irene','192-92389015-0-35',NULL,'s','2023-09-06'),(67,1,'e',NULL,'194-2572043-0-31',NULL,'s','2023-09-06'),(68,1,'e',NULL,'191-2065243-0-39',NULL,'s','2023-09-06'),(69,2,'p',NULL,'0011-0976-0200066461',NULL,'s','2023-09-06'),(70,1,'e','bussines divisas Lesli escalante cardenas','193-98674991-0-05',NULL,'s','2023-09-06'),(71,1,'p','edgard sicinio','191-38985237-1-25','002-191-1389852371-20','s','2023-09-06'),(72,1,'e','maquinarias jaamsa','191-0034128-1-36','002-191-000034128136-00','s','2023-09-06'),(73,1,'p','Anthony','191-79024488-0-1','002-191-7902448801-00','s','2023-09-06'),(74,1,'p','Celeste','191-76351873-0-02',NULL,'s','2023-09-06'),(75,1,'p','Erikson','191-02519147-0-91','002-191-102519147091-000','s','2023-09-06'),(76,2,'p','Junior','194-78420779-0-06',NULL,'s','2023-09-06'),(77,1,'p','kenny Roggers','310-98570395-0-46',NULL,'s','2023-09-06'),(78,1,'p','Gabriela Arias','193-05131203-0-33',NULL,'s','2023-09-06');
+INSERT INTO `cuentasbancarias` VALUES (1,1,'P','Carlos Bustamante','121545988752','9282112991921','D','2025-04-24'),(2,1,'E','Juan Carrasco','121241251212','1251251231241','D','2025-04-28');
 /*!40000 ALTER TABLE `cuentasbancarias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -669,8 +674,9 @@ DROP TABLE IF EXISTS `departamentos`;
 CREATE TABLE `departamentos` (
   `IdDepartamento` int NOT NULL AUTO_INCREMENT,
   `Descripcion` varchar(100) DEFAULT NULL,
+  `codigoDepartamento` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`IdDepartamento`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -679,7 +685,7 @@ CREATE TABLE `departamentos` (
 
 LOCK TABLES `departamentos` WRITE;
 /*!40000 ALTER TABLE `departamentos` DISABLE KEYS */;
-INSERT INTO `departamentos` VALUES (1,'Amazonas'),(2,'Áncash'),(3,'Apurímac'),(4,'Arequipa'),(5,'Ayacucho'),(6,'Cajamarca'),(7,'Callao'),(8,'Cusco'),(9,'Huancavelica'),(10,'Huánuco'),(11,'Ica'),(12,'Junín'),(13,'La Libertad'),(14,'Lambayeque'),(15,'Lima'),(16,'Loreto'),(17,'Madre de Dios'),(18,'Moquegua'),(19,'Pasco'),(20,'Piura'),(21,'Puno'),(22,'San Martín'),(23,'Tacna'),(24,'Tumbes'),(25,'Ucayali');
+INSERT INTO `departamentos` VALUES (1,'Amazonas','DEP000001'),(2,'Ancash','DEP000002'),(3,'Apurimac','DEP000003'),(4,'Arequipa','DEP000004'),(5,'Ayacucho','DEP000005'),(6,'Cajamarca','DEP000006'),(7,'Callao','DEP000007'),(8,'Cusco','DEP000008'),(9,'Huancavelica','DEP000009'),(10,'Huanuco','DEP000010'),(11,'Ica','DEP000011'),(12,'Junin','DEP000012'),(13,'La Libertad','DEP000013'),(14,'Lambayeque','DEP000014'),(15,'Lima','DEP000015'),(16,'Loreto','DEP000016'),(17,'Madre de Dios','DEP000017'),(18,'Moquegua','DEP000018'),(19,'Pasco','DEP000019'),(20,'Piura','DEP000020'),(21,'Puno','DEP000021'),(22,'San Martin','DEP000022'),(23,'Tacna','DEP000023'),(24,'Tumbes','DEP000024'),(25,'Ucayali','DEP000025');
 /*!40000 ALTER TABLE `departamentos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -713,7 +719,7 @@ CREATE TABLE `detalles_asistencia` (
 
 LOCK TABLES `detalles_asistencia` WRITE;
 /*!40000 ALTER TABLE `detalles_asistencia` DISABLE KEYS */;
-INSERT INTO `detalles_asistencia` VALUES (255,1593,1,'2022-10-03','08:57:34','11:48:49','02:51:15',NULL),(256,1595,1,'2022-10-05','13:50:16','16:06:50','02:16:34',NULL),(257,1597,1,'2022-10-06','08:42:52','15:33:40','06:50:48',NULL),(258,1599,1,'2022-10-07','08:51:47','15:29:02','06:37:15',NULL),(259,1601,1,'2022-10-10','12:54:58','15:55:08','03:00:10',NULL),(260,1603,1,'2022-10-13','09:49:50','15:35:41','05:45:51',NULL),(261,1605,1,'2022-10-14','09:01:10','15:59:52','06:58:42',NULL),(262,1607,1,'2022-10-17','16:00:20',NULL,NULL,NULL),(263,1608,1,'2022-10-24','09:00:28',NULL,NULL,NULL),(264,1609,2,'2022-10-03','08:35:10','18:47:38','10:12:28',NULL),(265,1611,3,'2022-10-03','07:57:49','16:05:43','08:07:54',NULL),(266,1613,3,'2022-10-04','08:07:50','16:05:09','07:57:19',NULL),(267,1615,3,'2022-10-05','08:16:38','16:56:13','08:39:35',NULL),(268,1617,3,'2022-10-06','08:02:43','16:13:15','08:10:32',NULL),(269,1619,3,'2022-10-07','08:22:21','16:01:02','07:38:41',NULL),(270,1621,3,'2022-10-10','08:55:37','17:07:09','08:11:32',NULL),(271,1623,3,'2022-10-11','08:15:08','16:57:12','08:42:04',NULL),(272,1625,3,'2022-10-17','08:25:45','17:05:19','08:39:34',NULL),(273,1627,3,'2022-10-18','08:19:45','17:05:34','08:45:49',NULL),(274,1629,4,'2022-10-03','08:53:15','15:56:42','07:03:27',NULL),(275,1631,4,'2022-10-04','08:58:53','17:11:04','08:12:11',NULL),(276,1633,4,'2022-10-05','09:07:01','16:09:46','07:02:45',NULL),(277,1635,4,'2022-10-06','08:45:13','16:23:09','07:37:56',NULL),(278,1637,4,'2022-10-07','08:31:40','13:47:33','05:15:53',NULL),(279,1639,4,'2022-10-10','08:55:52',NULL,NULL,NULL),(280,1640,4,'2022-10-11','08:48:51','15:59:33','07:10:42',NULL),(281,1642,4,'2022-10-12','08:12:39','15:45:13','07:32:34',NULL),(282,1644,4,'2022-10-13','09:02:08','16:45:26','07:43:18',NULL),(283,1646,4,'2022-10-14','08:39:26','17:15:10','08:35:44',NULL),(284,1648,4,'2022-10-17','09:15:19','16:18:55','07:03:36',NULL),(285,1650,4,'2022-10-18','09:34:54','16:06:46','06:31:52',NULL),(286,1652,4,'2022-10-19','09:08:55','16:21:56','07:13:01',NULL),(287,1654,4,'2022-10-20','09:13:47','16:13:10','06:59:23',NULL),(288,1656,4,'2022-10-21','08:37:08','13:36:35','04:59:27',NULL),(289,1658,5,'2022-10-03','09:19:55','13:22:34','04:02:39',NULL),(290,1660,5,'2022-10-04','15:53:43',NULL,NULL,NULL),(291,1661,5,'2022-10-05','09:13:31','10:31:37','01:18:06',NULL),(292,1663,5,'2022-10-06','09:24:56','15:37:15','06:12:19',NULL),(293,1665,5,'2022-10-07','09:23:51','15:31:16','06:07:25',NULL),(294,1667,5,'2022-10-11','13:21:06','15:59:03','02:37:57',NULL),(295,1669,5,'2022-10-17','09:36:18','13:33:57','03:57:39',NULL),(296,1671,6,'2022-10-03','08:49:36','18:21:21','09:31:45',NULL),(297,1673,6,'2022-10-04','09:14:53','18:03:11','08:48:18',NULL),(298,1675,6,'2022-10-05','08:58:31','18:17:21','09:18:50',NULL),(299,1677,6,'2022-10-06','08:52:21','18:13:27','09:21:06',NULL),(300,1679,6,'2022-10-07','08:51:51','16:59:49','08:07:58',NULL),(301,1681,6,'2022-10-10','08:52:29','17:07:01','08:14:32',NULL),(302,1683,6,'2022-10-11','08:48:44','16:57:02','08:08:18',NULL),(303,1685,6,'2022-10-12','08:42:53','16:33:23','07:50:30',NULL),(304,1687,6,'2022-10-13','08:52:54','18:05:49','09:12:55',NULL),(305,1689,6,'2022-10-14','08:53:26','18:12:48','09:19:22',NULL),(306,1691,6,'2022-10-17','08:39:23','16:29:02','07:49:39',NULL),(307,1693,6,'2022-10-18','08:40:37','16:48:06','08:07:29',NULL),(308,1695,6,'2022-10-19','08:11:29','16:43:48','08:32:19',NULL),(309,1697,6,'2022-10-20','08:07:01','16:20:38','08:13:37',NULL),(310,1699,6,'2022-10-21','08:10:42','16:25:41','08:14:59',NULL),(311,1701,6,'2022-10-24','08:18:56',NULL,NULL,NULL),(312,1702,7,'2022-10-03','08:14:33','11:37:54','03:23:21',NULL),(313,1704,7,'2022-10-04','08:19:20','17:00:06','08:40:46',NULL),(314,1706,7,'2022-10-05','08:08:32','16:56:15','08:47:43',NULL),(315,1708,7,'2022-10-06','08:10:27','17:53:48','09:43:21',NULL),(316,1710,7,'2022-10-07','08:22:26','11:46:31','03:24:05',NULL),(317,1712,7,'2022-10-10','07:59:17','13:00:53','05:01:36',NULL),(318,1714,7,'2022-10-11','07:54:05',NULL,NULL,NULL),(319,1715,8,'2022-10-11','16:59:04',NULL,NULL,NULL),(320,1716,9,'2022-10-12','08:12:46',NULL,NULL,NULL),(321,1717,10,'2022-10-12','15:05:53',NULL,NULL,NULL),(322,1718,11,'2022-10-13','08:07:20',NULL,NULL,NULL),(323,1719,12,'2022-10-13','17:00:03',NULL,NULL,NULL),(324,1720,13,'2022-10-14','08:25:59',NULL,NULL,NULL),(325,1721,14,'2022-10-14','16:36:26',NULL,NULL,NULL),(326,1722,15,'2022-10-17','08:21:32',NULL,NULL,NULL),(327,1723,16,'2022-10-17','13:56:13',NULL,NULL,NULL),(328,1724,17,'2022-10-18','08:42:06',NULL,NULL,NULL),(329,1725,18,'2022-10-18','17:05:37',NULL,NULL,NULL),(330,1726,19,'2022-10-19','08:23:10',NULL,NULL,NULL),(331,1727,20,'2022-10-19','17:04:18',NULL,NULL,NULL),(332,1728,21,'2022-10-20','08:18:07',NULL,NULL,NULL),(333,1729,22,'2022-10-20','16:57:03',NULL,NULL,NULL),(334,1730,23,'2022-10-24','08:19:14',NULL,NULL,NULL),(335,1731,24,'2022-10-03','08:53:10','18:28:59','09:35:49',NULL),(336,1733,24,'2022-10-04','08:58:47','18:20:35','09:21:48',NULL),(337,1735,24,'2022-10-05','18:17:09',NULL,NULL,NULL),(338,1736,24,'2022-10-06','08:52:28','21:19:36','12:27:08',NULL),(339,1738,24,'2022-10-07','08:31:36','16:59:46','08:28:10',NULL),(340,1740,24,'2022-10-10','08:50:55','17:06:58','08:16:03',NULL),(341,1742,24,'2022-10-11','08:45:24','16:56:16','08:10:52',NULL),(342,1744,24,'2022-10-12','08:53:31','16:32:48','07:39:17',NULL),(343,1746,24,'2022-10-13','08:42:54','18:05:48','09:22:54',NULL),(344,1748,24,'2022-10-14','09:01:33','18:12:59','09:11:26',NULL),(345,1750,24,'2022-10-17','09:15:10','16:28:54','07:13:44',NULL),(346,1752,24,'2022-10-18','08:59:17','16:44:22','07:45:05',NULL),(347,1754,24,'2022-10-19','08:44:55','16:43:39','07:58:44',NULL),(348,1756,24,'2022-10-20','08:55:10','16:21:10','07:26:00',NULL),(349,1758,24,'2022-10-21','08:43:22','16:26:41','07:43:19',NULL),(350,1760,NULL,'2022-10-03','07:57:34','18:20:31','10:22:57',NULL),(351,1762,NULL,'2022-10-04','07:49:08','18:21:02','10:31:54',NULL),(352,1764,NULL,'2022-10-05','07:42:51','19:04:20','11:21:29',NULL),(353,1766,NULL,'2022-10-06','07:42:01','18:16:02','10:34:01',NULL),(354,1768,NULL,'2022-10-07','07:44:32','18:05:59','10:21:27',NULL),(355,1770,NULL,'2022-10-10','07:49:24','19:42:22','11:52:58',NULL),(356,1772,NULL,'2022-10-11','07:48:50','18:08:48','10:19:58',NULL),(357,1774,NULL,'2022-10-12','07:33:53','18:19:51','10:45:58',NULL),(358,1776,NULL,'2022-10-13','07:55:34','18:21:39','10:26:05',NULL),(359,1778,NULL,'2022-10-14','07:42:30','18:16:05','10:33:35',NULL),(360,1780,NULL,'2022-10-17','07:45:28','18:07:23','10:21:55',NULL),(361,1782,NULL,'2022-10-18','08:06:17','18:31:44','10:25:27',NULL),(362,1784,NULL,'2022-10-19','07:46:05','18:03:06','10:17:01',NULL),(363,1786,NULL,'2022-10-20','07:36:41','18:34:35','10:57:54',NULL),(364,1788,NULL,'2022-10-21','07:46:45','18:07:56','10:21:11',NULL),(365,1790,NULL,'2022-10-24','08:21:13','13:09:15','04:48:02',NULL);
+INSERT INTO `detalles_asistencia` VALUES (255,1593,1,'2022-10-03','08:57:34','11:48:49','02:51:15',NULL),(256,1595,1,'2022-10-05','13:50:16','16:06:50','02:16:34',NULL),(257,1597,1,'2022-10-06','08:42:52','15:33:40','06:50:48',NULL),(258,1599,1,'2022-10-07','08:51:47','15:29:02','06:37:15',NULL),(259,1601,1,'2022-10-10','12:54:58','15:55:08','03:00:10',NULL),(260,1603,1,'2022-10-13','09:49:50','15:35:41','05:45:51',NULL),(261,1605,1,'2022-10-14','09:01:10','15:59:52','06:58:42',NULL),(262,1607,1,'2022-10-17','16:00:20',NULL,NULL,NULL),(263,1608,1,'2022-10-24','09:00:28',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `detalles_asistencia` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -764,7 +770,7 @@ CREATE TABLE `empleados` (
 
 LOCK TABLES `empleados` WRITE;
 /*!40000 ALTER TABLE `empleados` DISABLE KEYS */;
-INSERT INTO `empleados` VALUES (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'70269937',NULL,NULL,NULL,NULL,NULL),(2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'71240208',NULL,NULL,NULL,NULL,NULL),(3,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'71914589',NULL,NULL,NULL,NULL,NULL),(4,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'71962046',NULL,NULL,NULL,NULL,NULL),(5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'72169180',NULL,NULL,NULL,NULL,NULL),(6,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'72927474',NULL,NULL,NULL,NULL,NULL),(7,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'73277512',NULL,NULL,NULL,NULL,NULL),(8,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'73277513',NULL,NULL,NULL,NULL,NULL),(9,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'73277514',NULL,NULL,NULL,NULL,NULL),(10,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'73277515',NULL,NULL,NULL,NULL,NULL),(11,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'73277516',NULL,NULL,NULL,NULL,NULL),(12,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'73277517',NULL,NULL,NULL,NULL,NULL),(13,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'73277518',NULL,NULL,NULL,NULL,NULL),(14,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'73277519',NULL,NULL,NULL,NULL,NULL),(15,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'73277520',NULL,NULL,NULL,NULL,NULL),(16,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'73277521',NULL,NULL,NULL,NULL,NULL),(17,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'73277522',NULL,NULL,NULL,NULL,NULL),(18,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'73277523',NULL,NULL,NULL,NULL,NULL),(19,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'73277524',NULL,NULL,NULL,NULL,NULL),(20,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'73277525',NULL,NULL,NULL,NULL,NULL),(21,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'73277526',NULL,NULL,NULL,NULL,NULL),(22,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'73277527',NULL,NULL,NULL,NULL,NULL),(23,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'73277528',NULL,NULL,NULL,NULL,NULL),(24,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'74661034',NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `empleados` VALUES (1,3,2,1,2,1,1,'Sanchez','Carlos','1987-02-10','carlos@gmail.com','70269937','929754145','San juan de lurigancho','av los jardines','1212','4to'),(2,1,1,4,1,3,1,'Arias','Manuel','1984-01-20','manuelar@gmail.com','74540865','929784554','San juan de miraflores','av piramides','asd21','7'),(3,4,2,5,2,3,1,'Carrion','Juan','1990-08-19','juancarrion@gmail.com','74548741','929744854','Surco','av. palmares','74540861','10mo');
 /*!40000 ALTER TABLE `empleados` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -804,8 +810,9 @@ DROP TABLE IF EXISTS `facultades`;
 CREATE TABLE `facultades` (
   `IdFacultad` int NOT NULL AUTO_INCREMENT,
   `Descripcion` varchar(100) DEFAULT NULL,
+  `codigoFacultad` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`IdFacultad`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -814,6 +821,7 @@ CREATE TABLE `facultades` (
 
 LOCK TABLES `facultades` WRITE;
 /*!40000 ALTER TABLE `facultades` DISABLE KEYS */;
+INSERT INTO `facultades` VALUES (1,'adminstración','FAC000001'),(2,'ingenieria','FAC000002'),(3,'negocios','FAC000003');
 /*!40000 ALTER TABLE `facultades` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -830,8 +838,9 @@ CREATE TABLE `institucioneseducativas` (
   `RazonSocial` varchar(100) DEFAULT NULL,
   `Direccion` varchar(100) DEFAULT NULL,
   `Sede` varchar(100) DEFAULT NULL,
+  `codigoInstituciones` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`IdInstitucionEducativa`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -840,6 +849,7 @@ CREATE TABLE `institucioneseducativas` (
 
 LOCK TABLES `institucioneseducativas` WRITE;
 /*!40000 ALTER TABLE `institucioneseducativas` DISABLE KEYS */;
+INSERT INTO `institucioneseducativas` VALUES (1,'2141241','biotech','av palmeras','San juan de miraflores','INS000001'),(2,'4124124','Medicast','av piramides','San borja','INS000002');
 /*!40000 ALTER TABLE `institucioneseducativas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -872,30 +882,6 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
--- Table structure for table `marca`
---
-
-DROP TABLE IF EXISTS `marca`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `marca` (
-  `IdMarca` int NOT NULL AUTO_INCREMENT,
-  `Descripcion` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`IdMarca`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `marca`
---
-
-LOCK TABLES `marca` WRITE;
-/*!40000 ALTER TABLE `marca` DISABLE KEYS */;
-INSERT INTO `marca` VALUES (1,'generico'),(2,'Faber castell'),(3,'Layconsa'),(4,'mixtro');
-/*!40000 ALTER TABLE `marca` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `marcas`
 --
 
@@ -915,7 +901,7 @@ CREATE TABLE `marcas` (
 
 LOCK TABLES `marcas` WRITE;
 /*!40000 ALTER TABLE `marcas` DISABLE KEYS */;
-INSERT INTO `marcas` VALUES (1,'GENERICO'),(2,'DURACELL'),(3,'ESTANDAR'),(4,'ARTESCO'),(5,'MIXTO'),(6,'WARRIOR'),(7,'VINIFAN'),(8,'FABERCASTELL'),(9,'UPN'),(10,'WEX'),(11,'OVE'),(12,'GENERICOS'),(13,'LAYCONZA'),(14,'DRAGÓN'),(15,'VIKINGO'),(16,'Pilot');
+INSERT INTO `marcas` VALUES (1,'GENERICO'),(2,'ORIGINAL');
 /*!40000 ALTER TABLE `marcas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -980,8 +966,9 @@ CREATE TABLE `periodos` (
   `Anio` int DEFAULT NULL,
   `descripcion` varchar(100) DEFAULT NULL,
   `Alias` varchar(6) DEFAULT NULL,
+  `codigoPeriodo` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`IdPeriodo`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -990,7 +977,7 @@ CREATE TABLE `periodos` (
 
 LOCK TABLES `periodos` WRITE;
 /*!40000 ALTER TABLE `periodos` DISABLE KEYS */;
-INSERT INTO `periodos` VALUES (1,1,2023,'Enero','012023'),(2,2,2023,'Febrero','022023'),(3,3,2023,'Marzo','032023'),(4,4,2023,'Abril','042023');
+INSERT INTO `periodos` VALUES (1,1,2025,'Enero','012025','PER000001'),(2,2,2025,'Febrero','022025','PER000002');
 /*!40000 ALTER TABLE `periodos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1009,10 +996,11 @@ CREATE TABLE `proveedores` (
   `Correo` varchar(100) DEFAULT NULL,
   `Telefono` char(20) DEFAULT NULL,
   `Ruc` char(11) DEFAULT NULL,
+  `codigoProveedor` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`IdProveedor`),
   KEY `IdDepartamento` (`IdDepartamento`),
   CONSTRAINT `proveedores_ibfk_1` FOREIGN KEY (`IdDepartamento`) REFERENCES `departamentos` (`IdDepartamento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1021,6 +1009,7 @@ CREATE TABLE `proveedores` (
 
 LOCK TABLES `proveedores` WRITE;
 /*!40000 ALTER TABLE `proveedores` DISABLE KEYS */;
+INSERT INTO `proveedores` VALUES (1,23,'Juan Zapata','av jardines','Juanzap@gmail.com','929854754','10232184321','PRO000001'),(2,25,'Richard Gomez','jr educacion','gomezric@gmail.com','924455141','10542566431','PRO000002');
 /*!40000 ALTER TABLE `proveedores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1046,7 +1035,7 @@ CREATE TABLE `proyectos` (
 
 LOCK TABLES `proyectos` WRITE;
 /*!40000 ALTER TABLE `proyectos` DISABLE KEYS */;
-INSERT INTO `proyectos` VALUES (1,'PROYECTO AQP - YURA','','MEJORAMIENTO A NIVEL DE AUTOPISTA Y/O PAR VIAL SECTOR 3 AREQUIPA-YURA'),(2,'PROYECTO YURA-PATAHUASI','','ESTUDIO DE PRE INVERSION A NIVEL DE FACTIBILIDAD DEL\nPROYECTO: MEJORAMIENTO A NIVEL DE AUTOPISTA Y/O PAR VIAL SECTOR 4 YURA - PATAHUASI.'),(3,'PROY. 2da. CALZADA JULIACA-PUNO-AVANCE PACRI PTE 0101020','','ESTUDIO DEFINITIVO DE LA VARIANTE DE INGENIERIA DE LA SEGUNDA CALZADA DE LA\nAUTOPISTA PUNO JULIACA, AVANCE PACRI SEGUN PROPUESTA 0101020'),(4,'REHABILITACION DEL EJE VIAL N° 1 PIURA - GUAYAQUIL (06 OBRAS - 14 PUENTES)','','PROPUESTA TECNICA ECONOMICA DEL PROYECTO REHABILITACION DEL EJE VIAL NO. 1\nPIURA-GUAYAQUIL(06 OBRAS-14 PUENTES)'),(5,'CONSTRUCCION DE PUENTES POR REEMPLAZO EN LA ZONA NORTE DEL PAIS (02 OBRAS - 12 PUENTES)','','PROPUESTA TECNICA ECONOMICA DEL PROYECTO CONSTRUCCION DE PUENTES POR\nREEMPLAZO EN LA ZONA NORTE DEL PAIS (02 OBRAS - 12 PUENTES)'),(6,'ESTUDIO DEF. VARIANTE DE ING. DE LA 2DA. CALZADA AUTOPISTA VARIANTE QAPAQ ÑAM AUTOPISTA PUNO-JLC, EXP. INDIVIDUALES, CPE, ANALISIS SEGÚN DL 1192, PROPUESTA 01010021','','ESTUDIO DEFINITIVO DE LA VARIANTE DEINGENIERIA DE LA SEGUNDA CALZADA DE LA AUTOPISTA PUNO JULIACA - EXPEDIENTES INDIVIDUALES, CPE, ANALISIS SEGÚN DL 1192'),(7,'Estudio definitivo de la variante de ingeniería de la segunda calzada de la autopista Puno Juliaca.','','Servicio de arquitectura e ingenieria'),(8,'CORREDOR VIAL APURIMAC - CUSCO TRAMO 3 SUB-TRAMO 3','','ELABORACIÓN DEL COMPONENTE DE AFECTACIONES SEGÚN DL 1192N Y MODIFICATORIAS DEL ESTUDIO DEFINITIVO PARA EL MEJORAMIENTO DEL CORREDOR VIAL APURÍMAC-CUSCO. TRAMO 3, SUBTRAMO 3'),(9,'EV. HUANCAYO','','PAC estudio definitivo para la construccion y mejoramiento de la via evitamiento de Huancayo.'),(10,'Servicio de reformulacion del estudio de pre inversion a nivel de perfil; construccion de la via de evitamiento de la ciudad de juanjui','','REFORMULACION DEL ESTUDIO DE PREINVERSION A NIVEL DE PERFIL: CONSTRUCCION DE LAVIA DE EVITAMIENTO A LA CIUDAD DE JUANJUI'),(11,'Construcción de 11 puentes de carretera en la red vial nacional, ruta PE-1NR en el tramo Tambogrande-Morropon-Chulucanas, departamento Piura.','','Estudio de plan de afectaciones y compensaciones prediales.'),(12,'Construcción de Puentes por reemplazo en Ancash','',''),(13,'Estudio de perfil y definitvamente para la rehabilitación y mejoramiento de los caminos vecinales tramo1:EMP.5N (Naranjos)-el Diamante-San Agustín-Oriente Nuevo;Tramo2:EMP.5N(Angaiza)-Vista Alegre-Ricardo palma-Buenos Aires-EMP.SM-516;Tramo 3:EMP.5N(El Porvenir)-Ramiro Prialé -Nueva esperanza.','','Estudio de mejoramiento de caminos vecinal    '),(14,'Estudio definitivo del proyecto: Mejoramiento del servicio de transitabilidad desde el puente amarillo-Cruce Bayóvar-Distrito de Olmos-Provincia de Lambayeque-Departamento de Lambayeque.','','Mejoramiento del servicio de transitibilidad desde pte. Amarillo-Cruce Bayovar.'),(15,'PROYECTO LIRCAY - LAGUNILLAS','','ESTUDIO DE PREINVERSIÓN A NIVEL DE PERFIL DEL PROYECTO DE LA CARRETERA HUANCAVELICA – EMP. PE – 3S, TRAMO: LIRCAY – LAGUNILLAS – EMP. RUTA PE – 3S'),(16,'PROYECTO PTE PALLAR - PTE CHAGUAL','','ESTUDIO DE PRE INVERSIÓN A NIVEL DE PERFIL DE LA CARRETERA PTE PALLAR – PTE CHAGUAL'),(17,'PROYECTO HYO.-IZCUCHACA','','ESTUDIO DE PREINVERSION A NIVEL DE PERFIL, CARRETERA LONGITUDINAL DE LA SIERRA, TRAMO IV, PROYECTO GE 006 – 17 HUANCAYO - IZCUCHACA'),(18,'ESTUDIO DE IMPACTO VIAL CAMPOSANTO ANCON','','ESTUDIO DE IMPACTO VIAL CAMPOSANTO ANCON'),(19,'PROYECTO PUENTE PICHARI','','Elaboracion del estudio de interferencias para el proyecto del puente Pichari.'),(20,'SERVICIO DE MONITOREO AMBIENTAL EN EL PASO A DESNIVEL DE CERRO BLANCO','','Servicio de monitoreo ambiental en el paso a desnivel de cerro blanco.'),(21,'SERVICIO DE MONITOREO AMBIENTAL 8 PUENTES','','Servicio de monitoreo ambiental 8 puentes.'),(22,'CORREDOR VIAL APURIMAC - CUSCO TRAMO 1 Y 2','','Mejoramiento del corredor vial Apurimac.'),(23,'SAN MARTIN','','SERVICIO DE ELABORACION DE 26 EXPEDIENTES Y BUSQUEDA CATASTRAL PARA EL PROYECTO QUEBRADA LEON - P008-07-2021-BESALCO-05'),(24,'OLMOS','','COMPONENTE DE IMPACTO AMBIENTAL -MEJORAMIENTO DE SERVICIO DE TRANSITIBIDAD DESDE EL PTE AMARILLO-CRUCE BAYOVAR-DIST DE OLMOS PROVINCIA DE LAMBAYEQUE DPT DE LAMBAYEQUE'),(25,'Mejoramiento de los jirones Oyón, Iquitos, Víctor Andrés ','','Mejoramiento de los jirones Oyón, Iquitos, Víctor Andrés.'),(26,'ELABORACIÓN DEL EXPEDIENTE TÉCNICO PARA LA EVALUACIÓN Y TRATAMIENTO DE LOS SECTORES CRÍTICOS DE LA CARRETERA: QUINUA – SAN FRANCISCO, TRAMO 2: KM. 78+500 (CHALHUAMAYO) – KM. 172+420 (SAN FRANCISCO) ','','ESTUDIO DE IMPACTO Y MONITOREO AMBIENTAL PARA LOS SECTORES CRITICOS EN CARRETERA:QUINUA- SAN FRANCISCO '),(27,'PROYECTO CUMBIL - CHOTANO','','Estudio de afectaciones Prediales'),(28,'Estudio definitivo para la rehabilitación y mejoramiento de la carretera empalme ruta AN111-Huamnin-Progreso-Poque-Llata-Cochapata (Túnal Taytamayo)- Nuevas Flores-Quivilla-Tingo Chico  ','','Estudio para la rehabilitacion y mejora de carretera'),(29,'Estudio de preinversion a nivel de perfil de la carretera PE-5NC, nuevo Siasme-Saramiriza','','Estudio de afectaciones prediales para el proyecto; estudio de pre inversión a nivel  de perfil de la carretera nuevo Siasme-Saramiriza.'),(30,'Construcción de 11 puentes en la red víal nacional, ruta PE-1NR en el tramo Tambogrande hasta Puente la Peña km 60+000.','','Estudio de afectaciones prediales'),(32,'Construcción del Puente Nación ashánincas y Accesos, Ubicado sobre el Río Ene en la Red Vial Nacional, Ruta PE-28C, Provincia de Satipo, Región Junín.','','Puente Ashaninca'),(33,'Mejoramiento y construccion de la carretera Jenaro Herrera - Colonia Angamos (Frontera con Brasil) , distrito  de Jenaro Herrera-Provincia de Requeña - Region Loreto','','Proyecto Jenaro Herrera'),(34,'Creacion del puento Alto Chira y Accesos, distrito de Querocotillo - Provincia de Sullana- Piura','Proyecto Puente Alto chira',''),(35,'Estudio Definitivo para la culminación de las Obras de la Carretera Longitudinal de la Sierra (PE-3N), Tramos: San Marcos- Cajabamba, Cochabamba- Chota, Hualgayoc- DV. Yanacocha, en el Departamento de Cajamarca y el Sector: Huamachuco- Sacsacocha- Puente Pallar en el Departamento de La Libertad','','');
+INSERT INTO `proyectos` VALUES (1,'PROYECTO AQP - YURA','','MEJORAMIENTO A NIVEL DE AUTOPISTA Y/O PAR VIAL SECTOR 3 AREQUIPA-YURA'),(2,'PROYECTO YURA-PATAHUASI','','ESTUDIO DE PRE INVERSION A NIVEL DE FACTIBILIDAD DEL\nPROYECTO: MEJORAMIENTO A NIVEL DE AUTOPISTA Y/O PAR VIAL SECTOR 4 YURA - PATAHUASI.'),(3,'PROY. 2da. CALZADA JULIACA-PUNO-AVANCE PACRI PTE 0101020','','ESTUDIO DEFINITIVO DE LA VARIANTE DE INGENIERIA DE LA SEGUNDA CALZADA DE LA\nAUTOPISTA PUNO JULIACA, AVANCE PACRI SEGUN PROPUESTA 0101020'),(4,'REHABILITACION DEL EJE VIAL NÂ° 1 PIURA - GUAYAQUIL (06 OBRAS - 14 PUENTES)','','PROPUESTA TECNICA ECONOMICA DEL PROYECTO REHABILITACION DEL EJE VIAL NO. 1\nPIURA-GUAYAQUIL(06 OBRAS-14 PUENTES)'),(5,'CONSTRUCCION DE PUENTES POR REEMPLAZO EN LA ZONA NORTE DEL PAIS (02 OBRAS - 12 PUENTES)','','PROPUESTA TECNICA ECONOMICA DEL PROYECTO CONSTRUCCION DE PUENTES POR\nREEMPLAZO EN LA ZONA NORTE DEL PAIS (02 OBRAS - 12 PUENTES)'),(6,'ESTUDIO DEF. VARIANTE DE ING. DE LA 2DA. CALZADA AUTOPISTA VARIANTE QAPAQ Ã‘AM AUTOPISTA PUNO-JLC, EXP. INDIVIDUALES, CPE, ANALISIS SEGÃšN DL 1192, PROPUESTA 01010021','','ESTUDIO DEFINITIVO DE LA VARIANTE DEINGENIERIA DE LA SEGUNDA CALZADA DE LA AUTOPISTA PUNO JULIACA - EXPEDIENTES INDIVIDUALES, CPE, ANALISIS SEGÃšN DL 1192'),(7,'Estudio definitivo de la variante de ingenierÃ­a de la segunda calzada de la autopista Puno Juliaca.','','Servicio de arquitectura e ingenieria'),(8,'CORREDOR VIAL APURIMAC - CUSCO TRAMO 3 SUB-TRAMO 3','','ELABORACIÃ“N DEL COMPONENTE DE AFECTACIONES SEGÃšN DL 1192N Y MODIFICATORIAS DEL ESTUDIO DEFINITIVO PARA EL MEJORAMIENTO DEL CORREDOR VIAL APURÃMAC-CUSCO. TRAMO 3, SUBTRAMO 3'),(9,'EV. HUANCAYO','','PAC estudio definitivo para la construccion y mejoramiento de la via evitamiento de Huancayo.'),(10,'Servicio de reformulacion del estudio de pre inversion a nivel de perfil; construccion de la via de evitamiento de la ciudad de juanjui','','REFORMULACION DEL ESTUDIO DE PREINVERSION A NIVEL DE PERFIL: CONSTRUCCION DE LAVIA DE EVITAMIENTO A LA CIUDAD DE JUANJUI'),(11,'ConstrucciÃ³n de 11 puentes de carretera en la red vial nacional, ruta PE-1NR en el tramo Tambogrande-Morropon-Chulucanas, departamento Piura.','','Estudio de plan de afectaciones y compensaciones prediales.'),(12,'ConstrucciÃ³n de Puentes por reemplazo en Ancash','',''),(13,'Estudio de perfil y definitvamente para la rehabilitaciÃ³n y mejoramiento de los caminos vecinales tramo1:EMP.5N (Naranjos)-el Diamante-San AgustÃ­n-Oriente Nuevo;Tramo2:EMP.5N(Angaiza)-Vista Alegre-Ricardo palma-Buenos Aires-EMP.SM-516;Tramo 3:EMP.5N(El Porvenir)-Ramiro PrialÃ© -Nueva esperanza.','','Estudio de mejoramiento de caminos vecinal    '),(14,'Estudio definitivo del proyecto: Mejoramiento del servicio de transitabilidad desde el puente amarillo-Cruce BayÃ³var-Distrito de Olmos-Provincia de Lambayeque-Departamento de Lambayeque.','','Mejoramiento del servicio de transitibilidad desde pte. Amarillo-Cruce Bayovar.'),(15,'PROYECTO LIRCAY - LAGUNILLAS','','ESTUDIO DE PREINVERSIÃ“N A NIVEL DE PERFIL DEL PROYECTO DE LA CARRETERA HUANCAVELICA â€“ EMP. PE â€“ 3S, TRAMO: LIRCAY â€“ LAGUNILLAS â€“ EMP. RUTA PE â€“ 3S'),(16,'PROYECTO PTE PALLAR - PTE CHAGUAL','','ESTUDIO DE PRE INVERSIÃ“N A NIVEL DE PERFIL DE LA CARRETERA PTE PALLAR â€“ PTE CHAGUAL'),(17,'PROYECTO HYO.-IZCUCHACA','','ESTUDIO DE PREINVERSION A NIVEL DE PERFIL, CARRETERA LONGITUDINAL DE LA SIERRA, TRAMO IV, PROYECTO GE 006 â€“ 17 HUANCAYO - IZCUCHACA'),(18,'ESTUDIO DE IMPACTO VIAL CAMPOSANTO ANCON','','ESTUDIO DE IMPACTO VIAL CAMPOSANTO ANCON'),(19,'PROYECTO PUENTE PICHARI','','Elaboracion del estudio de interferencias para el proyecto del puente Pichari.'),(20,'SERVICIO DE MONITOREO AMBIENTAL EN EL PASO A DESNIVEL DE CERRO BLANCO','','Servicio de monitoreo ambiental en el paso a desnivel de cerro blanco.'),(21,'SERVICIO DE MONITOREO AMBIENTAL 8 PUENTES','','Servicio de monitoreo ambiental 8 puentes.'),(22,'CORREDOR VIAL APURIMAC - CUSCO TRAMO 1 Y 2','','Mejoramiento del corredor vial Apurimac.'),(23,'SAN MARTIN','','SERVICIO DE ELABORACION DE 26 EXPEDIENTES Y BUSQUEDA CATASTRAL PARA EL PROYECTO QUEBRADA LEON - P008-07-2021-BESALCO-05'),(24,'OLMOS','','COMPONENTE DE IMPACTO AMBIENTAL -MEJORAMIENTO DE SERVICIO DE TRANSITIBIDAD DESDE EL PTE AMARILLO-CRUCE BAYOVAR-DIST DE OLMOS PROVINCIA DE LAMBAYEQUE DPT DE LAMBAYEQUE'),(25,'Mejoramiento de los jirones OyÃ³n, Iquitos, VÃ­ctor AndrÃ©s ','','Mejoramiento de los jirones OyÃ³n, Iquitos, VÃ­ctor AndrÃ©s.'),(26,'ELABORACIÃ“N DEL EXPEDIENTE TÃ‰CNICO PARA LA EVALUACIÃ“N Y TRATAMIENTO DE LOS SECTORES CRÃTICOS DE LA CARRETERA: QUINUA â€“ SAN FRANCISCO, TRAMO 2: KM. 78+500 (CHALHUAMAYO) â€“ KM. 172+420 (SAN FRANCISCO) ','','ESTUDIO DE IMPACTO Y MONITOREO AMBIENTAL PARA LOS SECTORES CRITICOS EN CARRETERA:QUINUA- SAN FRANCISCO '),(27,'PROYECTO CUMBIL - CHOTANO','','Estudio de afectaciones Prediales'),(28,'Estudio definitivo para la rehabilitaciÃ³n y mejoramiento de la carretera empalme ruta AN111-Huamnin-Progreso-Poque-Llata-Cochapata (TÃºnal Taytamayo)- Nuevas Flores-Quivilla-Tingo Chico  ','','Estudio para la rehabilitacion y mejora de carretera'),(29,'Estudio de preinversion a nivel de perfil de la carretera PE-5NC, nuevo Siasme-Saramiriza','','Estudio de afectaciones prediales para el proyecto; estudio de pre inversiÃ³n a nivel  de perfil de la carretera nuevo Siasme-Saramiriza.'),(30,'ConstrucciÃ³n de 11 puentes en la red vÃ­al nacional, ruta PE-1NR en el tramo Tambogrande hasta Puente la PeÃ±a km 60+000.','','Estudio de afectaciones prediales'),(32,'ConstrucciÃ³n del Puente NaciÃ³n ashÃ¡nincas y Accesos, Ubicado sobre el RÃ­o Ene en la Red Vial Nacional, Ruta PE-28C, Provincia de Satipo, RegiÃ³n JunÃ­n.','','Puente Ashaninca'),(33,'Mejoramiento y construccion de la carretera Jenaro Herrera - Colonia Angamos (Frontera con Brasil) , distrito  de Jenaro Herrera-Provincia de RequeÃ±a - Region Loreto','','Proyecto Jenaro Herrera'),(34,'Creacion del puento Alto Chira y Accesos, distrito de Querocotillo - Provincia de Sullana- Piura','Proyecto Puente Alto chira',''),(35,'Estudio Definitivo para la culminaciÃ³n de las Obras de la Carretera Longitudinal de la Sierra (PE-3N), Tramos: San Marcos- Cajabamba, Cochabamba- Chota, Hualgayoc- DV. Yanacocha, en el Departamento de Cajamarca y el Sector: Huamachuco- Sacsacocha- Puente Pallar en el Departamento de La Libertad','','');
 /*!40000 ALTER TABLE `proyectos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1179,9 +1168,10 @@ DROP TABLE IF EXISTS `tiposempleados`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tiposempleados` (
   `IdTipoEmpleado` int NOT NULL AUTO_INCREMENT,
+  `CodigoTipoEmpleado` varchar(50) DEFAULT NULL,
   `Descripcion` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`IdTipoEmpleado`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1190,7 +1180,7 @@ CREATE TABLE `tiposempleados` (
 
 LOCK TABLES `tiposempleados` WRITE;
 /*!40000 ALTER TABLE `tiposempleados` DISABLE KEYS */;
-INSERT INTO `tiposempleados` VALUES (1,'Por definir...'),(2,'Estable'),(3,'Practicante'),(4,'pruebas');
+INSERT INTO `tiposempleados` VALUES (1,'TEMP0001','Practicante'),(2,'TEMP0002','Completo'),(3,'TEMP0003','Part Time');
 /*!40000 ALTER TABLE `tiposempleados` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1211,7 +1201,7 @@ CREATE TABLE `transferenciasbancarias` (
   PRIMARY KEY (`IdTransferenciaBancaria`),
   KEY `IdPeriodo` (`IdPeriodo`),
   CONSTRAINT `transferenciasbancarias_ibfk_1` FOREIGN KEY (`IdPeriodo`) REFERENCES `periodos` (`IdPeriodo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1220,6 +1210,7 @@ CREATE TABLE `transferenciasbancarias` (
 
 LOCK TABLES `transferenciasbancarias` WRITE;
 /*!40000 ALTER TABLE `transferenciasbancarias` DISABLE KEYS */;
+INSERT INTO `transferenciasbancarias` VALUES (1,1,'1','w','w','2025-04-30');
 /*!40000 ALTER TABLE `transferenciasbancarias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1310,7 +1301,7 @@ CREATE TABLE `viaticos` (
   KEY `IdPeriodo` (`IdPeriodo`),
   CONSTRAINT `viaticos_ibfk_1` FOREIGN KEY (`IdEmpleado`) REFERENCES `empleados` (`IdEmpleado`),
   CONSTRAINT `viaticos_ibfk_2` FOREIGN KEY (`IdPeriodo`) REFERENCES `periodos` (`IdPeriodo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1319,6 +1310,7 @@ CREATE TABLE `viaticos` (
 
 LOCK TABLES `viaticos` WRITE;
 /*!40000 ALTER TABLE `viaticos` DISABLE KEYS */;
+INSERT INTO `viaticos` VALUES (1,1,1,'ninguna',12.00,12.00),(11,2,1,'ninguna',23.00,23.00),(14,1,1,'ninguna',21.00,21.00);
 /*!40000 ALTER TABLE `viaticos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1340,12 +1332,14 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_areas`(
-	IN xId int, IN xDescripcion VARCHAR(100)
-	)
+	IN p_codigo VARCHAR(20),
+    IN p_descripcion VARCHAR(100)
+)
 BEGIN
-	UPDATE areas SET Descripcion=xDescripcion
-	where Id=xId;
-	END ;;
+    UPDATE areas 
+    SET descripcion = p_descripcion 
+    WHERE CodigoArea = p_codigo;
+END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1362,21 +1356,21 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_articulos`(
-IN xId int,
-IN xDescripcion VARCHAR(100),
-IN xIdCategorias int,
-in xidmarca int,
-in xcaracteristicas varchar(100),
-in xcantidad int
+    IN p_Id INT,
+    IN p_IdCategoria INT,
+    IN p_IdMarca INT,
+    IN p_Caracteristicas VARCHAR(100),
+    IN p_Descripcion VARCHAR(100),
+    IN p_Cantidad INT
 )
 BEGIN
-UPDATE articulos SET 
-				descripcion = xDescripcion, 
-                IdCategorias = xIdCategorias,
-                IdMarca = xidmarca,
-                caracteristicas = xcaracteristicas,
-                cantidad = xcantidad
-WHERE IdArticulo = xId;
+    UPDATE articulos SET 
+		IdCategoria = p_Idcategoria,
+        IdMarca = p_IdMarca,
+        caracteristicas = p_Caracteristicas,
+        descripcion = p_Descripcion,
+        cantidad = p_Cantidad
+    WHERE idArticulo = p_Id;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1436,6 +1430,41 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `actualizar_cajachica` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_cajachica`(
+    IN p_IdCajaChica VARCHAR(10),
+    IN p_IdTransferenciaBancaria VARCHAR(10),
+    IN p_Fecha DATE,
+    IN p_Descripcion VARCHAR(100),
+    IN p_Entrada FLOAT,
+    IN p_Salida FLOAT,
+    IN p_Saldo FLOAT
+)
+BEGIN
+    UPDATE cajachica
+    SET
+        IdTransferenciaBancaria = p_IdTransferenciaBancaria,
+        Fecha = p_Fecha,
+        Descripcion = p_Descripcion,
+        Entrada = p_Entrada,
+        Salida = p_Salida,
+        Saldo = p_Saldo
+    WHERE IdCajaChica = p_IdCajaChica;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `actualizar_cargos` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1447,11 +1476,13 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_cargos`(
-IN xId int, IN xDescripcion VARCHAR(100)
+    IN p_codigo VARCHAR(20),
+    IN p_descripcion VARCHAR(100)
 )
 BEGIN
-UPDATE cargos SET Descripcion=xDescripcion
-where Id=xId;
+    UPDATE cargos 
+    SET Descripcion = p_descripcion 
+    WHERE CodigoCargo = p_codigo;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1469,11 +1500,13 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_carreras`(
-IN xId int, IN xDescripcion VARCHAR(100)
+    IN xId VARCHAR(20),
+    IN xDescripcion VARCHAR(100)
 )
 BEGIN
-UPDATE carreras SET Descripcion=xDescripcion
-where Id=xId;
+    UPDATE carreras 
+    SET Descripcion = xDescripcion
+    WHERE codigoCarrera = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1491,11 +1524,13 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_categorias`(
-IN xId int, IN xDescripcion VARCHAR(100)
+	IN p_codigo VARCHAR(20),
+    IN p_descripcion VARCHAR(100)
 )
 BEGIN
-UPDATE categorias SET descripcion=xDescripcion
-where id=xId;
+	UPDATE categorias 
+    SET Descripcion = p_descripcion
+	where CodigoCategoria = p_codigo;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1516,12 +1551,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_comunicacion`(parId int 
 parAsunto varchar(100), parFecha date, parCodDocRespuesta varchar(100), parEstado int, parEnlace varchar(100))
 BEGIN
 update comunicaciones 
-set Nombre = parNomProy, 
+set NombreProyecto = parNomProy, 
 Tipo = parTipo, CodDoc = parCodDoc, Origen = parOrigen, Destino = parDestino, 
 Flujo = parFlujo, Asunto = parAsunto, Fecha = parFecha, 
 CodDocRespuesta = parCodDocRespuesta,  
-Estado = parEstado, Enlace = parEnlace
-where ID = parId 
+estado = parEstado, Enlace = parEnlace
+where IdComunicacion  = parId 
 and  IdPeriodo = parIdPeriodo;
 
 END ;;
@@ -1540,14 +1575,34 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_contactos`(IN `xId` int, IN `xNombre` VARCHAR(100), IN `xFechaNacimiento` VARCHAR(10), IN `xPersonasRelacionadas` VARCHAR(100), IN `xEmpresa` VARCHAR(100),IN `xCuentas` VARCHAR(100),IN `xClave` VARCHAR(100), IN `xCargo` VARCHAR(100), IN `xCorreo` VARCHAR(100), IN `xTelefono` CHAR(9), IN `xDepartamento` VARCHAR(100), IN `xDireccion` VARCHAR(100), IN `xNotas` VARCHAR(200))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_contactos`(
+IN `xId` int, 
+IN `xNombre` VARCHAR(100), 
+IN `xFechaNacimiento` VARCHAR(10), 
+IN `xPersonasRelacionadas` VARCHAR(100), 
+IN `xEmpresa` VARCHAR(100),
+IN `xCuentas` VARCHAR(100),
+IN `xClave` VARCHAR(100), 
+IN `xCargo` VARCHAR(100), 
+IN `xCorreo` VARCHAR(100), 
+IN `xTelefono` CHAR(9), 
+IN `xDepartamento` VARCHAR(100), 
+IN `xDireccion` VARCHAR(100), 
+IN `xNotas` VARCHAR(200))
 BEGIN
-update contactos set 
-Nombre=xNombre, FechaNacimiento=xFechaNacimiento, 
+update contactos 
+set 
+Nombre=xNombre, 
+FechaNacimiento=xFechaNacimiento, 
 PersonasRelacionadas=xPersonasRelacionadas,
-Empresa=xEmpresa,Cuentas=xCuentas,Clave=xClave, Cargo=xCargo, 
-Correo=xCorreo, Telefono=xTelefono, 
-Departamento=xDepartamento, Direccion=xDireccion, Notas=xNotas
+Empresa=xEmpresa,
+Cuentas=xCuentas,
+Clave=xClave, 
+Cargo=xCargo, 
+Correo=xCorreo, 
+Telefono=xTelefono, 
+Departamento=xDepartamento, 
+Direccion=xDireccion, Notas=xNotas
 where IdContacto=xId;
 END ;;
 DELIMITER ;
@@ -1603,13 +1658,17 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_credencial`(in xidcredencial int,in xcorreo varchar(200), 
-										   in xclave varchar(200), xalias varchar(100), 
-                                           xdescripcion varchar(200))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_credencial`(
+in xidcredencial varchar(10),
+in xcorreo varchar(200),
+in xclave varchar(200), 
+in xalias varchar(100), 
+in xdescripcion varchar(200)
+)
 BEGIN
 	update credenciales 
     set correo = xcorreo, clave = xclave, alias = xalias, descripcion = xdescripcion
-    where idcredencial = xidcredencial;
+    where codigoCredencial = xidcredencial;
     
 END ;;
 DELIMITER ;
@@ -1628,7 +1687,7 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_cuenta`(
-IN xId int,
+	IN xId INT,
     IN xTipoPropietario CHAR(7),
     IN xNombres VARCHAR(50),
     IN xBanco INT,
@@ -1637,14 +1696,15 @@ IN xId int,
     IN xTipoMoneda CHAR(1)
 )
 BEGIN
-	update cuentasbancarias
-    set  TipoPropietario=xTipoPropietario,
-    IdBanco = xBanco,
-    Nombres = xNombres,
-    NroCuenta = xCCC,
-    NroCuentaInterbancaria = xCCI,
-    TipoMoneda = xTipoMoneda
-    where IdCuentabancaria = xId;
+	UPDATE cuentasbancarias
+    SET  TipoPropietario = xTipoPropietario,
+         IdBanco = xBanco,
+         Nombres = xNombres,
+         NroCuenta = xCCC,
+         NroCuentaInterbancaria = xCCI,
+         TipoMoneda = xTipoMoneda,
+         FechaCreacion = CURDATE()  -- Establecer la fecha actual
+    WHERE IdCuentaBancaria = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1662,7 +1722,17 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_datos_empleado`(
-IN xId int, IN xApellidos VARCHAR(100), IN xNombres VARCHAR(100), IN xFechaNacimiento VARCHAR(10), IN xCorreo VARCHAR(100), IN xDni CHAR(8), IN xCelular CHAR(9), IN xDistrito VARCHAR(50), IN xDireccion VARCHAR(100), IN xIdArea int, IN xIdCargo int, IN xIdTipoEmpleado int
+IN xId int, 
+IN xApellidos VARCHAR(100), 
+IN xNombres VARCHAR(100), 
+IN xFechaNacimiento VARCHAR(10), 
+IN xCorreo VARCHAR(100), 
+IN xDni CHAR(8), 
+IN xCelular CHAR(9), 
+IN xDistrito VARCHAR(50), 
+IN xDireccion VARCHAR(100), 
+IN xIdArea int, IN xIdCargo int, 
+IN xIdTipoEmpleado int
 )
 BEGIN
 UPDATE empleados SET Apellidos = xApellidos,
@@ -1676,7 +1746,31 @@ Direccion = xDireccion,
 IdArea = xIdArea,
 IdCargo = xIdCargo,
 IdTipoEmpleado = xIdTipoEmpleado
-WHERE Id = xId;
+WHERE IdEmpleado = xId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `actualizar_departamentos` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_departamentos`(
+IN xId VARCHAR(20),
+IN xDescripcion VARCHAR(100)
+)
+BEGIN
+UPDATE departamentos 
+SET Descripcion = xDescripcion
+WHERE codigoDepartamento = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1791,12 +1885,12 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_facultades`(
-IN xId int,
+IN xId VARCHAR(20),
 IN xDescripcion VARCHAR(100)
 )
 BEGIN
 UPDATE facultades SET Descripcion = xDescripcion
-WHERE Id = xId;
+WHERE codigoFacultad = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1814,16 +1908,16 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_instituciones`(
-IN xId int,
-IN xRuc CHAR(20),
-IN xRazonSocial VARCHAR(100),
-IN xDireccion VARCHAR(100),
-IN xSede VARCHAR(100)
+    IN xId VARCHAR(20),
+    IN xRuc CHAR(20),
+    IN xRazonSocial VARCHAR(100),
+    IN xDireccion VARCHAR(100),
+    IN xSede VARCHAR(100)
 )
 BEGIN
-UPDATE institucioneseducativas
-SET Ruc = xRuc, RazonSocial = xRazonSocial, Direccion = xDireccion, Sede = xSede
-WHERE Id = xId;
+    UPDATE institucioneseducativas
+    SET Ruc = xRuc, RazonSocial = xRazonSocial, Direccion = xDireccion, Sede = xSede
+    WHERE codigoInstituciones = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1885,12 +1979,37 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_periodos`(
-IN xId int,
-IN xDescripcion VARCHAR(100)
+    IN xId varchar(10),
+    IN xDescripcion VARCHAR(100)
 )
 BEGIN
-UPDATE periodos SET Descripcion = xDescripcion
-WHERE Id = xId;
+    DECLARE numMes INT;
+
+    -- Convertir el nombre del mes a número
+    SET numMes = CASE LOWER(xDescripcion)
+        WHEN 'enero' THEN 1
+        WHEN 'febrero' THEN 2
+        WHEN 'marzo' THEN 3
+        WHEN 'abril' THEN 4
+        WHEN 'mayo' THEN 5
+        WHEN 'junio' THEN 6
+        WHEN 'julio' THEN 7
+        WHEN 'agosto' THEN 8
+        WHEN 'septiembre' THEN 9
+        WHEN 'octubre' THEN 10
+        WHEN 'noviembre' THEN 11
+        WHEN 'diciembre' THEN 12
+        ELSE 0
+    END;
+
+    -- Actualizar todos los campos relacionados
+    UPDATE periodos
+    SET
+        Descripcion = xDescripcion,
+        Mes = numMes,
+        Anio = 2025,
+        Alias = CONCAT(LPAD(numMes, 2, '0'), '2025')
+    WHERE codigoPeriodo = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1907,15 +2026,23 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_proveedores`(xId int, xNombres varchar (100), xDireccion varchar (100), 
-xCorreo varchar(100), xTelefono char(9), xRuc char(11))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_proveedores`(
+xId varchar(20), 
+xIdDepartamento int,
+xNombres varchar (100), 
+xDireccion varchar (100), 
+xCorreo varchar(100), 
+xTelefono char(9), 
+xRuc char(11))
 BEGIN
-update proveedores set Nombres=xNombres
-, Direccion=xDireccion,
+update proveedores set 
+IdDepartamento = xIdDepartamento,
+Nombres=xNombres, 
+Direccion=xDireccion,
 Correo=xCorreo, 
 Telefono=xTelefono, 
 Ruc=xRuc
-where Id=xId;
+where codigoProveedor=xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2025,11 +2152,14 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_tipoempleado`(IN `xId` int, IN `xDescripcion` VARCHAR(100))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_tipoempleado`(
+IN p_codigo VARCHAR(20),
+    IN p_descripcion VARCHAR(100)
+)
 BEGIN
-UPDATE tiposempleados SET 
-Descripcion=xDescripcion
-where IdTipoEmpleado=xId;
+    UPDATE tiposempleados 
+    SET Descripcion = p_descripcion 
+    WHERE CodigoTipoEmpleado = p_codigo;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2062,7 +2192,7 @@ BEGIN
         CuentaOrigen = xCuentaOrigen,
         CuentaDestino = xCuentaDestino,
         Fecha = STR_TO_DATE(xFecha, '%d/%m/%Y')
-    WHERE Id = xId;
+    WHERE IdTransferenciaBancaria = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2088,12 +2218,51 @@ IN xIdEmpleado int,
 IN xIdPeriodo int
 )
 BEGIN
-	UPDATE viaticos SET Descripcion = xDescripcion,
+	UPDATE viaticos 
+    SET Descripcion = xDescripcion,
     Pasaje = xPasaje,
     Menu = xMenu,
     IdEmpleado = xIdEmpleado,
     IdPeriodo = xIdPeriodo
-    WHERE Id = xId;
+    WHERE IdViatico = xId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `cargar_categorias` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `cargar_categorias`()
+BEGIN
+    SELECT descripcion FROM categorias;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `cargar_marcas` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `cargar_marcas`()
+BEGIN
+    SELECT descripcion FROM marcas;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2111,16 +2280,21 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `consulta_areas_cargos_tipos`(
-xArea VARCHAR(100),
-xCargo VARCHAR(100),
-xTipo VARCHAR(100)
+    IN xArea VARCHAR(100),
+    IN xCargo VARCHAR(100),
+    IN xTipo VARCHAR(100)
 )
 BEGIN
-	SELECT a.Id AS Id_area, c.Id AS Id_cargo, t.Id AS Id_tipo
-    FROM areas a, cargos c, tiposempleados t
-    WHERE a.Descripcion = xArea
-    AND c.Descripcion = xCargo
-    AND t.Descripcion = xTipo;
+    SELECT 
+        a.IdArea AS Id_area, 
+        c.IdCargo AS Id_cargo, 
+        t.IdTipoEmpleado AS Id_tipo
+    FROM 
+        areas a, cargos c, tiposempleados t
+    WHERE 
+        a.Descripcion = xArea
+        AND c.Descripcion = xCargo
+        AND t.Descripcion = xTipo;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2143,7 +2317,10 @@ xFac VARCHAR(100),
 xCar VARCHAR(100)
 )
 BEGIN
-	SELECT i.Id AS Id_ins, f.Id AS Id_fac, c.Id AS Id_car
+	SELECT 
+		i.IdInstitucionEducativa AS Id_ins, 
+        f.IdFacultad AS Id_fac, 
+        c.IdCarrera AS Id_car
     FROM institucioneseducativas i, facultades f, carreras c
     WHERE i.RazonSocial = xIns
     AND f.Descripcion = xFac
@@ -2165,11 +2342,11 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_areas`(
-	IN xId int
-	)
+	IN p_codigo VARCHAR(20)
+)
 BEGIN
-	DELETE FROM areas WHERE Id= xId;
-	END ;;
+    DELETE FROM areas WHERE CodigoArea = p_codigo;
+END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2186,10 +2363,10 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_articulos`(
-IN xId int
+    IN p_IdArticulo INT
 )
 BEGIN
-DELETE FROM articulos WHERE IdArticulo=xId;
+    DELETE FROM articulos WHERE idArticulo = p_IdArticulo;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2227,10 +2404,10 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_cargos`(
-IN xId int
+    IN p_codigo VARCHAR(20)
 )
 BEGIN
-DELETE FROM cargos WHERE Id=xId;
+    DELETE FROM cargos WHERE CodigoCargo = p_codigo;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2248,10 +2425,10 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_carreras`(
-IN xId int
+    IN xId VARCHAR(100)  -- Cambiar de INT a VARCHAR(100)
 )
 BEGIN
-DELETE FROM carreras where Id=xId;
+    DELETE FROM carreras WHERE codigoCarrera = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2269,10 +2446,10 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_categorias`(
-IN xId int
+	IN p_codigo VARCHAR(20)
 )
 BEGIN
-DELETE FROM categorias WHERE id= xId;
+DELETE FROM categorias WHERE CodigoCategoria = p_codigo;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2291,7 +2468,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_comunicacion`(parId int, parIdPeriodo int)
 BEGIN
-delete from comunicaciones where Id = parId and IdPeriodo = parIdPeriodo;
+delete from comunicaciones where IdComunicacion = parId and IdPeriodo = parIdPeriodo;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2311,6 +2488,25 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_contacto`(IN `xId` int)
 BEGIN
 delete from contactos  where IdContacto=xId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `eliminar_credencial` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_credencial`(in xidcredencial varchar(10))
+BEGIN
+    DELETE FROM credenciales WHERE codigoCredencial = xidcredencial;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2338,6 +2534,27 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `eliminar_departamentos` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_departamentos`(
+IN xId VARCHAR(100)
+)
+BEGIN
+DELETE FROM departamentos WHERE codigoDepartamento = xId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `eliminar_empleados` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -2352,7 +2569,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_empleados`(
 IN xId int
 )
 BEGIN
-DELETE FROM empleados WHERE Id= xId;
+DELETE FROM empleados WHERE IdEmpleado= xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2370,10 +2587,10 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_facultades`(
-IN xId int
+IN xId VARCHAR(100)
 )
 BEGIN
-DELETE FROM facultades WHERE Id = xId;
+DELETE FROM facultades WHERE codigoFacultad = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2391,11 +2608,11 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_instituciones`(
-IN xId int
+    IN xId varchar(100)
 )
 BEGIN
-DELETE FROM institucioneseducativas
-WHERE Id = xId;
+    DELETE FROM institucioneseducativas
+    WHERE codigoInstituciones = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2432,10 +2649,10 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_periodos`(
-IN xId int
+IN xId varchar(100)
 )
 BEGIN
-DELETE FROM periodos WHERE Id = xId;
+DELETE FROM periodos WHERE codigoPeriodo = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2452,9 +2669,11 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_proveedores`(xId int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_proveedores`(
+xId varchar(100)
+)
 BEGIN
-delete from proveedores where Id=xId;
+delete from proveedores where codigoProveedor=xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2511,9 +2730,11 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_tipoempleado`(IN `xId` int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_tipoempleado`(
+	IN p_codigo VARCHAR(20)
+)
 BEGIN
-DELETE FROM tiposempleados WHERE IdTipoEmpleado= xId;
+DELETE FROM tiposempleados WHERE CodigoTipoEmpleado= p_codigo;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2535,7 +2756,7 @@ xId INT
 )
 BEGIN
 	DELETE FROM transferenciasbancarias
-    WHERE Id = xId;
+    WHERE IdTransferenciaBancaria = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2556,7 +2777,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_viaticos`(
 IN xId INT
 )
 BEGIN
-DELETE FROM viaticos WHERE Id = xId;
+DELETE FROM viaticos WHERE IdViatico = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2574,27 +2795,33 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `generar_codigo`(
-IN tabla VARCHAR(50),
-IN prefijo VARCHAR(10),
-IN longitud INT,
-OUT codigo_generado VARCHAR(20)
+    IN p_tabla VARCHAR(50),    -- Nombre de la tabla (ej. 'cargos')
+    IN p_campo_id VARCHAR(50), -- Nombre del campo ID (ej. 'IdCargo')
+    IN p_prefijo VARCHAR(10),  -- Prefijo del cÃ³digo (ej. 'CAR')
+    OUT p_codigo VARCHAR(20)   -- CÃ³digo generado (ej. 'CAR0001')
 )
 BEGIN
-	DECLARE ultimo_numero INT DEFAULT 0;
-    SET @tabla = tabla;
-    SET @sql = CONCAT('SELECT COUNT(*) INTO @ultimo_numero FROM ', @tabla);
-    PREPARE stmt FROM @sql;
+    DECLARE next_id INT;
+
+    -- Obtener el mÃ¡ximo valor actual de IdCargo
+    SET @sql_query = CONCAT('SELECT MAX(', p_campo_id, ') INTO @next_id FROM ', p_tabla);
+
+    -- Ejecutar la consulta para obtener el mÃ¡ximo ID
+    PREPARE stmt FROM @sql_query;
     EXECUTE stmt;
     DEALLOCATE PREPARE stmt;
-    IF (@ultimo_numero = 0) THEN
-        SET codigo_generado = CONCAT(prefijo, LPAD(1, longitud - LENGTH(prefijo), '0'));
-    ELSE
-        SET @sql = CONCAT('SELECT MAX(Id) INTO @ultimo_codigo FROM ', @tabla);
-        PREPARE stmt FROM @sql;
-        EXECUTE stmt;
-        DEALLOCATE PREPARE stmt;
-        SET codigo_generado = CONCAT(prefijo, LPAD(RIGHT(@ultimo_codigo, LENGTH(@ultimo_codigo) - LENGTH(prefijo)) + 1, longitud - LENGTH(prefijo), '0'));
+
+    -- Si la tabla estÃ¡ vacÃ­a, empezar desde 1
+    IF @next_id IS NULL THEN
+        SET @next_id = 0;
     END IF;
+
+    -- Incrementar el ID para el prÃ³ximo cÃ³digo
+    SET @next_id = @next_id + 1;
+
+    -- Generar el cÃ³digo con formato (Ejemplo: CAR0001)
+    SET p_codigo = CONCAT(p_prefijo, LPAD(@next_id, 4, '0'));
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2780,10 +3007,14 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_areas`(
-IN xId int, IN xDescripcion VARCHAR(100)
+IN p_descripcion VARCHAR(100),
+    OUT p_codigo VARCHAR(20)
 )
 BEGIN
-INSERT INTO areas VALUES ( xId, xDescripcion);
+    CALL generar_codigo('areas', 'IdArea', 'ARE', p_codigo);
+
+    -- Insertar el nuevo cargo en la tabla
+    INSERT INTO areas (CodigoArea, descripcion) VALUES (p_codigo, p_descripcion);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2801,16 +3032,16 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_articulos`(
-IN xId int,
-IN xDescripcion VARCHAR(100),
-IN xIdCategorias int,
-in xidmarca int,
-in xcaracteristicas varchar(100),
-in xcantidad int
+    IN p_Id int, 
+    IN p_IdCategoria INT,
+    IN p_IdMarca INT,
+    IN p_caracteristicas VARCHAR(255),
+    IN p_descripcion VARCHAR(100),
+    IN p_Cantidad INT
 )
 BEGIN
-INSERT INTO articulos(IdArticulo, IdCategoria, IdMarca, caracteristicas, descripcion, cantidad) 
-VALUES (xId,  xIdCategorias,  xidmarca, xcaracteristicas, xDescripcion, xcantidad );
+    INSERT INTO articulos (IdArticulo, IdCategoria, IdMarca, caracteristicas, descripcion, cantidad)
+    VALUES (p_Id, p_IdCategoria, p_IdMarca, p_caracteristicas, p_descripcion, p_Cantidad);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2865,6 +3096,49 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insertar_cajachica` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_cajachica`(
+    IN p_IdCajaChica VARCHAR(10),
+    IN p_IdTransferenciaBancaria VARCHAR(10),
+    IN p_Fecha DATE,
+    IN p_Descripcion VARCHAR(255),
+    IN p_Entrada FLOAT,
+    IN p_Salida FLOAT,
+    IN p_Saldo FLOAT
+)
+BEGIN
+    INSERT INTO cajachica (
+        IdCajaChica,
+        IdTransferenciaBancaria,
+        Fecha,
+        Descripcion,
+        Entrada,
+        Salida,
+        Saldo
+    ) VALUES (
+        p_IdCajaChica,
+        p_IdTransferenciaBancaria,
+        p_Fecha,
+        p_Descripcion,
+        p_Entrada,
+        p_Salida,
+        p_Saldo
+    );
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `insertar_cargos` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -2876,10 +3150,15 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_cargos`(
-IN xId int, IN xDescripcion VARCHAR(100)
+    IN p_descripcion VARCHAR(100),
+    OUT p_codigo VARCHAR(20)
 )
 BEGIN
-INSERT INTO cargos VALUES ( xId, xDescripcion);
+    -- Generar el cÃ³digo Ãºnico para `cargos`
+    CALL generar_codigo('cargos', 'IdCargo', 'CAR', p_codigo);
+
+    -- Insertar el nuevo cargo en la tabla
+    INSERT INTO cargos (CodigoCargo, Descripcion) VALUES (p_codigo, p_descripcion);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2897,10 +3176,15 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_carreras`(
-IN xId int, IN xDescripcion VARCHAR(100)
+    IN xId INT, 
+    IN xDescripcion VARCHAR(100)
 )
 BEGIN
-INSERT INTO carreras VALUES (xId, xDescripcion);
+    INSERT INTO carreras (IdCarrera, descripcion) VALUES (xId, xDescripcion);
+    
+    UPDATE carreras 
+    SET codigoCarrera = CONCAT('CAR000', LPAD(CAST(xId AS CHAR), 3, '0'))
+    WHERE IdCarrera = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2918,10 +3202,14 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_categorias`(
-IN xId int, IN xDescripcion VARCHAR(100)
+IN p_descripcion VARCHAR(100),
+    OUT p_codigo VARCHAR(20)
 )
 BEGIN
-INSERT INTO categorias VALUES ( xId, xDescripcion);
+    CALL generar_codigo('categorias', 'IdCategoria', 'CAT', p_codigo);
+
+    -- Insertar el nuevo cargo en la tabla
+    INSERT INTO categorias (CodigoCategoria, Descripcion) VALUES (p_codigo, p_descripcion);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2938,11 +3226,17 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_comunicacion`(in parId int , in parIdPeriodo int, in parNomProy varchar(100), in parTipo int, 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_comunicacion`(in parIdPeriodo int, in parNomProy varchar(100), in parTipo int, 
 in parCodDoc varchar(100), in parOrigen varchar(100), in parDestino varchar(100), in parFlujo int,
 in parAsunto varchar(100), in parFecha date, in parCodDocRespuesta varchar(100), in parEstado int, in parEnlace varchar(100) )
 BEGIN
-	insert into comunicaciones values(parId , parIdPeriodo, parNomProy, parTipo, parCodDoc, parOrigen, parDestino, parFlujo, parAsunto, parFecha, parCodDocRespuesta, parEstado, parEnlace);
+    INSERT INTO comunicaciones (
+        IdPeriodo, NombreProyecto, Tipo, CodDoc, Origen, Destino, Flujo, Asunto,
+        Fecha, CodDocRespuesta, estado, Enlace
+    ) VALUES (
+        parIdPeriodo, parNomProy, parTipo, parCodDoc, parOrigen, parDestino, parFlujo,
+        parAsunto, parFecha, parCodDocRespuesta, parEstado, parEnlace
+    );
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3024,14 +3318,25 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_credencial`( 
-    in xCorreo varchar(200),
-    in xClave varchar(200),
-    in xAlias varchar(100),
-    in xDescripcion varchar(200))
+    IN xCorreo VARCHAR(200),
+    IN xClave VARCHAR(200),
+    IN xAlias VARCHAR(100),
+    IN xDescripcion VARCHAR(200)
+)
 BEGIN
-	
-    insert into credenciales(correo,clave,alias, descripcion) values( xCorreo, xClave, xAlias, xDescripcion);
+    DECLARE lastId INT;
+
+    -- Insertar los datos
+    INSERT INTO credenciales (correo, clave, alias, descripcion)
+    VALUES (xCorreo, xClave, xAlias, xDescripcion);
     
+    -- Obtener el último ID insertado
+    SET lastId = LAST_INSERT_ID();
+
+    -- Generar y asignar el código personalizado
+    UPDATE credenciales
+    SET codigoCredencial = CONCAT('CRE000', LPAD(CAST(lastId AS CHAR), 3, '0'))
+    WHERE IdCredencial = lastId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3049,17 +3354,26 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_cuenta`(
-	IN xId int,
-    IN xTipoPropietario CHAR(7),
+	IN xId INT,
+    IN xTipoPropietario CHAR(20),
     IN xNombres VARCHAR(50),
     IN xBanco INT,
 	IN xCCC VARCHAR(50),
     IN xCCI VARCHAR(50),
-    IN xTipoMoneda CHAR(1)
+    IN xTipoMoneda CHAR(10)
 )
 BEGIN
-	INSERT INTO cuentasbancarias (IdCuentaBancaria, TipoPropietario, Nombres, IdBanco, NroCuenta, NroCuentaInterbancaria, TipoMoneda)
-    VALUES (xId, xTipoPropietario, xNombres, xBanco, xCCC, xCCI, xTipoMoneda);
+	INSERT INTO cuentasbancarias (
+        IdCuentaBancaria, TipoPropietario, Nombres, IdBanco,
+        NroCuenta, NroCuentaInterbancaria, TipoMoneda)
+    VALUES (
+        xId, xTipoPropietario, xNombres, xBanco,
+        xCCC, xCCI, xTipoMoneda);
+    
+    UPDATE cuentasbancarias
+SET FechaCreacion = CURDATE()  
+WHERE IdCuentaBancaria = xId;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3086,7 +3400,12 @@ IN xCodEs VARCHAR(20)
 )
 BEGIN
 	UPDATE empleados
-    SET IdInstitucionEducativa = xIdIns, IdFacultad = xIdFac, IdCarrera = xIdCar, Ciclo = xCic, CodigoEstudiante = xCodEs
+    SET 
+    IdInstitucionEducativa = xIdIns, 
+    IdFacultad = xIdFac, 
+    IdCarrera = xIdCar, 
+    Ciclo = xCic, 
+    CodigoEstudiante = xCodEs
     WHERE Dni = xDni;
 END ;;
 DELIMITER ;
@@ -3105,11 +3424,48 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_datos_empleado`(
-IN xId int, IN xApellidos VARCHAR(100), IN xNombres VARCHAR(100), IN xFechaNacimiento VARCHAR(10), IN xCorreo VARCHAR(100), IN xDni CHAR(8), IN xCelular CHAR(9), IN xDistrito VARCHAR(50), IN xDireccion VARCHAR(100), IN xIdArea int, IN xIdCargo int, IN xIdTipoEmpleado int
+IN xId int, 
+IN xApellidos VARCHAR(100), 
+IN xNombres VARCHAR(100), 
+IN xFechaNacimiento VARCHAR(10), 
+IN xCorreo VARCHAR(100), 
+IN xDni CHAR(8), 
+IN xCelular CHAR(9), 
+IN xDistrito VARCHAR(50), 
+IN xDireccion VARCHAR(100), 
+IN xIdArea int, 
+IN xIdCargo int, 
+IN xIdTipoEmpleado int
 )
 BEGIN
-INSERT INTO empleados(Id, Apellidos, Nombres, FechaNacimiento, Correo, Dni, Celular, Distrito, Direccion, IdArea, IdCargo, IdTipoEmpleado)
+INSERT INTO empleados(IdEmpleado, Apellidos, Nombres, FechaNacimiento, Correo, Dni, Celular, Distrito, Direccion, IdArea, IdCargo, IdTipoEmpleado)
 VALUES (xId, xApellidos, xNombres, STR_TO_DATE(xFechaNacimiento, '%d/%m/%Y'), xCorreo, xDni, xCelular, xDistrito, xDireccion, xIdArea, xIdCargo, xIdTipoEmpleado);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insertar_departamentos` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_departamentos`(
+IN xId int,
+IN xDescripcion VARCHAR(100)
+)
+BEGIN
+INSERT INTO departamentos(IdDepartamento, Descripcion)  VALUES (xId, xDescripcion);
+
+UPDATE departamentos
+SET codigoDepartamento = CONCAT('DEP000', LPAD(CAST(xId AS CHAR), 3, '0'))
+WHERE IdDepartamento = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3152,7 +3508,11 @@ IN xId int,
 IN xDescripcion VARCHAR(100)
 )
 BEGIN
-INSERT INTO facultades VALUES (xId, xDescripcion);
+INSERT INTO facultades(IdFacultad, Descripcion)  VALUES (xId, xDescripcion);
+
+UPDATE facultades
+SET codigoFacultad = CONCAT('FAC000', LPAD(CAST(xId AS CHAR), 3, '0'))
+WHERE IdFacultad = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3170,15 +3530,20 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_instituciones`(
-IN xId int,
-IN xRuc CHAR(20),
-IN xRazonSocial VARCHAR(100),
-IN xDireccion VARCHAR(100),
-IN xSede VARCHAR(100)
+    IN xIdInstitucion INT, 
+    IN xRuc VARCHAR(20),
+    IN xRazonSocial VARCHAR(100),
+    IN xDireccion VARCHAR(200),
+    IN xSede VARCHAR(100)
 )
 BEGIN
-INSERT INTO institucioneseducativas
-VALUES (xId, xRuc, xRazonSocial, xDireccion, xSede);
+
+    INSERT INTO institucioneseducativas (IdInstitucionEducativa, Ruc, RazonSocial, Direccion, Sede) 
+    VALUES (xIdInstitucion, xRuc, xRazonSocial, xDireccion, xSede);
+    
+    UPDATE institucioneseducativas 
+    SET codigoInstituciones = CONCAT('INS000', LPAD(CAST(xIdInstitucion AS CHAR), 3, '0'))
+    WHERE IdInstitucionEducativa = xIdInstitucion;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3215,11 +3580,28 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_periodos`(
-IN xId int,
-IN xDescripcion VARCHAR(100)
+    IN xId INT,
+    IN xMes INT,
+    IN xDescripcion VARCHAR(100)
 )
 BEGIN
-INSERT INTO periodos VALUES (xId, xDescripcion);
+    DECLARE anio INT DEFAULT 2025;
+
+    -- Insertar en la tabla 'periodos'
+    INSERT INTO periodos (IdPeriodo, Mes, Anio, descripcion, Alias, codigoPeriodo)
+    VALUES (
+        xId,
+        xMes,
+        anio,
+        xDescripcion,
+        CONCAT(LPAD(xMes, 2, '0'), anio),
+        '' -- código se actualiza después
+    );
+
+    -- Actualizar el código del periodo
+    UPDATE periodos
+    SET codigoPeriodo = CONCAT('PER000', LPAD(CAST(xId AS CHAR), 3, '0'))
+    WHERE IdPeriodo = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3236,11 +3618,22 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_proveedores`(xId int, xNombres varchar (100), xDireccion varchar (100), 
-xCorreo varchar(100), xTelefono char(9), xRuc char(11))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_proveedores`(
+    IN xId INT, 
+    IN xDepartamentoId INT,  
+    IN xNombres VARCHAR(100), 
+    IN xDireccion VARCHAR(100), 
+    IN xCorreo VARCHAR(100), 
+    IN xTelefono CHAR(9), 
+    IN xRuc CHAR(11)
+)
 BEGIN
-insert into proveedores (Id, Nombres, Direccion, Correo, Telefono, Ruc)values(xId, xNombres, xDireccion,
- xCorreo, xTelefono, xRuc);
+    INSERT INTO proveedores (IdProveedor, IdDepartamento, Nombres, Direccion, Correo, Telefono, Ruc) 
+    VALUES (xId, xDepartamentoId, xNombres, xDireccion, xCorreo, xTelefono, xRuc);
+
+    UPDATE proveedores
+    SET codigoProveedor = CONCAT('PRO000', LPAD(CAST(xId AS CHAR), 3, '0'))
+    WHERE IdProveedor = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3344,10 +3737,15 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_tipoempleado`(IN `xId` int, 
-IN `xDescripcion` VARCHAR(100))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_tipoempleado`(
+IN p_descripcion VARCHAR(100),
+    OUT p_codigo VARCHAR(20)
+)
 BEGIN
-INSERT INTO tiposempleados VALUES ( xId, xDescripcion);
+    CALL generar_codigo('tiposempleados', 'IdTipoEmpleado', 'TEMP', p_codigo);
+
+    -- Insertar el nuevo cargo en la tabla
+    INSERT INTO tiposempleados (CodigoTipoEmpleado, Descripcion) VALUES (p_codigo, p_descripcion);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3400,6 +3798,7 @@ IN xIdPeriodo int
 BEGIN
 INSERT INTO viaticos (Descripcion, Pasaje, Menu, IdEmpleado, IdPeriodo)
 VALUES (xDescripcion, xPasaje, xMenu, xIdEmpleado, xIdPeriodo);
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3418,7 +3817,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_areas`()
 BEGIN
-SELECT * FROM areas;
+    SELECT CodigoArea, descripcion FROM areas ORDER BY CodigoArea;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3437,22 +3836,18 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_articulos`()
 BEGIN
-	SELECT art.idarticulo, 
-		   art.idcategoria, 
-           cat.descripcion as categoriadescripcion, 
-           art.idmarca, 
-           mar.descripcion as marcadescripcion,
-           caracteristicas, 
-           art.descripcion, 
-           cantidad
-		   
-           
-			FROM articulos  art left join categorias cat 
-			on art.idcategoria = cat.idcategoria
-			left join marcas mar on art.idmarca = mar.idmarca
-    ;
-    
-    
+    SELECT 
+        art.idarticulo AS xCodigo,
+        art.idcategoria AS xIdCategoria,
+        cat.descripcion AS xDescripcionCat,
+        art.idmarca AS xIdMarca,
+        mar.descripcion AS xDescripcionMar,
+        caracteristicas AS xCaracteristicas,
+        art.descripcion AS xDescripcion,
+        cantidad AS xCantidad
+    FROM articulos art 
+    LEFT JOIN categorias cat ON art.idcategoria = cat.idcategoria
+    LEFT JOIN marcas mar ON art.idmarca = mar.idmarca;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3485,6 +3880,33 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `listar_cajachica` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_cajachica`()
+BEGIN
+SELECT
+	IdCajaChica AS Id,
+    IdTransferenciaBancaria AS NroOperacion,
+    Fecha,
+    Descripcion,
+    Entrada,
+    Salida,
+    Saldo
+FROM cajachica;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `listar_cargos` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -3497,7 +3919,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_cargos`()
 BEGIN
-SELECT *FROM cargos;
+    SELECT CodigoCargo, Descripcion FROM cargos ORDER BY CodigoCargo;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3535,7 +3957,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_categorias`()
 BEGIN
-SELECT  IdCategoria as Id, Descripcion FROM categorias;
+    SELECT CodigoCategoria, Descripcion FROM categorias ORDER BY CodigoCategoria;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3798,6 +4220,82 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `listar_datosacademicos_carreras` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_datosacademicos_carreras`()
+BEGIN
+SELECT Descripcion FROM carreras;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `listar_datosacademicos_facultades` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_datosacademicos_facultades`()
+BEGIN
+SELECT Descripcion FROM facultades;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `listar_datosacademicos_instituciones` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_datosacademicos_instituciones`()
+BEGIN
+SELECT RazonSocial FROM institucioneseducativas;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `listar_departamentos` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_departamentos`()
+BEGIN
+	SELECT * FROM departamentos;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `listar_emple` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -3810,13 +4308,26 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_emple`()
 BEGIN
-SELECT E.IdEmpleado as Id, E.Apellidos, 
-E.Nombres, DATE_FORMAT(E.FechaNacimiento, '%d/%m/%Y') AS FechaNacimiento, 
-E.Correo, E.Dni, E.Celular, E.Distrito, E.Direccion, A.Descripcion AS Area, 
-C.Descripcion AS Cargo, T.Descripcion AS "Tip. Empleado"
-FROM empleados E INNER JOIN areas A ON E.IdArea = A.IdArea
-INNER JOIN cargos C ON  E.IdCargo = C.IdCargo
-INNER JOIN tiposempleados T ON E.IdTipoEmpleado = T.IdTipoEmpleado
+SELECT 
+	E.IdEmpleado as Id, 
+    E.Apellidos, 
+	E.Nombres, 
+    DATE_FORMAT(E.FechaNacimiento, '%d/%m/%Y') AS FechaNacimiento, 
+	E.Correo, 
+    E.Dni, 
+    E.Celular, 
+    E.Distrito, 
+    E.Direccion, 
+    A.Descripcion AS Area, 
+	C.Descripcion AS Cargo, 
+    T.Descripcion AS TipoEmpleado
+FROM empleados E 
+INNER JOIN areas A 
+ON E.IdArea = A.IdArea
+INNER JOIN cargos C 
+ON  E.IdCargo = C.IdCargo
+INNER JOIN tiposempleados T 
+ON E.IdTipoEmpleado = T.IdTipoEmpleado
 ORDER BY E.IdEmpleado ASC;
 END ;;
 DELIMITER ;
@@ -3837,6 +4348,46 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_empleados`()
 BEGIN
 SELECT * FROM empleados;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `listar_empleados_areas` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_empleados_areas`()
+BEGIN
+ SELECT *
+ FROM areas;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `listar_empleados_cargos` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_empleados_cargos`()
+BEGIN
+SELECT * 
+FROM cargos;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3874,7 +4425,26 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_instituciones`()
 BEGIN
-SELECT * FROM institucioneseducativas;
+    SELECT * FROM institucioneseducativas;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `listar_marcas` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_marcas`()
+BEGIN
+    SELECT descripcion FROM marcas;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3951,7 +4521,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_periodos`()
 BEGIN
- SELECT  IdPeriodo as Id, Mes, Anio, Descripcion, Alias  FROM periodos;
+ SELECT  * FROM periodos;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3970,7 +4540,36 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_proveedores`()
 BEGIN
-select*from proveedores;
+SELECT
+	p.codigoProveedor,
+    d.Descripcion,
+    p.Nombres,
+    p.Direccion,
+    p.Correo,
+    p.Telefono,
+    p.Ruc
+FROM proveedores p
+INNER JOIN departamentos d
+ON d.IdDepartamento = p.IdDepartamento;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `listar_proveedores_departamentos` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_proveedores_departamentos`()
+BEGIN
+	SELECT * FROM departamentos;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -4056,7 +4655,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_tipoempleado`()
 BEGIN
-SELECT * FROM tiposempleados;
+	SELECT CodigoTipoEmpleado, Descripcion FROM tiposempleados ORDER BY CodigoTipoEmpleado;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -4075,13 +4674,15 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_transferencias`()
 BEGIN
-SELECT t.IdTransferenciaBancaria as Id, 
-		t.IdPeriodo AS 'Periodo', t.NroOperacion, 
-        c1.Nombres AS 'CuentaOrigen', 
-        c2.Nombres AS 'CuentaDestino', DATE_FORMAT(t.Fecha, '%d/%m/%Y') AS 'Fecha'
-  FROM transferenciasbancarias t 
-  INNER JOIN cuentasbancarias c1 ON t.CuentaOrigen = c1.IdCuentaBancaria
-  INNER JOIN cuentasbancarias c2 ON t.CuentaDestino = c2.IdCuentaBancaria;
+SELECT 
+        tb.IdTransferenciaBancaria,
+        tb.IdPeriodo,
+        tb.NroOperacion,
+        tb.CuentaOrigen,
+        tb.CuentaDestino,
+        tb.Fecha
+    FROM 
+        transferenciasbancarias tb;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -4100,9 +4701,61 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_viaticos`()
 BEGIN
-SELECT v.IdViatico as Id , v.Descripcion, v.Pasaje, v.Menu, e.Nombres AS Empleado, v.IdPeriodo AS Periodo
-FROM viaticos v INNER JOIN empleados e ON v.IdEmpleado = e.IdEmpleado
+SELECT 
+	v.IdViatico as Id, 
+    v.Descripcion, 
+    v.Pasaje, 
+    v.Menu, 
+    CONCAT(e.Nombres, " ", e.Apellidos) AS Empleado, 
+    v.IdPeriodo AS Periodo
+FROM viaticos v 
+INNER JOIN empleados e 
+ON v.IdEmpleado = e.IdEmpleado
 ORDER BY IdViatico ASC;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `listar_viaticos_empleado` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_viaticos_empleado`()
+BEGIN
+SELECT 
+	IdEmpleado,
+    CONCAT(Nombres, " ", Apellidos) AS Nombre_Completo
+FROM empleados;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `listar_viaticos_periodo` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_viaticos_periodo`()
+BEGIN
+SELECT 
+	IdPeriodo,
+    Mes
+FROM periodos;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -4127,6 +4780,25 @@ BEGIN
 	update credencial 
     set Correo = xCorreo, Clave = xClave, Alias = xAlias, Descripcion = xDescripcion
     where IdCredecnail = xIdCredencial;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `obtener_areas` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_areas`()
+BEGIN
+select descripcion from areas;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -4184,6 +4856,97 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `obtener_cargos` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_cargos`()
+BEGIN
+select Descripcion from cargos;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `obtener_carrera` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_carrera`(
+    IN p_idCarrera INT
+)
+BEGIN
+    SELECT codigoCarrera, descripcion 
+    FROM carreras 
+    WHERE IdCarrera = p_idCarrera;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `obtener_categorias` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_categorias`()
+BEGIN
+SELECT 
+    Descripcion
+FROM categorias;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `obtener_credencial` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_credencial`(
+IN xid INT
+)
+BEGIN
+SELECT 
+	codigoCredencial, 
+    Correo,
+    Clave,
+    Alias,
+    Descripcion
+    FROM credenciales
+    WHERE IdCredencial = xid;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `obtener_datos_academicos` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -4198,12 +4961,43 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_datos_academicos`(
 xDni CHAR(8)
 )
 BEGIN
-SELECT i.RazonSocial AS Institucion, f.Descripcion AS Facultad, c.Descripcion AS Carrera, e.Ciclo AS Ciclo, e.CodigoEstudiante AS Codigo
-FROM empleados e INNER JOIN institucioneseducativas i
-ON e.IdInstitucionEducativa = i.Id
-INNER JOIN facultades f ON e.IdFacultad = f.Id
-INNER JOIN carreras c ON e.IdCarrera = c.Id
+SELECT 
+	i.RazonSocial AS Institucion, 
+    f.Descripcion AS Facultad, 
+    c.Descripcion AS Carrera, 
+    e.Ciclo AS Ciclo, 
+    e.CodigoEstudiante AS Codigo
+FROM empleados e 
+INNER JOIN institucioneseducativas i
+ON e.IdInstitucionEducativa = i.IdInstitucionEducativa
+INNER JOIN facultades f  
+ON e.IdFacultad = f.IdFacultad
+INNER JOIN carreras c 
+ON e.IdCarrera = c.IdCarrera
 WHERE e.dni = xDni;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `obtener_departamento` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_departamento`(
+IN p_idFacultad INT
+)
+BEGIN
+	SELECT codigoDepartamento, Descripcion
+    FROM departamentos
+    WHERE IdDepartamento = p_idFacultad;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -4235,6 +5029,29 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `obtener_facultad` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_facultad`(
+    IN p_idInstitucion INT
+)
+BEGIN
+    SELECT codigoFacultad, Descripcion
+    FROM facultades
+    WHERE IdFacultad = p_idInstitucion;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `obtener_horario_empleado` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -4253,6 +5070,30 @@ BEGIN
 SELECT de.Hora_entrada, de.Hora_salida, de.Duracion, de.Observaciones
 FROM detalles_asistencia de INNER JOIN empleados e ON de.idempleado = e.Idempleado;
 /*WHERE de.Fecha = STR_TO_DATE(xFecha, '%d/%m/%Y') AND e.DNI = xDni;*/
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `obtener_id_area` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_id_area`(
+IN pDescripcion VARCHAR(100)
+)
+BEGIN
+SELECT IdArea
+    FROM areas
+    WHERE descripcion = pDescripcion
+    LIMIT 1; 
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -4279,6 +5120,54 @@ BEGIN
 	SELECT Id INTO xId
     FROM asistencias
     WHERE Dni = xDni AND Fecha = STR_TO_DATE(xFecha, '%d/%m/%Y') AND Hora = xHora;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `obtener_id_cargo` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_id_cargo`(
+IN pDescripcion VARCHAR(100)
+)
+BEGIN
+ SELECT IdCargo
+    FROM cargos
+    WHERE Descripcion = pDescripcion
+    LIMIT 1; 
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `obtener_id_categoria` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_id_categoria`(
+    IN pDescripcion VARCHAR(100)
+)
+BEGIN
+   SELECT IdCategoria
+    FROM categorias
+    WHERE Descripcion = pDescripcion
+    LIMIT 1; 
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -4312,6 +5201,165 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `obtener_id_marca` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_id_marca`(
+    IN pDescripcion VARCHAR(100)
+)
+BEGIN
+    SELECT IdMarca
+    FROM marcas
+    WHERE descripcion = pDescripcion
+    LIMIT 1;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `obtener_id_Operacion` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_id_Operacion`(
+IN pDescripcion VARCHAR(20)
+)
+BEGIN
+SELECT IdTransferenciaBancaria
+    FROM transferenciasbancarias
+    WHERE NroOperacion = pDescripcion
+    LIMIT 1; 
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `obtener_institucion` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_institucion`(
+    IN p_idInstitucion INT
+)
+BEGIN
+    SELECT codigoInstituciones, Ruc, RazonSocial, Direccion, Sede 
+    FROM institucioneseducativas 
+    WHERE IdInstitucionEducativa = p_idInstitucion;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `obtener_institucion_id` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_institucion_id`(
+IN idInstitucion INT
+)
+BEGIN
+    SELECT codigoInstituciones, Ruc, RazonSocial, Direccion, Sede 
+    FROM institucioneseducativas 
+    WHERE IdInstitucionEducativa = idInstitucion;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `obtener_marcas` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_marcas`()
+BEGIN
+SELECT 
+    descripcion
+FROM marcas;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `obtener_operacion` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_operacion`()
+BEGIN
+SELECT NroOperacion FROM transferenciasbancarias;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `obtener_proveedor` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_proveedor`(
+    IN p_id INT
+)
+BEGIN
+    SELECT p.codigoProveedor, d.Descripcion, p.Nombres, p.Direccion, p.Correo, p.Telefono, p.Ruc
+	FROM proveedores p
+	JOIN departamentos d 
+	USING(IdDepartamento)
+    WHERE p.IdProveedor = p_id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `obtener_proyectosxcontratante` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -4329,6 +5377,25 @@ select pytxctt.IdProyecto, ctt.NombreEmpresa , pyt.Nombre, pyt.Servicio
 	on ctt.IdContratante = pytxctt.IdContratante
     inner join proyectos pyt on pyt.IdProyecto = pytxctt.IdProyecto 
     where pytxctt.IdContratante  = idcontratante;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `obtener_siguiente_id_cajachica` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_siguiente_id_cajachica`()
+BEGIN
+ SELECT IFNULL(MAX(IdCajaChica) + 1, 1) AS SiguienteId FROM cajachica;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -4381,4 +5448,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-24  1:08:35
+-- Dump completed on 2025-05-02 15:41:14
