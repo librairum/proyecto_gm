@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.ConexionBD;
 
@@ -19,14 +20,15 @@ public class DatosCajaChica {
 
     static Connection conn = ConexionBD.getConnection();
 
-    public static void Limpiar(JTable table) {
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        int rowCount = model.getRowCount();
-
-        if (rowCount > 0) {
-            model.removeRow(rowCount - 1); // Remueve la última fila del modelo de datos
-        }
+    public static void LimpiarCampos(JTextField[] camposTexto, JComboBox[] combos) {
+    for (JTextField campo : camposTexto) {
+        campo.setText("");
     }
+
+    for (JComboBox combo : combos) {
+        combo.setSelectedIndex(0); // o -1 si quieres dejarlo sin selección
+    }
+}
 
     // Mostrar datos
     public static void Mostrar(DefaultTableModel modelo) {
@@ -103,21 +105,22 @@ public class DatosCajaChica {
 //        return codigo_generado;
 //        
 //    }
-    public static void Habilitar(Container contenedor, boolean bloquear) {
-        Component[] components = contenedor.getComponents();
-        for (Component component : components) {
-            if (component instanceof JButton) {
-                String button = ((JButton) component).getName();
+   public static void Habilitar(Container contenedor, boolean bloquear) {
+    Component[] components = contenedor.getComponents();
+    for (Component component : components) {
+        if (component instanceof JButton) {
+            String button = ((JButton) component).getName();
+            if (button != null) {
                 if (button.equals("deshacer")) {
                     ((JButton) component).setEnabled(bloquear);
                 } else if (button.equals("agregar") || button.equals("editar") || button.equals("eliminar")) {
-                    ((JButton) component).setEnabled(!bloquear); // aplicar logica inversa
+                    ((JButton) component).setEnabled(!bloquear); // lógica inversa
                 }
-            } else {
-                // No hace nada para otros tipos de componentes
             }
         }
     }
+}
+
 
     public static void Insertar(CajaChica caj, JTable tabla, String periodo) {
         try {

@@ -8,7 +8,7 @@ public class ConexionBD {
 
     // Datos de la conexión
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "AD123456min";
+    private static final String PASSWORD = "sasasa";
     private static final String CONN_STRING = "jdbc:mysql://localhost:3306/gmingenieros";
 
     private static Connection conn = null;

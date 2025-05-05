@@ -1461,6 +1461,17 @@ BEGIN
     WHERE IdCajaChica = p_IdCajaChica;
 END ;;
 DELIMITER ;
+
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_cajachica`(
+IN p_IdCajaChica VARCHAR(10)
+)
+BEGIN
+    DELETE FROM cajachica
+    WHERE IdCajaChica = p_IdCajaChica;
+END;;
+DELIMITER ;
+
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
