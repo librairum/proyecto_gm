@@ -84,7 +84,7 @@ public class DatosComunicacion {
 
             //validacion de campos con valores en blanco
             if (Validar(entidad) == true) {
-                
+
                 proc.setString("parIdPeriodo", entidad.getIdPeriodo());
                 proc.setString("parNomProy", entidad.getNombreProyecto());
                 proc.setInt("parTipo", entidad.getTipo());
@@ -108,32 +108,35 @@ public class DatosComunicacion {
         return estadoProceso;
     }
 
-    //Metod par aactualizr registro
     static boolean Actualizar(Comunicacion entidad) {
         boolean estadoProceso = false;
         try {
-            CallableStatement proc = conn.prepareCall(" {call actualizar_comunicacion(?,?,?,?,?,?,?,?,?,?,?,?)}");
-            if (Validar(entidad) == true) {
+            CallableStatement proc = conn.prepareCall("{call actualizar_comunicacion(?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 
-                proc.setString("parIdPeriodo", entidad.getIdPeriodo());
-                proc.setString("parNomProy", entidad.getNombreProyecto());
-                proc.setInt("parTipo", entidad.getTipo());
-                proc.setString("parCodDoc", entidad.getCodDoc());
-                proc.setString("parOrigen", entidad.getOrigen());
-                proc.setString("parDestino", entidad.getDestino());
-                proc.setInt("parFlujo", entidad.getFlujo());
-                proc.setString("parAsunto", entidad.getAsunto());
-                proc.setDate("parFecha", entidad.getFecha());
-                proc.setString("parCodDocRespuesta", entidad.getCodDocRespuesta());
-                proc.setInt("parEstado", entidad.getEstado());
-                proc.setString("parEnlace", entidad.getEnlace());
-                estadoProceso = proc.execute();
-            } else {
-                estadoProceso = false;
+            if (Validar(entidad)) {
+                proc.setInt(1, Integer.parseInt(entidad.getId()));
+                proc.setString(2, entidad.getIdPeriodo());
+                proc.setString(3, entidad.getNombreProyecto());
+                proc.setInt(4, entidad.getTipo());
+                proc.setString(5, entidad.getCodDoc());
+                proc.setString(6, entidad.getOrigen());
+                proc.setString(7, entidad.getDestino());
+                proc.setInt(8, entidad.getFlujo());
+                proc.setString(9, entidad.getAsunto());
+                proc.setDate(10, entidad.getFecha());
+                proc.setString(11, entidad.getCodDocRespuesta());
+                proc.setInt(12, entidad.getEstado());
+                proc.setString(13, entidad.getEnlace());
+
+                int filasAfectadas = proc.executeUpdate();
+                estadoProceso = (filasAfectadas > 0);
             }
+
         } catch (SQLException ex) {
+            ex.printStackTrace();
             estadoProceso = false;
         }
+
         return estadoProceso;
     }
 
@@ -167,7 +170,7 @@ public class DatosComunicacion {
                 "TipoDesc", "Cod.Doc", "Origen", "Destino",
                 "Flujo", "FlujoDesc", "Asunto", "Fecha",
                 "Cod.Doc.Resp", "Enlace", "Estado", "EstadoDesc",
-                 "Dias"};
+                "Dias"};
             //ocultar el id
             //modelo.addColumn(columnas);
             //ocultar idperiodo
