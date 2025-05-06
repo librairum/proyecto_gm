@@ -1947,8 +1947,8 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_modulo`(IN `xId` int, IN `xDescripcion` VARCHAR(100))
 BEGIN
-UPDATE modulo SET Descripcion=xDescripcion
-where Id=xId;
+UPDATE modulos SET Descripcion=xDescripcion
+where IdModulo=xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2146,7 +2146,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_tipodocumento`(IN `xId` 
 BEGIN
 UPDATE tiposdocumentos SET  Descripcion = xDescripcion,
  IdModulo = xIdModulo
-WHERE Id = xId;
+WHERE IdTipoDocumento = xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2642,7 +2642,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_modulo`(IN `xId` int)
 BEGIN
-DELETE FROM modulo WHERE Id= xId;
+DELETE FROM modulos WHERE IdModulo= xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2724,7 +2724,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_tipodocumento`(IN `xId` int)
 BEGIN
-DELETE FROM tiposdocumentos WHERE Id= xId;
+DELETE FROM tiposdocumentos WHERE IdTipoDocumento= xId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3172,6 +3172,15 @@ BEGIN
     INSERT INTO cargos (CodigoCargo, Descripcion) VALUES (p_codigo, p_descripcion);
 END ;;
 DELIMITER ;
+
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_modulo`()
+BEGIN
+SELECT * FROM modulos;
+END
+DELIMITER ;
+
+
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
@@ -3573,7 +3582,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_modulo`(IN `xId` int, IN `xDescripcion` VARCHAR(100))
 BEGIN
-INSERT INTO modulo VALUES ( xId, xDescripcion);
+INSERT INTO modulos VALUES ( xId, xDescripcion);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -4474,7 +4483,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_modulo`()
 BEGIN
-SELECT * FROM modulo;
+SELECT * FROM modulos;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -4645,10 +4654,27 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_tipodocumento`()
 BEGIN
-SELECT T.IdTipoDocumento, T.Descripcion,  
-		M.Descripcion AS Modulo, M.IdModulo
-FROM tiposdocumentos T INNER JOIN modulos M ON T.IdModulo = M.IdModulo;
+SELECT 
+	T.IdTipoDocumento, 
+	T.Descripcion,  
+	M.Descripcion AS Modulo, 
+    M.IdModulo
+FROM tiposdocumentos T 
+INNER JOIN modulos M 
+ON T.IdModulo = M.IdModulo;
 END ;;
+DELIMITER ;
+
+DELIMITER ;;
+CREATE PROCEDURE `obtener_id_modulo` (
+IN pDescripcion VARCHAR(100)
+)
+BEGIN
+SELECT *
+FROM modulos
+WHERE descripcion = pDescripcion
+LIMIT 1;
+END
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;

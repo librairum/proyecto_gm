@@ -29,33 +29,34 @@ public class DatosModulo {
             }
         }  
     }
-    public static String GenerarCodigo(String tabla, String prefijo, int longitud) {
-        CallableStatement cstmt = null;
-        String codigo_generado = "";
-        try {
-            cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }");
-            cstmt.setString(1, tabla);
-            cstmt.setString(2, prefijo);
-            cstmt.setInt(3, longitud);
-            cstmt.registerOutParameter(4, Types.VARCHAR);
+    public static String GenerarCodigo(String tabla, String campo_id, String prefijo) {
+    CallableStatement cstmt = null;
+    String codigo_generado = "";
+    try {
+        cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }");
+        cstmt.setString(1, tabla);
+        cstmt.setString(2, campo_id);
+        cstmt.setString(3, prefijo);
+        cstmt.registerOutParameter(4, Types.VARCHAR);
 
-            cstmt.execute();
+        cstmt.execute();
 
-            codigo_generado = cstmt.getString(4);
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            if (cstmt != null) {
-                try {
-                    cstmt.close();
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
+        codigo_generado = cstmt.getString(4);
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    } finally {
+        if (cstmt != null) {
+            try {
+                cstmt.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-        return codigo_generado;
-        
     }
+    return codigo_generado;
+}
+
+
     // Habilitar o bloquear campos y botones
     public static void Habilitar(Container contenedor,  boolean bloquear) {
         Component[] components = contenedor.getComponents();
@@ -82,7 +83,8 @@ public class DatosModulo {
             ResultSet rs= ate.executeQuery();
             while (rs.next()) {                
                 Object[] row = new Object[]{
-                    rs.getString("Id"), rs.getString("Descripcion")
+                    rs.getString("IdModulo"), 
+                    rs.getString("Descripcion")
                 };
                 modelo.addRow(row);
             }

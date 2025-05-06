@@ -1,26 +1,29 @@
 package proyecto_gm.Modulo;
+
 import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class frmModulo extends javax.swing.JInternalFrame {
-    boolean esNuevo=false;
-  
+
+    boolean esNuevo = false;
+
     public frmModulo() {
         initComponents();
-   
+
         DefaultTableModel modelo = (DefaultTableModel) tblModulo.getModel();
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
         DatosModulo.Habilitar(escritorio, false);
-        
+
         DatosModulo.Mostrar(modelo);
         // Quitar la edicion de las celdas
         tblModulo.setCellSelectionEnabled(false);
         // Poder seleccionar fila(s) de la tabla
         tblModulo.setRowSelectionAllowed(true);
-    }  
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -203,43 +206,51 @@ public class frmModulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        Modulo are= new Modulo();
-        are.setId(txtId.getText());
-        are.setDescripcion(txtDescripcion.getText());
-        //verificar si debo ingresar o actualizar
-         if (esNuevo) {
-            // Insertar nuevo registro
+        Modulo are = new Modulo();
+
+        // Verificar si es nuevo registro
+        if (esNuevo) {
+            // Validación de campos
             if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                    return;
-                } 
-            else if(!txtId.getText().matches("^[A-Z]{2}[0-9]{2}$")){
-                JOptionPane.showMessageDialog(null, "El formato del Id es el siguente: MO00. Intentelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Completar bien los campos");
+                return;
+            } else if (!txtId.getText().matches("^[A-Z]{2}[0-9]{4}$")) {
+                JOptionPane.showMessageDialog(null, "El formato del Id es el siguiente: MO0001. Inténtelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 txtId.requestFocus();
-            }else {
-                    DatosModulo.Insertar(are, tblModulo);
-                    JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-                    DatosModulo.Limpiar(escritorio);
-                    DatosModulo.Habilitar(escritorio, false);
-                    tblModulo.clearSelection();
-                    // Habilitamos la seleccion de filas de la tabla
-                    tblModulo.setRowSelectionAllowed(true);
-                }
-                
+                return;
+            }
+
+            // Convertir el código 'MO0005' a entero 5
+            String codigo = txtId.getText(); // Ej: MO0005
+            int idNumerico = Integer.parseInt(codigo.replaceAll("\\D+", "")); // Extrae solo números
+
+            are.setId(String.valueOf(idNumerico)); // Si setId es String
+            are.setDescripcion(txtDescripcion.getText());
+
+            DatosModulo.Insertar(are, tblModulo);
+            JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+            DatosModulo.Limpiar(escritorio);
+            DatosModulo.Habilitar(escritorio, false);
+            tblModulo.clearSelection();
+            tblModulo.setRowSelectionAllowed(true);
+
         } else {
             // Actualizar registro existente
             if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                    return;
-                } else {
-                    DatosModulo.Actualizar(are, tblModulo);
-                    JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-                    DatosModulo.Limpiar(escritorio);
-                    DatosModulo.Habilitar(escritorio, false);
-                    tblModulo.clearSelection();
-                    // Habilitamos la seleccion de filas de la tabla
-                    tblModulo.setRowSelectionAllowed(true);
-            }     
+                JOptionPane.showMessageDialog(null, "Completar bien los campos");
+                return;
+            }
+
+            // En actualización, se usa el ID tal como está (ya viene convertido)
+            are.setId(txtId.getText());
+            are.setDescripcion(txtDescripcion.getText());
+
+            DatosModulo.Actualizar(are, tblModulo);
+            JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
+            DatosModulo.Limpiar(escritorio);
+            DatosModulo.Habilitar(escritorio, false);
+            tblModulo.clearSelection();
+            tblModulo.setRowSelectionAllowed(true);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -250,20 +261,20 @@ public class frmModulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        JTextField [] cod= new JTextField [2];
+        JTextField[] cod = new JTextField[2];
         cod[0] = txtId;
         cod[1] = txtDescripcion;
         DatosModulo.Editar(escritorio, tblModulo, cod);
-        esNuevo=false;
+        esNuevo = false;
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         DatosModulo.Habilitar(escritorio, true);
-        String codigo = DatosModulo.GenerarCodigo("modulo", "MO" , 4);
+        String codigo = DatosModulo.GenerarCodigo("modulos", "idModulo", "MO");
         txtId.setText(codigo);
         txtId.setEnabled(false);
         txtDescripcion.requestFocus();
-        esNuevo=true;
+        esNuevo = true;
         tblModulo.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnAgregarActionPerformed
 
@@ -278,8 +289,7 @@ public class frmModulo extends javax.swing.JInternalFrame {
     private void txtDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDescripcionActionPerformed
-    
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
