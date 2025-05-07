@@ -34,6 +34,25 @@ public class DatosCarrera {
         }
     }
 
+    public static String GenerarCodigoCarrera() {
+        String codigoGenerado = "";
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }")) {
+            cstmt.setString(1, "carreras");         
+            cstmt.setString(2, "IdCarrera");         
+            cstmt.setString(3, "");                   
+            cstmt.registerOutParameter(4, Types.VARCHAR);
+            cstmt.execute();
+
+            String idGenerado = cstmt.getString(4);     
+            int id = Integer.parseInt(idGenerado);
+            codigoGenerado = String.format("CAR%06d", id);
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return codigoGenerado;
+    }
+
     public static void insertarDatos(Carreras carrera, JTable tabla) {
         try {
             if (carrera.getId().isEmpty()) {
@@ -41,34 +60,32 @@ public class DatosCarrera {
                 return;
             }
 
-            // Convertir el ID a entero antes de enviarlo
-            int idCarrera = Integer.parseInt(carrera.getId());
+            // Extraer solo el número del ID (por ejemplo, de "CAR00001" obtener "1")
+            String idNumericoStr = carrera.getId().replaceAll("[^0-9]", ""); // Elimina todo menos los dígitos
+            int idCarrera = Integer.parseInt(idNumericoStr);
 
             // Preparar la llamada al procedimiento almacenado para insertar la carrera
             CallableStatement cstmt = conn.prepareCall("{ CALL insertar_carreras(?, ?) }");
             cstmt.setInt(1, idCarrera);
             cstmt.setString(2, carrera.getDescripcion());
             cstmt.execute();
-            cstmt.close(); // Cerramos la conexión después de insertar
+            cstmt.close();
 
-            // Llamar al procedimiento almacenado para recuperar los datos recién insertados
+            // Recuperar datos insertados
             CallableStatement cstmt2 = conn.prepareCall("{ CALL obtener_carrera(?) }");
             cstmt2.setInt(1, idCarrera);
-
-            // Ejecutar la consulta
             ResultSet rs = cstmt2.executeQuery();
 
             if (rs.next()) {
                 DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
                 Object[] rowData = {
-                    rs.getString("codigoCarrera"), // Se muestra el código generado
+                    rs.getString("codigoCarrera"),
                     rs.getString("descripcion")
                 };
                 modelo.addRow(rowData);
                 tabla.setModel(modelo);
             }
 
-            // Cerrar recursos
             rs.close();
             cstmt2.close();
 

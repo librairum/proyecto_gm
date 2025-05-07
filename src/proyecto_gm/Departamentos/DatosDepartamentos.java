@@ -1,4 +1,4 @@
-/*
+ /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -80,14 +80,18 @@ public class DatosDepartamentos {
                 JOptionPane.showMessageDialog(null, "Ingrese un Id", "Sistema", JOptionPane.WARNING_MESSAGE);
                 return;
             }
+                 
+            String idTexto = departamento.getId();
+            int idDepartamento = Integer.parseInt(idTexto.substring(3));
+            
             CallableStatement cstmt = conn.prepareCall("{ CALL insertar_departamentos(?, ?) }");
-            cstmt.setString(1, departamento.getId());
+            cstmt.setInt(1, idDepartamento);
             cstmt.setString(2, departamento.getDescripcion());
             cstmt.execute(); // Ejecuta el procedimiento almacenado para insertar los datos
             cstmt.close(); // Cerrar después de la inserción
 
             CallableStatement cstmt2 = conn.prepareCall("{ CALL obtener_departamento(?) }");
-            cstmt2.setString(1, departamento.getId()); // Usamos el ID de la facultad
+            cstmt2.setInt(1, idDepartamento); // Usamos el ID de la facultad
 
             ResultSet rs = cstmt2.executeQuery(); // Ahora usamos `cstmt2.executeQuery()`
 
@@ -166,6 +170,27 @@ public class DatosDepartamentos {
         }
     }
 
+    public static String GenerarCodigo() {
+        String codigoGenerado = "";
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }")) {
+            cstmt.setString(1, "departamentos");   // Tabla
+            cstmt.setString(2, "IdDepartamento");    // Campo numérico
+            cstmt.setString(3, "");
+            cstmt.registerOutParameter(4, Types.VARCHAR);    // ID generado como texto
+            cstmt.execute();
+
+            String idGenerado = cstmt.getString(4);
+
+            int id = Integer.parseInt(idGenerado);
+            codigoGenerado = String.format("DEP%06d", id);
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return codigoGenerado;
+    }
+    
+    
     public static void eliminarDatos(JTable tabla) {
         int fila = tabla.getSelectedRow();
 

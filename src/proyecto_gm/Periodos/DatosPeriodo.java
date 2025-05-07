@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -58,6 +59,27 @@ public class DatosPeriodo {
     }
     // Mostrar datos
 
+    public static String GenerarCodigo() {
+        String codigoGenerado = "";
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }")) {
+            cstmt.setString(1, "periodos");   // Tabla
+            cstmt.setString(2, "IdPeriodo");    // Campo numérico
+            cstmt.setString(3, "");
+            cstmt.registerOutParameter(4, Types.VARCHAR);    // ID generado como texto
+            cstmt.execute();
+
+            String idGenerado = cstmt.getString(4);
+
+            int id = Integer.parseInt(idGenerado);
+            codigoGenerado = String.format("PER%06d", id);
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return codigoGenerado;
+    }
+    
+    
     public static void Listar(DefaultTableModel modelo) {
         try {
             PreparedStatement pstmt = conn.prepareStatement("CALL listar_periodos()");
@@ -89,8 +111,12 @@ public class DatosPeriodo {
             }
 
             // Llamar al procedimiento almacenado
+            
+            String idTexto = periodo.getId();
+            int idPeriodo = Integer.parseInt(idTexto.substring(3)); 
+            
             CallableStatement cstmt = conn.prepareCall("{ CALL insertar_periodos(?, ?, ?) }");
-            cstmt.setInt(1, Integer.parseInt(periodo.getId())); // IdPeriodo
+            cstmt.setInt(1, idPeriodo); // IdPeriodo
             cstmt.setInt(2, mesNumero); // Mes como número
             cstmt.setString(3, periodo.getDescripcion()); // Descripción: mes en letras
             cstmt.execute();

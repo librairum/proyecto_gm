@@ -75,15 +75,19 @@ public class DatosFacultades {
                 JOptionPane.showMessageDialog(null, "Ingrese un Id", "Sistema", JOptionPane.WARNING_MESSAGE);
                 return;
             }
+            
+            
+            String idTexto = facultad.getId();
+            int idFacultad = Integer.parseInt(idTexto.substring(3));
 
             CallableStatement cstmt = conn.prepareCall("{ CALL insertar_facultades(?, ?) }");
-            cstmt.setString(1, facultad.getId());
+            cstmt.setInt(1, idFacultad);
             cstmt.setString(2, facultad.getDescripcion());
             cstmt.execute();
             cstmt.close(); 
 
             CallableStatement cstmt2 = conn.prepareCall("{ CALL obtener_facultad(?) }");
-            cstmt2.setString(1, facultad.getId()); // Usamos el ID de la facultad
+            cstmt2.setInt(1, idFacultad); // Usamos el ID de la facultad
 
             ResultSet rs = cstmt2.executeQuery(); 
 
@@ -107,6 +111,26 @@ public class DatosFacultades {
         }
     }
 
+    
+    public static String GenerarCodigoFacultades() {
+        String codigoGenerado = "";
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }")) {
+            cstmt.setString(1, "facultades");         
+            cstmt.setString(2, "IdFacultad");         
+            cstmt.setString(3, "");                   
+            cstmt.registerOutParameter(4, Types.VARCHAR);
+            cstmt.execute();
+
+            String idGenerado = cstmt.getString(4);     
+            int id = Integer.parseInt(idGenerado);
+            codigoGenerado = String.format("FAC%06d", id);
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return codigoGenerado;
+    }
+    
     // Mostrar datos
     public static void mostrarDatos(DefaultTableModel modelo) {
         try {

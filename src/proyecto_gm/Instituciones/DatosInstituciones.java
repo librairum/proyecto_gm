@@ -42,37 +42,33 @@ public class DatosInstituciones {
 
     public static void insertarDatos(Instituciones institucion, JTable tabla) {
         try {
-            // Verificar si los campos necesarios están vacíos
+            // Verificar si el campo ID está vacío
             if (institucion.getId().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Ingrese un Id", "Sistema", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            // Convertir el ID a entero antes de enviarlo
-            int idInstitucion = Integer.parseInt(institucion.getId());
-
-            // Preparar la llamada al procedimiento almacenado para insertar datos
+            
+            String idTexto = institucion.getId();
+            int idInstitucion = Integer.parseInt(idTexto.substring(3)); 
+                 
+            // Llamar al procedimiento almacenado para insertar
             CallableStatement cstmt = conn.prepareCall("{ CALL insertar_instituciones(?, ?, ?, ?, ?) }");
             cstmt.setInt(1, idInstitucion);
             cstmt.setString(2, institucion.getRuc());
             cstmt.setString(3, institucion.getRazonSocial());
             cstmt.setString(4, institucion.getDireccion());
             cstmt.setString(5, institucion.getSede());
-            cstmt.execute(); // Ejecuta el procedimiento almacenado para insertar los datos
-            cstmt.close(); // Cerrar después de la inserción
+            cstmt.execute();
+            cstmt.close();
 
-            // Preparar la llamada al procedimiento almacenado para obtener la institución
+            // Llamar al procedimiento almacenado para obtener la institución
             CallableStatement cstmt2 = conn.prepareCall("{ CALL obtener_institucion(?) }");
-            cstmt2.setInt(1, idInstitucion); // CORRECCIÓN: Ahora usamos `cstmt2`
-
-            // Ejecutar la consulta
-            ResultSet rs = cstmt2.executeQuery(); // CORRECCIÓN: Ahora usamos `cstmt2.executeQuery()`
+            cstmt2.setInt(1, idInstitucion);
+            ResultSet rs = cstmt2.executeQuery();
 
             if (rs.next()) {
-                // Obtener el modelo de la tabla
                 DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-
-                // Crear una fila con los datos de la institución recién insertada
                 Object[] rowData = {
                     rs.getString("codigoInstituciones"),
                     rs.getString("Ruc"),
@@ -80,20 +76,17 @@ public class DatosInstituciones {
                     rs.getString("Direccion"),
                     rs.getString("Sede")
                 };
-
-                // Agregar la nueva fila al modelo de la tabla
                 modelo.addRow(rowData);
-                tabla.setModel(modelo);  // Actualizar el modelo del JTable
+                tabla.setModel(modelo);
             }
 
-            // Cerrar recursos
             rs.close();
             cstmt2.close();
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "El ID debe ser un número", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El ID debe tener el formato correcto (por ejemplo: INS00001)", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -170,6 +163,26 @@ public class DatosInstituciones {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    public static String GenerarCodigo() {
+        String codigoGenerado = "";
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }")) {
+            cstmt.setString(1, "institucioneseducativas");   // Tabla
+            cstmt.setString(2, "IdInstitucionEducativa");    // Campo numérico
+            cstmt.setString(3, "");
+            cstmt.registerOutParameter(4, Types.VARCHAR);    // ID generado como texto
+            cstmt.execute();
+
+            String idGenerado = cstmt.getString(4);
+
+            int id = Integer.parseInt(idGenerado);
+            codigoGenerado = String.format("INS%06d", id);
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return codigoGenerado;
     }
 
     public static boolean validarNumeros(String datos) {

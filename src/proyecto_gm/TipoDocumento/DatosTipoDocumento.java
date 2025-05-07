@@ -112,8 +112,8 @@ public class DatosTipoDocumento {
             modelo.setRowCount(0);
             Mostrar(modelo);
 
-            // Mensaje dentro del método (no recomendado, pero funcional)
-            JOptionPane.showMessageDialog(null, "Registro exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            
+            //JOptionPane.showMessageDialog(null, "Registro exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             return true;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

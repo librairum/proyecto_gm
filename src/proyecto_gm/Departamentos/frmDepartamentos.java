@@ -234,6 +234,15 @@ public class frmDepartamentos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        String codigo = DatosDepartamentos.GenerarCodigo(); 
+
+        if (codigo != null && !codigo.isEmpty()) {
+            txtId.setText(codigo);
+            txtId.setEnabled(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
         DatosDepartamentos.habilitarCampos(jPanel1);
         btnEditar.setEnabled(false);
         btnEliminar.setEnabled(false);
@@ -300,7 +309,7 @@ public class frmDepartamentos extends javax.swing.JInternalFrame {
                 return;
             } else {
                 DatosDepartamentos.actualizarDatos(f, tblDepartamentos);
-                JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+                //JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
             }
             DatosDepartamentos.limpiarCampos(jPanel1);
             DatosDepartamentos.bloquearCampos(jPanel1);

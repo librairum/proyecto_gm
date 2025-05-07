@@ -10,6 +10,7 @@ import proyecto_gm.Facultades.DatosFacultades;
 import static proyecto_gm.Instituciones.DatosInstituciones.validarNumeros;
 
 public class frmInstituciones extends javax.swing.JInternalFrame {
+
     Exportar obj;
 
     DefaultTableModel modelo;
@@ -253,6 +254,16 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+
+        String codigo = DatosInstituciones.GenerarCodigo(); // Cambia "DatosInstituciones" según tu clase
+
+        if (codigo != null && !codigo.isEmpty()) {
+            txtId.setText(codigo);
+            txtId.setEnabled(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
         btnGuardar.setEnabled(true);
         btnDeshacer.setEnabled(true);
         btnEditar.setEnabled(false);
@@ -376,11 +387,11 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        try{
+        try {
             obj = new Exportar(); //mandamos a llamar a la clase
             obj.exportarExcel(tblInstituciones); //llamamos el metodo desde la clase DatosEmpleados
-        } catch (IOException ex){
-            
+        } catch (IOException ex) {
+
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

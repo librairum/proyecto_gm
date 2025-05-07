@@ -209,12 +209,22 @@ public class frmFacultades extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        
+        String codigo = DatosFacultades.GenerarCodigoFacultades(); 
+
+        if (codigo != null && !codigo.isEmpty()) {
+            txtId.setText(codigo);
+            txtId.setEnabled(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
         DatosFacultades.habilitarCampos(jPanel1);
         btnEditar.setEnabled(false);
         btnEliminar.setEnabled(false);
         btnGuardar.setEnabled(true);
         btnDeshacer.setEnabled(true);
-        btnNuevo.setEnabled(false);
+        btnNuevo.setEnabled(false); 
         txtId.requestFocus();
         esNuevo = true;
     }//GEN-LAST:event_btnNuevoActionPerformed

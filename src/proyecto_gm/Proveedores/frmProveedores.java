@@ -391,6 +391,18 @@ public class frmProveedores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        
+        String codigo = DatosProveedores.GenerarCodigo(); 
+
+        if (codigo != null && !codigo.isEmpty()) {
+            txtId.setText(codigo);
+            txtId.setEnabled(false);
+            txtId.setEditable(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        
         DatosProveedores.Habilitar(escritorio, true);
         esNuevo = true;
     }//GEN-LAST:event_btnAgregarActionPerformed

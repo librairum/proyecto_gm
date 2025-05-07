@@ -220,13 +220,23 @@ public class frmCarreras extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        desbloquear();
-        btnEditar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnGuardar.setEnabled(true);
-        btnDeshacer.setEnabled(true);
-        btnAgregar.setEnabled(false);
-        esNuevo = true;
+       desbloquear();
+    btnEditar.setEnabled(false);
+    btnEliminar.setEnabled(false);
+    btnGuardar.setEnabled(true);
+    btnDeshacer.setEnabled(true);
+    btnAgregar.setEnabled(false);
+    esNuevo = true;
+
+    String codigo = DatosCarrera.GenerarCodigoCarrera();
+
+    if (codigo != null && !codigo.isEmpty()) {
+        txtId.setText(codigo);
+        txtId.setEnabled(false);
+        txtId.requestFocus();
+    } else {
+        JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
@@ -276,7 +286,7 @@ public class frmCarreras extends javax.swing.JInternalFrame {
                 return;
             } else {
                 DatosCarrera.actualizarDatos(f, tblCarreras);
-                JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+                //JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
             }
     }//GEN-LAST:event_btnGuardarActionPerformed
         DatosFacultades.limpiarCampos(escritorio);

@@ -2125,8 +2125,8 @@ BEGIN
         ImporteTotal = xImporteTotal  ,
         FechaEmision = STR_TO_DATE(xFechaEmision, '%d/%m/%Y')  
     WHERE
-        Id = xId;
-END ;;
+        IdReciboHonorario = xId;
+END;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2705,7 +2705,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_recibo_honorario`(
 IN xId int
 )
 BEGIN
-	DELETE FROM reciboshonorarios WHERE Id = xId  ;
+	DELETE FROM reciboshonorarios WHERE IdReciboHonorario = xId  ;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3721,7 +3721,7 @@ BEGIN
 		xImporteTotal,
 		STR_TO_DATE(xFechaEmision, '%d/%m/%Y')
 	);
-END ;;
+END;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4630,12 +4630,21 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_recibos_honorarios`()
 BEGIN
-    SELECT IdReciboHonorario as Id, NroRecibo, Ruc, Nombres, Apellidos, Distrito, Direccion, 
-   FormaPago, Concepto, ImporteNeto, RetencionIr, 
+SELECT 
+	IdReciboHonorario as Id, 
+	NroRecibo, 
+    Ruc, 
+    Nombres, 
+    Apellidos,
+    Distrito, 
+    Direccion, 
+   FormaPago, 
+   Concepto, 
+   ImporteNeto, 
+   RetencionIr, 
    ImporteTotal, 
    DATE_FORMAT(FechaEmision, '%d/%m/%Y') AS FechaEmision
-    FROM reciboshonorarios;
-    
+FROM reciboshonorarios;   
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
