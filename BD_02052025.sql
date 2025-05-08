@@ -4544,6 +4544,26 @@ BEGIN
  SELECT  * FROM periodos;
 END ;;
 DELIMITER ;
+
+
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_id_periodo`(
+IN pMes int
+)
+BEGIN
+SELECT IdPeriodo
+FROM periodos
+WHERE Mes = pMes
+LIMIT 1; 
+END;;
+DELIMITER ;
+
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_cuentas_transferencias`()
+BEGIN
+SELECT Nombres FROM cuentasbancarias;
+END;;
+DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
@@ -4720,15 +4740,19 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listar_transferencias`()
 BEGIN
-SELECT 
+    SELECT 
         tb.IdTransferenciaBancaria,
         tb.IdPeriodo,
         tb.NroOperacion,
-        tb.CuentaOrigen,
-        tb.CuentaDestino,
+        c1.Nombres AS CuentaOrigenNombre,
+        c2.Nombres AS CuentaDestinoNombre,
         tb.Fecha
     FROM 
-        transferenciasbancarias tb;
+        transferenciasbancarias tb
+    LEFT JOIN cuentasbancarias c1 
+        ON CAST(SUBSTRING(tb.CuentaOrigen, 3) AS UNSIGNED) = c1.IdCuentaBancaria
+    LEFT JOIN cuentasbancarias c2 
+        ON CAST(SUBSTRING(tb.CuentaDestino, 3) AS UNSIGNED) = c2.IdCuentaBancaria;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;

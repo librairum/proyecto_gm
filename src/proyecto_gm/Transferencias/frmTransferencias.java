@@ -53,6 +53,7 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
         DatosTransferencias.Listar(modelo);
         DatosTransferencias.Habilitar(panel, false);
         DatosTransferencias.CargarCuentas(cboOrigen, cboDestino);
+        DatosTransferencias.CargarCombo(cboPeriodo);
 
         // Dejamos los combo boxes sin seleccion
         cboOrigen.setSelectedIndex(-1);
@@ -88,11 +89,11 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         txtNroOperacion = new javax.swing.JTextField();
-        txtPeriodo = new javax.swing.JTextField();
         txtId = new javax.swing.JTextField();
         cboDestino = new javax.swing.JComboBox<>();
         cboOrigen = new javax.swing.JComboBox<>();
         txtFecha = new javax.swing.JTextField();
+        cboPeriodo = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -141,7 +142,6 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
             }
         });
 
-        tblTransferencias.setBackground(new java.awt.Color(255, 255, 255));
         tblTransferencias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -161,7 +161,6 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
         tblTransferencias.setFocusable(false);
         tblTransferencias.setRowHeight(25);
         tblTransferencias.setSelectionBackground(new java.awt.Color(153, 153, 153));
-        tblTransferencias.setSelectionForeground(new java.awt.Color(0, 0, 0));
         tblTransferencias.setShowGrid(true);
         tblTransferencias.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblTransferencias);
@@ -204,21 +203,14 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
             }
         });
 
-        txtPeriodo.setNextFocusableComponent(txtNroOperacion);
-        txtPeriodo.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtPeriodoFocusLost(evt);
-            }
-        });
-        txtPeriodo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtPeriodoKeyTyped(evt);
-            }
-        });
-
         cboDestino.setNextFocusableComponent(txtFecha);
 
         cboOrigen.setNextFocusableComponent(cboDestino);
+        cboOrigen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboOrigenActionPerformed(evt);
+            }
+        });
 
         txtFecha.setNextFocusableComponent(btnGuardar);
         txtFecha.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -231,6 +223,8 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
                 txtFechaKeyTyped(evt);
             }
         });
+
+        cboPeriodo.setNextFocusableComponent(cboDestino);
 
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
@@ -260,10 +254,10 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
                             .addComponent(jLabel3)
                             .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtNroOperacion, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtNroOperacion, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                            .addComponent(cboPeriodo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(150, 150, 150)
                         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelLayout.createSequentialGroup()
@@ -301,8 +295,8 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel5)
-                    .addComponent(txtPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cboDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -333,15 +327,16 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
         tblTransferencias.setRowSelectionAllowed(false);
         DatosTransferencias.Habilitar(panel, true);
         txtId.setEnabled(false);
-        txtPeriodo.requestFocus();
+        cboPeriodo.requestFocus();
+
         esNuevo = true; // Indicamos que sera un nuevo registro
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // Agrupar las cajas de texto
-        JTextField[] campos = {txtId, txtPeriodo, txtNroOperacion, txtFecha};
+        JTextField[] campos = {txtId, txtNroOperacion, txtFecha};
 
-        DatosTransferencias.Editar(panel, tblTransferencias, campos, cboOrigen, cboDestino);
+        DatosTransferencias.Editar(panel, tblTransferencias, campos,cboPeriodo, cboOrigen, cboDestino);
         esNuevo = false; // Indicamos que no sera un nuevo registro
     }//GEN-LAST:event_btnEditarActionPerformed
 
@@ -351,8 +346,8 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // Seleccionamos todas las cajas y combos
-        JTextField[] campos = {txtPeriodo, txtNroOperacion, txtFecha};
-        JComboBox[] combos = {cboOrigen, cboDestino};
+        JTextField[] campos = { txtNroOperacion, txtFecha};
+        JComboBox[] combos = {cboPeriodo, cboOrigen, cboDestino};
  
         // Validamos que todos los campos estén llenos
         if (!DatosTransferencias.Validar(campos, combos)) {
@@ -369,7 +364,7 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
 
         // Creamos un objeto ReciboHonorario y le asignamos los valores de los campos
         Transferencia transferencia = new Transferencia();
-        transferencia.setPeriodo(txtPeriodo.getText());
+        transferencia.setPeriodo(cboPeriodo.getSelectedItem().toString());
         transferencia.setNroOperacion(txtNroOperacion.getText());
         transferencia.setCuentaOrigen(origen);
         transferencia.setCuentaDestino(destino);
@@ -396,16 +391,6 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
         tblTransferencias.clearSelection();
         tblTransferencias.setRowSelectionAllowed(true);
     }//GEN-LAST:event_btnCancelarActionPerformed
-
-    private void txtPeriodoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPeriodoKeyTyped
-        char c = evt.getKeyChar();
-        if (!((c >= '0') && (c <= '9') || (c == evt.VK_BACK_SPACE) || (c == evt.VK_DELETE))) {
-            evt.consume();// Si no es un número, se ignora el evento de tecla
-        }
-        if (txtPeriodo.getText().length() >= 6) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_txtPeriodoKeyTyped
 
     private void txtNroOperacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNroOperacionKeyTyped
         char c = evt.getKeyChar();
@@ -443,11 +428,6 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txtFechaKeyTyped
 
-    private void txtPeriodoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPeriodoFocusLost
-        String texto = txtPeriodo.getText().trim();
-        txtPeriodo.setText(texto);
-    }//GEN-LAST:event_txtPeriodoFocusLost
-
     private void txtNroOperacionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNroOperacionFocusLost
         String texto = txtNroOperacion.getText().trim();
         txtNroOperacion.setText(texto);
@@ -458,6 +438,10 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
         txtFecha.setText(texto);
     }//GEN-LAST:event_txtFechaFocusLost
 
+    private void cboOrigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboOrigenActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboOrigenActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btnCancelar;
@@ -467,6 +451,7 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
     public static javax.swing.JButton btnNuevo;
     private javax.swing.JComboBox<String> cboDestino;
     private javax.swing.JComboBox<String> cboOrigen;
+    private javax.swing.JComboBox<String> cboPeriodo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -479,6 +464,5 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtFecha;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtNroOperacion;
-    private javax.swing.JTextField txtPeriodo;
     // End of variables declaration//GEN-END:variables
 }
