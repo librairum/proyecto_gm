@@ -333,10 +333,12 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        DatosTransferencias.Habilitar(panel, true);
+
         // Agrupar las cajas de texto
         JTextField[] campos = {txtId, txtNroOperacion, txtFecha};
 
-        DatosTransferencias.Editar(panel, tblTransferencias, campos,cboPeriodo, cboOrigen, cboDestino);
+        DatosTransferencias.Editar(panel, tblTransferencias, campos, cboPeriodo, cboOrigen, cboDestino);
         esNuevo = false; // Indicamos que no sera un nuevo registro
     }//GEN-LAST:event_btnEditarActionPerformed
 
@@ -346,9 +348,9 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // Seleccionamos todas las cajas y combos
-        JTextField[] campos = { txtNroOperacion, txtFecha};
+        JTextField[] campos = {txtNroOperacion, txtFecha};
         JComboBox[] combos = {cboPeriodo, cboOrigen, cboDestino};
- 
+
         // Validamos que todos los campos estén llenos
         if (!DatosTransferencias.Validar(campos, combos)) {
             return; // se corta la ejecucion del boton
@@ -358,7 +360,7 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
         int origenSeleccionado = cboOrigen.getSelectedIndex();
         int destinoSeleccionado = cboDestino.getSelectedIndex();
         String prefijo = "CB";
-        
+
         String origen = prefijo + String.format("%0" + (7 - prefijo.length()) + "d", origenSeleccionado + 1);
         String destino = prefijo + String.format("%0" + (7 - prefijo.length()) + "d", destinoSeleccionado + 1);
 

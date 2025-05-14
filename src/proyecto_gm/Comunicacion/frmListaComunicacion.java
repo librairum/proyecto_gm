@@ -4,6 +4,11 @@
  */
 package proyecto_gm.Comunicacion;
 
+import com.mysql.cj.jdbc.CallableStatement;
+import com.sun.jdi.connect.spi.Connection;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.HeadlessException;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -13,15 +18,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JDesktopPane;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import proyecto_gm.Comunicacion.*;
 import static proyecto_gm.Comunicacion.DatosComunicacion.Actualizar;
+import proyecto_gm.ConexionBD;
 import proyecto_gm.Facultades.DatosFacultades;
 
 /**
@@ -41,6 +51,31 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
 
     public frmListaComunicacion() {
         initComponents();
+
+        JTableHeader header = tblDatos.getTableHeader();
+        header.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                    Object value,
+                    boolean isSelected,
+                    boolean hasFocus,
+                    int row,
+                    int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                setHorizontalAlignment(JLabel.CENTER);
+                setBackground(Color.DARK_GRAY);
+                setForeground(Color.WHITE);
+                setFont(getFont().deriveFont(Font.BOLD, 13));
+                return this;
+            }
+        });
+        DefaultTableModel modelo = (DefaultTableModel) tblDatos.getModel();
+        DatosComunicacion.Listar(modelo);
+        System.out.println("Total filas: " + modelo.getRowCount());
+        tblDatos.setRowHeight(25);
+        tblDatos.repaint();
+        tblDatos.revalidate();
+
         HabilitarBotones(true);
 
     }
@@ -105,23 +140,34 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
 
         tblDatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Proyecto", "Codigo", "Periodo", "Tipo", "Cod.Doc", "Origen", "Destino", "Flujo", "Asunto", "Fecha", "Cod.Doc.Resp", "Dias", "estado", "Enlace"
+                "Codigo", "Periodo", "Proyecto", "Tipo", "Cod.Doc", "Origen", "Destino", "Flujo", "Asunto", "Fecha", "Cod.Doc.Resp", "estado", "Enlace"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, true
+                false, false, false, false, false, false, false, false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        tblDatos.setFocusable(false);
+        tblDatos.setShowGrid(true);
         jScrollPane1.setViewportView(tblDatos);
 
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
@@ -318,62 +364,91 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
     }
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        //        desbloquear();btnGuardar.setEnabled(true);btnDeshacer.setEnabled(true);
+        // Crear el formulario de comunicación
         frmComunicacion frm = new frmComunicacion(panelPadre, Utilitario.EstadoProceso.NUEVO);
-        frm.show();
 
-        //frmComunicacion.entidad.setId(title);
-        //HabilitarBotones(false);
+        // Generar el código con tu método
+        String nuevoCodigo = DatosComunicacion.GenerarCodigo();
+
+        // Establecer el código en el formulario
+        frm.setCodigoGenerado(nuevoCodigo);
+
+        // Mostrar el formulario
+        frm.setVisible(true);
 
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         int fila = tblDatos.getSelectedRow();
-        if (fila != -1) {
-            txtOrigenFiltro.setText(tblDatos.getValueAt(fila, 6).toString());    // Origen
-            txtDestinoFiltro.setText(tblDatos.getValueAt(fila, 7).toString());   // Destino
-            cboFlujo.setSelectedItem(tblDatos.getValueAt(fila, 9).toString());   // FlujoDesc
-            cboEstado.setSelectedItem(tblDatos.getValueAt(fila, 15).toString()); // EstadoDesc
-            txtFechaFinalFiltro.setText(tblDatos.getValueAt(fila, 11).toString()); // Fecha
-
-            // HABILITAR campos para modificación
-            System.out.println("Origen enabled: " + txtOrigenFiltro.isEnabled() + ", editable: " + txtOrigenFiltro.isEditable());
-            System.out.println("Destino enabled: " + txtDestinoFiltro.isEnabled() + ", editable: " + txtDestinoFiltro.isEditable());
-
-            txtOrigenFiltro.setEditable(true);
-            txtOrigenFiltro.setEnabled(true);
-            txtDestinoFiltro.setEditable(true);
-            txtDestinoFiltro.setEnabled(true);
-            txtFechaFinalFiltro.setEditable(true);
-            cboFlujo.setEnabled(true);
-            cboEstado.setEnabled(true);
-            txtFechaInicialFiltro.setEnabled(true);
-            txtFechaFinalFiltro.setEnabled(true);
-        } else {
+        if (fila == -1) {
             JOptionPane.showMessageDialog(null, "Debe seleccionar una fila");
+            return;
+        }
+
+        try {
+            // Obtener datos de la fila
+            String id = tblDatos.getValueAt(fila, 0).toString();
+            String periodo = tblDatos.getValueAt(fila, 1).toString();
+            String proyecto = tblDatos.getValueAt(fila, 2).toString();
+            String tipo = tblDatos.getValueAt(fila, 3).toString();
+            String codDoc = tblDatos.getValueAt(fila, 4).toString();
+            String origen = tblDatos.getValueAt(fila, 5).toString();
+            String destino = tblDatos.getValueAt(fila, 6).toString();
+            String flujo = tblDatos.getValueAt(fila, 7).toString();
+            String asunto = tblDatos.getValueAt(fila, 8).toString();
+            String fecha = tblDatos.getValueAt(fila, 9).toString();
+            String codDocResp = tblDatos.getValueAt(fila, 10).toString();
+            String estado = tblDatos.getValueAt(fila, 11).toString();
+            String enlace = tblDatos.getValueAt(fila, 12).toString();
+
+            // Debug: Mostrar datos obtenidos
+            System.out.println("Datos obtenidos para edición:");
+            System.out.println("ID: " + id);
+            System.out.println("Proyecto: " + proyecto);
+            System.out.println("Tipo: " + tipo);
+            System.out.println("Flujo: " + flujo);
+            System.out.println("Estado: " + estado);
+
+            // Crear formulario en modo EDITAR
+            frmComunicacion frm = new frmComunicacion(panelPadre, Utilitario.EstadoProceso.EDITAR);
+            frm.setEsEdicion(true);
+            frm.setVisible(true);
+            frm.setDatos(id, periodo, proyecto, tipo, codDoc, origen, destino,
+                    flujo, asunto, fecha, codDocResp, estado, enlace);
+
+          
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al cargar datos: " + e.getMessage());
         }
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
-        //        int fila = tblCargo.getSelectedRow();
-        //        if (fila<0){
-        //
-        //            JOptionPane.showMessageDialog(null,
-        //                "Debe seleccionar una fila de la tabla" );
-        //
-        //        }else {
-        //            int confirmar=JOptionPane.showConfirmDialog(null,
-        //                "Esta seguro que desea Eliminar el registro? ");
-        //            if(JOptionPane.OK_OPTION==confirmar) {
-        //                modelo.removeRow(fila);
-        //                JOptionPane.showMessageDialog(null,"Registro Eliminado" );
-        //            }
-        //        }
-        //        bloquear();
+        int fila = tblDatos.getSelectedRow();
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila de la tabla");
+        } else {
+            int confirmar = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea eliminar el registro?");
+            if (confirmar == JOptionPane.OK_OPTION) {
+                int id = Integer.parseInt(tblDatos.getValueAt(fila, 0).toString());
+                Comunicacion c = new Comunicacion();
+                c.setId(String.valueOf(id));
+
+                boolean resultado = DatosComunicacion.Eliminar(c);
+
+                if (resultado) {
+                    JOptionPane.showMessageDialog(null, "Registro eliminado");
+                    DefaultTableModel modelo = (DefaultTableModel) tblDatos.getModel();
+                    modelo.removeRow(fila);
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se pudo eliminar el registro");
+                }
+            }
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
-    private void OcultarColumnas() {
-        /*
+    //private void OcultarColumnas() {
+    /*    
     System.out.println("Ocultar columnas: " + this.tblDatos.getColumnModel().getColumnCount());
     this.tblDatos.getColumnModel().getColumn(1).setPreferredWidth(0);
     this.tblDatos.getColumnModel().getColumn(1).setMaxWidth(0);
@@ -390,8 +465,8 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
     this.tblDatos.getColumnModel().getColumn(3).setMinWidth(0);
     System.out.println("Ocultar columnas: " + this.tblDatos.getColumnModel().getColumnCount());
     this.tblDatos.removeColumn(this.tblDatos.getColumnModel().getColumn(3));
-         */
- /*
+         
+ 
         for (int i = 0; i < tblDatos.getColumnCount(); i++) {
             if (tblDatos.getColumnName(i).equals("Codigo")) {
                 tblDatos.removeColumn(this.tblDatos.getColumnModel().getColumn(i));
@@ -409,16 +484,16 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
             if (tblDatos.getColumnName(i).equals("Estado")) {
                 tblDatos.removeColumn(this.tblDatos.getColumnModel().getColumn(i));
             }
-        }*/
+        }
+     */
+    //this.tblDatos.removeColumn(this.tblDatos.getColumnModel().getColumn(14));
 
-        //this.tblDatos.removeColumn(this.tblDatos.getColumnModel().getColumn(14));
-    }
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
-        DatosComunicacion.Listar(tblDatos);
-        System.out.println("Evento internal frame opened");
-        OcultarColumnas();
+        //DatosComunicacion.Listar(tblDatos);
+        //System.out.println("Evento internal frame opened");
+        //OcultarColumnas();
 
-        rbVerTodo.setSelected(true);
+        /*rbVerTodo.setSelected(true);
 
         //configuracion por defecto
         txtDestinoFiltro.setText("");
@@ -430,7 +505,7 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
         txtOrigenFiltro.setEnabled(false);
         txtDestinoFiltro.setEnabled(false);
         cboEstado.setEnabled(false);
-        cboFlujo.setEnabled(false);
+        cboFlujo.setEnabled(false);*/
 
     }//GEN-LAST:event_formInternalFrameOpened
 
@@ -438,9 +513,11 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
         //DatosComunicacion.Listar(tblDatos);
         //al cerrar el formulario hijo, realizar el proceso de actualizar en el grilla
         //Utilitario.MostrarMensaje("Recargar la pagina", Utilitario.TipoMensaje.informativo);
-        DatosComunicacion.Listar(tblDatos);
+        //DefaultTableModel modelo = (DefaultTableModel) tblDatos.getModel();
+        //DatosComunicacion.Listar(modelo);
+/*
         System.out.println("Evento internal frame activated");
-        OcultarColumnas();
+        //OcultarColumnas();
         String fechaInicio = "", fechaFinal = "";
         String sFecha = Utilitario.TraerFechaActual();
 
@@ -450,7 +527,7 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
         txtFechaInicialFiltro.setText(sFechaInicial);
 
         txtFechaInicialFiltro.setEnabled(false);
-        txtFechaFinalFiltro.setEnabled(false);
+        txtFechaFinalFiltro.setEnabled(false);*/
 
     }//GEN-LAST:event_formInternalFrameActivated
 
@@ -487,6 +564,8 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
     private void txtFechaFinalFiltroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaFinalFiltroKeyTyped
         // TODO add your handling code here:
     }//GEN-LAST:event_txtFechaFinalFiltroKeyTyped
+
+    /*
     private void ActivarFiltro() {
         String parFiltro = "";
         if (rbVerTodo.isSelected()) {
@@ -519,8 +598,10 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
                 txtFechaFinalFiltro.getText(), cboEstado.getSelectedIndex(),
                 cboFlujo.getSelectedIndex(), txtOrigenFiltro.getText(), txtDestinoFiltro.getText());
     }
+     */
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
 
+        /*
         //ActivarFiltro();
         DefaultTableModel modelo = (DefaultTableModel) tblDatos.getModel();
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
@@ -568,11 +649,11 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
 
         // Aplicar filtro combinado
         RowFilter<Object, Object> filtroCompuesto = RowFilter.andFilter(filtros);
-        sorter.setRowFilter(filtroCompuesto);
+        sorter.setRowFilter(filtroCompuesto);*/
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void rbVerFiltradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbVerFiltradoActionPerformed
-        txtDestinoFiltro.setEnabled(true);
+        /*txtDestinoFiltro.setEnabled(true);
         txtOrigenFiltro.setEnabled(true);
         txtDestinoFiltro.setEnabled(true);
         txtFechaFinalFiltro.setEnabled(true);
@@ -585,17 +666,24 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
         txtFechaFinalFiltro.setText(fechaInicio);
 
         fechaFinal = Utilitario.TraerFechaInicial();
-        txtFechaInicialFiltro.setText(fechaFinal);
+        txtFechaInicialFiltro.setText(fechaFinal);*/
 
     }//GEN-LAST:event_rbVerFiltradoActionPerformed
 
     private void rbVerTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbVerTodoActionPerformed
-        ActivarFiltro();
+        //ActivarFiltro();
     }//GEN-LAST:event_rbVerTodoActionPerformed
+
+    public void RefrescarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tblDatos.getModel();
+        modelo.setRowCount(0);
+        DatosComunicacion.Listar(modelo);
+    }
+
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
-        int fila = tblDatos.getSelectedRow();
+        /*int fila = tblDatos.getSelectedRow();
         if (fila != -1) {
             Comunicacion c = new Comunicacion();
 
@@ -644,7 +732,7 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
             }
         } else {
             JOptionPane.showMessageDialog(null, "Seleccione una fila para actualizar.");
-        }
+        }*/
     }//GEN-LAST:event_btnGuardarActionPerformed
 
 

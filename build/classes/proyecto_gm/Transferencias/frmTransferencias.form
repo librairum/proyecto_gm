@@ -279,6 +279,9 @@
                   <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="frmTransferencias_tblTransferencias"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

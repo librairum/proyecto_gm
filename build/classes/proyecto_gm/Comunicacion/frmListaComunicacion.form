@@ -147,10 +147,10 @@
         <Component class="javax.swing.JTable" name="tblDatos">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="14" rowCount="4">
-                <Column editable="false" title="Proyecto" type="java.lang.Object"/>
+              <Table columnCount="13" rowCount="13">
                 <Column editable="false" title="Codigo" type="java.lang.Object"/>
                 <Column editable="false" title="Periodo" type="java.lang.Object"/>
+                <Column editable="false" title="Proyecto" type="java.lang.Object"/>
                 <Column editable="false" title="Tipo" type="java.lang.Object"/>
                 <Column editable="false" title="Cod.Doc" type="java.lang.Object"/>
                 <Column editable="false" title="Origen" type="java.lang.Object"/>
@@ -159,12 +159,16 @@
                 <Column editable="false" title="Asunto" type="java.lang.Object"/>
                 <Column editable="false" title="Fecha" type="java.lang.Object"/>
                 <Column editable="false" title="Cod.Doc.Resp" type="java.lang.Object"/>
-                <Column editable="false" title="Dias" type="java.lang.Object"/>
                 <Column editable="false" title="estado" type="java.lang.Object"/>
                 <Column editable="true" title="Enlace" type="java.lang.Object"/>
               </Table>
             </Property>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="showGrid" type="boolean" value="true"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="frmListaComunicacion_tblDatos"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

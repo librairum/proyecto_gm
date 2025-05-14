@@ -6,6 +6,7 @@ package proyecto_gm.Comunicacion;
 
 import java.io.Console;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -13,8 +14,12 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import proyecto_gm.Comunicacion.Utilitario.EstadoProceso;
 import proyecto_gm.proyectos.DatosProyectos;
 import proyecto_gm.proyectos.Proyectos;
 
@@ -24,16 +29,14 @@ import proyecto_gm.proyectos.Proyectos;
  */
 public class frmComunicacion extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form frmComunicacion
-     */
-    Comunicacion entidad;
-    Utilitario.EstadoProceso estado;
+    private Utilitario.EstadoProceso estado;
+    private Comunicacion entidad;
+    private boolean esEdicion = false;
 
     public frmComunicacion(JDesktopPane contenedorPadre, Utilitario.EstadoProceso estado, Comunicacion entidadComunicacion) {
         initComponents();
         contenedorPadre.add(this);
-        entidad = entidadComunicacion;
+        this.entidad = entidadComunicacion;
         this.estado = estado;
 
     }
@@ -43,10 +46,25 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
         contenedorPadre.add(this);
         this.estado = estado;
 
+        System.out.println("Estado recibido en constructor: " + estado);
+
+        // ⚠️ Cargar combos ANTES de usar setDatos
+        DatosComunicacion.CargarCombo(cboPeriodo);
+        DatosComunicacion.CargarComboTipoComunicacion(cboTipoComunicacion);
+        DatosComunicacion.CargarComboFlujo(cboFlujo1);
+        DatosComunicacion.CargarComboEstado(cboEstado);
+
+        if (estado == Utilitario.EstadoProceso.EDITAR) {
+            HabilitarControles2(true);
+        } else {
+            HabilitarControles2(false);
+        }
     }
 
     public frmComunicacion() {
         initComponents();
+        estado = Utilitario.EstadoProceso.EDITAR;
+
     }
 
     /**
@@ -68,11 +86,9 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         cboTipoComunicacion = new javax.swing.JComboBox<>();
-        txtFecha = new javax.swing.JFormattedTextField();
         jLabel11 = new javax.swing.JLabel();
-        txtIdPeriodo = new javax.swing.JTextField();
         cboNomProyecto = new javax.swing.JComboBox<>();
-        cboFlujo = new javax.swing.JComboBox<>();
+        cboPeriodo = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -91,6 +107,8 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
         jLabel13 = new javax.swing.JLabel();
         txtEnlace = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
+        txtFecha = new javax.swing.JTextField();
+        cboFlujo1 = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -183,17 +201,11 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
         getContentPane().add(cboTipoComunicacion);
         cboTipoComunicacion.setBounds(520, 70, 90, 22);
 
-        txtFecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
-        txtFecha.setToolTipText("Ingresar con el formato dd/mm/YYYY");
-        getContentPane().add(txtFecha);
-        txtFecha.setBounds(270, 70, 110, 22);
-
         jLabel11.setText("Fecha");
         getContentPane().add(jLabel11);
         jLabel11.setBounds(240, 70, 31, 16);
-        getContentPane().add(txtIdPeriodo);
-        txtIdPeriodo.setBounds(650, 40, 111, 22);
 
+        cboNomProyecto.setEditable(true);
         cboNomProyecto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Via Expresa Santa Rosa", "PEC", "Proyecto Llata" }));
         cboNomProyecto.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -208,13 +220,14 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
         getContentPane().add(cboNomProyecto);
         cboNomProyecto.setBounds(71, 42, 490, 22);
 
-        cboFlujo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Emision", "Recepcion" }));
-        getContentPane().add(cboFlujo);
-        cboFlujo.setBounds(660, 70, 100, 22);
+        getContentPane().add(cboPeriodo);
+        cboPeriodo.setBounds(660, 40, 100, 22);
 
         jLabel3.setText("Id");
         getContentPane().add(jLabel3);
         jLabel3.setBounds(18, 73, 10, 16);
+
+        txtId.setEnabled(false);
         getContentPane().add(txtId);
         txtId.setBounds(71, 70, 140, 22);
 
@@ -279,8 +292,14 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
         jLabel14.setText("Tipo");
         getContentPane().add(jLabel14);
         jLabel14.setBounds(490, 70, 23, 16);
+        getContentPane().add(txtFecha);
+        txtFecha.setBounds(280, 70, 110, 22);
 
-        setBounds(0, 0, 789, 353);
+        cboFlujo1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Emision", "Recepcion" }));
+        getContentPane().add(cboFlujo1);
+        cboFlujo1.setBounds(660, 70, 100, 22);
+
+        setBounds(0, 0, 795, 353);
     }// </editor-fold>//GEN-END:initComponents
     enum TipoMensaje {
         INFORMACION,
@@ -289,12 +308,43 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
         PREGUNTA
     }
 
+    public void setCodigoGenerado(String codigo) {
+        txtId.setText(codigo);
+
+    }
+
+    public void setEsEdicion(boolean esEdicion) {
+        this.esEdicion = esEdicion;
+    }
+
+    /*
+    public void setDatos(
+            String id, String periodo, String proyecto, String tipo,
+            String codDoc, String origen, String destino, String flujo,
+            String asunto, String fecha, String codDocResp, String estado, String enlace) {
+
+        txtId.setText(id);
+        txtIdPeriodo.setText(periodo);
+        cboNomProyecto.setSelectedItem(proyecto);
+        cboTipoComunicacion.setSelectedItem(tipo);
+        txtCodDoc.setText(codDoc);
+        txtOrigen.setText(origen);
+        txtDestino.setText(destino);
+        cboFlujo.setSelectedItem(flujo);
+        txtAsunto.setText(asunto);
+        txtFecha.setText(fecha); // O usa un método para setear en un JDateChooser
+        txtCodDocRespuesta.setText(codDocResp);
+        cboEstado.setSelectedItem(estado);
+        txtEnlace.setText(enlace);
+
+    }
+     */
     private void Limpiar() {
         this.cboNomProyecto.setSelectedIndex(-1);
-        this.txtIdPeriodo.setText("");
+        this.cboPeriodo.setSelectedIndex(-1);
         this.txtFecha.setText("");
         this.cboTipoComunicacion.setSelectedIndex(-1);
-        this.cboFlujo.setSelectedIndex(-1);
+        this.cboPeriodo.setSelectedIndex(-1);
         this.txtCodDoc.setText("");
         this.txtCodDocRespuesta.setText("");
         this.txtOrigen.setText("");
@@ -305,14 +355,31 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
         this.txtId.setText("");
     }
 
-    private void HabilitarControles(boolean estado) {
+    //btneditar
+    public void HabilitarControles2(boolean habilitar) {
+        txtId.setEditable(habilitar);
+        cboPeriodo.setEditable(habilitar);
+        cboNomProyecto.setEnabled(habilitar);
+        cboTipoComunicacion.setEnabled(habilitar);
+        txtCodDoc.setEditable(habilitar);
+        txtOrigen.setEditable(habilitar);
+        txtDestino.setEditable(habilitar);
+        cboPeriodo.setEnabled(habilitar);
+        txtAsunto.setEditable(habilitar);
+        txtFecha.setEditable(habilitar); // Si estás utilizando un JDateChooser, también habilítalo
+        txtCodDocRespuesta.setEditable(habilitar);
+        cboEstado.setEnabled(habilitar);
+        txtEnlace.setEditable(habilitar);
+    }
+
+    public void HabilitarControles(boolean estado) {
         this.cboNomProyecto.setEnabled(estado);
-        this.txtIdPeriodo.setEnabled(estado);
+        this.cboPeriodo.setEnabled(estado);
 
         this.txtId.setEnabled(estado);
         this.txtFecha.setEnabled(estado);
         this.cboTipoComunicacion.setEnabled(estado);
-        this.cboFlujo.setEnabled(estado);
+        this.cboPeriodo.setEnabled(estado);
 
         this.txtCodDoc.setEnabled(estado);
         this.txtCodDocRespuesta.setEnabled(estado);
@@ -326,10 +393,10 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
 
     private void LeerDatos() {
         this.cboNomProyecto.setSelectedIndex(1);
-        txtIdPeriodo.setText(entidad.getIdPeriodo());
+        cboPeriodo.setSelectedIndex(1);
         txtFecha.setText(entidad.getFecha().toString());
         cboTipoComunicacion.setSelectedIndex(1);
-        cboFlujo.setSelectedIndex(1);
+        cboPeriodo.setSelectedIndex(1);
         txtCodDoc.setText(entidad.getCodDoc());
         txtCodDocRespuesta.setText(entidad.getCodDocRespuesta());
         txtOrigen.setText(entidad.getOrigen());
@@ -368,52 +435,142 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
+    public void setDatos(
+            String id, String periodo, String proyecto, String tipo,
+            String codDoc, String origen, String destino, String flujo,
+            String asunto, String fecha, String codDocResp, String estado, String enlace) {
+
+        System.out.println("📋 Datos recibidos en setDatos:");
+        System.out.println("ID: " + id);
+        System.out.println("Periodo: " + periodo);
+        System.out.println("Proyecto: " + proyecto);
+        System.out.println("Tipo: " + tipo);
+        System.out.println("CodDoc: " + codDoc);
+        System.out.println("Origen: " + origen);
+        System.out.println("Destino: " + destino);
+        System.out.println("Flujo: " + flujo);
+        System.out.println("Asunto: " + asunto);
+        System.out.println("Fecha: " + fecha);
+        System.out.println("CodDocResp: " + codDocResp);
+        System.out.println("Estado: " + estado);
+        System.out.println("Enlace: " + enlace);
+
+        txtId.setText(id);
+        cboPeriodo.setSelectedItem(periodo);
+
+        for (int i = 0; i < cboNomProyecto.getItemCount(); i++) {
+            if (cboNomProyecto.getItemAt(i).trim().equalsIgnoreCase(proyecto.trim())) {
+                cboNomProyecto.setSelectedIndex(i);
+                break;
+            }
+        }
+
+        for (int i = 0; i < cboTipoComunicacion.getItemCount(); i++) {
+            if (cboTipoComunicacion.getItemAt(i).equalsIgnoreCase(tipo)) {
+                cboTipoComunicacion.setSelectedIndex(i);
+                break;
+            }
+        }
+
+        txtCodDoc.setText(codDoc);
+        txtOrigen.setText(origen);
+        txtDestino.setText(destino);
+
+        for (int i = 0; i < cboFlujo1.getItemCount(); i++) {
+            if (cboFlujo1.getItemAt(i).equalsIgnoreCase(flujo)) {
+                cboFlujo1.setSelectedIndex(i);
+                break;
+            }
+        }
+
+        txtAsunto.setText(asunto);
+        txtFecha.setText(fecha);
+        txtCodDocRespuesta.setText(codDocResp);
+
+        for (int i = 0; i < cboEstado.getItemCount(); i++) {
+            if (cboEstado.getItemAt(i).equalsIgnoreCase(estado)) {
+                cboEstado.setSelectedIndex(i);
+                break;
+            }
+        }
+
+        txtEnlace.setText(enlace);
+    }
+    
+
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        System.out.println("Click en Guardar");
         boolean procesoExitoso = false;
 
+        // Validación básica
         if (cboNomProyecto.getSelectedIndex() == -1) {
             MostrarMensaje("Seleccionar nombre de proyecto", TipoMensaje.ALERTA);
             return;
         }
 
         try {
-            // Validación y obtención de fecha
-            String anio = txtFecha.getText().substring(6, 10);
-            String mes = txtFecha.getText().substring(3, 5);
-            String dia = txtFecha.getText().substring(0, 2);
-            String fechaFormateada = anio + "-" + mes + "-" + dia;
+            // Validación de fecha
+            String fechaTexto = txtFecha.getText().trim();
+            if (!fechaTexto.matches("\\d{2}/\\d{2}/\\d{4}")) {
+                MostrarMensaje("Formato de fecha inválido. Use DD/MM/AAAA", TipoMensaje.ALERTA);
+                return;
+            }
 
-            entidad = new Comunicacion();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            java.util.Date fechaUtil = sdf.parse(fechaTexto);
+
+            // Crear entidad
+            Comunicacion entidad = new Comunicacion();
             entidad.setId(txtId.getText());
-            entidad.setIdPeriodo(txtIdPeriodo.getText());
+            entidad.setIdPeriodo(cboPeriodo.getSelectedItem().toString());
+            //entidad.setIdPeriodo(cboPeriodo.getSelectedIndex());
             entidad.setNombreProyecto(cboNomProyecto.getSelectedItem().toString());
-            entidad.setTipo(cboTipoComunicacion.getSelectedIndex());
+            entidad.setTipo(cboTipoComunicacion.getSelectedItem().toString());
             entidad.setCodDoc(txtCodDoc.getText());
             entidad.setOrigen(txtOrigen.getText());
             entidad.setDestino(txtDestino.getText());
-            entidad.setFlujo(cboFlujo.getSelectedIndex());
+            entidad.setFlujo(cboFlujo1.getSelectedItem().toString());
             entidad.setAsunto(txtAsunto.getText());
-            entidad.setFecha(Date.valueOf(fechaFormateada));
+            entidad.setFecha(new java.sql.Date(fechaUtil.getTime()));
             entidad.setCodDocRespuesta(txtCodDocRespuesta.getText());
-            entidad.setEstado(cboEstado.getSelectedIndex());
+            entidad.setEstado(cboEstado.getSelectedItem().toString());
             entidad.setEnlace(txtEnlace.getText());
 
+            // Debug: Mostrar datos que se enviarán
+            System.out.println("Datos a guardar:");
+            System.out.println("ID: " + entidad.getId());
+            System.out.println("Proyecto: " + entidad.getNombreProyecto());
+            // Agregar más campos según sea necesario...
+
+            // Determinar operación
             if (estado == Utilitario.EstadoProceso.NUEVO) {
+                System.out.println("Intentando INSERTAR...");
                 procesoExitoso = DatosComunicacion.Insertar(entidad);
             } else if (estado == Utilitario.EstadoProceso.EDITAR) {
+                System.out.println("Intentando ACTUALIZAR...");
                 procesoExitoso = DatosComunicacion.Actualizar(entidad);
             }
 
+            // Manejar resultado
             if (procesoExitoso) {
                 MostrarMensaje("Operación realizada con éxito", TipoMensaje.INFORMACION);
                 Limpiar();
                 HabilitarBotones(true);
                 HabilitarControles(false);
                 estado = Utilitario.EstadoProceso.CONSULTAR;
+
+                // Refrescar lista
+                for (JInternalFrame frame : getDesktopPane().getAllFrames()) {
+                    if (frame instanceof frmListaComunicacion) {
+                        ((frmListaComunicacion) frame).RefrescarTabla();
+                        break;
+                    }
+                }
             } else {
-                MostrarMensaje("Error en la operación", TipoMensaje.ERROR);
+                MostrarMensaje("Error: No se pudo completar la operación", TipoMensaje.ERROR);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             MostrarMensaje("Error al procesar los datos: " + e.getMessage(), TipoMensaje.ERROR);
         }
 
@@ -457,6 +614,7 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
     List<Proyectos> lista = DatosProyectos.listar();
     String[] codigos = new String[lista.size()];
 
+    /*
     private void Iniciarvalores() {
         //iniciar variables por defecto
         String sFecha = Utilitario.TraerFechaActual();
@@ -481,38 +639,41 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
             x++;
         }
 
-    }
+    }*/
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
 //        desbloquear();btnGuardar.setEnabled(true);btnDeshacer.setEnabled(true);
         estado = Utilitario.EstadoProceso.NUEVO;
         HabilitarBotones(false);
         HabilitarControles(true);
         Limpiar();
-        Iniciarvalores();
+        //Iniciarvalores();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void HabilitarBotones(boolean estado) {
-        btnAgregar.setEnabled(estado);
-        btnEditar.setEnabled(estado);
-        btnEliminar.setEnabled(estado);
-        btnGuardar.setEnabled(!estado);
-        btnDeshacer.setEnabled(!estado);
+        btnAgregar.setEnabled(!estado);
+        btnEditar.setEnabled(!estado);
+        btnEliminar.setEnabled(!estado);
+        btnGuardar.setEnabled(estado);
+        btnDeshacer.setEnabled(estado);
     }
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
         //JOptionPane.showMessageDialog(this, entidad.getNombreProyecto());
 
         if (estado == Utilitario.EstadoProceso.NUEVO) {
-            HabilitarBotones(false);
-            HabilitarControles(true);
+            HabilitarBotones(true);
+            HabilitarControles2(true);
             Limpiar();
-            Iniciarvalores();
+            //Iniciarvalores();
 
         } else if (estado == Utilitario.EstadoProceso.EDITAR) {
-            HabilitarBotones(false);
-            if (entidad != null) {
+            HabilitarBotones(true);
+            HabilitarControles(true);
+            Limpiar();
+            //Iniciarvalores();
+            /*if (entidad != null) {
                 LeerDatos();
-            }
-            HabilitarControles(false);
+            }*/
+
         }
 
 
@@ -558,8 +719,9 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JComboBox<String> cboEstado;
-    private javax.swing.JComboBox<String> cboFlujo;
+    private javax.swing.JComboBox<String> cboFlujo1;
     private javax.swing.JComboBox<String> cboNomProyecto;
+    private javax.swing.JComboBox<String> cboPeriodo;
     private javax.swing.JComboBox<String> cboTipoComunicacion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -581,9 +743,8 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtCodDocRespuesta;
     private javax.swing.JTextField txtDestino;
     private javax.swing.JTextField txtEnlace;
-    private javax.swing.JFormattedTextField txtFecha;
+    private javax.swing.JTextField txtFecha;
     private javax.swing.JTextField txtId;
-    private javax.swing.JTextField txtIdPeriodo;
     private javax.swing.JTextField txtOrigen;
     // End of variables declaration//GEN-END:variables
 }

@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -38,7 +39,7 @@ public class DatosComunicacion {
             Utilitario.MostrarMensaje("Ingresar nombre de proeyecto", Utilitario.TipoMensaje.alerta);
             return false;
         }
-        if (entidad.getTipo() == -1) {
+        if (entidad.getTipo() == null || entidad.getTipo().equals("-1")) {
             Utilitario.MostrarMensaje("Seleccionar tipo", Utilitario.TipoMensaje.alerta);
             return false;
 
@@ -55,7 +56,7 @@ public class DatosComunicacion {
             Utilitario.MostrarMensaje("Ingresar destino", Utilitario.TipoMensaje.alerta);
             return false;
         }
-        if (entidad.getFlujo() == -1) {
+        if (entidad.getFlujo().equals("-1")) {
             Utilitario.MostrarMensaje("Seleccionar flujo", Utilitario.TipoMensaje.alerta);
             return false;
         }
@@ -63,7 +64,7 @@ public class DatosComunicacion {
             Utilitario.MostrarMensaje("Ingresar asunto", Utilitario.TipoMensaje.alerta);
             return false;
         }
-        if (entidad.getEstado() == -1) {
+        if (entidad.getEstado().equals("-1")) {
             Utilitario.MostrarMensaje("Seleccionar estado", Utilitario.TipoMensaje.alerta);
             return false;
         }
@@ -74,6 +75,53 @@ public class DatosComunicacion {
         return estado;
     }
     //Proceso para insertar un registor al tabla comunicacion
+
+    //cargar periodo
+    public static void CargarCombo(JComboBox<String> cboPeriodo) {
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL listar_periodos() }")) {
+            ResultSet rs = cstmt.executeQuery();
+            while (rs.next()) {
+                cboPeriodo.addItem(String.valueOf(rs.getInt("Mes")));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    //capturar id comboperiodo
+    public static String CapturarIdPeriodo(JComboBox<String> cboPeriodo) {
+        String idCategoria = "";
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_id_Periodo(?) }")) {
+            cstmt.setString(1, cboPeriodo.getSelectedItem().toString());
+            ResultSet rs = cstmt.executeQuery();
+            if (rs.next()) {
+                idCategoria = rs.getString("IdPeriodo");
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar Categoría", JOptionPane.ERROR_MESSAGE);
+        }
+        return idCategoria;
+    }
+
+    public static void CargarComboTipoComunicacion(JComboBox<String> cboTipo) {
+        cboTipo.removeAllItems();
+        cboTipo.addItem("Carta");
+        cboTipo.addItem("Correo");
+        cboTipo.addItem("Llamada");
+    }
+
+    public static void CargarComboFlujo(JComboBox<String> cboFlujo) {
+        cboFlujo.removeAllItems();
+        cboFlujo.addItem("Emision");
+        cboFlujo.addItem("Recepcion");
+    }
+
+    public static void CargarComboEstado(JComboBox<String> cboEstado) {
+        cboEstado.removeAllItems();
+        cboEstado.addItem("Proceso");
+        cboEstado.addItem("Resuelto");
+        cboEstado.addItem("Archivado");
+    }
 
     static boolean Insertar(Comunicacion entidad) {
         boolean estadoProceso = false;
@@ -87,15 +135,15 @@ public class DatosComunicacion {
 
                 proc.setString("parIdPeriodo", entidad.getIdPeriodo());
                 proc.setString("parNomProy", entidad.getNombreProyecto());
-                proc.setInt("parTipo", entidad.getTipo());
+                proc.setString("parTipo", entidad.getTipo());
                 proc.setString("parCodDoc", entidad.getCodDoc());
                 proc.setString("parOrigen", entidad.getOrigen());
                 proc.setString("parDestino", entidad.getDestino());
-                proc.setInt("parFlujo", entidad.getFlujo());
+                proc.setString("parFlujo", entidad.getFlujo());
                 proc.setString("parAsunto", entidad.getAsunto());
                 proc.setDate("parFecha", entidad.getFecha());
                 proc.setString("parCodDocRespuesta", entidad.getCodDocRespuesta());
-                proc.setInt("parEstado", entidad.getEstado());
+                proc.setString("parEstado", entidad.getEstado());
                 proc.setString("parEnlace", entidad.getEnlace());
                 estadoProceso = proc.execute();
 
@@ -113,30 +161,38 @@ public class DatosComunicacion {
         try {
             CallableStatement proc = conn.prepareCall("{call actualizar_comunicacion(?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 
-            if (Validar(entidad)) {
-                proc.setInt(1, Integer.parseInt(entidad.getId()));
-                proc.setString(2, entidad.getIdPeriodo());
-                proc.setString(3, entidad.getNombreProyecto());
-                proc.setInt(4, entidad.getTipo());
-                proc.setString(5, entidad.getCodDoc());
-                proc.setString(6, entidad.getOrigen());
-                proc.setString(7, entidad.getDestino());
-                proc.setInt(8, entidad.getFlujo());
-                proc.setString(9, entidad.getAsunto());
-                proc.setDate(10, entidad.getFecha());
-                proc.setString(11, entidad.getCodDocRespuesta());
-                proc.setInt(12, entidad.getEstado());
-                proc.setString(13, entidad.getEnlace());
-
-                int filasAfectadas = proc.executeUpdate();
-                estadoProceso = (filasAfectadas > 0);
+          
+            String idStr = entidad.getId().replaceAll("[^0-9]", "");
+            if (idStr.isEmpty()) {
+                System.err.println("Error: ID no contiene números");
+                return false;
             }
+            int idComunicacion = Integer.parseInt(idStr);
 
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            estadoProceso = false;
+            proc.setInt(1, idComunicacion);
+            proc.setString(2, entidad.getIdPeriodo());
+            proc.setString(3, entidad.getNombreProyecto());
+            proc.setString(4, entidad.getTipo());
+            proc.setString(5, entidad.getCodDoc());
+            proc.setString(6, entidad.getOrigen());
+            proc.setString(7, entidad.getDestino());
+            proc.setString(8, entidad.getFlujo());
+            proc.setString(9, entidad.getAsunto());
+            proc.setDate(10, entidad.getFecha());
+            proc.setString(11, entidad.getCodDocRespuesta());
+            proc.setString(12, entidad.getEstado());
+            proc.setString(13, entidad.getEnlace());
+
+            int rowsAffected = proc.executeUpdate(); // Usar executeUpdate para operaciones de actualización
+            estadoProceso = rowsAffected > 0;
+
+            if (!estadoProceso) {
+                System.err.println("Advertencia: No se actualizó ningún registro");
+            }
+        } catch (SQLException exSQL) {
+            System.err.println("Error en proceso actualizar: " + exSQL.getMessage());
+            exSQL.printStackTrace();
         }
-
         return estadoProceso;
     }
 
@@ -166,49 +222,48 @@ public class DatosComunicacion {
             //ArrayList<Comunicacion> lista = new ArrayList<Comunicacion>();
             // 
             // NombreProyecto->Proyecto,  Codigo -> Id, Periodo-> IdPeriodo,  Tipo, TipoDesc, CodDoc, Origen, Destino, Flujo, FlujoDesc, Asunto, Fecha, CodDocRespuesta,Estado, EstadoDesc, Enlace
-            String columnas[] = {"Proyecto", "Codigo", "Periodo", "Tipo",
-                "TipoDesc", "Cod.Doc", "Origen", "Destino",
-                "Flujo", "FlujoDesc", "Asunto", "Fecha",
-                "Cod.Doc.Resp", "Enlace", "Estado", "EstadoDesc",
-                "Dias"};
+            String columnas[] = {"Codigo", "Periodo", "Proyecto", "Tipo",
+                "Cod.Doc", "Origen", "Destino",
+                "Flujo", "Asunto", "Fecha",
+                "Cod.Doc.Resp", "Estado", "Enlace"};
             //ocultar el id
             //modelo.addColumn(columnas);
             //ocultar idperiodo
 
-            modelo.addColumn(columnas[0]); // proyecto = Nombreproyecto
-            modelo.addColumn(columnas[1]); // codigo = Id
-            modelo.addColumn(columnas[2]); // periodo  = IdPeriodo
-            modelo.addColumn(columnas[3]); //Tipo = Tipo
-            modelo.addColumn(columnas[4]); //TipDesc = TipoDesc
-            modelo.addColumn(columnas[5]); // cod.doc = codDoc
+            modelo.addColumn(columnas[0]); //  codigo = Id
+            modelo.addColumn(columnas[1]); // periodo  = IdPeriodo
+            modelo.addColumn(columnas[2]); // proyecto = Nombreproyecto 
+            modelo.addColumn(columnas[3]); //Tipo = Tipo : bd:tipodocumento id
+            modelo.addColumn(columnas[4]); //cod.doc 
+            modelo.addColumn(columnas[5]); // origen
 
-            modelo.addColumn(columnas[6]);//Origen = origen
-            modelo.addColumn(columnas[7]);//Destino = destino
-            modelo.addColumn(columnas[8]);//Flujo = Flujo
-            modelo.addColumn(columnas[9]);//FlujoDesc = FlujoDesc
-            modelo.addColumn(columnas[10]);//Asunto = asunto
-            modelo.addColumn(columnas[11]);//Fecha = fecha
-            modelo.addColumn(columnas[12]);//Cod.Doc.Resp = CodDocRespuesta       //
-            modelo.addColumn(columnas[13]);  // enlace
-            modelo.addColumn(columnas[14]); // Estado
-            modelo.addColumn(columnas[15]); //EstadoDesc
-            modelo.addColumn(columnas[16]); // Dias  = dias
+            modelo.addColumn(columnas[6]);//Destino = destino
+            modelo.addColumn(columnas[7]);//Flujo = Flujo
+            modelo.addColumn(columnas[8]);//Asunto = asunto
+
+            modelo.addColumn(columnas[9]);//Fecha = fecha
+            modelo.addColumn(columnas[10]);//Cod.Doc.Resp = CodDocRespuesta 
+            modelo.addColumn(columnas[11]);//Estado       //
+            modelo.addColumn(columnas[12]);  // enlace
+            //modelo.addColumn(columnas[13]); // Estado
+
+            //  modelo.addColumn(columnas[14]); // Dias  = dias
             // Id -> codigo
             // -- , , , Tipo, TipoDesc, CodDoc, Origen, Destino, Flujo, FlujoDesc, Asunto, Fecha, CodDocRespuesta,Estado, EstadoDesc, Enlace, Dias
-
         } catch (Exception ex) {
             System.out.println("Error al configurar grilla:" + ex.getMessage());
         }
 
     }
 
+    /*
     static void OcultarColumna(JTable tabla, int indiceColumna) {
         tabla.getColumnModel().getColumn(indiceColumna).setMaxWidth(0);
         tabla.getColumnModel().getColumn(indiceColumna).setMinWidth(0);
         tabla.getColumnModel().getColumn(indiceColumna).setPreferredWidth(0);
-    }
+    }*/
 //    public ArrayList<Comunicacion> Listar(DefaultTableModel modelo){
-
+    /*
     static void Listar(JTable tabla) {
         ResultSet rs = null;
         DefaultTableModel modelo = new DefaultTableModel() {
@@ -223,7 +278,7 @@ public class DatosComunicacion {
 
         try {
 
-            CallableStatement cst = conn.prepareCall("{ call listar_comunicacion() }");
+            CallableStatement cst = conn.prepareCall("{ call listarComunicacion() }");
             rs = cst.executeQuery();
             int i = 0;
             //mientras realizo la lectura de registros
@@ -236,55 +291,51 @@ public class DatosComunicacion {
                 String fechaFormato = rs.getString("Fecha");
                 //agrego el resultado de la consulta al arreglo de tipo object
                 Object registro[] = new Object[]{
-                    rs.getString("NombreProyecto"), //0
-                    rs.getString("Id"), // 1
-                    rs.getString("IdPeriodo"), // 2
+                    rs.getString("IdComunicacion"), //0
+                    rs.getString("IdPeriodo"), // 1
+                    rs.getString("NombreProyecto"), // 2
                     rs.getInt("Tipo"), // 3
-                    rs.getString("TipoDesc"), //4 
-                    rs.getString("CodDoc"), // 5
-                    rs.getString("Origen"), // 6
-                    rs.getString("Destino"), // 7
-                    rs.getInt("Flujo"), // 8
-                    rs.getString("FlujoDesc"), // 9
-                    rs.getString("Asunto"), // 10
+                    rs.getString("CodDoc"), //4 
+                    rs.getString("Origen"), // 5
+                    rs.getString("Destino"), // 6
+                    rs.getString("Flujo"), // 7
+                    rs.getInt("Asunto"), // 8
+                    //rs.getString("FlujoDesc"), // 9
+                    //rs.getString("Asunto"), // 10
                     fechaFormato, // 11
                     rs.getString("CodDocRespuesta"), // 12
-                    rs.getString("Enlace"),// 13
-                    rs.getInt("Estado"), // 14                           
-                    rs.getString("EstadoDesc"), // 15 
-                    rs.getString("Dias")}; // 16
+                    rs.getString("Estado"),// 13
+                    rs.getInt("Enlace")}; // 14                           
+                //rs.getString("EstadoDesc"), // 15 
+                //rs.getString("Dias")}; // 16
 
                 //insertar al modelo de la tabla la variable tipo objeto
                 modelo.addRow(registro);
             }
 
             tabla.setModel(modelo);
-            /*
-        OcultarColumna(tabla, 1);
-        OcultarColumna(tabla, 2);
-        OcultarColumna(tabla, 3);
-        OcultarColumna(tabla, 8);
-        OcultarColumna(tabla, 14);
-             */
+           
         } catch (Exception ex) {
             System.out.println("Error al listar:" + ex.getMessage());
         }
         //return lista;
-    }
-
+    }*/
+    //METODO BUSCAR 
+    /*
     static void Listar(JTable tabla, String parFiltro, String parFechaInicio, String parFechaFin,
             int parEstadoCodigo, int parFlujoCodigo, String parOrigen, String parDestino) {
 
         ResultSet rs = null;
 
-        DefaultTableModel modelo = new DefaultTableModel() {
+        DefaultTableModel modelo = new DefaultTableModel(null, new Object[]{
+            "Codigo", "Periodo", "Proyecto", "Tipo", "Cod.Doc", "Origen",
+            "Destino", "Flujo", "Asunto", "Fecha", "Cod.Doc.Resp", "Estado", "Enlace"
+        }) {
             @Override
-            public boolean isCellEditable(int i, int i1) {
+            public boolean isCellEditable(int row, int column) {
                 return false;
             }
-
         };
-        ConfigurarGrilla(modelo);
 
         try {
             CallableStatement cst = conn.prepareCall("{ call listar_comunicacionesfiltrados(?,?,?,?,?,?,?) }");
@@ -295,53 +346,32 @@ public class DatosComunicacion {
             cst.setInt("parFlujoCodigo", parFlujoCodigo);
             cst.setString("parOrigen", parOrigen);
             cst.setString("parDestino", parDestino);
-            rs = cst.executeQuery();
 
-            int i = 0;
-            //mientras realizo la lectura de registros
             while (rs.next()) {
-
-                //String[] campos = rs.getString("Fecha").split("-");
-                //String campos = rs.getString("Fecha");
-                //String fechaFormato = campos;
-                //String fechaFormato =  campos[2]+"/"+campos[1]+"/"+ campos[0]; // anio
-                //agrego el resultado de la consulta al arreglo de tipo object
-                Object registro[] = new Object[]{rs.getString("NombreProyecto"),
+                Object[] fila = new Object[]{
                     rs.getString("Id"),
                     rs.getString("IdPeriodo"),
-                    rs.getInt("Tipo"),
+                    rs.getString("NombreProyecto"),
                     rs.getString("TipoDesc"),
                     rs.getString("CodDoc"),
                     rs.getString("Origen"),
                     rs.getString("Destino"),
-                    rs.getInt("Flujo"),
                     rs.getString("FlujoDesc"),
                     rs.getString("Asunto"),
-                    //rs.getDate("Fecha"),                
                     rs.getString("Fecha"),
                     rs.getString("CodDocRespuesta"),
-                    rs.getString("Enlace"),
-                    rs.getInt("Estado"),
                     rs.getString("EstadoDesc"),
-                    rs.getString("Dias")};
-                String fechaformateado = rs.getDate("Fecha").toString();
-                //insertar al modelo de la tabla la variable tipo objeto
-                modelo.addRow(registro);
+                    rs.getString("Enlace")
+                };
+                modelo.addRow(fila);
             }
 
             tabla.setModel(modelo);
-            /*
-        OcultarColumna(tabla, 1);
-        OcultarColumna(tabla, 2);
-        OcultarColumna(tabla, 3);
-        OcultarColumna(tabla, 8);
-        OcultarColumna(tabla, 14);
-             */
-        } catch (Exception ex) {
-            System.out.println("Error al listar con filtros:" + ex.getMessage());
-        }
-    }
 
+        } catch (Exception ex) {
+            System.out.println("Error al listar: " + ex.getMessage());
+        }
+    }*/
     public static boolean Eliminar(Comunicacion entidad) {
         boolean estadoProceso = false;
         try {
@@ -355,6 +385,33 @@ public class DatosComunicacion {
             estadoProceso = false;
         }
         return estadoProceso;
+    }
+
+    public static void Listar(DefaultTableModel modelo) {
+        try ( PreparedStatement pstmt = conn.prepareStatement("CALL listarComunicacion()");  ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+
+                System.out.println("Fila encontrada: " + rs.getString("IdComunicacion")); // depuración
+                Object[] row = new Object[]{
+                    rs.getString("IdComunicacion"),
+                    rs.getString("IdPeriodo"),
+                    rs.getString("NombreProyecto"),
+                    rs.getString("Tipo"),
+                    rs.getString("CodDoc"),
+                    rs.getString("Origen"),
+                    rs.getString("Destino"),
+                    rs.getString("Flujo"),
+                    rs.getString("Asunto"),
+                    rs.getString("Fecha"),
+                    rs.getString("CodDocRespuesta"),
+                    rs.getString("estado"),
+                    rs.getString("Enlace")};
+
+                modelo.addRow(row);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
 }

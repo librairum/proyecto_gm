@@ -1558,19 +1558,38 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_comunicacion`(parId int , parIdPeriodo int, parNomProy varchar(100), parTipo int, parCodDoc varchar(100), parOrigen varchar(100), parDestino varchar(100), parFlujo int,
-parAsunto varchar(100), parFecha date, parCodDocRespuesta varchar(100), parEstado int, parEnlace varchar(100))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_comunicacion`(
+    IN parIdComunicacion INT,
+    IN parIdPeriodo VARCHAR(10),
+    IN parNomProy VARCHAR(100),
+    IN parTipo VARCHAR(100),
+    IN parCodDoc VARCHAR(20),
+    IN parOrigen VARCHAR(100),
+    IN parDestino VARCHAR(100),
+    IN parFlujo VARCHAR(100),
+    IN parAsunto VARCHAR(200),
+    IN parFecha DATE,
+    IN parCodDocRespuesta VARCHAR(20),
+    IN parEstado VARCHAR(100),
+    IN parEnlace VARCHAR(200)
+)
 BEGIN
-update comunicaciones 
-set NombreProyecto = parNomProy, 
-Tipo = parTipo, CodDoc = parCodDoc, Origen = parOrigen, Destino = parDestino, 
-Flujo = parFlujo, Asunto = parAsunto, Fecha = parFecha, 
-CodDocRespuesta = parCodDocRespuesta,  
-estado = parEstado, Enlace = parEnlace
-where IdComunicacion  = parId 
-and  IdPeriodo = parIdPeriodo;
-
-END ;;
+    UPDATE comunicaciones
+    SET 
+        IdPeriodo = parIdPeriodo,
+        NombreProyecto = parNomProy,
+        Tipo = parTipo,
+        CodDoc = parCodDoc,
+        Origen = parOrigen,
+        Destino = parDestino,
+        Flujo = parFlujo,
+        Asunto = parAsunto,
+        Fecha = parFecha,
+        CodDocRespuesta = parCodDocRespuesta,
+        Estado = parEstado,
+        Enlace = parEnlace
+    WHERE IdComunicacion = parIdComunicacion;
+END;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2477,11 +2496,22 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_comunicacion`(parId int, parIdPeriodo int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_comunicacion`(
+parId int
+)
 BEGIN
-delete from comunicaciones where IdComunicacion = parId and IdPeriodo = parIdPeriodo;
-END ;;
+delete from comunicaciones where IdComunicacion = parId;
+END;;
 DELIMITER ;
+
+
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listarComunicacion`()
+BEGIN
+SELECT * FROM comunicaciones;
+END;;
+DELIMITER ;
+
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
@@ -2851,30 +2881,12 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `generar_codigocomunicacion`()
 BEGIN
--- asignar el prefijo para el codigo
-set @prefijo = 'CG';
-
--- obtener la cantidad de registro de la tabla
-set  @cantidadRegistros = (select count(*) from comunicaciones limit 1);
-
--- se obtiene el ultimo, en caso de no tener registors en la tabla asignar CG0000, si no CG00001
-set @ultimocodigo = ( case when @cantidadRegistros = 0 then  'CG0000' else (select IdComunicacion from comunicaciones order by IdComunicacion desc limit 1) end);
- 
--- retirar el prefijo del codigo CF0001 obtenido a traves de a consulta
--- el ultimo codigo ingresado convertir a enter y sumar en 1 para obtener el siguiente codigo.
-set @correlativo = convert( substring(@ultimocodigo,3,4), signed) + 1 ;
--- 1
-
--- completar con ceros segun la longitud del correlativo
-set @ceros = repeat('0', 4-length(@correlativo)); -- 00
--- 000
-
--- concatenear las variables
---  A , 00, 11 => A0011
-select concat(@prefijo,@ceros, @correlativo);
--- CG0001
-
-END ;;
+    -- Obtener el máximo ID existente
+    SET @max_id = (SELECT COALESCE(MAX(CAST(idComunicacion AS SIGNED)), 0) FROM comunicaciones);
+    
+    -- Generar el siguiente ID (numérico)
+    SELECT @max_id + 1 AS nuevo_id;
+END
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3246,9 +3258,19 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_comunicacion`(in parIdPeriodo int, in parNomProy varchar(100), in parTipo int, 
-in parCodDoc varchar(100), in parOrigen varchar(100), in parDestino varchar(100), in parFlujo int,
-in parAsunto varchar(100), in parFecha date, in parCodDocRespuesta varchar(100), in parEstado int, in parEnlace varchar(100) )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_comunicacion`(
+in parIdPeriodo int, 
+in parNomProy varchar(100), 
+in parTipo varchar(100), 
+in parCodDoc varchar(100), 
+in parOrigen varchar(100), 
+in parDestino varchar(100), 
+in parFlujo varchar(100),
+in parAsunto varchar(100), 
+in parFecha date, 
+in parCodDocRespuesta varchar(100), 
+in parEstado varchar(100), 
+in parEnlace varchar(100) )
 BEGIN
     INSERT INTO comunicaciones (
         IdPeriodo, NombreProyecto, Tipo, CodDoc, Origen, Destino, Flujo, Asunto,
@@ -3257,7 +3279,7 @@ BEGIN
         parIdPeriodo, parNomProy, parTipo, parCodDoc, parOrigen, parDestino, parFlujo,
         parAsunto, parFecha, parCodDocRespuesta, parEstado, parEnlace
     );
-END ;;
+END;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;

@@ -15,15 +15,15 @@ public class Comunicacion {
     private String id;
     private String idPeriodo;
     private String nombreProyecto;
-    private int tipo;
+    private String tipo;
     private String codDoc;
     private String origen;
     private String destino;
-    private int flujo;
+    private String flujo;
     private String asunto;
     private Date fecha;
     private String codDocRespuesta;
-    private int estado;
+    private String estado;
     private String enlace;
 
     /**
@@ -71,14 +71,14 @@ public class Comunicacion {
     /**
      * @return the tipo
      */
-    public int getTipo() {
+    public String getTipo() {
         return tipo;
     }
 
     /**
      * @param tipo the tipo to set
      */
-    public void setTipo(int tipo) {
+    public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 
@@ -127,14 +127,14 @@ public class Comunicacion {
     /**
      * @return the flujo
      */
-    public int getFlujo() {
+    public String getFlujo() {
         return flujo;
     }
 
     /**
      * @param flujo the flujo to set
      */
-    public void setFlujo(int flujo) {
+    public void setFlujo(String flujo) {
         this.flujo = flujo;
     }
 
@@ -183,14 +183,14 @@ public class Comunicacion {
     /**
      * @return the estado
      */
-    public int getEstado() {
+    public String getEstado() {
         return estado;
     }
 
     /**
      * @param estado the estado to set
      */
-    public void setEstado(int estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
     }
 
