@@ -509,7 +509,7 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
         }
 
         try {
-            // Validación de fecha
+            // Validación de fecha 
             String fechaTexto = txtFecha.getText().trim();
             if (!fechaTexto.matches("\\d{2}/\\d{2}/\\d{4}")) {
                 MostrarMensaje("Formato de fecha inválido. Use DD/MM/AAAA", TipoMensaje.ALERTA);
