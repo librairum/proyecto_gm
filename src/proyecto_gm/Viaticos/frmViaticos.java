@@ -20,6 +20,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import proyecto_gm.ConexionBD;
+import proyecto_gm.Empleado.Empleados;
 
 /**
  *
@@ -56,7 +57,7 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         });
 
         DefaultTableModel modelo = (DefaultTableModel) tblViatico.getModel();
-        DatosViaticos.CargarCombos(cboEmpleado, cboPeriodo);
+        DatosViaticos.llenarComboBoxViaticos(cboEmpleado, cboPeriodo);
         DatosViaticos.Listar(modelo);
         DatosViaticos.Habilitar(escritorio, false);
         // Quitar la edicion de las celdas
@@ -173,7 +174,6 @@ public class frmViaticos extends javax.swing.JInternalFrame {
             }
         });
 
-        tblViatico.setBackground(new java.awt.Color(255, 255, 255));
         tblViatico.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -193,7 +193,6 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         tblViatico.setFocusable(false);
         tblViatico.setRowHeight(25);
         tblViatico.setSelectionBackground(new java.awt.Color(153, 153, 153));
-        tblViatico.setSelectionForeground(new java.awt.Color(0, 0, 0));
         tblViatico.setShowGrid(true);
         tblViatico.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblViatico);
@@ -213,6 +212,12 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         }
 
         jLabel7.setText("EMPLEADO:");
+
+        cboEmpleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboEmpleadoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
         escritorio.setLayout(escritorioLayout);
@@ -348,7 +353,8 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         }
 
         String periodo = cboPeriodo.getSelectedItem().toString();
-        String idEmpleado = ObtenerIdEmpleado(cboEmpleado.getSelectedItem().toString());
+        String idEmpleado = ((Empleados) cboEmpleado.getSelectedItem()).getId();
+
 
         Viaticos viatico = new Viaticos();
         viatico.setDescripcion(txtDescripcion.getText());
@@ -358,8 +364,10 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         viatico.setMenu(Float.parseFloat(txtMenu.getText()));
 
         if (esNuevo) {
-            DatosViaticos.Insertar(viatico, tblViatico);
+            System.out.println("Insertando nuevo registro de viático...");
+            DatosViaticos.InsertarDatos(viatico, tblViatico);
         } else if (!esNuevo) {
+            System.out.println("Actualizando registro existente de viático...");
             viatico.setId(Integer.parseInt(txtId.getText()));
             DatosViaticos.Actualizar(viatico, tblViatico);
         }
@@ -430,6 +438,10 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         txtDescripcion.setText(text);
     }//GEN-LAST:event_txtDescripcionFocusLost
 
+    private void cboEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEmpleadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboEmpleadoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btnCancelar;
@@ -437,7 +449,7 @@ public class frmViaticos extends javax.swing.JInternalFrame {
     public static javax.swing.JButton btnEliminar;
     public static javax.swing.JButton btnGuardar;
     public static javax.swing.JButton btnNuevo;
-    private javax.swing.JComboBox<String> cboEmpleado;
+    private javax.swing.JComboBox<Empleados> cboEmpleado;
     private javax.swing.JComboBox<String> cboPeriodo;
     private javax.swing.JPanel escritorio;
     private javax.swing.JLabel jLabel1;

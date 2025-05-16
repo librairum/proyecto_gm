@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -35,12 +36,12 @@ public class DatosTransferencias {
     // Limpiar campos
     public static void Limpiar(Container contenedor) {
         for (Component componente : contenedor.getComponents()) {
-            if (componente instanceof JTextField ) {
-                ((JTextField)componente).setText("");
+            if (componente instanceof JTextField) {
+                ((JTextField) componente).setText("");
             } else if (componente instanceof JComboBox) {
-                ((JComboBox)componente).setSelectedIndex(-1);
-            } else if (componente instanceof Container ) {
-                Limpiar((Container)componente);
+                ((JComboBox) componente).setSelectedIndex(-1);
+            } else if (componente instanceof Container) {
+                Limpiar((Container) componente);
             } else {
                 // No hace nada para otros tipos de componentes
             }
@@ -50,16 +51,16 @@ public class DatosTransferencias {
     // Habilitar campos
     public static void Habilitar(Container contenedor, boolean bloquear) {
         for (Component componente : contenedor.getComponents()) {
-            if (componente instanceof JTextField ) {
-                ((JTextField)componente).setEnabled(bloquear);
-            } else if (componente instanceof JComboBox ) {
-                ((JComboBox)componente).setEnabled(bloquear);
-            } else if (componente instanceof JButton ) {
-                String button = ((JButton)componente).getName();
+            if (componente instanceof JTextField) {
+                ((JTextField) componente).setEnabled(bloquear);
+            } else if (componente instanceof JComboBox) {
+                ((JComboBox) componente).setEnabled(bloquear);
+            } else if (componente instanceof JButton) {
+                String button = ((JButton) componente).getName();
                 if (button.equals("guardar") || button.equals("cancelar")) {
-                    ((JButton)componente).setEnabled(bloquear);
+                    ((JButton) componente).setEnabled(bloquear);
                 } else if (button.equals("nuevo") || button.equals("editar") || button.equals("eliminar")) {
-                    ((JButton)componente).setEnabled(!bloquear); // aplicar logica inversa
+                    ((JButton) componente).setEnabled(!bloquear); // aplicar logica inversa
                 }
             } else {
                 // No hace nada para otros tipos de componentes
@@ -67,13 +68,40 @@ public class DatosTransferencias {
         }
     }
 
+    //cargar periodo
+    public static void CargarCombo(JComboBox<String> cboPeriodo) {
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL listar_periodos() }")) {
+            ResultSet rs = cstmt.executeQuery();
+            while (rs.next()) {
+                cboPeriodo.addItem(String.valueOf(rs.getInt("Mes")));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    //capturar id comboperiodo
+    public static String CapturarIdPeriodo(JComboBox<String> cboPeriodo) {
+        String idCategoria = "";
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_id_Periodo(?) }")) {
+            cstmt.setString(1, cboPeriodo.getSelectedItem().toString());
+            ResultSet rs = cstmt.executeQuery();
+            if (rs.next()) {
+                idCategoria = rs.getString("IdPeriodo");
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar Categoría", JOptionPane.ERROR_MESSAGE);
+        }
+        return idCategoria;
+    }
+
     // Cargar las cuentas en los combo boxes
     public static void CargarCuentas(JComboBox<String> origen, JComboBox<String> destino) {
-        String sql = "SELECT Nombres FROM cuentasbancarias";
+        String sql = "CALL listar_cuentas_transferencias()";
         List<String> cuentas = new ArrayList<>();
         try ( PreparedStatement pstmt = conn.prepareStatement(sql);  ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
-                cuentas.add(rs.getString(1));
+                cuentas.add(rs.getString("Nombres"));
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -86,8 +114,12 @@ public class DatosTransferencias {
     public static void Listar(DefaultTableModel modelo) {
         try ( PreparedStatement pstmt = conn.prepareStatement("CALL listar_transferencias");  ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
-                Object[] row = new Object[]{rs.getString("Id"), rs.getString("Periodo"),
-                    rs.getString("NroOperacion"), rs.getString("CuentaOrigen"), rs.getString("CuentaDestino"),
+                Object[] row = new Object[]{
+                    rs.getString("IdTransferenciaBancaria"),
+                    rs.getString("IdPeriodo"),
+                    rs.getString("NroOperacion"),
+                    rs.getString("CuentaOrigenNombre"),
+                    rs.getString("CuentaDestinoNombre"),
                     rs.getString("Fecha")};
                 modelo.addRow(row);
             }
@@ -99,7 +131,7 @@ public class DatosTransferencias {
     // Insertar datos
     public static void Insertar(Transferencia transferencia, JTable tabla) {
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL insertar_transferencia(?, ?, ?, ?, ?) }")) {
-            cstmt.setString(1, transferencia.getPeriodo());
+            cstmt.setInt(1, Integer.parseInt(transferencia.getPeriodo()));
             cstmt.setString(2, transferencia.getNroOperacion());
             cstmt.setString(3, transferencia.getCuentaOrigen());
             cstmt.setString(4, transferencia.getCuentaDestino());
@@ -119,27 +151,36 @@ public class DatosTransferencias {
     }
 
     // Boton editar
-    public static void Editar(Container contenedor, JTable tabla, JTextField[] cajas, JComboBox origen, JComboBox destino) {
-        // Obtener el indice de la fila seleccionada
+    public static void Editar(Container contenedor, JTable tabla, JTextField[] cajas, JComboBox cboPeriodo, JComboBox origen, JComboBox destino) {
         int fila = tabla.getSelectedRow();
 
         if (fila >= 0) {
             Habilitar(contenedor, true);
-            // Limpiamos la seleccion en la tabla
             tabla.clearSelection();
-            // Deshabilitamos la seleccion de filas de la tabla
             tabla.setRowSelectionAllowed(false);
 
-            cajas[0].setText(tabla.getModel().getValueAt(fila, 0).toString());
-            cajas[1].setText(tabla.getModel().getValueAt(fila, 1).toString());
-            cajas[2].setText(tabla.getModel().getValueAt(fila, 2).toString());
-            cajas[3].setText(tabla.getModel().getValueAt(fila, 5).toString());
+            cajas[0].setText(tabla.getModel().getValueAt(fila, 0).toString()); // txtId
+            String periodo = tabla.getModel().getValueAt(fila, 1).toString();  // para el combo
+            cajas[1].setText(tabla.getModel().getValueAt(fila, 2).toString()); // txtNroOperacion
+            try {
+                String fechaOriginal = tabla.getModel().getValueAt(fila, 5).toString(); // "2025-05-08"
+                SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat formatoSalida = new SimpleDateFormat("dd/MM/yyyy");
+                Date fecha = formatoEntrada.parse(fechaOriginal);
+                cajas[2].setText(formatoSalida.format(fecha));
+            } catch (ParseException e) {
+                cajas[2].setText(""); // En caso de error, deja el campo vacío
+                JOptionPane.showMessageDialog(null, "Error al convertir la fecha: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
 
             cajas[0].setEnabled(false);
             cajas[1].requestFocus();
+       
+            origen.setSelectedItem(tabla.getModel().getValueAt(fila, 3).toString());
+            destino.setSelectedItem(tabla.getModel().getValueAt(fila, 4).toString());
 
-            origen.setSelectedItem(tabla.getModel().getValueAt(fila, 3).toString()); // la columna "CuentaOrigen" está en la posición 3
-            destino.setSelectedItem(tabla.getModel().getValueAt(fila, 4).toString()); // la columna "CuentaDestino" está en la posición 4
+            // Aquí el combo para el periodo (supongamos que se llama cboPeriodo)
+            cboPeriodo.setSelectedItem(periodo);
 
         } else {
             JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -158,7 +199,8 @@ public class DatosTransferencias {
             cstmt.setString(6, transferencia.getFecha());
 
             cstmt.execute(); // se actualiza los datos en la BD
-
+            JOptionPane.showMessageDialog(null, "Transferencia actualizado satisfactoriamente.", "Actualización Exitoso", JOptionPane.INFORMATION_MESSAGE);
+            
             // Actualizamos la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
@@ -185,7 +227,7 @@ public class DatosTransferencias {
                     // Ejecutar el procedimiento almacenado
                     cstmt.setString(1, id);
                     cstmt.execute();
-
+                    JOptionPane.showMessageDialog(null, "Transferencia eliminada satisfactoriamente.", "Eliminación Exitosa", JOptionPane.INFORMATION_MESSAGE);
                     // Actualizamos la tabla
                     DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
                     modelo.setRowCount(0);
@@ -205,23 +247,22 @@ public class DatosTransferencias {
     // Validar campos
     public static boolean Validar(JTextField[] campos, JComboBox[] combos) {
         for (JTextField campo : campos) {
-            if (campo.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            if (campo.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Complete todos los campos.");
                 campo.requestFocus();
                 return false;
             }
         }
-
+        /*
         for (JComboBox combo : combos) {
-            if (combo.getSelectedItem() == null) {
-                JOptionPane.showMessageDialog(
-                        null, "Debe escoger un distrito y una forma de pago.", "Advertencia", JOptionPane.WARNING_MESSAGE
-                );
+            if (combo.getSelectedIndex() == 0) {
+                JOptionPane.showMessageDialog(null, "Seleccione una opción en los combos.");
                 combo.requestFocus();
                 return false;
             }
-        }
+        }*/
 
+ /*
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             sdf.setLenient(false);
@@ -231,8 +272,12 @@ public class DatosTransferencias {
             campos[2].requestFocus();
             return false;
         }
-
+         */
         // Si se llega aquí, todos los campos son válidos
         return true;
     }
 }
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                 

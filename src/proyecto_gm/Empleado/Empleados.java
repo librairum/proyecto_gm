@@ -113,4 +113,9 @@ public class Empleados {
         this.idTipo = idTipo;
     }
 
+    @Override
+    public String toString() {
+        return nombres + " " + apellidos;
+    }
+ 
 }

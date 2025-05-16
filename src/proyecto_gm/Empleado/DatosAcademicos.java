@@ -32,9 +32,9 @@ public class DatosAcademicos {
         ResultSet rsCar = null;
         try {
             // Preparamos la consultas
-            pstmtIns = conn.prepareStatement("SELECT RazonSocial FROM institucioneseducativas");
-            pstmtFac = conn.prepareStatement("SELECT Descripcion FROM facultades");
-            pstmtCar = conn.prepareStatement("SELECT Descripcion FROM carreras");
+            pstmtIns = conn.prepareStatement("CALL listar_datosacademicos_instituciones()");
+            pstmtFac = conn.prepareStatement("CALL listar_datosacademicos_facultades()");
+            pstmtCar = conn.prepareStatement("CALL listar_datosacademicos_carreras()");
 
             // Ejecutamos
             rsIns = pstmtIns.executeQuery();
@@ -107,9 +107,12 @@ public class DatosAcademicos {
             rs = cstmt.executeQuery();
 
             while (rs.next()) {
+                
                 idIns = rs.getString("Id_ins");
                 idFac = rs.getString("Id_fac");
                 idCar = rs.getString("Id_car");
+                
+                System.out.println("Id_ins: " + idIns + ", Id_fac: " + idFac + ", Id_car: " + idCar);
             }
 
             ids[0] = idIns;

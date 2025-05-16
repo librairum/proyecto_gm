@@ -560,7 +560,7 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
             return; // Se detiene el proceso si los campos requeridos están vacíos
         }
 
-        if (!txtId.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
+        if (esNuevo && !txtId.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
             JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto. Debe ser 'CAR0002'.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             txtId.requestFocus();
             return; // Se detiene el proceso si el formato del Id no es correcto

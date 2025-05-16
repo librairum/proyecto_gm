@@ -30,18 +30,18 @@ public class DatosRecibosHonorarios {
 
     public static void Limpiar(Container contenedor) {
         for (Component componente : contenedor.getComponents()) {
-            if (componente instanceof JTextField ) {
-                ((JTextField)componente).setText("");
-            } else if (componente instanceof JComboBox ) {
-                ((JComboBox)componente).setSelectedIndex(-1);
-            } else if (componente instanceof Container ) {
-                Limpiar((Container)componente);
+            if (componente instanceof JTextField) {
+                ((JTextField) componente).setText("");
+            } else if (componente instanceof JComboBox) {
+                ((JComboBox) componente).setSelectedIndex(-1);
+            } else if (componente instanceof Container) {
+                Limpiar((Container) componente);
             } else {
                 // No hace nada para otros tipos de componentes
             }
         }
     }
-    
+
     public static String GenerarCodigo() {
         String codigoGenerado = "";
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }");) {
@@ -56,19 +56,19 @@ public class DatosRecibosHonorarios {
         }
         return codigoGenerado;
     }
-    
+
     public static void Habilitar(Container contenedor, boolean bloquear) {
         for (Component componente : contenedor.getComponents()) {
             if (componente instanceof JTextField) {
-                ((JTextField)componente).setEnabled(bloquear);
-            } else if (componente instanceof JComboBox ) {
-                ((JComboBox)componente).setEnabled(bloquear);
-            } else if (componente instanceof JButton ) {
-                String button = ((JButton)componente).getName();
+                ((JTextField) componente).setEnabled(bloquear);
+            } else if (componente instanceof JComboBox) {
+                ((JComboBox) componente).setEnabled(bloquear);
+            } else if (componente instanceof JButton) {
+                String button = ((JButton) componente).getName();
                 if (button.equals("guardar") || button.equals("cancelar")) {
-                    ((JButton)componente).setEnabled(bloquear);
+                    ((JButton) componente).setEnabled(bloquear);
                 } else if (button.equals("nuevo") || button.equals("editar") || button.equals("eliminar")) {
-                    ((JButton)componente).setEnabled(!bloquear); // aplicar logica inversa
+                    ((JButton) componente).setEnabled(!bloquear); // aplicar logica inversa
                 }
             } else {
                 // No hace nada para otros tipos de componentes
@@ -81,20 +81,19 @@ public class DatosRecibosHonorarios {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 modelo.addRow(new Object[]{
-                    rs.getString("codigoHonorarios"), 
-                    rs.getString("NroRecibo"), 
+                    rs.getString("Id"),
+                    rs.getString("NroRecibo"),
                     rs.getString("Ruc"),
-                    rs.getString("Nombres"), 
+                    rs.getString("Nombres"),
                     rs.getString("Apellidos"),
-                    rs.getString("Distrito"), 
-                    rs.getString("Direccion"), 
+                    rs.getString("Distrito"),
+                    rs.getString("Direccion"),
                     rs.getString("FormaPago"),
-                    rs.getString("Concepto"), 
-                    rs.getString("ImporteNeto"), 
+                    rs.getString("Concepto"),
+                    rs.getString("ImporteNeto"),
                     rs.getString("RetencionIr"),
-                    rs.getString("ImporteTotal"), 
-                    rs.getString("FechaEmision"),
-                });
+                    rs.getString("ImporteTotal"),
+                    rs.getString("FechaEmision"),});
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -103,7 +102,12 @@ public class DatosRecibosHonorarios {
 
     public static boolean Insertar(ReciboHonorario rec, JTable tabla) {
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL insertar_recibo_honorario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }")) {
-            cstmt.setString(1, rec.getCodigoRecibo());
+
+            // Extraer solo el número entero del código generado
+            String codigo = rec.getCodigoRecibo(); // "REH0002"
+            int id = Integer.parseInt(codigo.replaceAll("[^0-9]", "")); // 2
+
+            cstmt.setInt(1, id); // Aquí se usa como número entero
             cstmt.setString(2, rec.getNroRecibo());
             cstmt.setString(3, rec.getRuc());
             cstmt.setString(4, rec.getNombres());
@@ -116,16 +120,18 @@ public class DatosRecibosHonorarios {
             cstmt.setFloat(11, rec.getRetencionIr());
             cstmt.setFloat(12, rec.getImporteTotal());
             cstmt.setString(13, rec.getFecha());
-            cstmt.execute();
-            JOptionPane.showMessageDialog(null, "Recibo registrado satisfactoriamente.", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
 
+            cstmt.execute();
+
+            JOptionPane.showMessageDialog(null, "Recibo registrado satisfactoriamente.", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
-            Mostrar(modelo); 
-            return true; 
+            Mostrar(modelo);
+            return true;
+
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            return false; 
+            return false;
         }
     }
 
@@ -147,9 +153,9 @@ public class DatosRecibosHonorarios {
             camposTexto[8].setText(tabla.getValueAt(filaSeleccionada, 10).toString());
             camposTexto[9].setText(tabla.getValueAt(filaSeleccionada, 11).toString());
             camposTexto[10].setText(tabla.getValueAt(filaSeleccionada, 12).toString());
-            
-            String distrito = tabla.getValueAt(filaSeleccionada, 1).toString();
-            String pago = tabla.getValueAt(filaSeleccionada, 2).toString();
+
+            String distrito = tabla.getValueAt(filaSeleccionada, 5).toString();
+            String pago = tabla.getValueAt(filaSeleccionada, 7).toString();
 
             for (int i = 0; i < combos[0].getItemCount(); i++) {
                 if (combos[0].getItemAt(i).equals(distrito)) {
@@ -170,44 +176,48 @@ public class DatosRecibosHonorarios {
     }
 
     public static void Actualizar(ReciboHonorario recibo, JTable tabla) {
-    CallableStatement cstmt = null;
-    try {
-        cstmt = conn.prepareCall("{ CALL actualizar_recibo_honorario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
-
-        cstmt.setString(1, recibo.getCodigoRecibo());
-        cstmt.setString(2, recibo.getNroRecibo());
-        cstmt.setString(3, recibo.getRuc());
-        cstmt.setString(4, recibo.getNombres());
-        cstmt.setString(5, recibo.getApellidos());
-        cstmt.setString(6, recibo.getDistrito());
-        cstmt.setString(7, recibo.getDireccion());
-        cstmt.setString(8, recibo.getFormaPago());
-        cstmt.setString(9, recibo.getConcepto());
-        cstmt.setFloat(10, recibo.getImporteNeto());
-        cstmt.setFloat(11, recibo.getRetencionIr());
-        cstmt.setFloat(12, recibo.getImporteTotal());
-        cstmt.setString(13, recibo.getFecha());
-
-        cstmt.execute(); // <<--- ESTA LÍNEA FALTABA 🔥🔥🔥
-
-        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-        modelo.setRowCount(0);
-
-        DatosRecibosHonorarios.Mostrar(modelo);
-
-        JOptionPane.showMessageDialog(null, "Recibo actualizado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    } finally {
+        CallableStatement cstmt = null;
         try {
-            if (cstmt != null) {
-                cstmt.close();
-            }
+
+            String codigo = recibo.getCodigoRecibo(); // ejemplo: "CAR0002"
+            int id = Integer.parseInt(codigo.replaceAll("[^0-9]", "")); // resultado: 2
+
+            cstmt = conn.prepareCall("{ CALL actualizar_recibo_honorario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+
+            cstmt.setInt(1, id); // aquí se usa el ID entero
+            cstmt.setString(2, recibo.getNroRecibo());
+            cstmt.setString(3, recibo.getRuc());
+            cstmt.setString(4, recibo.getNombres());
+            cstmt.setString(5, recibo.getApellidos());
+            cstmt.setString(6, recibo.getDistrito());
+            cstmt.setString(7, recibo.getDireccion());
+            cstmt.setString(8, recibo.getFormaPago());
+            cstmt.setString(9, recibo.getConcepto());
+            cstmt.setFloat(10, recibo.getImporteNeto());
+            cstmt.setFloat(11, recibo.getRetencionIr());
+            cstmt.setFloat(12, recibo.getImporteTotal());
+            cstmt.setString(13, recibo.getFecha());
+
+            cstmt.execute();
+
+            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+            modelo.setRowCount(0);
+
+            DatosRecibosHonorarios.Mostrar(modelo);
+
+            JOptionPane.showMessageDialog(null, "Recibo actualizado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (cstmt != null) {
+                    cstmt.close();
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
-}
 
     public static void Eliminar(JTable tabla) {
         CallableStatement cstmt = null;
@@ -218,7 +228,7 @@ public class DatosRecibosHonorarios {
                 String[] options = {"Sí", "No", "Cancelar"};
                 int opcion = JOptionPane.showOptionDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
                 if (opcion == JOptionPane.YES_OPTION) {
-                    String id = tabla.getModel().getValueAt(fila, 0).toString(); //Se asume que el ID se encuentra en la primera columna
+                    String id = tabla.getModel().getValueAt(fila, 0).toString(); // Se asume que el ID se encuentra en la primera columna
 
                     cstmt = conn.prepareCall("{ CALL eliminar_recibo_honorario(?) }");
                     cstmt.setString(1, id);
@@ -226,6 +236,8 @@ public class DatosRecibosHonorarios {
 
                     DefaultTableModel model = (DefaultTableModel) tabla.getModel();
                     model.removeRow(fila);
+
+                    JOptionPane.showMessageDialog(null, "Registro eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     tabla.clearSelection();
                 }
@@ -254,7 +266,7 @@ public class DatosRecibosHonorarios {
                 return false;
             }
         }
-        
+
         for (JComboBox combo : combos) {
             if (combo.getSelectedItem() == null) {
                 JOptionPane.showMessageDialog(

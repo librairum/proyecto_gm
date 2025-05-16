@@ -39,6 +39,11 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
      */
     public frmEmpleado() {
         initComponents();
+        //  Establecer comandos para los radio buttons
+        rbPracticante.setActionCommand("Practicante");
+        rbEstable.setActionCommand("completo");
+        rbPartime.setActionCommand("Partime");
+
         // Personalizar header
         JTableHeader header = tblEmpleados.getTableHeader();
         header.setDefaultRenderer(new DefaultTableCellRenderer() {
@@ -67,8 +72,9 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         tcm.removeColumn(col);
 
         DatosEmpleados.Habilitar(escritorio, opcionesTipo, false);
-        DatosEmpleados.CargarCombos(cboArea, cboCargo);
-        rbPorDefinir.setSelected(true);
+        DatosEmpleados.CargarArea(cboArea);
+        DatosEmpleados.CargarCargo(cboCargo);
+        rbPartime.setSelected(true);
         DatosEmpleados.Listar(modelo);
 
         // Quitar la edicion de las celdas
@@ -127,13 +133,13 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         tblEmpleados = new javax.swing.JTable();
         rbEstable = new javax.swing.JRadioButton();
         rbPracticante = new javax.swing.JRadioButton();
-        rbPorDefinir = new javax.swing.JRadioButton();
+        rbPartime = new javax.swing.JRadioButton();
         jLabel14 = new javax.swing.JLabel();
         txtDistrito = new javax.swing.JTextField();
 
         opcionesTipo.add(rbEstable);
         opcionesTipo.add(rbPracticante);
-        opcionesTipo.add(rbPorDefinir);
+        opcionesTipo.add(rbPartime);
 
         setClosable(true);
         setIconifiable(true);
@@ -225,7 +231,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Correo:");
 
-        cboCargo.setNextFocusableComponent(rbPorDefinir);
+        cboCargo.setNextFocusableComponent(rbPartime);
 
         cboArea.setNextFocusableComponent(cboCargo);
 
@@ -278,8 +284,6 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
 
         jLabel10.setText("Tip. Empleado");
 
-        tblEmpleados.setBackground(new java.awt.Color(255, 255, 255));
-        tblEmpleados.setForeground(new java.awt.Color(0, 0, 0));
         tblEmpleados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -300,7 +304,6 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         tblEmpleados.setFocusable(false);
         tblEmpleados.setRowHeight(25);
         tblEmpleados.setSelectionBackground(new java.awt.Color(153, 153, 153));
-        tblEmpleados.setSelectionForeground(new java.awt.Color(0, 0, 0));
         tblEmpleados.setShowGrid(true);
         tblEmpleados.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblEmpleados);
@@ -331,17 +334,27 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
             tblEmpleados.getColumnModel().getColumn(11).setPreferredWidth(50);
         }
 
-        rbEstable.setText("Estable");
+        rbEstable.setText("completo");
         rbEstable.setNextFocusableComponent(btnGuardar);
         rbEstable.setActionCommand("Estable");
+        rbEstable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbEstableActionPerformed(evt);
+            }
+        });
 
         rbPracticante.setText("Practicante");
         rbPracticante.setNextFocusableComponent(btnGuardar);
         rbPracticante.setActionCommand("Practicante");
+        rbPracticante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbPracticanteActionPerformed(evt);
+            }
+        });
 
-        rbPorDefinir.setText("Por definir...");
-        rbPorDefinir.setNextFocusableComponent(btnGuardar);
-        rbPorDefinir.setActionCommand("Por definir...");
+        rbPartime.setText("Partime");
+        rbPartime.setNextFocusableComponent(btnGuardar);
+        rbPartime.setActionCommand("Por definir...");
 
         jLabel14.setText("Distrito:");
 
@@ -384,7 +397,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         escritorio.setLayer(jScrollPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorio.setLayer(rbEstable, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorio.setLayer(rbPracticante, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        escritorio.setLayer(rbPorDefinir, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        escritorio.setLayer(rbPartime, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorio.setLayer(jLabel14, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorio.setLayer(txtDistrito, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -465,7 +478,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                                             .addGroup(escritorioLayout.createSequentialGroup()
                                                 .addComponent(rbPracticante)
                                                 .addGap(18, 18, 18)
-                                                .addComponent(rbPorDefinir))))
+                                                .addComponent(rbPartime))))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioLayout.createSequentialGroup()
                                         .addGap(33, 33, 33)
                                         .addComponent(btnDatAcad)
@@ -525,7 +538,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                         .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(rbPracticante)
                             .addComponent(rbEstable)
-                            .addComponent(rbPorDefinir))
+                            .addComponent(rbPartime))
                         .addGap(18, 18, 18)
                         .addComponent(btnDatAcad)
                         .addGap(70, 70, 70)))
@@ -557,7 +570,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         tblEmpleados.clearSelection();
         tblEmpleados.setRowSelectionAllowed(false);
         DatosEmpleados.Habilitar(escritorio, opcionesTipo, true);
-        String codigo = DatosEmpleados.GenerarCodigo("empleados", "E", 4);
+        String codigo = DatosEmpleados.GenerarCodigo("empleados", "IdEmpleado", "E", 4);
         txtId.setText(codigo);
         txtId.setEnabled(false);
         txtApe.requestFocus();
@@ -584,14 +597,11 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // Capturar las opciones seleccionadas en los combo boxes
-        String[] opciones = DatosEmpleados.CapturarOpciones(cboArea, cboCargo, opcionesTipo);
-
-        // Validar los campos del formulario
-        JTextField[] campos = {txtApe, txtNom, txtFecNac, txtCorreo, txtDni, txtCel, txtDistrito, txtDirec};
-        if (!DatosEmpleados.Validar(campos)) {
-            return;
-        }
+        // Validar los campos del formulario (descomenta si ya tienes el método)
+        /*JTextField[] campos = {txtApe, txtNom, txtFecNac, txtCorreo, txtDni, txtCel, txtDistrito, txtDirec};
+    if (!DatosEmpleados.Validar(campos)) {
+        return;
+    }*/
 
         // Crear un objeto Empleados y asignar los valores
         Empleados empleado = new Empleados();
@@ -604,19 +614,22 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         empleado.setCelular(txtCel.getText());
         empleado.setDistrito(txtDistrito.getText());
         empleado.setDireccion(txtDirec.getText());
-        empleado.setIdArea(opciones[0]);
-        empleado.setIdCargo(opciones[1]);
-        empleado.setIdTipo(opciones[2]);
+
+        // Capturar los IDs reales desde métodos separados
+        empleado.setIdArea(DatosEmpleados.CapturarArea(cboArea)); // <- si creaste ese método
+        empleado.setIdCargo(DatosEmpleados.CapturarCargo(cboCargo));
+        empleado.setIdTipo(DatosEmpleados.CapturarTipoEmpleado(opcionesTipo));
 
         // Insertar o actualizar según sea el caso
         if (esNuevo) {
-            DatosEmpleados.Insertar(empleado, tblEmpleados);
+            DatosEmpleados.Insertar(empleado, tblEmpleados, cboArea, cboCargo);
+
         } else {
             DatosEmpleados.Actualizar(empleado, tblEmpleados);
         }
 
         // Limpiar y deshabilitar el formulario
-        DatosEmpleados.Limpiar(escritorio, rbPorDefinir);
+        DatosEmpleados.Limpiar(escritorio, rbPartime);
         DatosEmpleados.Habilitar(escritorio, opcionesTipo, false);
         tblEmpleados.clearSelection();
         tblEmpleados.setRowSelectionAllowed(true);
@@ -624,7 +637,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // Limpiamos y bloqueamos los campos:
-        DatosEmpleados.Limpiar(escritorio, rbPorDefinir);
+        DatosEmpleados.Limpiar(escritorio, rbPartime);
         DatosEmpleados.Habilitar(escritorio, opcionesTipo, false);
         tblEmpleados.clearSelection();
         tblEmpleados.setRowSelectionAllowed(true);
@@ -751,6 +764,14 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         txtDistrito.setText(text);
     }//GEN-LAST:event_txtDistritoFocusLost
 
+    private void rbEstableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbEstableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbEstableActionPerformed
+
+    private void rbPracticanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbPracticanteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbPracticanteActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnDatAcad;
@@ -778,7 +799,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.ButtonGroup opcionesTipo;
     private javax.swing.JRadioButton rbEstable;
-    private javax.swing.JRadioButton rbPorDefinir;
+    private javax.swing.JRadioButton rbPartime;
     private javax.swing.JRadioButton rbPracticante;
     private javax.swing.JTable tblEmpleados;
     private javax.swing.JTextField txtApe;

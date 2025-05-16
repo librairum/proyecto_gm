@@ -61,10 +61,10 @@ public class DatosTipoDocumento {
     }
 
     public static void CargarCombo(JComboBox<String> cboModulo) {
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_modulos() }")) {
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_modulo() }")) {
             ResultSet rs = cstmt.executeQuery();
             while (rs.next()) {
-                cboModulo.addItem(rs.getString("Descripcion"));
+                cboModulo.addItem(rs.getString("descripcion"));
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -75,7 +75,10 @@ public class DatosTipoDocumento {
         try ( PreparedStatement pstmt = conn.prepareStatement("CALL listar_tipodocumento()")) {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                modelo.addRow(new Object[]{rs.getString("xCodigo"), rs.getString("xDescripcion"), rs.getString("xModulo")});
+                modelo.addRow(new Object[]{
+                    rs.getString("IdTipoDocumento"),
+                    rs.getString("Descripcion"),
+                    rs.getString("Modulo")});
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -89,6 +92,8 @@ public class DatosTipoDocumento {
             ResultSet rs = cstmt.executeQuery();
             if (rs.next()) {
                 idModulo = rs.getString("IdModulo");
+            } else {
+                throw new SQLException("No se encontró un Id para el módulo seleccionado.");
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar Opciones", JOptionPane.ERROR_MESSAGE);
@@ -106,6 +111,9 @@ public class DatosTipoDocumento {
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
             Mostrar(modelo);
+
+            
+            //JOptionPane.showMessageDialog(null, "Registro exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             return true;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -139,9 +147,10 @@ public class DatosTipoDocumento {
             // Capturar el IdModulo del ComboBox seleccionado
             String idModulo = Capturar(cboModulo);
 
-            cstmt.setString(1, tip.getCodigoTipoDoc());
-            cstmt.setInt(2, Integer.parseInt(idModulo));
-            cstmt.setString(3, tip.getDescripcion());
+            cstmt.setString(1, tip.getCodigoTipoDoc());         // ID del documento
+            cstmt.setString(2, tip.getDescripcion());           // Descripción (2do parámetro esperado)
+            cstmt.setInt(3, Integer.parseInt(idModulo));        // Id del módulo (3er parámetro esperado)
+
             cstmt.execute();
 
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
@@ -163,7 +172,14 @@ public class DatosTipoDocumento {
                 try ( CallableStatement stmt = conn.prepareCall("{ CALL eliminar_tipodocumento(?) }")) {
                     stmt.setString(1, codigoTipo);
                     stmt.execute();
-                    ((DefaultTableModel) tabla.getModel()).removeRow(fila);
+
+                    // Refrescar la tabla completa
+                    DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+                    modelo.setRowCount(0); // Limpiar
+                    Mostrar(modelo);       // Volver a cargar
+
+                    // Confirmación
+                    JOptionPane.showMessageDialog(null, "Registro eliminado correctamente.", "Eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }

@@ -32,6 +32,26 @@ public class DatosProveedores {
         }
     }
 
+    public static String GenerarCodigo() {
+        String codigoGenerado = "";
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }")) {
+            cstmt.setString(1, "proveedores");   // Tabla
+            cstmt.setString(2, "IdProveedor");    // Campo numérico
+            cstmt.setString(3, "");
+            cstmt.registerOutParameter(4, Types.VARCHAR);    // ID generado como texto
+            cstmt.execute();
+
+            String idGenerado = cstmt.getString(4);
+
+            int id = Integer.parseInt(idGenerado);
+            codigoGenerado = String.format("PRO%06d", id);
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return codigoGenerado;
+    }
+
     /*public static String GenerarCodigo(String tabla, String prefijo, int longitud) {
         CallableStatement cstmt = null;
         String codigo_generado = "";
@@ -129,8 +149,12 @@ public class DatosProveedores {
 
     public static boolean InsertarDatos(Proveedores pro, JTable tabla) {
         System.out.println("Entró al método InsertarDatos...");
+
+        String idTexto = pro.getIdProveedor();
+        int idProveedor = Integer.parseInt(idTexto.substring(3));
+
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL insertar_proveedores(?, ?, ?, ?, ?, ?, ?) }")) {
-            cstmt.setInt(1, Integer.parseInt(pro.getIdProveedor()));
+            cstmt.setInt(1, idProveedor);
             cstmt.setInt(2, Integer.parseInt(pro.getDepartamentoId()));
             cstmt.setString(3, pro.getNombres());
             cstmt.setString(4, pro.getDireccion());

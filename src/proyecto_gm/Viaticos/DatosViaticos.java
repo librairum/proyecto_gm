@@ -19,6 +19,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.ConexionBD;
+import proyecto_gm.Empleado.Empleados;
 
 /**
  *
@@ -31,13 +32,13 @@ public class DatosViaticos {
     // Limpiar campos
     public static void Limpiar(Container contenedor) {
         for (Component componente : contenedor.getComponents()) {
-            if (componente instanceof JTextField ) {
+            if (componente instanceof JTextField) {
                 //componente.setText("");
-                ((JTextField)componente).setText("");
-            } else if (componente instanceof JComboBox ) {
-                ((JComboBox)componente).setSelectedIndex(-1);
-            } else if (componente instanceof Container ) {
-                Limpiar((Container)componente);
+                ((JTextField) componente).setText("");
+            } else if (componente instanceof JComboBox) {
+                ((JComboBox) componente).setSelectedIndex(-1);
+            } else if (componente instanceof Container) {
+                Limpiar((Container) componente);
             } else {
                 // No hace nada para otros tipos de componentes
             }
@@ -47,19 +48,19 @@ public class DatosViaticos {
     // Habilitar campos
     public static void Habilitar(Container contenedor, boolean bloquear) {
         for (Component componente : contenedor.getComponents()) {
-            if (componente instanceof JTextField ) {
+            if (componente instanceof JTextField) {
                 //jTextField.setEnabled(bloquear);
-                ((JTextField)componente).setEnabled(bloquear);
-            } else if (componente instanceof JComboBox ) {
+                ((JTextField) componente).setEnabled(bloquear);
+            } else if (componente instanceof JComboBox) {
                 //jComboBox.setEnabled(bloquear);
-                ((JComboBox)componente).setEnabled(bloquear);
-            } else if (componente instanceof JButton ) {
-                
-                String button = ((JButton)componente).getName();
+                ((JComboBox) componente).setEnabled(bloquear);
+            } else if (componente instanceof JButton) {
+
+                String button = ((JButton) componente).getName();
                 if (button.equals("guardar") || button.equals("cancelar")) {
-                    ((JButton)componente).setEnabled(bloquear);
+                    ((JButton) componente).setEnabled(bloquear);
                 } else if (button.equals("nuevo") || button.equals("editar") || button.equals("eliminar")) {
-                    ((JButton)componente).setEnabled(!bloquear); // aplicar logica inversa
+                    ((JButton) componente).setEnabled(!bloquear); // aplicar logica inversa
                 }
             } else {
                 // No hace nada para otros tipos de componentes
@@ -67,60 +68,60 @@ public class DatosViaticos {
         }
     }
 
-    // Cargar opciones para los combo boxes
-    public static void CargarCombos(JComboBox cboEmpleado, JComboBox cboPeriodo) {
-        PreparedStatement pstmtEmp = null;
-        PreparedStatement pstmtPer = null;
-        ResultSet rsEmp = null;
-        ResultSet rsPer = null;
+    public static void llenarComboBoxViaticos(JComboBox<Empleados> cboEmpleado, JComboBox<String> cboPeriodo) {
         try {
-            // Preparamos la consultas
-            pstmtEmp = conn.prepareStatement("SELECT CONCAT(Nombres, ' ', Apellidos) AS NombreCompleto FROM empleados ORDER BY Nombres ASC");
-            pstmtPer = conn.prepareStatement("SELECT IdPeriodo as Id FROM periodos");
+            PreparedStatement pstmtEmpleado = conn.prepareStatement("CALL listar_viaticos_empleado()");
+            ResultSet rsEmpleado = pstmtEmpleado.executeQuery();
 
-            // Las ejecutamos
-            rsEmp = pstmtEmp.executeQuery();
-            rsPer = pstmtPer.executeQuery();
-
-            // Agregamos las areas en cbxArea
-            while (rsEmp.next()) {
-                String nomEmp = rsEmp.getString("NombreCompleto");
-                cboEmpleado.addItem(nomEmp);
+            while (rsEmpleado.next()) {
+                Empleados e = new Empleados();
+                e.setId(rsEmpleado.getString("IdEmpleado"));
+                e.setNombres(rsEmpleado.getString("Nombre_Completo"));
+                e.setApellidos("");  // para evitar null
+                cboEmpleado.addItem(e);
             }
 
-            // Agregamos los cargos a cbxCargo
-            while (rsPer.next()) {
-                String nomPer = rsPer.getString("Id");
-                cboPeriodo.addItem(nomPer);
+            PreparedStatement pstmtPeriodo = conn.prepareStatement("CALL listar_viaticos_periodo()");
+            ResultSet rsPeriodo = pstmtPeriodo.executeQuery();
+
+            while (rsPeriodo.next()) {
+                cboPeriodo.addItem(rsPeriodo.getString("Mes"));
             }
 
-            // Contenido vacio en los combo boxes
-            cboEmpleado.setSelectedIndex(-1);
-            cboPeriodo.setSelectedIndex(-1); // cambio para agilizar inserciones
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            try {
-                if (rsEmp != null) {
-                    rsEmp.close();
-                }
-                if (rsPer != null) {
-                    rsPer.close();
-                }
-                if (pstmtEmp != null) {
-                    pstmtEmp.close();
-                }
-                if (pstmtPer != null) {
-                    pstmtPer.close();
-                }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al llenar el ComboBox: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    // Mostrar datos
+    public static String capturarIdEmpleado(JComboBox<String> cboEmpleado) {
+        String idEmpleado = "";
+        try ( PreparedStatement pstmt = conn.prepareStatement("SELECT IdEmpleado FROM empleados WHERE LOWER(CONCAT(Nombres, ' ', Apellidos)) = LOWER(?)")) {
+            pstmt.setString(1, cboEmpleado.getSelectedItem().toString().trim());
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                idEmpleado = rs.getString("IdEmpleado");
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar IdEmpleado", JOptionPane.ERROR_MESSAGE);
+        }
+        return idEmpleado;
+    }
+
+    public static String capturarIdPeriodo(JComboBox<String> cboPeriodo) {
+        String idPeriodo = "";
+        try ( PreparedStatement pstmt = conn.prepareStatement("SELECT IdPeriodo FROM periodos WHERE Mes = ?")) {
+            pstmt.setString(1, cboPeriodo.getSelectedItem().toString());
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                idPeriodo = rs.getString("IdPeriodo");
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar IdPeriodo", JOptionPane.ERROR_MESSAGE);
+        }
+        return idPeriodo;
+    }
+
+// Mostrar datos
     public static void Listar(DefaultTableModel modelo) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -128,28 +129,48 @@ public class DatosViaticos {
             pstmt = conn.prepareStatement("CALL listar_viaticos()");
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                Object[] row = new Object[]{rs.getString("Id"), rs.getString("Descripcion"), rs.getString("Pasaje"),
-                    rs.getString("Menu"), rs.getString("Empleado"), rs.getString("Periodo")};
+                Object[] row = new Object[]{
+                    rs.getString("Id"),
+                    rs.getString("Descripcion"),
+                    rs.getString("Pasaje"),
+                    rs.getString("Menu"),
+                    rs.getString("Empleado"),
+                    rs.getString("Periodo")};
                 modelo.addRow(row);
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
+        }
+    }
+
+    public static boolean InsertarDatos(Viaticos via, JTable tabla) {
+        System.out.println("Entró al método InsertarDatos...");
+
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL insertar_viaticos(?, ?, ?, ?, ?) }")) {
+            cstmt.setString(1, via.getDescripcion()); // xDescripcion
+            cstmt.setDouble(2, via.getPasaje());      // xPasaje
+            cstmt.setDouble(3, via.getMenu());        // xMenu
+            cstmt.setInt(4, Integer.parseInt(via.getEmpleado())); // xIdEmpleado
+            cstmt.setInt(5, Integer.parseInt(via.getPeriodo()));  // xIdPeriodo
+            cstmt.execute();
+
+            // Mostrar mensaje de éxito
+            JOptionPane.showMessageDialog(null, "¡Registro exitoso!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            // Refrescar tabla
+            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+            modelo.setRowCount(0);
+            Listar(modelo);
+
+            return true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
     }
 
     // Insertar datos
-    public static void Insertar(Viaticos viatico, JTable tabla) {
+    /*public static void Insertar(Viaticos viatico, JTable tabla) {
         CallableStatement cstmt = null;
         try {
             cstmt = conn.prepareCall("{ CALL insertar_viaticos(?, ?, ?, ?, ?) }");
@@ -177,9 +198,7 @@ public class DatosViaticos {
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-
-    }
-
+    }*/
     // Boton editar
     public static void Editar(JPanel panel, JTable tabla, JTextField[] cajas, JComboBox cboEmp, JComboBox cboPer) {
         // Obtener el indice de la fila seleccionada
@@ -196,7 +215,7 @@ public class DatosViaticos {
                 String dato = tabla.getModel().getValueAt(fila, i).toString();
                 cajas[i].setText(dato);
             }
-            
+
             cajas[0].setEnabled(false);
             cajas[1].requestFocus();
 
@@ -209,81 +228,57 @@ public class DatosViaticos {
     }
 
     // Actualizar datos
-    public static void Actualizar(Viaticos viatico, JTable tabla) {
-        CallableStatement cstmt = null;
-        try {
-            cstmt = conn.prepareCall("{ CALL actualizar_viaticos(?, ?, ?, ?, ?, ?) }");
+    public static boolean Actualizar(Viaticos viatico, JTable tabla) {
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_viaticos(?, ?, ?, ?, ?, ?) }")) {
             cstmt.setInt(1, viatico.getId());
             cstmt.setString(2, viatico.getDescripcion());
-            cstmt.setFloat(3, viatico.getPasaje());
-            cstmt.setFloat(4, viatico.getMenu());
-            cstmt.setString(5, viatico.getEmpleado());
-            cstmt.setString(6, viatico.getPeriodo());
+            cstmt.setDouble(3, viatico.getPasaje());
+            cstmt.setDouble(4, viatico.getMenu());
+            cstmt.setInt(5, Integer.parseInt(viatico.getEmpleado()));
+            cstmt.setInt(6, Integer.parseInt(viatico.getPeriodo()));
 
-            cstmt.execute(); // se actualiza los datos en la BD
+            cstmt.execute();
 
-            // Actualizamos la tabla
+            // Actualizar tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
+            Listar(modelo);
 
-            DatosViaticos.Listar(modelo);
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            try {
-                if (cstmt != null) {
-                    cstmt.close();
-                }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            JOptionPane.showMessageDialog(null, "¡Viático actualizado correctamente!");
+            return true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al actualizar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
     }
 
     // Eliminar datos
     public static void Eliminar(JTable tabla) {
-        CallableStatement cstmt = null;
-        try {
-            // Obtener el indice de la fila seleccionada
-            int fila = tabla.getSelectedRow();
+        int fila = tabla.getSelectedRow();
 
-            if (fila >= 0) {
-                String[] options = {"Sí", "No", "Cancelar"};
-                int opcion = JOptionPane.showOptionDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
-                if (opcion == JOptionPane.YES_OPTION) {
-                    // Obtener los datos de fila seleccionada
-                    int id = Integer.parseInt(tabla.getModel().getValueAt(fila, 0).toString()); //Se asume que el ID se encuentra en la primera columna
-
-                    // Ejecutar el procedimiento almacenado
-                    cstmt = conn.prepareCall("{ CALL eliminar_viaticos(?) }");
+        if (fila >= 0) {
+            int confirm = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este viático?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                try ( CallableStatement cstmt = conn.prepareCall("{ CALL eliminar_viaticos(?) }")) {
+                    int id = Integer.parseInt(tabla.getModel().getValueAt(fila, 0).toString());
                     cstmt.setInt(1, id);
                     cstmt.execute();
 
-                    // Actualizar el JTable
-                    DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-                    model.removeRow(fila);
-                    // JOptionPane.showMessageDialog(null, "La fila ha sido eliminada exitosamente");                
-                } else {
-                    tabla.clearSelection();
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            }
+                    // Actualizar tabla
+                    DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+                    modelo.setRowCount(0);
+                    Listar(modelo);
 
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            try {
-                if (cstmt != null) {
-                    cstmt.close();
+                    JOptionPane.showMessageDialog(null, "¡Viático eliminado correctamente!");
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Error al eliminar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }
-    
+
     // Validar campos
     public static boolean Validar(JTextField[] campos, JComboBox[] combos) {
         // Comprobamos cajas vacías
@@ -296,7 +291,7 @@ public class DatosViaticos {
                 return false;
             }
         }
-        
+
         for (JComboBox combo : combos) {
             if (combo.getSelectedItem() == null) {
                 JOptionPane.showMessageDialog(
@@ -306,7 +301,7 @@ public class DatosViaticos {
                 return false;
             }
         }
-        
+
         return true;
     }
 }

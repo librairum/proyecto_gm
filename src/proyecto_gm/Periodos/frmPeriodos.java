@@ -229,6 +229,18 @@ public class frmPeriodos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+
+        String codigo = DatosPeriodo.GenerarCodigo(); 
+
+        if (codigo != null && !codigo.isEmpty()) {
+            txtId.setText(codigo);
+            txtId.setEnabled(false);
+            txtId.setEditable(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+
         tblPeriodo.clearSelection();
         tblPeriodo.setRowSelectionAllowed(false);
         // Habilitamos los campos:

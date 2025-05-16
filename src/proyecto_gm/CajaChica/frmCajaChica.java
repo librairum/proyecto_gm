@@ -4,7 +4,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -20,17 +24,21 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
 
     boolean esNuevo = false;
     String periodo;
-    
-    public frmCajaChica()  {
+
+    public frmCajaChica() {
         initComponents();
-        initializeTable();
+        //initializeTable();
+
+        DatosCajaChica.CargarCombo(cboNroOperacion);
         //  Crea un objeto ComboBox y asigna el modelo creado en el paso anterior
         DatosCajaChica.CargarCombo(cbotransferencias);
         //  Agrega el objeto ComboBox a la celda correspondiente en cada fila de la tabla tblCajaChica
         TableColumn comboColumn = tblCajaChica.getColumnModel().getColumn(1); // Reemplaza "columna" por el índice de la columna donde deseas agregar el ComboBox
         comboColumn.setCellEditor(new DefaultCellEditor(cbotransferencias));
         DatosCajaChica.Habilitar(escritorio, false);
-        calcularSumaTotal();
+
+        cargarDatosCajaChica(); //mostrar en JTable
+        //calcularSumaTotal();
         // Personalizar header
         JTableHeader header = tblCajaChica.getTableHeader();
         header.setDefaultRenderer(new DefaultTableCellRenderer() {
@@ -52,6 +60,29 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
 
     }
 
+    private void cargarDatosCajaChica() {
+        DefaultTableModel modelo = (DefaultTableModel) tblCajaChica.getModel();
+        modelo.setRowCount(0); // Limpiar la tabla
+        DatosCajaChica.Mostrar(modelo);
+    }
+
+    public static String formatearFecha(String fecha) {
+        try {
+            // Suponiendo que la fecha que recibes está en formato dd/MM/yyyy
+            SimpleDateFormat formatoEntrada = new SimpleDateFormat("dd/MM/yyyy");
+            Date fechaDate = formatoEntrada.parse(fecha);
+
+            // Formateamos la fecha a yyyy-MM-dd para MySQL
+            SimpleDateFormat formatoSalida = new SimpleDateFormat("yyyy-MM-dd");
+            return formatoSalida.format(fechaDate);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al formatear la fecha: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return "";
+    }
+
+    /*
     private void calcularSumaTotal() {
         // Declarar una variable para almacenar la suma total
         float total = 0.0f;
@@ -69,7 +100,8 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         // Asignar el total al JTextField "txtTotal"
         txtTotal.setText(String.valueOf(total));
     }
-
+     */
+ /*  
     private void initializeTable() {
         final int entradaColumn = 4; // Número de columna de entrada
         final int salidaColumn = 5; // Número de columna de salida
@@ -107,7 +139,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
             }
         });
     }
-
+     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -122,8 +154,19 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         cbotransferencias = new javax.swing.JComboBox<>();
         txtTotal = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        cboPeriodo = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+        txtId = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        cboNroOperacion = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        txtFecha = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtDescripcion = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtEntrada = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        txtSalida = new javax.swing.JTextField();
+        btnEditar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -163,7 +206,6 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
             }
         });
 
-        tblCajaChica.setBackground(new java.awt.Color(255, 255, 255));
         tblCajaChica.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -172,22 +214,9 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
                 "Id", "NroOperacion", "Fecha", "Descripcion", "Entrada", "Salida", "Saldo"
             }
         ));
-        cbotransferencias.addItemListener(new java.awt.event.ItemListener() {
-        public void itemStateChanged(java.awt.event.ItemEvent evt) {
-            if (!primerEvento) {
-                primerEvento = true;
-                return; // Ignorar el primer evento
-            }
-            if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-                System.out.println("Click");
-                DatosCajaChica.Fecha(tblCajaChica, cbotransferencias);
-            }
-        }
-    });
         tblCajaChica.setFocusable(false);
         tblCajaChica.setRowHeight(25);
         tblCajaChica.setSelectionBackground(new java.awt.Color(153, 153, 153));
-        tblCajaChica.setSelectionForeground(new java.awt.Color(0, 0, 0));
         tblCajaChica.setShowGrid(true);
         jScrollPane1.setViewportView(tblCajaChica);
         if (tblCajaChica.getColumnModel().getColumnCount() > 0) {
@@ -200,16 +229,32 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
             tblCajaChica.getColumnModel().getColumn(6).setResizable(false);
         }
 
-        txtTotal.setEnabled(false);
-
         jLabel1.setText("Saldo Actual:");
 
-        jLabel2.setText("Periodo:");
+        jLabel3.setText("ID:");
 
-        cboPeriodo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "012023", "022023", "032023", "042023", "052023" }));
-        cboPeriodo.addActionListener(new java.awt.event.ActionListener() {
+        txtId.setEnabled(false);
+
+        jLabel4.setText("N° Operacion:");
+
+        cboNroOperacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboPeriodoActionPerformed(evt);
+                cboNroOperacionActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Fecha: ");
+
+        jLabel6.setText("Descripcion:");
+
+        jLabel7.setText("Entrada: ");
+
+        jLabel8.setText("Salida: ");
+
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
             }
         });
 
@@ -218,26 +263,53 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         escritorioLayout.setHorizontalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(escritorioLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(escritorioLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(escritorioLayout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(32, 32, 32)
+                                .addComponent(jLabel8)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(37, 37, 37)
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(escritorioLayout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(15, 15, 15)
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(cboNroOperacion, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(47, 47, 47)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28, 28, 28)
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(escritorioLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 746, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(escritorioLayout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(btnAgregar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEditar)
+                        .addGap(5, 5, 5)
                         .addComponent(btnEliminar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnGuardar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDeshacer)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(cboPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(128, 128, 128)
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 746, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(20, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnDeshacer)))
+                .addContainerGap(14, Short.MAX_VALUE))
             .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(escritorioLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -248,24 +320,39 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(escritorioLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnDeshacer)
-                    .addComponent(btnAgregar)
-                    .addComponent(btnEliminar)
-                    .addComponent(btnGuardar)
-                    .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1)
-                        .addComponent(jLabel2)
-                        .addComponent(cboPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btnDeshacer)
+                        .addComponent(btnAgregar)
+                        .addComponent(btnEliminar)
+                        .addComponent(btnGuardar))
+                    .addComponent(btnEditar))
+                .addGap(28, 28, 28)
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(cboNroOperacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
                 .addGap(18, 18, 18)
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtSalida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(26, 26, 26)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(escritorioLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGap(0, 153, Short.MAX_VALUE)
                     .addComponent(cbotransferencias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 154, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -281,93 +368,120 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-
-        CajaChica caj = new CajaChica();
-
-        // Dentro del método donde capturas los datos de la nueva fila
-        int newRow = tblCajaChica.getSelectedRow(); // Última fila ingresada
-        String transferencia = DatosCajaChica.CapturarID(tblCajaChica.getValueAt(newRow, 1).toString());
-
-        caj.setId((String) tblCajaChica.getValueAt(newRow, 0)); // Asigna el valor de la primera columna a campo1
-
-        caj.setIdTransferenciasBancarias(transferencia);
-        caj.setFecha((String) tblCajaChica.getValueAt(newRow, 2));
-        caj.setDescripcion((String) tblCajaChica.getValueAt(newRow, 3));
-        // Validar y convertir el valor de entrada
-        Object entradaValue = tblCajaChica.getValueAt(newRow, 4);
-        if (entradaValue instanceof String) {
-            try {
-                caj.setEntrada(Float.parseFloat((String) entradaValue));
-            } catch (NumberFormatException ex) {
-                // Manejar la excepción si el valor no es un número válido
-                System.out.println("Error al convertir entrada a float: " + ex.getMessage());
-            }
-        }
-
-        // Validar y convertir el valor de salida
-        Object salidaValue = tblCajaChica.getValueAt(newRow, 5);
-        if (salidaValue instanceof String) {
-            try {
-                caj.setSalida(Float.parseFloat((String) salidaValue));
-            } catch (NumberFormatException ex) {
-                // Manejar la excepción si el valor no es un número válido
-                System.out.println("Error al convertir salida a float: " + ex.getMessage());
-            }
-        }
-
-        // Validar y convertir el valor de saldo
-        Object saldoValue = tblCajaChica.getValueAt(newRow, 6);
-        if (saldoValue instanceof String) {
-            try {
-                caj.setSaldo(Float.parseFloat((String) saldoValue));
-            } catch (NumberFormatException ex) {
-                // Manejar la excepción si el valor no es un número válido
-                System.out.println("Error al convertir saldo a float: " + ex.getMessage());
-            }
-        }
-
-        System.out.println(caj.getSaldo());
-
-        // Preguntamos si haremos un INSERT o un UPDATE
+        // Verificar si es una nueva fila (cuando 'esNuevo' es verdadero)
         if (esNuevo) {
-            // Insertar nuevo registro
-            if (DatosCajaChica.validarCamposCompletados(tblCajaChica)) {
-                DatosCajaChica.Insertar(caj, tblCajaChica, periodo);
-                JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-                DatosCajaChica.Habilitar(escritorio, false);
+            // Obtener el siguiente ID antes de la inserción
+            String siguienteId = DatosCajaChica.ObtenerSiguienteIdCajaChica();
+            txtId.setText(siguienteId);  // Asigna el siguiente ID al campo txtId
 
-                tblCajaChica.clearSelection();
-                // Habilitamos la seleccion de filas de la tabla
-                tblCajaChica.setRowSelectionAllowed(true);
+            // Crear el objeto CajaChica y asignar los valores de los campos de texto
+            CajaChica caj = new CajaChica();
+            caj.setId(txtId.getText());  // ID capturado anteriormente
+            caj.setIdTransferenciasBancarias(DatosCajaChica.CapturarIdOperacion(cboNroOperacion));
+            String fechaFormateada = formatearFecha(txtFecha.getText());  // Formateamos la fecha antes de asignarla
+            caj.setFecha(fechaFormateada);
+
+            caj.setDescripcion(txtDescripcion.getText());
+
+            // Parsear los valores de Entrada, Salida y Total
+            try {
+                caj.setEntrada(Float.parseFloat(txtEntrada.getText()));
+                caj.setSalida(Float.parseFloat(txtSalida.getText()));
+                caj.setSaldo(Float.parseFloat(txtTotal.getText()));  // Usamos txtTotal para el saldo calculado
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Por favor ingrese valores válidos en Entrada, Salida y Total", "Error", JOptionPane.ERROR_MESSAGE);
+                return; // Salir si los valores no son válidos
             }
-        } else {
-            if (DatosCajaChica.validarCamposCompletados(tblCajaChica)) {
-                DatosCajaChica.Actualizar(caj, tblCajaChica, periodo);
-                JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
-                DatosCajaChica.Habilitar(escritorio, false);
 
-                tblCajaChica.clearSelection();
-                // Habilitamos la seleccion de filas de la tabla
-                tblCajaChica.setRowSelectionAllowed(true);
+            // Llamar al método Insertar para guardar en la base de datos
+            DatosCajaChica.Insertar(caj, tblCajaChica, ""); // Se pasa la tabla, aunque no se usa periodo en este caso
+
+            // Limpiar los campos para un nuevo registro
+            txtFecha.setText("");
+            txtDescripcion.setText("");
+            txtEntrada.setText("");
+            txtSalida.setText("");
+            txtTotal.setText("");
+
+            // Recargar la tabla para reflejar los nuevos datos
+            cargarDatosCajaChica(); // Asegúrate de que este método esté implementado correctamente para cargar los datos en la tabla
+
+            // Cambiar el estado del formulario
+            esNuevo = false;
+            DatosCajaChica.Habilitar(escritorio, false);
+        } else {
+            // Actualizar datos existentes desde los campos
+            CajaChica caj = new CajaChica();
+
+            caj.setId(txtId.getText());
+            caj.setIdTransferenciasBancarias(DatosCajaChica.CapturarIdOperacion(cboNroOperacion));
+            String fechaFormateada = formatearFecha(txtFecha.getText());
+            caj.setFecha(fechaFormateada);
+            caj.setDescripcion(txtDescripcion.getText());
+
+            try {
+                caj.setEntrada(Float.parseFloat(txtEntrada.getText()));
+                caj.setSalida(Float.parseFloat(txtSalida.getText()));
+                caj.setSaldo(Float.parseFloat(txtTotal.getText()));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Valores inválidos en los campos Entrada, Salida o Total", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Llamar al método Actualizar
+            DatosCajaChica.Actualizar(caj, tblCajaChica, "");
+
+            JOptionPane.showMessageDialog(null, "Registro actualizado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
+
+            // Refrescar tabla
+            cargarDatosCajaChica();
+            // Limpiar los campos después de actualizar
+            txtId.setText("");
+            txtFecha.setText("");
+            txtDescripcion.setText("");
+            txtEntrada.setText("");
+            txtSalida.setText("");
+            txtTotal.setText("");
+
+            // Reiniciar combo box si lo deseas (opcional)
+            if (cboNroOperacion.getItemCount() > 0) {
+                cboNroOperacion.setSelectedIndex(0);
             }
         }
-        calcularSumaTotal();
+
+        // Después de guardar, desactivar campos o limpiar
+        DatosCajaChica.Habilitar(escritorio, false);
 
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        // TODO add your handling code
+        // Habilitar componentes
         DatosCajaChica.Habilitar(escritorio, true);
-        DatosCajaChica.NuevaFila(tblCajaChica);
+
+        // Agregar nueva fila en la tabla
+        //DatosCajaChica.NuevaFila(tblCajaChica);
+        // Capturar el siguiente ID y mostrarlo en el campo de texto
+        txtId.setText(DatosCajaChica.ObtenerSiguienteIdCajaChica());
+        txtId.setEnabled(false); // opcional: para evitar edición manual
+
+        // Indicar que es un nuevo registro
         esNuevo = true;
-        calcularSumaTotal();
+
+        // Calcular totales si aplica
+        //calcularSumaTotal();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
-        // TODO add your handling code here:
-        DatosCajaChica.Limpiar(tblCajaChica);
+        // Agrupa tus campos
+        JTextField[] camposTexto = {txtId, txtFecha, txtDescripcion, txtEntrada, txtSalida, txtTotal};
+        JComboBox[] combos = {cboNroOperacion};
+
+        // Limpia los campos
+        DatosCajaChica.LimpiarCampos(camposTexto, combos);
+
+        // Deshabilita los campos
         DatosCajaChica.Habilitar(escritorio, false);
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
@@ -375,32 +489,77 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         DatosCajaChica.Eliminar(tblCajaChica);
         DatosCajaChica.Habilitar(escritorio, false);
-        calcularSumaTotal();
+        //calcularSumaTotal();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
-    private void cboPeriodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboPeriodoActionPerformed
-        // TODO add your handling code here:}
-        DefaultTableModel modelo = (DefaultTableModel) tblCajaChica.getModel();
-        modelo.setRowCount(0);
-        String periodo = cboPeriodo.getSelectedItem().toString();
-        DatosCajaChica.Mostrar(modelo, periodo);
+    private void cboNroOperacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboNroOperacionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboNroOperacionActionPerformed
 
-        calcularSumaTotal();
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        int filaSeleccionada = tblCajaChica.getSelectedRow();
 
-    }//GEN-LAST:event_cboPeriodoActionPerformed
+        if (filaSeleccionada >= 0) {
+
+            btnDeshacer.setEnabled(true);
+
+            String id = tblCajaChica.getValueAt(filaSeleccionada, 0).toString();
+            String nroOperacion = tblCajaChica.getValueAt(filaSeleccionada, 1).toString();
+            String fechaOriginal = tblCajaChica.getValueAt(filaSeleccionada, 2).toString();
+            String descripcion = tblCajaChica.getValueAt(filaSeleccionada, 3).toString();
+            String entrada = tblCajaChica.getValueAt(filaSeleccionada, 4).toString();
+            String salida = tblCajaChica.getValueAt(filaSeleccionada, 5).toString();
+            String total = tblCajaChica.getValueAt(filaSeleccionada, 6).toString();
+
+            // Formatear la fecha a dd/MM/yyyy
+            String fechaFormateada = "";
+            try {
+                SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyy-MM-dd"); // o el formato en el que venga tu fecha
+                SimpleDateFormat formatoSalida = new SimpleDateFormat("dd/MM/yyyy");
+                Date fecha = formatoEntrada.parse(fechaOriginal);
+                fechaFormateada = formatoSalida.format(fecha);
+            } catch (ParseException ex) {
+                fechaFormateada = fechaOriginal; // si falla, usa la fecha original
+            }
+
+            txtId.setText(id);
+            cboNroOperacion.setSelectedItem(nroOperacion);
+            txtFecha.setText(fechaFormateada);
+            txtDescripcion.setText(descripcion);
+            txtEntrada.setText(entrada);
+            txtSalida.setText(salida);
+            txtTotal.setText(total);
+
+            // Habilitar botón Deshacer
+            btnDeshacer.setEnabled(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, selecciona una fila para editar.");
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnDeshacer;
+    private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JComboBox<String> cboPeriodo;
+    private javax.swing.JComboBox<String> cboNroOperacion;
     private javax.swing.JComboBox<String> cbotransferencias;
     private javax.swing.JPanel escritorio;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblCajaChica;
+    private javax.swing.JTextField txtDescripcion;
+    private javax.swing.JTextField txtEntrada;
+    private javax.swing.JTextField txtFecha;
+    private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtSalida;
     private javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables
 }

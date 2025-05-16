@@ -418,8 +418,19 @@ public class frmContacto extends javax.swing.JInternalFrame {
         DatosContacto.habilitarCampos(escritorio);
 
         // Agrupar las cajas de texto
-        JTextField[] camposTexto = {txtId, txtNombre,txtFecha,txtPersonas,txtEmpresa,txtCargo,txtCorreo,txtTelefono,txtDireccion,txtNota};
-
+        JTextField[] camposTexto = new JTextField[10];
+        camposTexto[0] = txtId;
+        camposTexto[1] = txtNombre;
+        camposTexto[2] = txtFecha;
+        camposTexto[3] = txtPersonas;
+        camposTexto[4] = txtEmpresa;
+        camposTexto[5] = txtCargo;
+        camposTexto[6] = txtCorreo;
+        camposTexto[7] = txtTelefono;
+        camposTexto[8] = txtDireccion;
+        camposTexto[9] = txtNota;
+        
+        
         JComboBox[] combos = {cboDepartamento};
         DatosContacto.Editar(tblContacto, camposTexto, combos);
 

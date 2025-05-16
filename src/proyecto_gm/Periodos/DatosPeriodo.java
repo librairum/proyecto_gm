@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -30,9 +31,9 @@ public class DatosPeriodo {
     public static void Limpiar(Container contenedor) {
         for (Component componente : contenedor.getComponents()) {
             if (componente instanceof JTextField) {
-                ((JTextField)componente).setText("");
-            } else if (componente instanceof Container ) {
-                Limpiar((Container)componente);
+                ((JTextField) componente).setText("");
+            } else if (componente instanceof Container) {
+                Limpiar((Container) componente);
             } else {
                 // No hace nada para otros tipos de componentes
             }
@@ -42,14 +43,14 @@ public class DatosPeriodo {
     // Habilitar campos
     public static void Habilitar(Container contenedor, boolean bloquear) {
         for (Component componente : contenedor.getComponents()) {
-            if (componente instanceof JTextField ) {
-                ((JTextField)componente).setEnabled(bloquear);
-            } else if (componente instanceof JButton ) {
-                String button = ((JButton)componente).getName();
+            if (componente instanceof JTextField) {
+                ((JTextField) componente).setEnabled(bloquear);
+            } else if (componente instanceof JButton) {
+                String button = ((JButton) componente).getName();
                 if (button.equals("guardar") || button.equals("cancelar")) {
-                    ((JButton)componente).setEnabled(bloquear);
+                    ((JButton) componente).setEnabled(bloquear);
                 } else if (button.equals("nuevo") || button.equals("editar") || button.equals("eliminar")) {
-                    ((JButton)componente).setEnabled(!bloquear); // aplicar logica inversa
+                    ((JButton) componente).setEnabled(!bloquear); // aplicar logica inversa
                 } else {
                     // No hace nada para otros tipos de componentes
                 }
@@ -58,56 +59,112 @@ public class DatosPeriodo {
     }
     // Mostrar datos
 
+    public static String GenerarCodigo() {
+        String codigoGenerado = "";
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }")) {
+            cstmt.setString(1, "periodos");   // Tabla
+            cstmt.setString(2, "IdPeriodo");    // Campo numérico
+            cstmt.setString(3, "");
+            cstmt.registerOutParameter(4, Types.VARCHAR);    // ID generado como texto
+            cstmt.execute();
+
+            String idGenerado = cstmt.getString(4);
+
+            int id = Integer.parseInt(idGenerado);
+            codigoGenerado = String.format("PER%06d", id);
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return codigoGenerado;
+    }
+    
+    
     public static void Listar(DefaultTableModel modelo) {
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
         try {
-            pstmt = conn.prepareStatement("CALL listar_periodos()");
-            rs = pstmt.executeQuery();
+            PreparedStatement pstmt = conn.prepareStatement("CALL listar_periodos()");
+            ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                Object[] row = new Object[]{rs.getString("Id"), rs.getString("Descripcion")};
+                Object[] row = new Object[]{
+                    rs.getString("codigoPeriodo"),
+                    rs.getString("descripcion")};
                 modelo.addRow(row);
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
         }
     }
 
     // Insertar datos
     public static void Insertar(Periodos periodo, JTable tabla) {
-        CallableStatement cstmt = null;
         try {
-            cstmt = conn.prepareCall("{ CALL insertar_periodos(?, ?) }");
-            cstmt.setString(1, periodo.getId());
-            cstmt.setString(2, periodo.getDescripcion());
-            cstmt.execute(); // se inserta los datos a la BD
+            if (periodo.getId().isEmpty() || periodo.getDescripcion().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Ingrese el Id y el Mes (en letras)", "Sistema", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
-            // Actualizamos la tabla
+            // Convertir mes en texto (descripción) a número
+            int mesNumero = obtenerNumeroMes(periodo.getDescripcion());
+            if (mesNumero == 0) {
+                JOptionPane.showMessageDialog(null, "Mes inválido. Ejemplo válido: Enero", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Llamar al procedimiento almacenado
+            
+            String idTexto = periodo.getId();
+            int idPeriodo = Integer.parseInt(idTexto.substring(3)); 
+            
+            CallableStatement cstmt = conn.prepareCall("{ CALL insertar_periodos(?, ?, ?) }");
+            cstmt.setInt(1, idPeriodo); // IdPeriodo
+            cstmt.setInt(2, mesNumero); // Mes como número
+            cstmt.setString(3, periodo.getDescripcion()); // Descripción: mes en letras
+            cstmt.execute();
+            cstmt.close();
+
+            // Mostrar mensaje de éxito
+            JOptionPane.showMessageDialog(null, "Registro insertado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            // Actualizar la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            modelo.setRowCount(0);
-            DatosPeriodo.Listar(modelo);
+            modelo.setRowCount(0); // Limpiar filas
+            DatosPeriodo.Listar(modelo); // Rellenar tabla de nuevo
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            try {
-                if (cstmt != null) {
-                    cstmt.close();
-                }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
+        }
+    }
+
+// Método auxiliar para convertir el mes en texto a número
+    private static int obtenerNumeroMes(String nombreMes) {
+        nombreMes = nombreMes.toLowerCase().trim();
+        switch (nombreMes) {
+            case "enero":
+                return 1;
+            case "febrero":
+                return 2;
+            case "marzo":
+                return 3;
+            case "abril":
+                return 4;
+            case "mayo":
+                return 5;
+            case "junio":
+                return 6;
+            case "julio":
+                return 7;
+            case "agosto":
+                return 8;
+            case "septiembre":
+                return 9;
+            case "octubre":
+                return 10;
+            case "noviembre":
+                return 11;
+            case "diciembre":
+                return 12;
+            default:
+                return 0;
         }
     }
 
@@ -138,18 +195,34 @@ public class DatosPeriodo {
     // Actualizar datos
     public static void Actualizar(Periodos periodo, JTable tabla) {
         CallableStatement cstmt = null;
+
+        // Confirmación antes de actualizar
+        int opcion = JOptionPane.showConfirmDialog(
+                null,
+                "¿Está seguro de que desea actualizar este periodo?",
+                "Confirmar actualización",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (opcion != JOptionPane.YES_OPTION) {
+            return; // Si el usuario elige "No", se cancela
+        }
+
         try {
             cstmt = conn.prepareCall("{ CALL actualizar_periodos(?, ?) }");
             cstmt.setString(1, periodo.getId());
             cstmt.setString(2, periodo.getDescripcion());
 
-            cstmt.execute(); // se actualiza los datos en la BD
+            cstmt.execute(); // Ejecutar actualización
 
-            // Actualizamos la tabla
+            // Actualizar tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
-
             DatosPeriodo.Listar(modelo);
+
+            // Mostrar mensaje de éxito
+            JOptionPane.showMessageDialog(null, "Periodo actualizado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -218,11 +291,11 @@ public class DatosPeriodo {
                 return false;
             }
 
-            if (campo.getName().equals("id") && campo.getText().length() < 6) {
+            /*if (campo.getName().equals("id") && campo.getText().length() < 6) {
                 JOptionPane.showMessageDialog(null, "El ID debe contener 6 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 campo.requestFocus();
                 return false;
-            }
+            }*/
         }
         return true;
     }

@@ -253,40 +253,48 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
-        String opcion = DatosTipoDocumento.Capturar(cboModulo);
-        // Creamos un objeto tipo Empleado
-        TipoDocumento tip = new TipoDocumento(txtId.getText(), opcion, txtDescripcion.getText());
+        if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Completar bien los campos");
+            return;
+        }
 
-        tip.setDescripcion(txtDescripcion.getText());
         if (esNuevo) {
-            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            } else if (!txtId.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
+            if (!txtId.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
                 JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto. Debe ser 'CAR0002'.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 txtId.requestFocus();
-            } else {
-                if (DatosTipoDocumento.Insertar(tip, tblTipoDocumento)) {
-                    DatosTipoDocumento.Limpiar(escritorio);
-                    DatosTipoDocumento.Habilitar(escritorio, false);
-                    tblTipoDocumento.clearSelection();
-                    tblTipoDocumento.setRowSelectionAllowed(true);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        } else {
-            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
                 return;
-            } else {
-                tip.setCodigoTipoDoc(txtId.getText());
-                DatosTipoDocumento.Actualizar(tip, tblTipoDocumento, cboModulo);
+            }
+
+            int idNumerico = Integer.parseInt(txtId.getText().replaceAll("\\D+", ""));
+            String idModuloStr = DatosTipoDocumento.Capturar(cboModulo);
+            int idModulo = Integer.parseInt(idModuloStr.replaceAll("\\D+", ""));
+
+            TipoDocumento tip = new TipoDocumento(String.valueOf(idNumerico), String.valueOf(idModulo), txtDescripcion.getText());
+
+            if (DatosTipoDocumento.Insertar(tip, tblTipoDocumento)) {
+                JOptionPane.showMessageDialog(null, "Registro exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 DatosTipoDocumento.Limpiar(escritorio);
                 DatosTipoDocumento.Habilitar(escritorio, false);
                 tblTipoDocumento.clearSelection();
                 tblTipoDocumento.setRowSelectionAllowed(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
             }
+        } else {
+            // Para actualizar no es necesario validar el formato del ID
+            String idModuloStr = DatosTipoDocumento.Capturar(cboModulo);
+            int idModulo = Integer.parseInt(idModuloStr.replaceAll("\\D+", ""));
+
+            TipoDocumento tip = new TipoDocumento("0006", "2", "Carnet de Extranjería");
+            tip.setCodigoTipoDoc(txtId.getText().replaceAll("\\D+", "")); // Solo el número
+            tip.setIdModulo(String.valueOf(idModulo));
+            tip.setDescripcion(txtDescripcion.getText());
+
+            DatosTipoDocumento.Actualizar(tip, tblTipoDocumento, cboModulo);
+            DatosTipoDocumento.Limpiar(escritorio);
+            DatosTipoDocumento.Habilitar(escritorio, false);
+            tblTipoDocumento.clearSelection();
+            tblTipoDocumento.setRowSelectionAllowed(true);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
