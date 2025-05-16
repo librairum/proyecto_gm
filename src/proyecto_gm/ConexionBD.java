@@ -11,7 +11,7 @@ public class ConexionBD {
     private static final String CONN_STRING = "jdbc:mysql://localhost:3306/gmingenieros";
 
     private ConexionBD() {
-        // Evitar instanciación
+        // Evitar instanciación 
     }
 
     public static Connection getConnection() {

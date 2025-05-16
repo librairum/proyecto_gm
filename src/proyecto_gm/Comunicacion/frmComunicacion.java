@@ -440,20 +440,8 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
             String codDoc, String origen, String destino, String flujo,
             String asunto, String fecha, String codDocResp, String estado, String enlace) {
 
-        System.out.println("📋 Datos recibidos en setDatos:");
-        System.out.println("ID: " + id);
-        System.out.println("Periodo: " + periodo);
-        System.out.println("Proyecto: " + proyecto);
-        System.out.println("Tipo: " + tipo);
-        System.out.println("CodDoc: " + codDoc);
-        System.out.println("Origen: " + origen);
-        System.out.println("Destino: " + destino);
-        System.out.println("Flujo: " + flujo);
-        System.out.println("Asunto: " + asunto);
-        System.out.println("Fecha: " + fecha);
-        System.out.println("CodDocResp: " + codDocResp);
-        System.out.println("Estado: " + estado);
-        System.out.println("Enlace: " + enlace);
+        System.out.println("Datos recibidos en setDatos:");
+        System.out.println("Fecha original: " + fecha); // Verificar formato recibido
 
         txtId.setText(id);
         cboPeriodo.setSelectedItem(periodo);
@@ -484,7 +472,22 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
         }
 
         txtAsunto.setText(asunto);
-        txtFecha.setText(fecha);
+
+        // Conversión de fecha al formato dd/MM/yyyy
+        try {
+            SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat formatoSalida = new SimpleDateFormat("dd/MM/yyyy");
+
+            java.util.Date fechaDate = formatoEntrada.parse(fecha);
+            String fechaFormateada = formatoSalida.format(fechaDate);
+
+            txtFecha.setText(fechaFormateada); //  dd/MM/yyyy
+
+        } catch (Exception e) {
+            System.err.println("Error al convertir fecha: " + e.getMessage());
+            txtFecha.setText(fecha);
+        }
+
         txtCodDocRespuesta.setText(codDocResp);
 
         for (int i = 0; i < cboEstado.getItemCount(); i++) {
@@ -496,7 +499,7 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
 
         txtEnlace.setText(enlace);
     }
-    
+
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         System.out.println("Click en Guardar");
@@ -619,7 +622,7 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
         HabilitarBotones(false);
         HabilitarControles(true);
         Limpiar();
-        //Iniciarvalores();
+        //Iniciarvalores(); 
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void HabilitarBotones(boolean estado) {
