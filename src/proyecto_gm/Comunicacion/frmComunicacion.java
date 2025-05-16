@@ -573,7 +573,6 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
             e.printStackTrace();
             MostrarMensaje("Error al procesar los datos: " + e.getMessage(), TipoMensaje.ERROR);
         }
-
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -614,34 +613,8 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
     List<Proyectos> lista = DatosProyectos.listar();
     String[] codigos = new String[lista.size()];
 
-    /*
-    private void Iniciarvalores() {
-        //iniciar variables por defecto
-        String sFecha = Utilitario.TraerFechaActual();
-        txtFecha.setText(sFecha);
-
-        //asignar periodo por defecto
-        String mes = txtFecha.getText().substring(3, 5);
-        String anio = txtFecha.getText().substring(6, 10);
-        txtIdPeriodo.setText(mes + anio);
-
-        //asingar codigo a la caja de t4exto codigo
-        String idGenerado = DatosComunicacion.GenerarCodigo();
-        txtId.setText(idGenerado);
-
-        this.cboNomProyecto.removeAllItems();
-        int x = 0;
-        for (Proyectos elemento : lista) {
-
-            //modeloCombo.addElement(elemento);
-            codigos[x] = elemento.getId();
-            this.cboNomProyecto.addItem(elemento.getDescripcion());
-            x++;
-        }
-
-    }*/
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-//        desbloquear();btnGuardar.setEnabled(true);btnDeshacer.setEnabled(true);
+        //desbloquear();btnGuardar.setEnabled(true);btnDeshacer.setEnabled(true);
         estado = Utilitario.EstadoProceso.NUEVO;
         HabilitarBotones(false);
         HabilitarControles(true);

@@ -30,6 +30,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import proyecto_gm.Comunicacion.*;
+import javax.swing.table.TableModel;
 import static proyecto_gm.Comunicacion.DatosComunicacion.Actualizar;
 import proyecto_gm.ConexionBD;
 import proyecto_gm.Facultades.DatosFacultades;
@@ -37,12 +38,14 @@ import proyecto_gm.Facultades.DatosFacultades;
 /**
  *
  * @author pc_sistemas2022
+ *
  */
 public class frmListaComunicacion extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form frmListaComunicacion
      */
+    TableRowSorter<TableModel> rowSorter;
     JDesktopPane panelPadre;
 
     public void AsignarPadre(JDesktopPane padre) {
@@ -111,7 +114,6 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
         btnBuscar = new javax.swing.JButton();
         rbVerTodo = new javax.swing.JRadioButton();
         rbVerFiltrado = new javax.swing.JRadioButton();
-        btnGuardar = new javax.swing.JButton();
 
         setClosable(true);
         setForeground(java.awt.Color.lightGray);
@@ -140,19 +142,7 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
 
         tblDatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Codigo", "Periodo", "Proyecto", "Tipo", "Cod.Doc", "Origen", "Destino", "Flujo", "Asunto", "Fecha", "Cod.Doc.Resp", "estado", "Enlace"
@@ -256,13 +246,6 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
             }
         });
 
-        btnGuardar.setText("jButton1");
-        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -277,9 +260,7 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnEditar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnEliminar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnGuardar))
+                                .addComponent(btnEliminar))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1357, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
@@ -321,8 +302,7 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
                 .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -416,8 +396,6 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
             frm.setDatos(id, periodo, proyecto, tipo, codDoc, origen, destino,
                     flujo, asunto, fecha, codDocResp, estado, enlace);
 
-          
-
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error al cargar datos: " + e.getMessage());
@@ -447,114 +425,17 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
-    //private void OcultarColumnas() {
-    /*    
-    System.out.println("Ocultar columnas: " + this.tblDatos.getColumnModel().getColumnCount());
-    this.tblDatos.getColumnModel().getColumn(1).setPreferredWidth(0);
-    this.tblDatos.getColumnModel().getColumn(1).setMaxWidth(0);
-    this.tblDatos.getColumnModel().getColumn(1).setMinWidth(0);
-    this.tblDatos.removeColumn(this.tblDatos.getColumnModel().getColumn(1));
-    
-    this.tblDatos.getColumnModel().getColumn(2).setPreferredWidth(0);
-    this.tblDatos.getColumnModel().getColumn(2).setMaxWidth(0);
-    this.tblDatos.getColumnModel().getColumn(2).setMinWidth(0);
-    this.tblDatos.removeColumn(this.tblDatos.getColumnModel().getColumn(2));       
-    
-    this.tblDatos.getColumnModel().getColumn(3).setWidth(0);
-    this.tblDatos.getColumnModel().getColumn(3).setMaxWidth(0);
-    this.tblDatos.getColumnModel().getColumn(3).setMinWidth(0);
-    System.out.println("Ocultar columnas: " + this.tblDatos.getColumnModel().getColumnCount());
-    this.tblDatos.removeColumn(this.tblDatos.getColumnModel().getColumn(3));
-         
- 
-        for (int i = 0; i < tblDatos.getColumnCount(); i++) {
-            if (tblDatos.getColumnName(i).equals("Codigo")) {
-                tblDatos.removeColumn(this.tblDatos.getColumnModel().getColumn(i));
-            }
-            if (tblDatos.getColumnName(i).equals("Periodo")) {
-                tblDatos.removeColumn(this.tblDatos.getColumnModel().getColumn(i));
-            }
-            if (tblDatos.getColumnName(i).equals("Tipo")) {
-                tblDatos.removeColumn(this.tblDatos.getColumnModel().getColumn(i));
-            }
-            if (tblDatos.getColumnName(i).equals("Flujo")) {
-                tblDatos.removeColumn(this.tblDatos.getColumnModel().getColumn(i));
-            }
-
-            if (tblDatos.getColumnName(i).equals("Estado")) {
-                tblDatos.removeColumn(this.tblDatos.getColumnModel().getColumn(i));
-            }
-        }
-     */
-    //this.tblDatos.removeColumn(this.tblDatos.getColumnModel().getColumn(14));
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
-        //DatosComunicacion.Listar(tblDatos);
-        //System.out.println("Evento internal frame opened");
-        //OcultarColumnas();
-
-        /*rbVerTodo.setSelected(true);
-
-        //configuracion por defecto
-        txtDestinoFiltro.setText("");
-        txtOrigenFiltro.setText("");
-        cboEstado.setSelectedIndex(0);
-        cboFlujo.setSelectedIndex(0);
-
-        txtDestinoFiltro.setEnabled(false);
-        txtOrigenFiltro.setEnabled(false);
-        txtDestinoFiltro.setEnabled(false);
-        cboEstado.setEnabled(false);
-        cboFlujo.setEnabled(false);*/
-
     }//GEN-LAST:event_formInternalFrameOpened
 
     private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
-        //DatosComunicacion.Listar(tblDatos);
-        //al cerrar el formulario hijo, realizar el proceso de actualizar en el grilla
-        //Utilitario.MostrarMensaje("Recargar la pagina", Utilitario.TipoMensaje.informativo);
-        //DefaultTableModel modelo = (DefaultTableModel) tblDatos.getModel();
-        //DatosComunicacion.Listar(modelo);
-/*
-        System.out.println("Evento internal frame activated");
-        //OcultarColumnas();
-        String fechaInicio = "", fechaFinal = "";
-        String sFecha = Utilitario.TraerFechaActual();
-
-        txtFechaFinalFiltro.setText(sFecha);
-
-        String sFechaInicial = Utilitario.TraerFechaInicial();
-        txtFechaInicialFiltro.setText(sFechaInicial);
-
-        txtFechaInicialFiltro.setEnabled(false);
-        txtFechaFinalFiltro.setEnabled(false);*/
-
     }//GEN-LAST:event_formInternalFrameActivated
 
     private void txtOrigenFiltroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtOrigenFiltroKeyTyped
-//         txtOrigenFiltro.addKeyListener(new KeyAdapter(){
-//             public void keyReleased(final KeyEvent e){
-//                 String cadena = (txtOrigenFiltro.getText());
-//                 txtOrigenFiltro.setText(cadena);
-//                 FiltrarPorOrigen();
-//             }
-//         });
-//         
-//         TRSFiltro = new TableRowSorter(tblDatos.getModel());
-//         tblDatos.setRowSorter(TRSFiltro);
     }//GEN-LAST:event_txtOrigenFiltroKeyTyped
 
     private void txtDestinoFiltroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDestinoFiltroKeyTyped
-//       txtDestinoFiltro.addKeyListener(new KeyAdapter(){
-//             public void keyReleased(final KeyEvent e){
-//                 String cadena = (txtDestinoFiltro.getText());
-//                 txtDestinoFiltro.setText(cadena);
-//                 FiltrarPorDestino();
-//             }
-//         });
-//         
-//         TRSFiltro = new TableRowSorter(tblDatos.getModel());
-//         tblDatos.setRowSorter(TRSFiltro);
     }//GEN-LAST:event_txtDestinoFiltroKeyTyped
 
     private void txtFechaInicialFiltroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaInicialFiltroKeyTyped
@@ -565,183 +446,74 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtFechaFinalFiltroKeyTyped
 
-    /*
-    private void ActivarFiltro() {
-        String parFiltro = "";
-        if (rbVerTodo.isSelected()) {
-            parFiltro = "N";
-            txtDestinoFiltro.setText("");
-            txtOrigenFiltro.setText("");
-            cboEstado.setSelectedIndex(0);
-            cboFlujo.setSelectedIndex(0);
-            txtFechaFinalFiltro.setText("");
-            txtFechaInicialFiltro.setText("");
-
-            txtFechaFinalFiltro.setEnabled(false);
-            txtFechaInicialFiltro.setEnabled(false);
-            txtDestinoFiltro.setEnabled(false);
-            txtOrigenFiltro.setEnabled(false);
-            txtDestinoFiltro.setEnabled(false);
-            cboEstado.setEnabled(false);
-            cboFlujo.setEnabled(false);
-        } else if (rbVerFiltrado.isSelected()) {
-            parFiltro = "S";
-            txtDestinoFiltro.setEnabled(true);
-            txtOrigenFiltro.setEnabled(true);
-            txtDestinoFiltro.setEnabled(true);
-            txtFechaFinalFiltro.setEnabled(true);
-            txtFechaInicialFiltro.setEnabled(true);
-            cboEstado.setEnabled(true);
-            cboFlujo.setEnabled(true);
-        }
-        DatosComunicacion.Listar(tblDatos, parFiltro, txtFechaInicialFiltro.getText(),
-                txtFechaFinalFiltro.getText(), cboEstado.getSelectedIndex(),
-                cboFlujo.getSelectedIndex(), txtOrigenFiltro.getText(), txtDestinoFiltro.getText());
-    }
-     */
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        String origen = txtOrigenFiltro.getText().trim();
+        String destino = txtDestinoFiltro.getText().trim();
+        String flujo = cboFlujo.getSelectedItem() != null ? cboFlujo.getSelectedItem().toString() : "";
+        String estado = cboEstado.getSelectedItem() != null ? cboEstado.getSelectedItem().toString() : "";
+        String fechaInicial = txtFechaInicialFiltro.getText().trim();
+        String fechaFinal = txtFechaFinalFiltro.getText().trim();
 
-        /*
-        //ActivarFiltro();
+        // Validar formato de fecha
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        java.sql.Date fechaIniSQL = null;
+        java.sql.Date fechaFinSQL = null;
+
+        try {
+            if (!fechaInicial.isEmpty()) {
+                java.util.Date fechaIniUtil = sdf.parse(fechaInicial);
+                fechaIniSQL = new java.sql.Date(fechaIniUtil.getTime());
+            }
+
+            if (!fechaFinal.isEmpty()) {
+                java.util.Date fechaFinUtil = sdf.parse(fechaFinal);
+                fechaFinSQL = new java.sql.Date(fechaFinUtil.getTime());
+            }
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(null, "Formato de fecha inválido. Use yyyy-MM-dd.");
+            return;
+        }
+
+        // Limpiar tabla
         DefaultTableModel modelo = (DefaultTableModel) tblDatos.getModel();
-        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
-        tblDatos.setRowSorter(sorter);
-        System.out.println("RowSorter aplicado.");
+        modelo.setRowCount(0);
 
-        List<RowFilter<Object, Object>> filtros = new ArrayList<>();
+        // Llamar al método Buscar de DatosComunicacion
+        DatosComunicacion.Buscar(modelo, origen, destino, flujo, estado, fechaIniSQL, fechaFinSQL);
 
-        // Filtro por ORIGEN (columna 3)
-        if (!txtOrigenFiltro.getText().isEmpty()) {
-            filtros.add(RowFilter.regexFilter("(?i)" + txtOrigenFiltro.getText(), 3));
-        }
-
-        // Filtro por DESTINO (columna 4)
-        if (!txtDestinoFiltro.getText().isEmpty()) {
-            filtros.add(RowFilter.regexFilter("(?i)" + txtDestinoFiltro.getText(), 4));
-        }
-
-        // Filtro por FLUJO (columna 5)
-        if (cboFlujo.getSelectedIndex() > 0) {
-            filtros.add(RowFilter.regexFilter("(?i)" + cboFlujo.getSelectedItem().toString(), 5));
-        }
-
-        // Filtro por ESTADO (columna 10)
-        if (cboEstado.getSelectedIndex() > 0) {
-            filtros.add(RowFilter.regexFilter("(?i)" + cboEstado.getSelectedItem().toString(), 10));
-        }
-
-        // Filtro por FECHAS (columna 7)
-        String fechaInicio = txtFechaInicialFiltro.getText().trim();
-        String fechaFin = txtFechaFinalFiltro.getText().trim();
-
-        if (!fechaInicio.isEmpty() && !fechaFin.isEmpty()) {
-            filtros.add(new RowFilter<Object, Object>() {
-                public boolean include(Entry<? extends Object, ? extends Object> entry) {
-                    try {
-                        String fechaStr = entry.getStringValue(7); // Columna fecha
-                        return fechaStr.compareTo(fechaInicio) >= 0 && fechaStr.compareTo(fechaFin) <= 0;
-                    } catch (Exception ex) {
-                        return false;
-                    }
-                }
-            });
-        }
-
-        // Aplicar filtro combinado
-        RowFilter<Object, Object> filtroCompuesto = RowFilter.andFilter(filtros);
-        sorter.setRowFilter(filtroCompuesto);*/
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void rbVerFiltradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbVerFiltradoActionPerformed
-        /*txtDestinoFiltro.setEnabled(true);
-        txtOrigenFiltro.setEnabled(true);
-        txtDestinoFiltro.setEnabled(true);
-        txtFechaFinalFiltro.setEnabled(true);
-        txtFechaInicialFiltro.setEnabled(true);
-        cboEstado.setEnabled(true);
-        cboFlujo.setEnabled(true);
-
-        String fechaInicio = "", fechaFinal = "";
-        fechaInicio = Utilitario.TraerFechaActual();
-        txtFechaFinalFiltro.setText(fechaInicio);
-
-        fechaFinal = Utilitario.TraerFechaInicial();
-        txtFechaInicialFiltro.setText(fechaFinal);*/
-
+        HabilitarFiltros(true);
     }//GEN-LAST:event_rbVerFiltradoActionPerformed
 
     private void rbVerTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbVerTodoActionPerformed
-        //ActivarFiltro();
+        HabilitarFiltros(false);      // Desactiva todos los filtros de búsqueda
+        RefrescarTabla();             // Muestra todos los registros
     }//GEN-LAST:event_rbVerTodoActionPerformed
+   
+    private void HabilitarFiltros(boolean habilitar) {
+        txtOrigenFiltro.setEnabled(habilitar);
+        txtDestinoFiltro.setEnabled(habilitar);
+        cboFlujo.setEnabled(habilitar);
+        cboEstado.setEnabled(habilitar);
+        txtFechaInicialFiltro.setEnabled(habilitar);
+        txtFechaFinalFiltro.setEnabled(habilitar);
+        btnBuscar.setEnabled(habilitar);
+    }
 
     public void RefrescarTabla() {
         DefaultTableModel modelo = (DefaultTableModel) tblDatos.getModel();
         modelo.setRowCount(0);
         DatosComunicacion.Listar(modelo);
     }
-
-
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:
-        /*int fila = tblDatos.getSelectedRow();
-        if (fila != -1) {
-            Comunicacion c = new Comunicacion();
-
-            // Leer de tabla lo que no se edita
-            c.setId(tblDatos.getValueAt(fila, 1).toString()); // IdComunicacion
-            c.setIdPeriodo(tblDatos.getValueAt(fila, 2).toString());
-            c.setNombreProyecto(tblDatos.getValueAt(fila, 0).toString());
-            c.setTipo(Integer.parseInt(tblDatos.getValueAt(fila, 3).toString()));
-            c.setCodDoc(tblDatos.getValueAt(fila, 5).toString());
-            c.setAsunto(tblDatos.getValueAt(fila, 10).toString());
-            c.setCodDocRespuesta(tblDatos.getValueAt(fila, 13).toString());
-            c.setEnlace(tblDatos.getValueAt(fila, 14).toString());
-
-            // Leer de inputs lo que sí se modifica
-            c.setOrigen(txtOrigenFiltro.getText());
-            c.setDestino(txtDestinoFiltro.getText());
-            c.setFlujo(cboFlujo.getSelectedIndex()); // o usa getSelectedItem según cómo trabajas
-            c.setEstado(cboEstado.getSelectedIndex());
-
-            try {
-                java.util.Date fechaUtil = new SimpleDateFormat("dd/mm/yyyy").parse(txtFechaFinalFiltro.getText());
-                java.sql.Date fechaSQL = new java.sql.Date(fechaUtil.getTime());
-                c.setFecha(fechaSQL);
-            } catch (ParseException ex) {
-                JOptionPane.showMessageDialog(null, "Error en formato de fecha");
-                return;
-            }
-
-            if (Actualizar(c)) {
-                // Actualizar en JTable
-                tblDatos.setValueAt(c.getOrigen(), fila, 6);
-                tblDatos.setValueAt(c.getDestino(), fila, 7);
-                tblDatos.setValueAt(cboFlujo.getSelectedItem().toString(), fila, 9);
-                tblDatos.setValueAt(cboEstado.getSelectedItem().toString(), fila, 15);
-                tblDatos.setValueAt(txtFechaFinalFiltro.getText(), fila, 11);
-                JOptionPane.showMessageDialog(null, "Actualización exitosa.");
-
-                txtOrigenFiltro.setText("");
-                txtDestinoFiltro.setText("");
-                txtFechaFinalFiltro.setText("");
-                cboFlujo.setSelectedIndex(0);
-                cboEstado.setSelectedIndex(0);
-
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al actualizar.");
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Seleccione una fila para actualizar.");
-        }*/
-    }//GEN-LAST:event_btnGuardarActionPerformed
-
+    // 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnGuardar;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JComboBox<String> cboEstado;
