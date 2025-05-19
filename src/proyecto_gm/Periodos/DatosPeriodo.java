@@ -78,8 +78,7 @@ public class DatosPeriodo {
         }
         return codigoGenerado;
     }
-    
-    
+
     public static void Listar(DefaultTableModel modelo) {
         try {
             PreparedStatement pstmt = conn.prepareStatement("CALL listar_periodos()");
@@ -111,14 +110,13 @@ public class DatosPeriodo {
             }
 
             // Llamar al procedimiento almacenado
-            
             String idTexto = periodo.getId();
-            int idPeriodo = Integer.parseInt(idTexto.substring(3)); 
-            
+            int idPeriodo = Integer.parseInt(idTexto.substring(3));
+
             CallableStatement cstmt = conn.prepareCall("{ CALL insertar_periodos(?, ?, ?) }");
-            cstmt.setInt(1, idPeriodo); // IdPeriodo
-            cstmt.setInt(2, mesNumero); // Mes como número
-            cstmt.setString(3, periodo.getDescripcion()); // Descripción: mes en letras
+            cstmt.setInt(1, idPeriodo);
+            cstmt.setInt(2, mesNumero);
+            cstmt.setString(3, periodo.getDescripcion()); // mes en letras
             cstmt.execute();
             cstmt.close();
 
@@ -127,8 +125,8 @@ public class DatosPeriodo {
 
             // Actualizar la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            modelo.setRowCount(0); // Limpiar filas
-            DatosPeriodo.Listar(modelo); // Rellenar tabla de nuevo
+            modelo.setRowCount(0);
+            DatosPeriodo.Listar(modelo);
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -214,7 +212,7 @@ public class DatosPeriodo {
             cstmt.setString(1, periodo.getId());
             cstmt.setString(2, periodo.getDescripcion());
 
-            cstmt.execute(); // Ejecutar actualización
+            cstmt.execute();
 
             // Actualizar tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
@@ -256,7 +254,6 @@ public class DatosPeriodo {
                     cstmt.setString(1, id);
                     cstmt.execute();
 
-                    // Actualizar el JTable
                     // Actualizamos la tabla
                     DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
                     modelo.setRowCount(0);
@@ -290,12 +287,6 @@ public class DatosPeriodo {
                 campo.requestFocus();
                 return false;
             }
-
-            /*if (campo.getName().equals("id") && campo.getText().length() < 6) {
-                JOptionPane.showMessageDialog(null, "El ID debe contener 6 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                campo.requestFocus();
-                return false;
-            }*/
         }
         return true;
     }

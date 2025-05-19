@@ -141,10 +141,10 @@ public class DatosArticulo {
 
     public static boolean Insertar(Articulo art, JTable tabla) {
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL insertar_articulos(?, ?, ?, ?, ?, ?) }")) {
-
-            // Extraer el número desde el código "ART0002"
-            String codigoArticulo = art.getcodigoArticulo(); // "ART0002"
-            int idArticulo = Integer.parseInt(codigoArticulo.replace("ART", "")); // -> 2
+            
+            
+            String codigoArticulo = art.getcodigoArticulo(); 
+            int idArticulo = Integer.parseInt(codigoArticulo.replace("ART", "")); 
 
             cstmt.setInt(1, idArticulo);
             cstmt.setInt(2, Integer.parseInt(art.getIdCategoria()));

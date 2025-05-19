@@ -29,7 +29,7 @@ public class DatosCajaChica {
         combo.setSelectedIndex(0); // o -1 si quieres dejarlo sin selección
     }
 }
-
+             
     // Mostrar datos
     public static void Mostrar(DefaultTableModel modelo) {
         try {
@@ -65,46 +65,6 @@ public class DatosCajaChica {
         return siguienteId;
     }
 
-    /*
-    public static void NuevaFila(JTable tabla) {
-        // Obtener el modelo de la tabla
-        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-        // Agregar una nueva fila vacía al modelo de la tabla
-        modelo.addRow(new Object[]{});
-        // Obtener el número de fila de la última fila agregada
-        int fila = modelo.getRowCount() - 1;
-        // Habilitar la edición de la nueva fila
-        tabla.editCellAt(fila, 0);
-
-    }
-     */
-//    public static String GenerarCodigo(String tabla, String prefijo, int longitud) {
-//        CallableStatement cstmt = null;
-//        String codigo_generado = "";
-//        try {
-//            cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?, ?) }");
-//            cstmt.setString(1, tabla);
-//            cstmt.setString(2, prefijo);
-//            cstmt.setInt(3, longitud);
-//            cstmt.registerOutParameter(4, Types.VARCHAR);
-//
-//            cstmt.execute();
-//
-//            codigo_generado = cstmt.getString(5);
-//        } catch (SQLException e) {
-//            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//        } finally {
-//            if (cstmt != null) {
-//                try {
-//                    cstmt.close();
-//                } catch (SQLException e) {
-//                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//                }
-//            }
-//        }
-//        return codigo_generado;
-//        
-//    }
    public static void Habilitar(Container contenedor, boolean bloquear) {
     Component[] components = contenedor.getComponents();
     for (Component component : components) {
@@ -120,7 +80,6 @@ public class DatosCajaChica {
         }
     }
 }
-
 
     public static void Insertar(CajaChica caj, JTable tabla, String periodo) {
         try {
@@ -181,27 +140,6 @@ public class DatosCajaChica {
         }
     }
 
-    /*
-    public static boolean validarCamposCompletados(JTable table) {
-        DefaultTableModel modelo = (DefaultTableModel) table.getModel();
-        int rowCount = modelo.getRowCount();
-        int columnCount = modelo.getColumnCount();
-
-        for (int row = 0; row < rowCount; row++) {
-            for (int column = 0; column < columnCount; column++) {
-                Object value = modelo.getValueAt(row, column);
-
-                if (value == null || value.toString().isEmpty()) {
-                    System.out.println("La celda en la fila " + (row + 1) + ", columna " + (column + 1) + " no está completada");
-                    return false;
-                }
-            }
-        }
-
-        // Si todas las celdas están completadas, devuelve true
-        return true;
-    }
-     */
     public static void Eliminar(JTable tabla) {
         try {
             // Obtener el indice de la fila seleccionada
@@ -258,53 +196,4 @@ public class DatosCajaChica {
         }
         return idCategoria;
     }
-
-    /*
-    public static String CapturarID(String transferencia) {
-        String idTransferenciasBancarias = "";
-        try {
-            // CapturarID las opciones seleccionadas en los combo boxes
-
-            // Obtener los id de modulo
-            String consulta = "SELECT Id AS IdTransferenciasBancarias "
-                    + "FROM transferenciasbancarias "
-                    + "WHERE NroOperacion = ? ";
-            PreparedStatement pstmt = conn.prepareStatement(consulta);
-            pstmt.setString(1, transferencia);
-
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                idTransferenciasBancarias = rs.getString("IdTransferenciasBancarias");
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar Opciones", JOptionPane.ERROR_MESSAGE);
-        }
-
-        return idTransferenciasBancarias;
-    }*/
- /*
-    public static void Fecha(JTable tabla, JComboBox combo) {
-        int fila = tabla.getSelectedRow();
-        if (fila >= 0) {
-            String nroOperacion = combo.getSelectedItem().toString();
-            System.out.println("nroOperacion = " + nroOperacion);
-            try {
-                PreparedStatement pstmt = conn.prepareStatement("SELECT DATE_FORMAT(Fecha, '%d/%m/%Y') AS Fecha FROM transferenciasbancarias WHERE NroOperacion = ? ");
-                pstmt.setString(1, nroOperacion);
-                ResultSet rs = pstmt.executeQuery();
-                while (rs.next()) {
-                    String fecha = rs.getString("Fecha");
-                    tabla.getModel().setValueAt(fecha, fila, 2);
-                }
-                rs.close();
-                pstmt.close();
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
-    }
-     */
 }

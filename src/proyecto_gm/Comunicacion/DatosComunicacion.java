@@ -20,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import proyecto_gm.ConexionBD;
 import proyecto_gm.proyectos.Proyectos;
 
+
 /**
  *
  * @author pc_sistemas2022
@@ -311,7 +312,7 @@ public class DatosComunicacion {
                 }
             } catch (SQLException ex) {
             }
-           
+
         }
     }
 

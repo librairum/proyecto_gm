@@ -95,9 +95,9 @@ public class DatosViaticos {
 
     public static String capturarIdEmpleado(JComboBox<String> cboEmpleado) {
         String idEmpleado = "";
-        try ( PreparedStatement pstmt = conn.prepareStatement("SELECT IdEmpleado FROM empleados WHERE LOWER(CONCAT(Nombres, ' ', Apellidos)) = LOWER(?)")) {
-            pstmt.setString(1, cboEmpleado.getSelectedItem().toString().trim());
-            ResultSet rs = pstmt.executeQuery();
+        try ( CallableStatement cstmt = conn.prepareCall("{CALL obtener_id_empleado(?)}")) {
+            cstmt.setString(1, cboEmpleado.getSelectedItem().toString().trim());
+            ResultSet rs = cstmt.executeQuery();
             if (rs.next()) {
                 idEmpleado = rs.getString("IdEmpleado");
             }
@@ -109,9 +109,9 @@ public class DatosViaticos {
 
     public static String capturarIdPeriodo(JComboBox<String> cboPeriodo) {
         String idPeriodo = "";
-        try ( PreparedStatement pstmt = conn.prepareStatement("SELECT IdPeriodo FROM periodos WHERE Mes = ?")) {
-            pstmt.setString(1, cboPeriodo.getSelectedItem().toString());
-            ResultSet rs = pstmt.executeQuery();
+        try ( CallableStatement cstmt = conn.prepareCall("{CALL obtener_id_periodo(?)}")) {
+            cstmt.setString(1, cboPeriodo.getSelectedItem().toString());
+            ResultSet rs = cstmt.executeQuery();
             if (rs.next()) {
                 idPeriodo = rs.getString("IdPeriodo");
             }
@@ -169,36 +169,6 @@ public class DatosViaticos {
         }
     }
 
-    // Insertar datos
-    /*public static void Insertar(Viaticos viatico, JTable tabla) {
-        CallableStatement cstmt = null;
-        try {
-            cstmt = conn.prepareCall("{ CALL insertar_viaticos(?, ?, ?, ?, ?) }");
-            cstmt.setString(1, viatico.getDescripcion());
-            cstmt.setFloat(2, viatico.getPasaje());
-            cstmt.setFloat(3, viatico.getMenu());
-            cstmt.setString(4, viatico.getEmpleado());
-            cstmt.setString(5, viatico.getPeriodo());
-
-            cstmt.execute(); // se inserta los datos a la BD
-
-            // Actualizamos la tabla
-            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            modelo.setRowCount(0);
-            DatosViaticos.Listar(modelo);
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            try {
-                if (cstmt != null) {
-                    cstmt.close();
-                }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }*/
     // Boton editar
     public static void Editar(JPanel panel, JTable tabla, JTextField[] cajas, JComboBox cboEmp, JComboBox cboPer) {
         // Obtener el indice de la fila seleccionada
@@ -206,7 +176,7 @@ public class DatosViaticos {
 
         if (fila >= 0) {
             DatosViaticos.Habilitar(panel, true);
-            // Limpiamos la seleccion en la tabla
+            // Limpiar la seleccion en la tabla
             tabla.clearSelection();
             // Deshabilitamos la seleccion de filas de la tabla
             tabla.setRowSelectionAllowed(false);

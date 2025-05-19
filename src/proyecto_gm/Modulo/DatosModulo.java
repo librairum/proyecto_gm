@@ -19,7 +19,7 @@ import proyecto_gm.ConexionBD;
 public class DatosModulo {
     static Connection conn = ConexionBD.getConnection();
 
-    
+                                                      
     public static void Limpiar(Container contenedor){
         for (Component componente: contenedor.getComponents()){
             if(componente instanceof JTextField){

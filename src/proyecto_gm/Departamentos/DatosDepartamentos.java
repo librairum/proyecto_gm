@@ -87,13 +87,13 @@ public class DatosDepartamentos {
             CallableStatement cstmt = conn.prepareCall("{ CALL insertar_departamentos(?, ?) }");
             cstmt.setInt(1, idDepartamento);
             cstmt.setString(2, departamento.getDescripcion());
-            cstmt.execute(); // Ejecuta el procedimiento almacenado para insertar los datos
-            cstmt.close(); // Cerrar después de la inserción
+            cstmt.execute(); 
+            cstmt.close(); 
 
             CallableStatement cstmt2 = conn.prepareCall("{ CALL obtener_departamento(?) }");
-            cstmt2.setInt(1, idDepartamento); // Usamos el ID de la facultad
+            cstmt2.setInt(1, idDepartamento); // ID de la facultad
 
-            ResultSet rs = cstmt2.executeQuery(); // Ahora usamos `cstmt2.executeQuery()`
+            ResultSet rs = cstmt2.executeQuery();
 
             if (rs.next()) {
                 DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
@@ -135,29 +135,27 @@ public class DatosDepartamentos {
     // Actualizar datos
     public static void actualizarDatos(Departamentos departamento, JTable tabla) {
         try {
-            // Confirmación antes de actualizar
             int confirm = JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere actualizar la fila seleccionada?", "Confirmar actualización", JOptionPane.YES_NO_OPTION);
 
             if (confirm == JOptionPane.YES_OPTION) {
-                // Llamada al procedimiento almacenado para actualizar los datos
+                
                 CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_departamentos(?, ?) }");
                 cstmt.setString(1, departamento.getId());
                 cstmt.setString(2, departamento.getDescripcion());
-                cstmt.execute(); // Ejecuta la actualización en la base de datos
-
+                cstmt.execute();
                 // Mensaje de éxito
                 JOptionPane.showMessageDialog(null, "El departamento ha sido actualizado exitosamente.");
 
                 // Limpiar y actualizar la tabla
                 DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-                modelo.setRowCount(0); // Limpiar la tabla
+                modelo.setRowCount(0); 
 
                 // Preparar la consulta para listar los departamentos
                 PreparedStatement stmt = conn.prepareStatement("CALL listar_departamentos()"); // Recargar datos
                 ResultSet rs = stmt.executeQuery();
 
                 while (rs.next()) {
-                    // Crear una fila con los datos del departamento
+                    
                     Object[] row = new Object[]{
                         rs.getString("codigoDepartamento"),
                         rs.getString("Descripcion")
@@ -173,8 +171,8 @@ public class DatosDepartamentos {
     public static String GenerarCodigo() {
         String codigoGenerado = "";
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }")) {
-            cstmt.setString(1, "departamentos");   // Tabla
-            cstmt.setString(2, "IdDepartamento");    // Campo numérico
+            cstmt.setString(1, "departamentos");  
+            cstmt.setString(2, "IdDepartamento");  
             cstmt.setString(3, "");
             cstmt.registerOutParameter(4, Types.VARCHAR);    // ID generado como texto
             cstmt.execute();

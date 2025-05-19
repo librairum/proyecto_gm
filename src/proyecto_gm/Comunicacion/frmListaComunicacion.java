@@ -391,7 +391,7 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
 
             // Crear formulario en modo EDITAR
             frmComunicacion frm = new frmComunicacion(panelPadre, Utilitario.EstadoProceso.EDITAR);
-            frm.setEsEdicion(true);
+            //frm.setEsEdicion(true);
             frm.setVisible(true);
             frm.setDatos(id, periodo, proyecto, tipo, codDoc, origen, destino,
                     flujo, asunto, fecha, codDocResp, estado, enlace);

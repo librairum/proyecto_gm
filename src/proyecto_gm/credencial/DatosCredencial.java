@@ -34,7 +34,7 @@ public class DatosCredencial {
 
             while (rs.next()) {
                 Object[] row = new Object[]{
-                    rs.getString("codigoCredencial"),
+                    rs.getString("IdCredencial"),
                     rs.getString("Correo"),
                     rs.getString("Clave"),
                     rs.getString("Alias"),
@@ -50,13 +50,13 @@ public class DatosCredencial {
 
     public static void Insertar(Credencial credencial, JTable tabla) {
         try {
-            // Validar si algún campo necesario está vacío (excepto ID porque se genera automáticamente)
+            // Validar si algún campo necesario está vacío
             if (credencial.getCorreo().isEmpty() || credencial.getClave().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Correo y Clave son obligatorios", "Sistema", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            // Preparar la llamada al procedimiento para insertar la credencial
+            // llamada al procedimiento para insertar la credencial
             CallableStatement cstmt = conn.prepareCall("{ CALL insertar_credencial(?, ?, ?, ?) }");
             cstmt.setString(1, credencial.getCorreo());
             cstmt.setString(2, credencial.getClave());
@@ -70,7 +70,7 @@ public class DatosCredencial {
             modelo.setRowCount(0); // Limpiar la tabla
 
             // Llamar al método Listar para recargar los datos de la base de datos en la tabla
-            Listar(modelo); // Esta función recargará la tabla con los datos más recientes, incluida la nueva credencial
+            Listar(modelo); // recargará la tabla con los datos más recientes
 
             // Mostrar mensaje de éxito
             JOptionPane.showMessageDialog(null, "Credencial registrada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -80,10 +80,11 @@ public class DatosCredencial {
         }
     }
 
-    public static void actualizarDatosCredencial(Credencial credencial, JTable tabla) {
+    public static void actualizar(Credencial credencial, JTable tabla) {
         try {
             // Llamada al procedimiento almacenado para actualizar
             CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_credencial(?, ?, ?, ?, ?) }");
+
             cstmt.setString(1, credencial.getIdCredencial());
             cstmt.setString(2, credencial.getCorreo());
             cstmt.setString(3, credencial.getClave());
@@ -91,22 +92,11 @@ public class DatosCredencial {
             cstmt.setString(5, credencial.getDescripcion());
             cstmt.execute();
 
-            // Limpiar y actualizar la tabla
+            // Limpiar la tabla antes de volver a listar los datos actualizados
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            modelo.setRowCount(0);
+            modelo.setRowCount(0); // Limpiar la tabla
 
-            PreparedStatement stmt = conn.prepareStatement("CALL listar_credencial()");
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                Object[] row = new Object[]{
-                    rs.getString("codigoCredencial"),
-                    rs.getString("Correo"),
-                    rs.getString("Clave"),
-                    rs.getString("Alias"),
-                    rs.getString("Descripcion")
-                };
-                modelo.addRow(row);
-            }
+            Listar(modelo); // recargará la tabla con los datos más recientes
 
             JOptionPane.showMessageDialog(null, "Datos actualizados correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
@@ -124,7 +114,7 @@ public class DatosCredencial {
 
             if (confirm == JOptionPane.YES_OPTION) {
                 try ( CallableStatement stmt = conn.prepareCall("{ CALL eliminar_credencial(?) }")) {
-                    stmt.setString(1, id); // Se usa setString porque el ID es VARCHAR
+                    stmt.setString(1, id); 
                     stmt.execute();
 
                     // Eliminar la fila de la tabla

@@ -15,6 +15,7 @@ public class frmCredencial extends javax.swing.JInternalFrame {
 
     private boolean esNuevo = false;
     private String idSeleccionado = "";
+    
 
     /**
      * Creates new form frmCredencial
@@ -126,28 +127,6 @@ public class frmCredencial extends javax.swing.JInternalFrame {
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addGap(35, 35, 35))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(72, 72, 72))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtAlias)
-                            .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
-                            .addComponent(txtClave)
-                            .addComponent(txtCorreo))
-                        .addGap(215, 215, 215))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(btnAgregar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnEditar)
@@ -156,9 +135,26 @@ public class frmCredencial extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnGuardar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDeshacer)
-                        .addContainerGap())))
-            .addComponent(jScrollPane1)
+                        .addComponent(btnDeshacer))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtClave, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtAlias, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,8 +182,9 @@ public class frmCredencial extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -224,6 +221,7 @@ private void Habilitar(boolean estado){
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         try {
             Credencial c = new Credencial();
+            
             c.setCorreo(txtCorreo.getText());
             c.setClave(txtClave.getText());
             c.setAlias(txtAlias.getText());
@@ -231,12 +229,11 @@ private void Habilitar(boolean estado){
             if (esNuevo) {
                 DatosCredencial.Insertar(c, tblContacto);
             } else {
-                c.setIdCredencial(idSeleccionado); // importante para actualizar correctamente
-                DatosCredencial.actualizarDatosCredencial(c, tblContacto);
+                c.setIdCredencial(String.valueOf(idSeleccionado)); // importante para actualizar correctamente
+                DatosCredencial.actualizar(c, tblContacto);
             }
 
             Limpiar();
-            idSeleccionado = "";
             Habilitar(false);
             btnGuardar.setEnabled(false);
             btnDeshacer.setEnabled(false);
@@ -267,18 +264,18 @@ private void Habilitar(boolean estado){
         // Activar el botón de Agregar nuevamente, si es necesario
         btnAgregar.setEnabled(true);
     }//GEN-LAST:event_btnEliminarActionPerformed
-    private int id;
+
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         int fila = tblContacto.getSelectedRow();
         if (fila >= 0) {
             // Obtener y guardar el ID
-            idSeleccionado = tblContacto.getValueAt(fila, 0).toString(); // SIN Integer.parseInt
+            idSeleccionado = tblContacto.getValueAt(fila, 0).toString();  
 
             // Llenar los campos de texto
             txtCorreo.setText(tblContacto.getValueAt(fila, 1).toString());
             txtClave.setText(tblContacto.getValueAt(fila, 2).toString());
             txtAlias.setText(tblContacto.getValueAt(fila, 3).toString());
-            txtDescripcion.setText(tblContacto.getValueAt(fila, 4).toString());
+            txtDescripcion.setText(tblContacto.getValueAt(fila, 4).toString());        
 
             // Desactivar botones innecesarios
             btnAgregar.setEnabled(false);
