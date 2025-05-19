@@ -11,7 +11,7 @@ public class ConexionBD {
     private static final String CONN_STRING = "jdbc:mysql://mysql-a21bb78-sistemasnet26-321c.k.aivencloud.com:10658/gmingenieros?useSSL=true&requireSSL=true";
 
     private ConexionBD() {
-        // Evitar instanciación
+        // Evitar instanciación 
     }
 
     public static Connection getConnection() {

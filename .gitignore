@@ -1,3 +1,23 @@
-/dist/
-/nbproject/private/
+# Ignorar archivos de compilación
 /build/
+*/build/
+*.class
+
+# Ignorar archivos generados de distribución
+/dist/
+*/dist/
+
+# Ignorar archivos de configuración privada de NetBeans
+/nbproject/private/
+nbproject/private/
+
+# Ignorar archivos temporales y del sistema
+*.log
+*.tmp
+*.swp
+*.bak
+
+# Ignorar archivos específicos del sistema operativo
+.DS_Store
+Thumbs.db
+

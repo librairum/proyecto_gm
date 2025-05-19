@@ -485,7 +485,11 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
 
         } catch (Exception e) {
             System.err.println("Error al convertir fecha: " + e.getMessage());
+
             txtFecha.setText(fecha); 
+
+            txtFecha.setText(fecha);
+
         }
 
         txtCodDocRespuesta.setText(codDocResp);
@@ -512,7 +516,7 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
         }
 
         try {
-            // Validación de fecha
+            // Validación de fecha 
             String fechaTexto = txtFecha.getText().trim();
             if (!fechaTexto.matches("\\d{2}/\\d{2}/\\d{4}")) {
                 MostrarMensaje("Formato de fecha inválido. Use DD/MM/AAAA", TipoMensaje.ALERTA);
@@ -622,7 +626,7 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
         HabilitarBotones(false);
         HabilitarControles(true);
         Limpiar();
-        //Iniciarvalores();
+        //Iniciarvalores(); 
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void HabilitarBotones(boolean estado) {
