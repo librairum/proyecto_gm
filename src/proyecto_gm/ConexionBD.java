@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public class ConexionBD {
 
-    private static final String USERNAME = "avnadmin";
+    private static final String USERNAME = "root";
     private static final String PASSWORD = "sasasa";
-    private static final String CONN_STRING = "jdbc:mysql://mysql-a21bb78-sistemasnet26-321c.k.aivencloud.com:10658/gmingenieros?useSSL=true&requireSSL=true";
+    private static final String CONN_STRING = "";
 
     private ConexionBD() {
         // Evitar instanciación 
