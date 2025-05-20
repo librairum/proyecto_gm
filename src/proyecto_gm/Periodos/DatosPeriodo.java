@@ -27,51 +27,17 @@ public class DatosPeriodo {
 
     static Connection conn = ConexionBD.getConnection();
 
-    // Limpiar campos
-    public static void Limpiar(Container contenedor) {
-        for (Component componente : contenedor.getComponents()) {
-            if (componente instanceof JTextField) {
-                ((JTextField) componente).setText("");
-            } else if (componente instanceof Container) {
-                Limpiar((Container) componente);
-            } else {
-                // No hace nada para otros tipos de componentes
-            }
-        }
-    }
-
-    // Habilitar campos
-    public static void Habilitar(Container contenedor, boolean bloquear) {
-        for (Component componente : contenedor.getComponents()) {
-            if (componente instanceof JTextField) {
-                ((JTextField) componente).setEnabled(bloquear);
-            } else if (componente instanceof JButton) {
-                String button = ((JButton) componente).getName();
-                if (button.equals("guardar") || button.equals("cancelar")) {
-                    ((JButton) componente).setEnabled(bloquear);
-                } else if (button.equals("nuevo") || button.equals("editar") || button.equals("eliminar")) {
-                    ((JButton) componente).setEnabled(!bloquear); // aplicar logica inversa
-                } else {
-                    // No hace nada para otros tipos de componentes
-                }
-            }
-        }
-    }
-    // Mostrar datos
-
     public static String GenerarCodigo() {
         String codigoGenerado = "";
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }")) {
-            cstmt.setString(1, "periodos");   // Tabla
-            cstmt.setString(2, "IdPeriodo");    // Campo numérico
-            cstmt.setString(3, "");
-            cstmt.registerOutParameter(4, Types.VARCHAR);    // ID generado como texto
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?) }")) {
+            cstmt.setString(1, "periodos");
+            cstmt.setString(2, "IdPeriodo");
+            cstmt.registerOutParameter(3, Types.INTEGER);
+
             cstmt.execute();
 
-            String idGenerado = cstmt.getString(4);
-
-            int id = Integer.parseInt(idGenerado);
-            codigoGenerado = String.format("PER%06d", id);
+            int idGenerado = cstmt.getInt(3); // Recibe el número
+            codigoGenerado = String.valueOf(idGenerado);
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -85,7 +51,7 @@ public class DatosPeriodo {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Object[] row = new Object[]{
-                    rs.getString("codigoPeriodo"),
+                    rs.getString("IdPeriodo"),
                     rs.getString("descripcion")};
                 modelo.addRow(row);
             }
@@ -105,13 +71,12 @@ public class DatosPeriodo {
             // Convertir mes en texto (descripción) a número
             int mesNumero = obtenerNumeroMes(periodo.getDescripcion());
             if (mesNumero == 0) {
-                JOptionPane.showMessageDialog(null, "Mes inválido. Ejemplo válido: Enero", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Mes inválido. Colocar meses del año", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             // Llamar al procedimiento almacenado
-            String idTexto = periodo.getId();
-            int idPeriodo = Integer.parseInt(idTexto.substring(3));
+            int idPeriodo = Integer.parseInt(periodo.getId());
 
             CallableStatement cstmt = conn.prepareCall("{ CALL insertar_periodos(?, ?, ?) }");
             cstmt.setInt(1, idPeriodo);
@@ -166,30 +131,6 @@ public class DatosPeriodo {
         }
     }
 
-    // Boton editar
-    public static void Editar(Container contenedor, JTable tabla, JTextField[] cajas) {
-        // Obtener el indice de la fila seleccionada
-        int fila = tabla.getSelectedRow();
-
-        if (fila >= 0) {
-
-            DatosPeriodo.Habilitar(contenedor, true);
-            tabla.clearSelection();
-            tabla.setRowSelectionAllowed(false);
-
-            for (int i = 0; i < cajas.length; i++) {
-                String dato = tabla.getModel().getValueAt(fila, i).toString();
-                cajas[i].setText(dato);
-            }
-
-            cajas[0].setEnabled(false);
-            cajas[1].requestFocus();
-        } else {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.");
-        }
-
-    }
-
     // Actualizar datos
     public static void Actualizar(Periodos periodo, JTable tabla) {
         CallableStatement cstmt = null;
@@ -224,14 +165,6 @@ public class DatosPeriodo {
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            try {
-                if (cstmt != null) {
-                    cstmt.close();
-                }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
         }
     }
 
@@ -243,11 +176,13 @@ public class DatosPeriodo {
             int fila = tabla.getSelectedRow();
 
             if (fila >= 0) {
+
                 String[] options = {"Sí", "No", "Cancelar"};
                 int opcion = JOptionPane.showOptionDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
+
                 if (opcion == JOptionPane.YES_OPTION) {
                     // Obtener los datos de fila seleccionada
-                    String id = tabla.getModel().getValueAt(fila, 0).toString(); //Se asume que el ID se encuentra en la primera columna
+                    String id = tabla.getModel().getValueAt(fila, 0).toString(); //id primera columna
 
                     // Ejecutar el procedimiento almacenado
                     cstmt = conn.prepareCall("{ CALL eliminar_periodos(?) }");
@@ -259,6 +194,7 @@ public class DatosPeriodo {
                     modelo.setRowCount(0);
 
                     DatosPeriodo.Listar(modelo);
+                    JOptionPane.showMessageDialog(null, "La fila ha sido eliminada exitosamente.");
                 } else {
                     tabla.clearSelection();
                 }
@@ -268,15 +204,31 @@ public class DatosPeriodo {
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            try {
-                if (cstmt != null) {
-                    cstmt.close();
-                }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
         }
+    }
+
+    // Boton editar
+    public static void Editar(Container contenedor, JTable tabla, JTextField[] cajas) {
+        // Obtener el indice de la fila seleccionada
+        int fila = tabla.getSelectedRow();
+
+        if (fila >= 0) {
+
+            DatosPeriodo.Habilitar(contenedor, true);
+            tabla.clearSelection();
+            tabla.setRowSelectionAllowed(false);
+
+            for (int i = 0; i < cajas.length; i++) {
+                String dato = tabla.getModel().getValueAt(fila, i).toString();
+                cajas[i].setText(dato);
+            }
+
+            cajas[0].setEnabled(false);
+            cajas[1].requestFocus();
+        } else {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.");
+        }
+
     }
 
     // Validar campos
@@ -290,4 +242,36 @@ public class DatosPeriodo {
         }
         return true;
     }
+
+    // Limpiar campos
+    public static void Limpiar(Container contenedor) {
+        for (Component componente : contenedor.getComponents()) {
+            if (componente instanceof JTextField) {
+                ((JTextField) componente).setText("");
+            } else if (componente instanceof Container) {
+                Limpiar((Container) componente);
+            } else {
+                // No hace nada para otros tipos de componentes
+            }
+        }
+    }
+
+    // Habilitar campos
+    public static void Habilitar(Container contenedor, boolean bloquear) {
+        for (Component componente : contenedor.getComponents()) {
+            if (componente instanceof JTextField) {
+                ((JTextField) componente).setEnabled(bloquear);
+            } else if (componente instanceof JButton) {
+                String button = ((JButton) componente).getName();
+                if (button.equals("guardar") || button.equals("cancelar")) {
+                    ((JButton) componente).setEnabled(bloquear);
+                } else if (button.equals("nuevo") || button.equals("editar") || button.equals("eliminar")) {
+                    ((JButton) componente).setEnabled(!bloquear); // aplicar logica inversa
+                } else {
+                    // No hace nada para otros tipos de componentes
+                }
+            }
+        }
+    }
+
 }

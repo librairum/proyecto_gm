@@ -287,6 +287,7 @@ public class frmDepartamentos extends javax.swing.JInternalFrame {
         // Crear un objeto tipo Facultades
         Departamentos f = new Departamentos(txtId.getText(), txtDescripcion.getText());
         if (esNuevo) {
+            
             // Insertar nuevo registro
             if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Completar bien los campos");
@@ -302,7 +303,9 @@ public class frmDepartamentos extends javax.swing.JInternalFrame {
                 btnEliminar.setEnabled(true);
                 btnNuevo.setEnabled(true);
             }
+            
         } else {
+            
             // Actualizar registro existente
             if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Completar bien los campos");
@@ -318,6 +321,7 @@ public class frmDepartamentos extends javax.swing.JInternalFrame {
             btnEditar.setEnabled(true);
             btnEliminar.setEnabled(true);
             btnNuevo.setEnabled(true);
+            
         }
 
     }//GEN-LAST:event_btnGuardarActionPerformed

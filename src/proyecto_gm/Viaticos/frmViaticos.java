@@ -317,6 +317,8 @@ public class frmViaticos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        String codigo = DatosViaticos.GenerarCodigo();
+        txtId.setText(codigo);
         tblViatico.clearSelection();
         tblViatico.setRowSelectionAllowed(false);
         // Habilitamos los campos:
@@ -346,7 +348,7 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         // Seleccionamos todas las cajas y combos
         JTextField[] campos = {txtDescripcion, txtPasaje, txtMenu};
         JComboBox[] combos = {cboEmpleado, cboPeriodo};
-        
+
         // Validamos que todos los campos estén llenos
         if (!DatosViaticos.Validar(campos, combos)) {
             return; // se corta la ejecucion del metodo
@@ -354,7 +356,6 @@ public class frmViaticos extends javax.swing.JInternalFrame {
 
         String periodo = cboPeriodo.getSelectedItem().toString();
         String idEmpleado = ((Empleados) cboEmpleado.getSelectedItem()).getId();
-
 
         Viaticos viatico = new Viaticos();
         viatico.setDescripcion(txtDescripcion.getText());

@@ -214,10 +214,6 @@ public class frmModulo extends javax.swing.JInternalFrame {
             if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Completar bien los campos");
                 return;
-            } else if (!txtId.getText().matches("^[A-Z]{2}[0-9]{4}$")) {
-                JOptionPane.showMessageDialog(null, "El formato del Id es el siguiente: MO0001. Inténtelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                txtId.requestFocus();
-                return;
             }
 
             // Convertir el código 'MO0005' a entero 5
@@ -270,7 +266,7 @@ public class frmModulo extends javax.swing.JInternalFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         DatosModulo.Habilitar(escritorio, true);
-        String codigo = DatosModulo.GenerarCodigo("modulos", "idModulo", "MO");
+        String codigo = DatosModulo.GenerarCodigo();
         txtId.setText(codigo);
         txtId.setEnabled(false);
         txtDescripcion.requestFocus();

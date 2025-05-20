@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -29,43 +30,22 @@ public class DatosViaticos {
 
     static Connection conn = ConexionBD.getConnection();
 
-    // Limpiar campos
-    public static void Limpiar(Container contenedor) {
-        for (Component componente : contenedor.getComponents()) {
-            if (componente instanceof JTextField) {
-                //componente.setText("");
-                ((JTextField) componente).setText("");
-            } else if (componente instanceof JComboBox) {
-                ((JComboBox) componente).setSelectedIndex(-1);
-            } else if (componente instanceof Container) {
-                Limpiar((Container) componente);
-            } else {
-                // No hace nada para otros tipos de componentes
-            }
-        }
-    }
+    public static String GenerarCodigo() {
+        String codigoGenerado = "";
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?) }")) {
+            cstmt.setString(1, "viaticos");
+            cstmt.setString(2, "IdViatico");
+            cstmt.registerOutParameter(3, Types.INTEGER);
 
-    // Habilitar campos
-    public static void Habilitar(Container contenedor, boolean bloquear) {
-        for (Component componente : contenedor.getComponents()) {
-            if (componente instanceof JTextField) {
-                //jTextField.setEnabled(bloquear);
-                ((JTextField) componente).setEnabled(bloquear);
-            } else if (componente instanceof JComboBox) {
-                //jComboBox.setEnabled(bloquear);
-                ((JComboBox) componente).setEnabled(bloquear);
-            } else if (componente instanceof JButton) {
+            cstmt.execute();
 
-                String button = ((JButton) componente).getName();
-                if (button.equals("guardar") || button.equals("cancelar")) {
-                    ((JButton) componente).setEnabled(bloquear);
-                } else if (button.equals("nuevo") || button.equals("editar") || button.equals("eliminar")) {
-                    ((JButton) componente).setEnabled(!bloquear); // aplicar logica inversa
-                }
-            } else {
-                // No hace nada para otros tipos de componentes
-            }
+            int idGenerado = cstmt.getInt(3); // Recibe directamente el número
+            codigoGenerado = String.valueOf(idGenerado);
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+        return codigoGenerado;
     }
 
     public static void llenarComboBoxViaticos(JComboBox<Empleados> cboEmpleado, JComboBox<String> cboPeriodo) {
@@ -81,7 +61,7 @@ public class DatosViaticos {
                 cboEmpleado.addItem(e);
             }
 
-            PreparedStatement pstmtPeriodo = conn.prepareStatement("CALL listar_viaticos_periodo()");
+            PreparedStatement pstmtPeriodo = conn.prepareStatement("CALL listar_periodos()");
             ResultSet rsPeriodo = pstmtPeriodo.executeQuery();
 
             while (rsPeriodo.next()) {
@@ -169,34 +149,6 @@ public class DatosViaticos {
         }
     }
 
-    // Boton editar
-    public static void Editar(JPanel panel, JTable tabla, JTextField[] cajas, JComboBox cboEmp, JComboBox cboPer) {
-        // Obtener el indice de la fila seleccionada
-        int fila = tabla.getSelectedRow();
-
-        if (fila >= 0) {
-            DatosViaticos.Habilitar(panel, true);
-            // Limpiar la seleccion en la tabla
-            tabla.clearSelection();
-            // Deshabilitamos la seleccion de filas de la tabla
-            tabla.setRowSelectionAllowed(false);
-
-            for (int i = 0; i < cajas.length; i++) {
-                String dato = tabla.getModel().getValueAt(fila, i).toString();
-                cajas[i].setText(dato);
-            }
-
-            cajas[0].setEnabled(false);
-            cajas[1].requestFocus();
-
-            cboEmp.setSelectedItem(tabla.getModel().getValueAt(fila, 4).toString());
-            cboPer.setSelectedItem(tabla.getModel().getValueAt(fila, 5).toString());
-
-        } else {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
-    }
-
     // Actualizar datos
     public static boolean Actualizar(Viaticos viatico, JTable tabla) {
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_viaticos(?, ?, ?, ?, ?, ?) }")) {
@@ -249,6 +201,34 @@ public class DatosViaticos {
         }
     }
 
+    // Boton editar
+    public static void Editar(JPanel panel, JTable tabla, JTextField[] cajas, JComboBox cboEmp, JComboBox cboPer) {
+        // Obtener el indice de la fila seleccionada
+        int fila = tabla.getSelectedRow();
+
+        if (fila >= 0) {
+            DatosViaticos.Habilitar(panel, true);
+            // Limpiar la seleccion en la tabla
+            tabla.clearSelection();
+            // Deshabilitamos la seleccion de filas de la tabla
+            tabla.setRowSelectionAllowed(false);
+
+            for (int i = 0; i < cajas.length; i++) {
+                String dato = tabla.getModel().getValueAt(fila, i).toString();
+                cajas[i].setText(dato);
+            }
+
+            cajas[0].setEnabled(false);
+            cajas[1].requestFocus();
+
+            cboEmp.setSelectedItem(tabla.getModel().getValueAt(fila, 4).toString());
+            cboPer.setSelectedItem(tabla.getModel().getValueAt(fila, 5).toString());
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
     // Validar campos
     public static boolean Validar(JTextField[] campos, JComboBox[] combos) {
         // Comprobamos cajas vacías
@@ -273,5 +253,44 @@ public class DatosViaticos {
         }
 
         return true;
+    }
+
+    // Limpiar campos
+    public static void Limpiar(Container contenedor) {
+        for (Component componente : contenedor.getComponents()) {
+            if (componente instanceof JTextField) {
+                //componente.setText("");
+                ((JTextField) componente).setText("");
+            } else if (componente instanceof JComboBox) {
+                ((JComboBox) componente).setSelectedIndex(-1);
+            } else if (componente instanceof Container) {
+                Limpiar((Container) componente);
+            } else {
+                // No hace nada para otros tipos de componentes
+            }
+        }
+    }
+
+    // Habilitar campos
+    public static void Habilitar(Container contenedor, boolean bloquear) {
+        for (Component componente : contenedor.getComponents()) {
+            if (componente instanceof JTextField) {
+                //jTextField.setEnabled(bloquear);
+                ((JTextField) componente).setEnabled(bloquear);
+            } else if (componente instanceof JComboBox) {
+                //jComboBox.setEnabled(bloquear);
+                ((JComboBox) componente).setEnabled(bloquear);
+            } else if (componente instanceof JButton) {
+
+                String button = ((JButton) componente).getName();
+                if (button.equals("guardar") || button.equals("cancelar")) {
+                    ((JButton) componente).setEnabled(bloquear);
+                } else if (button.equals("nuevo") || button.equals("editar") || button.equals("eliminar")) {
+                    ((JButton) componente).setEnabled(!bloquear); // aplicar logica inversa
+                }
+            } else {
+                // No hace nada para otros tipos de componentes
+            }
+        }
     }
 }
