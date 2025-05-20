@@ -3,13 +3,12 @@ package proyecto_gm.Area;
 public class Area {
     //Atributos
     int idArea;  
-    String codigoArea;
     String descripcionArea;
 
     public Area() {   
     }
      
-    public Area(int idArea,String codigoArea, String descripcionArea) {
+    public Area(int idArea, String descripcionArea) {
         this.idArea = idArea;
         this.descripcionArea = descripcionArea;
     }
@@ -24,14 +23,6 @@ public class Area {
     
     public String getDescripcionArea() {
         return descripcionArea;
-    }
-
-    public String getCodigoArea() {
-        return codigoArea;
-    }
-
-    public void setCodigoArea(String codigoArea) {
-        this.codigoArea = codigoArea;
     }
 
     public void setDescripcionArea(String descripcionArea) {

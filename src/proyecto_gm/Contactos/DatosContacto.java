@@ -74,7 +74,7 @@ public class DatosContacto {
     public static void CargarCombos(JComboBox cboidCat) {
         try {
             // Preparamos la consultas
-            PreparedStatement pstmtArea = conn.prepareStatement("SELECT Descripcion FROM departamentos");
+            PreparedStatement pstmtArea = conn.prepareStatement("CALL ObtenerDescripcionesDepartamentos()");
             //PreparedStatement pstmtCargo = conn.prepareStatement("SELECT Descripcion FROM cargos");
 
             // Las ejecutamos

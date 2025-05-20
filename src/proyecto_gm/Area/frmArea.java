@@ -1,4 +1,5 @@
 package proyecto_gm.Area;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -12,8 +13,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 public class frmArea extends javax.swing.JInternalFrame {
-    boolean esNuevo=false;
-  
+
+    boolean esNuevo = false;
+
     public frmArea() {
         initComponents();
         JTableHeader header = tblArea.getTableHeader();
@@ -34,15 +36,16 @@ public class frmArea extends javax.swing.JInternalFrame {
             }
         });
         DefaultTableModel modelo = (DefaultTableModel) tblArea.getModel();
-        
+
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
         DatosArea.HabilitarArea(escritorio, false);
-        
+
         DatosArea.MostrarArea(modelo);
         tblArea.setCellSelectionEnabled(false);
         tblArea.setRowSelectionAllowed(true);
-    }  
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -221,50 +224,44 @@ public class frmArea extends javax.swing.JInternalFrame {
         tblArea.clearSelection();
         // Habilitamos la seleccion de filas de la tabla
         tblArea.setRowSelectionAllowed(true);
-        
-        
+
+
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        Area are= new Area();
-        String idTexto = txtCodigo.getText().replaceAll("[^0-9]", "");
-        try {
-            are.setIdArea(Integer.parseInt(idTexto));
-        } catch (NumberFormatException e) {
-            are.setIdArea(0);
+        Area are = new Area();
+        are.setDescripcionArea(txtDescripcion.getText().trim());
+
+        if (txtDescripcion.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, complete la descripción del área.");
+            return;
         }
 
-        are.setDescripcionArea(txtDescripcion.getText());
         if (esNuevo) {
-            if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            } else if (!txtCodigo.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
-                JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                txtCodigo.requestFocus();
+            if (DatosArea.InsertarArea(are, tblArea)) {
+                JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+                DatosArea.LimpiarArea(escritorio);
+                DatosArea.HabilitarArea(escritorio, false);
+                tblArea.clearSelection();
+                tblArea.setRowSelectionAllowed(true);
             } else {
-                if (DatosArea.InsertarArea(are, tblArea)) {
-                    JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-                    DatosArea.LimpiarArea(escritorio);
-                    DatosArea.HabilitarArea(escritorio, false);
-                    tblArea.clearSelection();
-                    tblArea.setRowSelectionAllowed(true);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+                JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            } else {
-                are.setCodigoArea(txtCodigo.getText());
+            int filaSeleccionada = tblArea.getSelectedRow();
+            if (filaSeleccionada >= 0) {
+                // Obtener el IdArea directamente desde la tabla
+                int idArea = Integer.parseInt(tblArea.getModel().getValueAt(filaSeleccionada, 0).toString());
+                are.setIdArea(idArea);
+
                 DatosArea.ActualizarArea(are, tblArea);
                 JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
                 DatosArea.LimpiarArea(escritorio);
                 DatosArea.HabilitarArea(escritorio, false);
                 tblArea.clearSelection();
                 tblArea.setRowSelectionAllowed(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Seleccione un área para actualizar.");
             }
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -277,12 +274,12 @@ public class frmArea extends javax.swing.JInternalFrame {
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
-        JTextField [] cod= new JTextField [2];
+        JTextField[] cod = new JTextField[2];
         cod[0] = txtCodigo;
         cod[1] = txtDescripcion;
         DatosArea.EditarArea(escritorio, tblArea, cod);
 
-        esNuevo=false;
+        esNuevo = false;
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
@@ -295,22 +292,18 @@ public class frmArea extends javax.swing.JInternalFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         DatosArea.HabilitarArea(escritorio, true);
-        String codigo = DatosArea.GenerarCodigoArea();
 
-        if (codigo != null) {
-            txtCodigo.setText(codigo);
-            txtCodigo.setEnabled(false);
-        } else {
-            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
+        // Ya no se genera código porque se usa AUTO_INCREMENT para IdArea
+        txtDescripcion.setText("");
+        
+        txtCodigo.setEnabled(false); 
+        
         txtDescripcion.requestFocus();
+
         esNuevo = true;
         tblArea.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnAgregarActionPerformed
-    
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;

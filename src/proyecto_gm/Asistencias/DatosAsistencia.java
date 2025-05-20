@@ -151,7 +151,7 @@ public class DatosAsistencia {
 
     public static void CargarEmpleados(JComboBox combo) {
         //String query = "SELECT CONCAT(dni,'-',ifnull(Nombres,''), ' ', ifnull(Apellidos,'')) AS NombreCompleto FROM empleados ORDER BY Nombres ASC";
-        String query = "SELECT dni AS NombreCompleto FROM empleados ORDER BY Nombres ASC";
+        String query = "CALL ObtenerEmpleadosOrdenados()";
         try ( PreparedStatement pstmt = conn.prepareStatement(query);  ResultSet rs = pstmt.executeQuery();) {
             while (rs.next()) {
                 String nombre_completo = rs.getString("NombreCompleto");
@@ -166,7 +166,7 @@ public class DatosAsistencia {
         String dni = "";
         String empleado = combo.getSelectedItem().toString();
         /*String query = "SELECT Dni FROM empleados WHERE CONCAT(Nombres, ' ', Apellidos) = ?";**/
-        String query = "SELECT Dni FROM empleados WHERE dni = ?";
+        String query = "CALL ObtenerEmpleadoPorDni(?)";
         try ( PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, empleado);
             try ( ResultSet rs = pstmt.executeQuery()) {

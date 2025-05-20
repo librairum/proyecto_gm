@@ -12,9 +12,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-
 public class frmTipo extends javax.swing.JInternalFrame {
-    boolean esNuevo=false;
+
+    boolean esNuevo = false;
 
     public frmTipo() {
         initComponents();
@@ -36,16 +36,16 @@ public class frmTipo extends javax.swing.JInternalFrame {
             }
         });
         DefaultTableModel modelo = (DefaultTableModel) tblTipo.getModel();
-        
+
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
         DatosTipo.HabilitarTipo(escritorio, false);
         DatosTipo.MostrarTipo(modelo);
-        
+
         tblTipo.setCellSelectionEnabled(false);
         tblTipo.setRowSelectionAllowed(true);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -210,12 +210,12 @@ public class frmTipo extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        JTextField [] cod= new JTextField [2];
+        JTextField[] cod = new JTextField[2];
         cod[0] = txtCodigo;
         cod[1] = txtDescripcion;
         DatosTipo.EditarTipo(escritorio, tblTipo, cod);
 
-        esNuevo=false;
+        esNuevo = false;
 
     }//GEN-LAST:event_btnEditarActionPerformed
 
@@ -226,46 +226,42 @@ public class frmTipo extends javax.swing.JInternalFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         Tipo tip = new Tipo();
-        String idTexto = txtCodigo.getText().replaceAll("[^0-9]", "");
-        try {
-            tip.setIdTipo(Integer.parseInt(idTexto));
-        } catch (NumberFormatException e) {
-            tip.setIdTipo(0);
+
+        // Validación de descripción
+        if (txtDescripcion.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese una descripción válida.");
+            return;
         }
 
-        tip.setDescripcionTipo(txtDescripcion.getText());
+        tip.setDescripcionTipo(txtDescripcion.getText().trim());
+
         if (esNuevo) {
-            if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            } else if (!txtCodigo.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
-                JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                txtCodigo.requestFocus();
+            // INSERTAR
+            if (DatosTipo.InsertarTipo(tip, tblTipo)) {
+                JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+                DatosTipo.LimpiarTipo(escritorio);
+                DatosTipo.HabilitarTipo(escritorio, false);
+                tblTipo.clearSelection();
+                tblTipo.setRowSelectionAllowed(true);
             } else {
-                if (DatosTipo.InsertarTipo(tip, tblTipo)) {
-                    JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-                    DatosTipo.LimpiarTipo(escritorio);
-                    DatosTipo.HabilitarTipo(escritorio, false);
-                    tblTipo.clearSelection();
-                    tblTipo.setRowSelectionAllowed(true);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+                JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            } else {
-                tip.setCodigoTipo(txtCodigo.getText());
+            // ACTUALIZAR
+            try {
+                int idTipo = Integer.parseInt(txtCodigo.getText().trim());
+                tip.setIdTipo(idTipo);
+
                 DatosTipo.ActualizarTipo(tip, tblTipo);
                 JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
                 DatosTipo.LimpiarTipo(escritorio);
                 DatosTipo.HabilitarTipo(escritorio, false);
                 tblTipo.clearSelection();
                 tblTipo.setRowSelectionAllowed(true);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "ID inválido para actualizar.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        }             
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
@@ -286,18 +282,17 @@ public class frmTipo extends javax.swing.JInternalFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         DatosTipo.HabilitarTipo(escritorio, true);
-        String codigo = DatosTipo.GenerarCodigoTipo();
 
-        if (codigo != null) {
-            txtCodigo.setText(codigo);
-            txtCodigo.setEnabled(false);
-        } else {
-            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+        // Limpiar el campo de ID y deshabilitarlo (porque será generado automáticamente)
+        txtCodigo.setText("");
+        txtCodigo.setEnabled(false);
 
+        // Preparar el campo de descripción
+        txtDescripcion.setText("");
         txtDescripcion.requestFocus();
+
         esNuevo = true;
+        tblTipo.clearSelection();
         tblTipo.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnAgregarActionPerformed
 

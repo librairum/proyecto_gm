@@ -21,45 +21,18 @@ public class DatosCargo {
         }
     }
 
-    public static String GenerarCodigo() {
-        CallableStatement cstmt = null;
-        String codigoGenerado = "";
-        try {
-            cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }");
-
-            cstmt.setString(1, "cargos");
-            cstmt.setString(2, "IdCargo");
-            cstmt.setString(3, "CAR");
-
-            cstmt.registerOutParameter(4, Types.VARCHAR);
-
-            cstmt.execute();
-
-            codigoGenerado = cstmt.getString(4);
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            try {
-                if (cstmt != null) {
-                    cstmt.close();
-                }
-            } catch (SQLException ignored) {
-            }
-        }
-        return codigoGenerado;
-    }
-
     public static void Mostrar(DefaultTableModel modelo) {
         modelo.setRowCount(0);
         try ( PreparedStatement stmt = conn.prepareStatement("CALL listar_cargos()");  ResultSet rs = stmt.executeQuery()) {
+
             while (rs.next()) {
                 Object[] row = new Object[]{
-                    rs.getString("CodigoCargo"),
+                    rs.getInt("IdCargo"), // Cambié getString por getInt porque IdCargo es int
                     rs.getString("Descripcion")
                 };
                 modelo.addRow(row);
             }
+
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -67,16 +40,19 @@ public class DatosCargo {
 
     public static boolean Insertar(Cargo car, JTable tabla) {
         try ( CallableStatement stmt = conn.prepareCall("{CALL insertar_cargos(?, ?)}")) {
-            String nuevoCodigo = GenerarCodigo(); 
             stmt.setString(1, car.getDescripcion());
-            stmt.registerOutParameter(2, Types.VARCHAR);
+            stmt.registerOutParameter(2, Types.INTEGER); // Cambié a INTEGER para el Id autogenerado
+
             int filasAfectadas = stmt.executeUpdate();
 
-            car.setCodigoCargo(nuevoCodigo);
-            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            modelo.addRow(new Object[]{car.getCodigoCargo(), car.getDescripcion()});
+            // Obtener el Id generado desde el OUT parameter
+            int nuevoId = stmt.getInt(2);
+            car.setIdCargo(nuevoId);  // Asegúrate que Cargo tenga atributo IdCargo y setter
 
-            return filasAfectadas > 0; 
+            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+            modelo.addRow(new Object[]{car.getIdCargo(), car.getDescripcion()});
+
+            return filasAfectadas > 0;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -86,14 +62,14 @@ public class DatosCargo {
     public static void Actualizar(Cargo car, JTable tabla) {
         try {
             CallableStatement ate = conn.prepareCall("{CALL actualizar_cargos (?,?)}");
-            ate.setString(1, car.getCodigoCargo());
+            ate.setInt(1, car.getIdCargo());
             ate.setString(2, car.getDescripcion());
             ate.executeUpdate();
 
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            modelo.setRowCount(0); 
+            modelo.setRowCount(0);
 
-            DatosCargo.Mostrar(modelo); 
+            DatosCargo.Mostrar(modelo);
             ate.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -103,11 +79,19 @@ public class DatosCargo {
     public static void Eliminar(JTable tabla) {
         int fila = tabla.getSelectedRow();
         if (fila >= 0) {
-            String codigoCargo = tabla.getModel().getValueAt(fila, 0).toString();
+            String idStr = tabla.getModel().getValueAt(fila, 0).toString();
+            int idCargo;
+            try {
+                idCargo = Integer.parseInt(idStr);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Id inválido para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             int confirm = JOptionPane.showConfirmDialog(null, "¿Eliminar cargo?", "Confirmar", JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
                 try ( CallableStatement stmt = conn.prepareCall("{ CALL eliminar_cargos(?) }")) {
-                    stmt.setString(1, codigoCargo);
+                    stmt.setInt(1, idCargo);
                     stmt.execute();
                     ((DefaultTableModel) tabla.getModel()).removeRow(fila);
                 } catch (SQLException ex) {
@@ -126,7 +110,7 @@ public class DatosCargo {
             for (int i = 0; i < campos.length; i++) {
                 campos[i].setText(tabla.getModel().getValueAt(fila, i).toString());
             }
-            campos[0].setEnabled(false); 
+            campos[0].setEnabled(false);
             campos[1].requestFocus();
             return true;
         } else {

@@ -46,7 +46,7 @@ public class frmCargo extends javax.swing.JInternalFrame {
         tblCargo.setRowSelectionAllowed(true);
 
     }
-   
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -229,15 +229,10 @@ public class frmCargo extends javax.swing.JInternalFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         DatosCargo.Habilitar(escritorio, true);
-        String codigo = DatosCargo.GenerarCodigo();
 
-        if (codigo != null) {
-            txtCodigo.setText(codigo);
-            txtCodigo.setEnabled(false);
-        } else {
-            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+        // No generar código manualmente porque IdCargo es auto_increment
+        txtCodigo.setText("");
+        txtCodigo.setEnabled(false);  // o podrías ocultarlo si quieres
 
         txtDescripcion.requestFocus();
         esNuevo = true;
@@ -258,45 +253,43 @@ public class frmCargo extends javax.swing.JInternalFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         Cargo car = new Cargo();
 
-        String idTexto = txtCodigo.getText().replaceAll("[^0-9]", "");
-        try {
-            car.setIdCargo(Integer.parseInt(idTexto));
-        } catch (NumberFormatException e) {
-            car.setIdCargo(0);
+        // Para insertar, el IdCargo no se setea (queda 0)
+        // Para actualizar, debe ser un número válido
+        if (!esNuevo) {
+            try {
+                car.setIdCargo(Integer.parseInt(txtCodigo.getText()));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "El Id debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
         }
 
-        car.setDescripcion(txtDescripcion.getText());
+        String descripcion = txtDescripcion.getText().trim();
+        if (descripcion.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "La descripción es obligatoria.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            txtDescripcion.requestFocus();
+            return;
+        }
+
+        car.setDescripcion(descripcion);
+
         if (esNuevo) {
-            if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            } else if (!txtCodigo.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
-                JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto. Debe ser 'CAR0002'.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                txtCodigo.requestFocus();
-            } else {
-                if (DatosCargo.Insertar(car, tblCargo)) {
-                    JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-                    DatosCargo.Limpiar(escritorio);
-                    DatosCargo.Habilitar(escritorio, false);
-                    tblCargo.clearSelection();
-                    tblCargo.setRowSelectionAllowed(true);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        } else {
-            if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            } else {
-                car.setCodigoCargo(txtCodigo.getText());
-                DatosCargo.Actualizar(car, tblCargo);
-                JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
+            if (DatosCargo.Insertar(car, tblCargo)) {
+                JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
                 DatosCargo.Limpiar(escritorio);
                 DatosCargo.Habilitar(escritorio, false);
                 tblCargo.clearSelection();
                 tblCargo.setRowSelectionAllowed(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
             }
+        } else {
+            DatosCargo.Actualizar(car, tblCargo);
+            JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
+            DatosCargo.Limpiar(escritorio);
+            DatosCargo.Habilitar(escritorio, false);
+            tblCargo.clearSelection();
+            tblCargo.setRowSelectionAllowed(true);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 

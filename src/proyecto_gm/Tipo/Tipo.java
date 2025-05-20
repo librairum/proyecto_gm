@@ -2,16 +2,14 @@ package proyecto_gm.Tipo;
 
 public class Tipo {
     //Atributos
-    int idTipo;  
-    String codigoTipo;  
+    int idTipo;   
     String descripcionTipo;
 
     public Tipo() {   
     }
      
-    public Tipo(int idTipo, String codigoTipo, String descripcionTipo) {
+    public Tipo(int idTipo, String descripcionTipo) {
         this.idTipo = idTipo;
-        this.codigoTipo = codigoTipo;
         this.descripcionTipo = descripcionTipo;
     }
     
@@ -21,14 +19,6 @@ public class Tipo {
 
     public void setIdTipo(int idTipo) {
         this.idTipo = idTipo;
-    }
-    
-    public String getCodigoTipo(){
-        return codigoTipo;
-    }
-
-    public void setCodigoTipo(String codigoTipo) {
-        this.codigoTipo = codigoTipo;
     }
 
     public String getDescripcionTipo() {

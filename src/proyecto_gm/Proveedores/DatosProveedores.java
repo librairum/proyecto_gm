@@ -52,32 +52,6 @@ public class DatosProveedores {
         return codigoGenerado;
     }
 
-    /*public static String GenerarCodigo(String tabla, String prefijo, int longitud) {
-        CallableStatement cstmt = null;
-        String codigo_generado = "";
-        try {
-            cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }");
-            cstmt.setString(1, tabla);
-            cstmt.setString(2, prefijo);
-            cstmt.setInt(3, longitud);
-            cstmt.registerOutParameter(4, Types.VARCHAR);
-
-            cstmt.execute();
-
-            codigo_generado = cstmt.getString(4);
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            if (cstmt != null) {
-                try {
-                    cstmt.close();
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        }
-        return codigo_generado;
-    }*/
     // Habilitar o bloquear campos y botones
     public static void Habilitar(Container contenedor, boolean bloquear) {
         Component[] components = contenedor.getComponents();
@@ -135,7 +109,7 @@ public class DatosProveedores {
 
     public static String Capturar(JComboBox<String> cboModulo2) {
         String idModulo = "";
-        try ( PreparedStatement pstmt = conn.prepareStatement("SELECT IdDepartamento FROM departamentos WHERE Descripcion = ?")) {
+        try ( PreparedStatement pstmt = conn.prepareStatement(" CALL Obtener_IdDepartamentoPorDescripcion(?)")) {
             pstmt.setString(1, cboModulo2.getSelectedItem().toString());
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -266,24 +240,4 @@ public class DatosProveedores {
         }
     }
 
-    /*public static boolean Editar(Container contenedor, JTable tabla, JTextField[] cod) {
-        int fila = tabla.getSelectedRow();
-        if (fila != -1) {
-            DatosProveedores.Habilitar(contenedor, true);
-            tabla.clearSelection();
-            tabla.setRowSelectionAllowed(false);
-            for (int i = 0; i < cod.length; i++) {
-
-                String dato = tabla.getModel().getValueAt(fila, i).toString();
-                cod[i].setText(dato);
-            }
-            cod[0].setEnabled(false);
-            cod[1].requestFocus();
-            return true;
-        } else {
-            JOptionPane.showMessageDialog(null, "No seleciono una fila");
-            return false;
-        }
-    }
-     */
 }
