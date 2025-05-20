@@ -1,39 +1,39 @@
 # Gm1.0
 
 1. Administración
-  Cargos - Percy              (correciones y funcionalidad correcta)
-  áreas - Percy               (correciones y funcionalidad correcta)
-  Tipos de empleados - Percy  (correciones y funcionalidad correcta)
-  Asistencia - Percy          (correciones y funcionalidad correcta)
-  Tipos de documentos - Percy (correciones y funcionalidad correcta)
+  Cargos - Percy              (correciones y funcionalidad correcta)<br>
+  áreas - Percy               (correciones y funcionalidad correcta)<br>
+  Tipos de empleados - Percy  (correciones y funcionalidad correcta)<br>
+  Asistencia - Percy          (correciones y funcionalidad correcta)<br>
+  Tipos de documentos - Percy (correciones y funcionalidad correcta)<br>
 
 2. Facturación
-  Recibo por honorarios - (avanzando) Percy
-  Transferencias (faltante)
+  Recibo por honorarios - (avanzando) Percy<br>
+  Transferencias (faltante)<br>
 
 3. logística
-  Categorías (faltante)
-  Artículos (faltante)
+  Categorías (faltante)<br>
+  Artículos (faltante)<br>
 
 4. Proyecto
-  Comunicaciones (faltante)
-  Contactos (faltante)
+  Comunicaciones (faltante)<br>
+  Contactos (faltante)<br>
 
 5. Recursos humanos
-  Carreras (faltante)
-  Instituciones (faltante)
-  Facultades (faltante)
-  Proveedores (faltante)
-  Empleados - Percy (correciones y funcionalidad correcta)
+  Carreras (faltante)<br>
+  Instituciones (faltante)<br>
+  Facultades (faltante)<br>
+  Proveedores (faltante)<br>
+  Empleados - Percy (correciones y funcionalidad correcta)<br>
 
 6. Tesorería
-  Flujo de caja (faltante)
-  Cuentas bancarias (avanzando) emerson
-  Viáticos - emerson (correciones y funcionalidad correcta)
+  Flujo de caja (faltante)<br>
+  Cuentas bancarias (avanzando) emerson<br>
+  Viáticos - emerson (correciones y funcionalidad correcta)<br>
 
 7. Configuración
-  Periodos - emerson      (correciones y funcionalidad correcta)
-  Módulos - emerson       (correciones y funcionalidad correcta)
-  Departamentos - emerson (correciones y funcionalidad correcta)
-  Credencial - emerson    (correciones y funcionalidad correcta)
+  Periodos - emerson      (correciones y funcionalidad correcta)<br>
+  Módulos - emerson       (correciones y funcionalidad correcta)<br>
+  Departamentos - emerson (correciones y funcionalidad correcta)<br>
+  Credencial - emerson    (correciones y funcionalidad correcta)<br>
 
