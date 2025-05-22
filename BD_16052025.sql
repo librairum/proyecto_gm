@@ -129,7 +129,6 @@ DROP TABLE IF EXISTS `articulos`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `articulos` (
   `IdArticulo` int NOT NULL AUTO_INCREMENT,
-  `CodigoArticulo` varchar(50) DEFAULT NULL,
   `IdCategoria` int DEFAULT NULL,
   `IdMarca` int DEFAULT NULL,
   `caracteristicas` varchar(400) DEFAULT NULL,
@@ -377,7 +376,6 @@ DROP TABLE IF EXISTS `categorias`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `categorias` (
   `IdCategoria` int NOT NULL AUTO_INCREMENT,
-  `CodigoCategoria` varchar(50) DEFAULT NULL,
   `Descripcion` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`IdCategoria`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -391,29 +389,6 @@ LOCK TABLES `categorias` WRITE;
 /*!40000 ALTER TABLE `categorias` DISABLE KEYS */;
 INSERT INTO `categorias` VALUES (1,'oficina'),(2,'tecnologico'),(3,'campo');
 /*!40000 ALTER TABLE `categorias` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `categories`
---
-
-DROP TABLE IF EXISTS `categories`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `categories` (
-  `CategoryID` int NOT NULL,
-  `CategoryName` varchar(255) DEFAULT NULL,
-  `Description` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `categories`
---
-
-LOCK TABLES `categories` WRITE;
-/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

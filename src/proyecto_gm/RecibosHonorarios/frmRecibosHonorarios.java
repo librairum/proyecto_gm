@@ -213,6 +213,11 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
                 txtIRFocusLost(evt);
             }
         });
+        txtIR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIRActionPerformed(evt);
+            }
+        });
         txtIR.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtIRKeyTyped(evt);
@@ -312,7 +317,6 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         tblHonorarios.setFocusable(false);
         tblHonorarios.setRowHeight(25);
         tblHonorarios.setSelectionBackground(new java.awt.Color(153, 153, 153));
-        tblHonorarios.setSelectionForeground(new java.awt.Color(0, 0, 0));
         tblHonorarios.setShowGrid(true);
         tblHonorarios.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblHonorarios);
@@ -501,20 +505,29 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         DatosRecibosHonorarios.Habilitar(escritorio, true);
-        String codigo = DatosRecibosHonorarios.GenerarCodigo();
 
-        if (codigo != null) {
-            txtId.setText(codigo);
-            txtId.setEnabled(false);
-        } else {
-            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        txtId.requestFocus();
+        // Preparar todos los campos
+        txtId.setText("");
+        txtId.setEnabled(false);
+
         txtNroRecibo.setText("NUM-");
+        txtRuc.setText("");
+        txtNom.setText("");
+        txtApe.setText("");
+        cboDistrito.setSelectedIndex(0);
+        txtDirec.setText("");
+        cboPago.setSelectedIndex(0);
+        txtConcepto.setText("");
+        txtImpNeto.setText("");
+        txtIR.setText("");
+        txtImpTotal.setText("");
+        txtImpTotal.setEnabled(true); // ✅ Asegura que esté habilitado
+        txtFecEmi.setText("");
+
         txtNroRecibo.requestFocus();
 
         esNuevo = true;
+        tblHonorarios.clearSelection();
         tblHonorarios.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
@@ -758,6 +771,10 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
     private void cboPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboPagoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cboPagoActionPerformed
+
+    private void txtIRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIRActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIRActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

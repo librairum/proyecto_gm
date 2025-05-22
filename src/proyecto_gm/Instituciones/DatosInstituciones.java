@@ -21,14 +21,32 @@ public class DatosInstituciones {
 
     static Connection conn = ConexionBD.getConnection();
 
-    public void mostrarDatosInstituciones(DefaultTableModel modelo) {
+    public static String GenerarCodigo() {
+        String codigoGenerado = "";
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?) }")) {
+            cstmt.setString(1, "institucioneseducativas");
+            cstmt.setString(2, "IdInstitucionEducativa");
+            cstmt.registerOutParameter(3, Types.INTEGER);
+
+            cstmt.execute();
+
+            int idGenerado = cstmt.getInt(3); // Recibe directamente el número
+            codigoGenerado = String.valueOf(idGenerado);
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return codigoGenerado;
+    }
+
+    public static void mostrarDatos(DefaultTableModel modelo) {
         modelo.setRowCount(0); // Limpiar la tabla antes de cargar nuevos datos
         try {
             PreparedStatement stmt = conn.prepareStatement("CALL listar_instituciones()");
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Object[] row = new Object[]{
-                    rs.getString("codigoInstituciones"),
+                    rs.getString("IdInstitucionEducativa"),
                     rs.getString("Ruc"),
                     rs.getString("RazonSocial"),
                     rs.getString("Direccion"),
@@ -42,16 +60,9 @@ public class DatosInstituciones {
 
     public static void insertarDatos(Instituciones institucion, JTable tabla) {
         try {
-            // Verificar si el campo ID está vacío
-            if (institucion.getId().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Ingrese un Id", "Sistema", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
             
-            String idTexto = institucion.getId();
-            int idInstitucion = Integer.parseInt(idTexto.substring(3)); 
-                 
+            int idInstitucion = Integer.parseInt(institucion.getId());
+
             // Llamar al procedimiento almacenado para insertar
             CallableStatement cstmt = conn.prepareCall("{ CALL insertar_instituciones(?, ?, ?, ?, ?) }");
             cstmt.setInt(1, idInstitucion);
@@ -62,74 +73,15 @@ public class DatosInstituciones {
             cstmt.execute();
             cstmt.close();
 
-            // Llamar al procedimiento almacenado para obtener la institución
-            CallableStatement cstmt2 = conn.prepareCall("{ CALL obtener_institucion(?) }");
-            cstmt2.setInt(1, idInstitucion);
-            ResultSet rs = cstmt2.executeQuery();
-
-            if (rs.next()) {
-                DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-                Object[] rowData = {
-                    rs.getString("codigoInstituciones"),
-                    rs.getString("Ruc"),
-                    rs.getString("RazonSocial"),
-                    rs.getString("Direccion"),
-                    rs.getString("Sede")
-                };
-                modelo.addRow(rowData);
-                tabla.setModel(modelo);
-            }
-
-            rs.close();
-            cstmt2.close();
+            // Usar mostrarDatos para actualizar la tabla
+            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+            modelo.setRowCount(0); // Limpiar la tabla
+            mostrarDatos(modelo);
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "El ID debe tener el formato correcto (por ejemplo: INS00001)", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    public static void eliminarDatos(JTable tabla) {
-        int fila = tabla.getSelectedRow();
-
-        if (fila >= 0) {
-            String id = tabla.getModel().getValueAt(fila, 0).toString(); // Se asume que el ID está en la primera columna
-            int confirm = JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
-
-            if (confirm == JOptionPane.YES_OPTION) {
-                try ( CallableStatement stmt = conn.prepareCall("{ CALL eliminar_instituciones(?) }")) {
-                    stmt.setString(1, id); // Se usa setString porque el ID es VARCHAR
-                    stmt.execute();
-
-                    // Eliminar la fila de la tabla
-                    ((DefaultTableModel) tabla.getModel()).removeRow(fila);
-                    JOptionPane.showMessageDialog(null, "La fila ha sido eliminada exitosamente.");
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para eliminar.");
-        }
-    }
-
-    public static void guardarCambios(Instituciones institucion, JTable tabla) {
-        try {
-            // Llamada al procedimiento sin parámetros
-            CallableStatement cstmt = conn.prepareCall("{ CALL listar_instituciones() }"); // Sin parámetros
-            ResultSet rs = cstmt.executeQuery();
-
-            // Verificar si el resultado tiene filas, lo que indica que el registro ya existe
-            if (rs.next()) {
-                // Si el registro existe, hacer una actualización
-                DatosInstituciones.actualizarDatos(institucion, tabla);
-            } else {
-                // Si el registro no existe, hacer una inserción
-                DatosInstituciones.insertarDatos(institucion, tabla);
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -143,46 +95,41 @@ public class DatosInstituciones {
             cstmt.setString(5, institucion.getSede());
             cstmt.execute(); // Ejecuta la actualización en la base de datos
 
-            // Limpiar y actualizar la tabla
+            // Usar mostrarDatos para actualizar la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0); // Limpiar la tabla
-
-            PreparedStatement stmt = conn.prepareStatement("CALL listar_instituciones()"); // Recargar datos
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                Object[] row = new Object[]{
-                    rs.getString("codigoInstituciones"),
-                    rs.getString("Ruc"),
-                    rs.getString("RazonSocial"),
-                    rs.getString("Direccion"),
-                    rs.getString("Sede")
-                };
-                modelo.addRow(row);
-            }
+            mostrarDatos(modelo);
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public static String GenerarCodigo() {
-        String codigoGenerado = "";
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }")) {
-            cstmt.setString(1, "institucioneseducativas");   // Tabla
-            cstmt.setString(2, "IdInstitucionEducativa");    // Campo numérico
-            cstmt.setString(3, "");
-            cstmt.registerOutParameter(4, Types.VARCHAR);    // ID generado como texto
-            cstmt.execute();
+    public static void eliminarDatos(JTable tabla) {
+        int fila = tabla.getSelectedRow();
 
-            String idGenerado = cstmt.getString(4);
+        if (fila >= 0) {
+            
+            String id = tabla.getModel().getValueAt(fila, 0).toString(); // ID primera columna
+            int confirm = JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
 
-            int id = Integer.parseInt(idGenerado);
-            codigoGenerado = String.format("INS%06d", id);
+            if (confirm == JOptionPane.YES_OPTION) {
+                
+                try ( CallableStatement stmt = conn.prepareCall("{ CALL eliminar_instituciones(?) }")) {
+                    stmt.setString(1, id);
+                    stmt.execute();
 
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    // Eliminar la fila de la tabla
+                    ((DefaultTableModel) tabla.getModel()).removeRow(fila);
+                    JOptionPane.showMessageDialog(null, "La fila ha sido eliminada exitosamente.");
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para eliminar.");
         }
-        return codigoGenerado;
     }
 
     public static boolean validarNumeros(String datos) {

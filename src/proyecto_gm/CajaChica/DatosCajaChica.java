@@ -20,16 +20,24 @@ public class DatosCajaChica {
 
     static Connection conn = ConexionBD.getConnection();
 
-    public static void LimpiarCampos(JTextField[] camposTexto, JComboBox[] combos) {
-    for (JTextField campo : camposTexto) {
-        campo.setText("");
-    }
+      public static String GenerarCodigo() {
+        String codigoGenerado = "";
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?) }")) {
+            cstmt.setString(1, "cajachica");
+            cstmt.setString(2, "IdCajaChica");
+            cstmt.registerOutParameter(3, Types.INTEGER);
 
-    for (JComboBox combo : combos) {
-        combo.setSelectedIndex(0); // o -1 si quieres dejarlo sin selección
+            cstmt.execute();
+
+            int idGenerado = cstmt.getInt(3); // Recibe directamente el número
+            codigoGenerado = String.valueOf(idGenerado);
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return codigoGenerado;
     }
-}
-             
+    
     // Mostrar datos
     public static void Mostrar(DefaultTableModel modelo) {
         try {
@@ -52,34 +60,30 @@ public class DatosCajaChica {
         }
     }
 
-    public static String ObtenerSiguienteIdCajaChica() {
-        String siguienteId = "";
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_siguiente_id_cajachica() }")) {
+    public static void CargarCombo(JComboBox<String> cboNroOperacion) {
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_operacion() }")) {
             ResultSet rs = cstmt.executeQuery();
-            if (rs.next()) {
-                siguienteId = rs.getString("SiguienteId");
+            while (rs.next()) {
+                cboNroOperacion.addItem(rs.getString("NroOperacion"));
             }
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error al obtener el siguiente ID", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        return siguienteId;
     }
 
-   public static void Habilitar(Container contenedor, boolean bloquear) {
-    Component[] components = contenedor.getComponents();
-    for (Component component : components) {
-        if (component instanceof JButton) {
-            String button = ((JButton) component).getName();
-            if (button != null) {
-                if (button.equals("deshacer")) {
-                    ((JButton) component).setEnabled(bloquear);
-                } else if (button.equals("agregar") || button.equals("editar") || button.equals("eliminar")) {
-                    ((JButton) component).setEnabled(!bloquear); // lógica inversa
-                }
+    public static String CapturarIdOperacion(JComboBox<String> cboNroOperacion) {
+        String idCategoria = "";
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_id_Operacion(?) }")) {
+            cstmt.setString(1, cboNroOperacion.getSelectedItem().toString());
+            ResultSet rs = cstmt.executeQuery();
+            if (rs.next()) {
+                idCategoria = rs.getString("IdTransferenciaBancaria");
             }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar Categoría", JOptionPane.ERROR_MESSAGE);
         }
+        return idCategoria;
     }
-}
 
     public static void Insertar(CajaChica caj, JTable tabla, String periodo) {
         try {
@@ -133,7 +137,7 @@ public class DatosCajaChica {
             // Actualizamos la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
-            
+
             //DatosCajaChica.Mostrar(modelo, periodo);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -160,7 +164,7 @@ public class DatosCajaChica {
                     // Actualizar el JTable
                     DefaultTableModel model = (DefaultTableModel) tabla.getModel();
                     model.removeRow(fila);
-                    // JOptionPane.showMessageDialog(null, "La fila ha sido eliminada exitosamente");                
+                    JOptionPane.showMessageDialog(null, "La fila ha sido eliminada exitosamente");                
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para eliminar.");
@@ -172,28 +176,29 @@ public class DatosCajaChica {
 
     }
 
-    public static void CargarCombo(JComboBox<String> cboNroOperacion) {
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_operacion() }")) {
-            ResultSet rs = cstmt.executeQuery();
-            while (rs.next()) {
-                cboNroOperacion.addItem(rs.getString("NroOperacion"));
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    public static void LimpiarCampos(JTextField[] camposTexto, JComboBox[] combos) {
+        for (JTextField campo : camposTexto) {
+            campo.setText("");
+        }
+
+        for (JComboBox combo : combos) {
+            combo.setSelectedIndex(0); // o -1 si quieres dejarlo sin selección
         }
     }
 
-    public static String CapturarIdOperacion(JComboBox<String> cboNroOperacion) {
-        String idCategoria = "";
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_id_Operacion(?) }")) {
-            cstmt.setString(1, cboNroOperacion.getSelectedItem().toString());
-            ResultSet rs = cstmt.executeQuery();
-            if (rs.next()) {
-                idCategoria = rs.getString("IdTransferenciaBancaria");
+    public static void Habilitar(Container contenedor, boolean bloquear) {
+        Component[] components = contenedor.getComponents();
+        for (Component component : components) {
+            if (component instanceof JButton) {
+                String button = ((JButton) component).getName();
+                if (button != null) {
+                    if (button.equals("deshacer")) {
+                        ((JButton) component).setEnabled(bloquear);
+                    } else if (button.equals("agregar") || button.equals("editar") || button.equals("eliminar")) {
+                        ((JButton) component).setEnabled(!bloquear); // lógica inversa
+                    }
+                }
             }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar Categoría", JOptionPane.ERROR_MESSAGE);
         }
-        return idCategoria;
     }
 }

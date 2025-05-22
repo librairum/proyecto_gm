@@ -32,7 +32,7 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
         DatosFacultades.bloquearCampos(jPanel2);
 
         DatosInstituciones di = new DatosInstituciones();
-        di.mostrarDatosInstituciones(modelo);
+        di.mostrarDatos(modelo);
     }
 
     @SuppressWarnings("unchecked")
@@ -186,9 +186,9 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
                                         .addComponent(btnDeshacer)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 456, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(251, 251, 251)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(txtRuc, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                                        .addGap(18, 18, 18)
                                         .addComponent(jLabel3)
                                         .addGap(62, 62, 62)
                                         .addComponent(txtRazon, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -200,13 +200,14 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
                                     .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(jLabel5)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtSede, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(130, 130, 130)
+                                        .addComponent(jButton1))
                                     .addComponent(jLabel2))
-                                .addGap(18, 18, 18)
-                                .addComponent(txtSede, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(130, 130, 130)
-                                .addComponent(jButton1)
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(0, 76, Short.MAX_VALUE)))
                         .addGap(48, 48, 48))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -255,7 +256,7 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
 
-        String codigo = DatosInstituciones.GenerarCodigo(); // Cambia "DatosInstituciones" según tu clase
+        String codigo = DatosInstituciones.GenerarCodigo();
 
         if (codigo != null && !codigo.isEmpty()) {
             txtId.setText(codigo);
@@ -344,8 +345,6 @@ public class frmInstituciones extends javax.swing.JInternalFrame {
         btnEditar.setEnabled(true);
 
         DatosFacultades.bloquearCampos(jPanel2);
-
-        DatosInstituciones.guardarCambios(f, tblInstituciones);
 
         DatosFacultades.limpiarCampos(jPanel2);
 

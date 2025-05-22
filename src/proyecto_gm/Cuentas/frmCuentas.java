@@ -352,8 +352,7 @@ public class frmCuentas extends javax.swing.JInternalFrame {
         tblCuentas.clearSelection();
         tblCuentas.setRowSelectionAllowed(false);
         DatosCuentas.Habilitar(panel, monedas, true);
-        String codigo = DatosCuentas.GenerarCodigoEntero("cuentasbancarias");
-        /*String codigo = DatosCuentas.GenerarCodigo("cuentasbancarias", "CB", 7);*/
+        String codigo = DatosCuentas.GenerarCodigo();
         txtId.setText(codigo);
         txtId.setEnabled(false);
         cboTipoPropietario.requestFocus();
@@ -385,7 +384,7 @@ public class frmCuentas extends javax.swing.JInternalFrame {
         if (!DatosCuentas.Validar(campos)) {
             return;
         }
-        
+
         if (esNuevo) {
             DatosCuentas.Insertar(cuenta, tblCuentas);
         } else {

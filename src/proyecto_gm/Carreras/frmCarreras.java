@@ -10,6 +10,7 @@ import proyecto_gm.Facultades.DatosFacultades;
 import proyecto_gm.Instituciones.DatosInstituciones;
 
 public class frmCarreras extends javax.swing.JInternalFrame {
+
     Exportar obj;
 
     DefaultTableModel modelo;
@@ -27,7 +28,7 @@ public class frmCarreras extends javax.swing.JInternalFrame {
         this.tblCarreras.setModel(modelo);
 
         DatosCarrera dc = new DatosCarrera();
-        dc.mostrarDatosCarreras(modelo);
+        dc.mostrarDatos(modelo);
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
 
@@ -220,23 +221,23 @@ public class frmCarreras extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-       desbloquear();
-    btnEditar.setEnabled(false);
-    btnEliminar.setEnabled(false);
-    btnGuardar.setEnabled(true);
-    btnDeshacer.setEnabled(true);
-    btnAgregar.setEnabled(false);
-    esNuevo = true;
+        desbloquear();
+        btnEditar.setEnabled(false);
+        btnEliminar.setEnabled(false);
+        btnGuardar.setEnabled(true);
+        btnDeshacer.setEnabled(true);
+        btnAgregar.setEnabled(false);
+        esNuevo = true;
 
-    String codigo = DatosCarrera.GenerarCodigoCarrera();
+        String codigo = DatosCarrera.GenerarCodigo();
 
-    if (codigo != null && !codigo.isEmpty()) {
-        txtId.setText(codigo);
-        txtId.setEnabled(false);
-        txtId.requestFocus();
-    } else {
-        JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
+        if (codigo != null && !codigo.isEmpty()) {
+            txtId.setText(codigo);
+            txtId.setEnabled(false);
+            txtId.requestFocus();
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
@@ -308,16 +309,16 @@ public class frmCarreras extends javax.swing.JInternalFrame {
     private void btnDeshacerKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnDeshacerKeyTyped
         // TODO add your handling code here:
         // Limpiar datos
-        
+
     }//GEN-LAST:event_btnDeshacerKeyTyped
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        try{
+        try {
             obj = new Exportar(); //mandamos a llamar a la clase
             obj.exportarExcel(tblCarreras); //llamamos el metodo desde la clase DatosEmpleados
-        } catch (IOException ex){
-            
+        } catch (IOException ex) {
+
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -373,7 +373,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         // Verificar si es una nueva fila (cuando 'esNuevo' es verdadero)
         if (esNuevo) {
             // Obtener el siguiente ID antes de la inserción
-            String siguienteId = DatosCajaChica.ObtenerSiguienteIdCajaChica();
+            String siguienteId = DatosCajaChica.GenerarCodigo();
             txtId.setText(siguienteId);  // Asigna el siguiente ID al campo txtId
 
             // Crear el objeto CajaChica y asignar los valores de los campos de texto
@@ -463,7 +463,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         // Agregar nueva fila en la tabla
         //DatosCajaChica.NuevaFila(tblCajaChica);
         // Capturar el siguiente ID y mostrarlo en el campo de texto
-        txtId.setText(DatosCajaChica.ObtenerSiguienteIdCajaChica());
+        txtId.setText(DatosCajaChica.GenerarCodigo());
         txtId.setEnabled(false); // opcional: para evitar edición manual
 
         // Indicar que es un nuevo registro

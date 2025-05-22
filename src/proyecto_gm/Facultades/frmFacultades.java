@@ -210,7 +210,7 @@ public class frmFacultades extends javax.swing.JInternalFrame {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         
-        String codigo = DatosFacultades.GenerarCodigoFacultades(); 
+        String codigo = DatosFacultades.GenerarCodigo(); 
 
         if (codigo != null && !codigo.isEmpty()) {
             txtId.setText(codigo);

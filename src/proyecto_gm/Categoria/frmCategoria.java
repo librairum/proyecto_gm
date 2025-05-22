@@ -1,4 +1,3 @@
-
 package proyecto_gm.Categoria;
 
 import java.awt.Color;
@@ -16,11 +15,11 @@ import javax.swing.table.JTableHeader;
 import proyecto_gm.Exportar;
 import proyecto_gm.Facultades.DatosFacultades;
 
-
 public class frmCategoria extends javax.swing.JInternalFrame {
 
     Exportar obj;
     boolean esNuevo = false;
+
     public frmCategoria() {
         initComponents();
         JTableHeader header = tblCategoria.getTableHeader();
@@ -39,16 +38,19 @@ public class frmCategoria extends javax.swing.JInternalFrame {
                 setFont(getFont().deriveFont(Font.BOLD, 13));
                 return this;
             }
-        });
+        }); 
         DefaultTableModel modelo = (DefaultTableModel) tblCategoria.getModel();
-        
-        
+
         DatosCategoria.HabilitarCat(escritorio, false);
         DatosCategoria.MostrarCat(modelo);
-        
+
         tblCategoria.setCellSelectionEnabled(false);
         tblCategoria.setRowSelectionAllowed(true);
     }
+    
+    //Prueba 01 Categoria --> Articulo para combobox
+    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -222,15 +224,11 @@ public class frmCategoria extends javax.swing.JInternalFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         DatosCategoria.HabilitarCat(escritorio, true);
-        String codigo = DatosCategoria.GenerarCodigoCat();
 
-        if (codigo != null) {
-            txtCodigo.setText(codigo);
-            txtCodigo.setEnabled(false);
-        } else {
-            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+        // Limpiar los campos
+        txtCodigo.setText("");               // Se deja vacío ya que se generará automáticamente
+        txtCodigo.setEnabled(false);        // No editable, el ID lo asigna la base de datos
+        txtDescripcion.setText("");         // Limpiar descripción
 
         txtDescripcion.requestFocus();
         esNuevo = true;
@@ -252,46 +250,46 @@ public class frmCategoria extends javax.swing.JInternalFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         Categoria cat = new Categoria();
-        String idTexto = txtCodigo.getText().replaceAll("[^0-9]", "");
-        try {
-            cat.setIdCat(Integer.parseInt(idTexto));
-        } catch (NumberFormatException e) {
-            cat.setIdCat(0);
+
+        cat.setDescripcionCat(txtDescripcion.getText().trim());
+
+        if (txtDescripcion.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese la descripción de la categoría.");
+            txtDescripcion.requestFocus();
+            return;
         }
 
-        cat.setDescripcionCat(txtDescripcion.getText());
         if (esNuevo) {
-            if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            } else if (!txtCodigo.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
-                JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                txtCodigo.requestFocus();
-            } else {
-                if (DatosCategoria.InsertarCat(cat, tblCategoria)) {
-                    JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-                    DatosCategoria.LimpiarCat(escritorio);
-                    DatosCategoria.HabilitarCat(escritorio, false);
-                    tblCategoria.clearSelection();
-                    tblCategoria.setRowSelectionAllowed(true);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        } else {
-            if (txtCodigo.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            } else {
-                cat.setCodigoCat(txtCodigo.getText());
-                DatosCategoria.ActualizarCat(cat, tblCategoria);
-                JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
+            if (DatosCategoria.InsertarCat(cat, tblCategoria)) {
+                JOptionPane.showMessageDialog(null, "Datos guardados correctamente.");
+
+                // Mostrar el ID generado en el campo txtCodigo
+                txtCodigo.setText(String.valueOf(cat.getIdCat()));
+                txtCodigo.setEnabled(false); // solo lectura
+
                 DatosCategoria.LimpiarCat(escritorio);
                 DatosCategoria.HabilitarCat(escritorio, false);
                 tblCategoria.clearSelection();
                 tblCategoria.setRowSelectionAllowed(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al guardar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        }    
+        } else {
+            try {
+                int id = Integer.parseInt(txtCodigo.getText());
+                cat.setIdCat(id);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "ID de categoría no válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            DatosCategoria.ActualizarCat(cat, tblCategoria);
+            JOptionPane.showMessageDialog(null, "Datos actualizados correctamente.");
+            DatosCategoria.LimpiarCat(escritorio);
+            DatosCategoria.HabilitarCat(escritorio, false);
+            tblCategoria.clearSelection();
+            tblCategoria.setRowSelectionAllowed(true);
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
@@ -304,10 +302,10 @@ public class frmCategoria extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        try{
+        try {
             obj = new Exportar(); //mandamos a llamar a la clase
             obj.exportarExcel(tblCategoria); //llamamos el metodo desde la clase DatosEmpleados
-        } catch (IOException ex){
+        } catch (IOException ex) {
 
         }
     }//GEN-LAST:event_jButton1ActionPerformed

@@ -37,21 +37,6 @@ public class DatosArticulo {
         }
     }
 
-    public static String GenerarCodigo() {
-        String codigoGenerado = "";
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }");) {
-            cstmt.setString(1, "articulos");
-            cstmt.setString(2, "IdArticulo");
-            cstmt.setString(3, "ART");
-            cstmt.registerOutParameter(4, Types.VARCHAR);
-            cstmt.execute();
-            codigoGenerado = cstmt.getString(4);
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        return codigoGenerado;
-    }
-
     public static void Habilitar(Container contenedor, boolean bloquear) {
         if (contenedor == null) {
             System.out.println("Error: El contenedor recibido es null.");
@@ -92,25 +77,8 @@ public class DatosArticulo {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
-    public static void Mostrar(DefaultTableModel modelo) {
-        try ( PreparedStatement pstmt = conn.prepareStatement("CALL listar_articulos()")) {
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                modelo.addRow(new Object[]{
-                    rs.getString("xCodigo"),
-                    rs.getString("xDescripcionCat"),
-                    rs.getString("xDescripcionMar"),
-                    rs.getString("xCaracteristicas"),
-                    rs.getString("xDescripcion"),
-                    rs.getString("xCantidad")
-                });
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
+    
+    //PRUEBA 01
     public static String CapturarCat(JComboBox<String> cmbCategoria) {
         String idCategoria = "";
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_id_categoria(?) }")) {
@@ -139,19 +107,33 @@ public class DatosArticulo {
         return idMarca;
     }
 
+    public static void Mostrar(DefaultTableModel modelo) {
+        try ( PreparedStatement pstmt = conn.prepareStatement("CALL listar_articulos()")) {
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                modelo.addRow(new Object[]{
+                    rs.getInt("xCodigo"),
+                    rs.getString("xDescripcionCat"),
+                    rs.getString("xDescripcionMar"),
+                    rs.getString("xCaracteristicas"),
+                    rs.getString("xDescripcion"),
+                    rs.getString("xCantidad")
+                });
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     public static boolean Insertar(Articulo art, JTable tabla) {
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL insertar_articulos(?, ?, ?, ?, ?, ?) }")) {
-            
-            
-            String codigoArticulo = art.getcodigoArticulo(); 
-            int idArticulo = Integer.parseInt(codigoArticulo.replace("ART", "")); 
 
-            cstmt.setInt(1, idArticulo);
-            cstmt.setInt(2, Integer.parseInt(art.getIdCategoria()));
-            cstmt.setInt(3, Integer.parseInt(art.getIdMarca()));
+            cstmt.setInt(1, art.getIdArticulo());
+            cstmt.setInt(2, art.getIdCategoria());
+            cstmt.setInt(3, art.getIdMarca());
             cstmt.setString(4, art.getCaracteristicas());
             cstmt.setString(5, art.getDescripcion());
-            cstmt.setInt(6, (int) art.getCantidad());
+            cstmt.setDouble(6, art.getCantidad());
 
             cstmt.execute();
 
@@ -159,9 +141,7 @@ public class DatosArticulo {
             modelo.setRowCount(0);
             Mostrar(modelo);
 
-            // Mensaje de registro exitoso
             JOptionPane.showMessageDialog(null, "¡Registro realizado correctamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
             return true;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -169,58 +149,18 @@ public class DatosArticulo {
         }
     }
 
-    public static void Editar(Container contenedor, JTable tabla, JTextField[] camposTexto, JComboBox[] combos) {
-    int filaSeleccionada = tabla.getSelectedRow();
-    
-    if (filaSeleccionada >= 0) {
-        Habilitar(contenedor, true);
-        
-        camposTexto[0].setEnabled(false);
-        camposTexto[1].requestFocus();
-
-        // Asignar campos de texto respetando el orden correcto
-        camposTexto[0].setText(tabla.getValueAt(filaSeleccionada, 0).toString()); // IdArticulo
-        camposTexto[1].setText(tabla.getValueAt(filaSeleccionada, 4).toString()); // Descripcion
-        camposTexto[2].setText(tabla.getValueAt(filaSeleccionada, 3).toString()); // Caracteristicas
-        camposTexto[3].setText(tabla.getValueAt(filaSeleccionada, 5).toString()); // Cantidad
-
-        // Obtener los valores para los ComboBox
-        String categoriaTabla = tabla.getValueAt(filaSeleccionada, 1).toString();
-        String marcaTabla = tabla.getValueAt(filaSeleccionada, 2).toString();
-
-        // Asignar valor al ComboBox de Categoría
-        for (int i = 0; i < combos[0].getItemCount(); i++) {
-            if (combos[0].getItemAt(i).toString().equalsIgnoreCase(categoriaTabla)) {
-                combos[0].setSelectedIndex(i);
-                break;
-            }
-        }
-
-        // Asignar valor al ComboBox de Marca
-        for (int i = 0; i < combos[1].getItemCount(); i++) {
-            if (combos[1].getItemAt(i).toString().equalsIgnoreCase(marcaTabla)) {
-                combos[1].setSelectedIndex(i);
-                break;
-            }
-        }
-
-    } else {
-        JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.");
-    }
-}
-
-
     public static void Actualizar(Articulo art, JTable tabla, JComboBox<String> cmbCategoria, JComboBox<String> cboMarca) {
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_articulos(?, ?, ?, ?, ?, ?) }")) {
             String idCategoria = CapturarCat(cmbCategoria);
             String idMarca = CapturarMarca(cboMarca);
 
-            cstmt.setString(1, art.getcodigoArticulo());
+            cstmt.setInt(1, art.getIdArticulo());
             cstmt.setInt(2, Integer.parseInt(idCategoria));
             cstmt.setInt(3, Integer.parseInt(idMarca));
             cstmt.setString(4, art.getCaracteristicas());
             cstmt.setString(5, art.getDescripcion());
             cstmt.setDouble(6, art.getCantidad());
+
             cstmt.execute();
 
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
@@ -236,11 +176,12 @@ public class DatosArticulo {
     public static void Eliminar(JTable tabla) {
         int fila = tabla.getSelectedRow();
         if (fila >= 0) {
-            String codigoTipo = tabla.getModel().getValueAt(fila, 0).toString();
+            String codigoTipo = tabla.getModel().getValueAt(fila, 0).toString(); // "ART0003"
+            int idArticulo = Integer.parseInt(codigoTipo.replace("ART", ""));
             int confirm = JOptionPane.showConfirmDialog(null, "¿Eliminar articulo?", "Confirmar", JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
                 try ( CallableStatement stmt = conn.prepareCall("{ CALL eliminar_articulos(?) }")) {
-                    stmt.setString(1, codigoTipo);
+                    stmt.setInt(1, idArticulo);
                     stmt.execute();
                     ((DefaultTableModel) tabla.getModel()).removeRow(fila);
                 } catch (SQLException ex) {
@@ -249,6 +190,47 @@ public class DatosArticulo {
             }
         } else {
             JOptionPane.showMessageDialog(null, "Seleccione un articulo para eliminar.");
-        }   
+        }
     }
+    
+    public static void Editar(Container contenedor, JTable tabla, JTextField[] camposTexto, JComboBox[] combos) {
+        int filaSeleccionada = tabla.getSelectedRow();
+
+        if (filaSeleccionada >= 0) {
+            Habilitar(contenedor, true);
+
+            camposTexto[0].setEnabled(false);
+            camposTexto[1].requestFocus();
+
+            // Asignar campos de texto respetando el orden correcto
+            camposTexto[0].setText(tabla.getValueAt(filaSeleccionada, 0).toString()); // IdArticulo
+            camposTexto[1].setText(tabla.getValueAt(filaSeleccionada, 4).toString()); // Descripcion
+            camposTexto[2].setText(tabla.getValueAt(filaSeleccionada, 3).toString()); // Caracteristicas
+            camposTexto[3].setText(tabla.getValueAt(filaSeleccionada, 5).toString()); // Cantidad
+
+            // Obtener los valores para los ComboBox
+            String categoriaTabla = tabla.getValueAt(filaSeleccionada, 1).toString();
+            String marcaTabla = tabla.getValueAt(filaSeleccionada, 2).toString();
+
+            // Asignar valor al ComboBox de Categoría
+            for (int i = 0; i < combos[0].getItemCount(); i++) {
+                if (combos[0].getItemAt(i).toString().equalsIgnoreCase(categoriaTabla)) {
+                    combos[0].setSelectedIndex(i);
+                    break;
+                }
+            }
+
+            // Asignar valor al ComboBox de Marca
+            for (int i = 0; i < combos[1].getItemCount(); i++) {
+                if (combos[1].getItemAt(i).toString().equalsIgnoreCase(marcaTabla)) {
+                    combos[1].setSelectedIndex(i);
+                    break;
+                }
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.");
+        }
+    }
+
 }

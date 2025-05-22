@@ -29,7 +29,6 @@ public class frmArticulo extends javax.swing.JInternalFrame {
         DatosArticulo.Mostrar(modelo);
         tblarticulo.setCellSelectionEnabled(false);
         tblarticulo.setRowSelectionAllowed(true);
-
     }
 
     @SuppressWarnings("unchecked")
@@ -269,18 +268,16 @@ public class frmArticulo extends javax.swing.JInternalFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         DatosArticulo.Habilitar(escritorio, true);
-        String codigo = DatosArticulo.GenerarCodigo();
-        if (codigo != null) {
-            txtId.setText(codigo);
-            txtId.setEnabled(false);
-        } else {
-            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+
+        // Limpiar los campos para nuevo ingreso
+        txtId.setText(""); // Ahora el usuario puede ingresar el ID si es manual
+        txtId.setEnabled(true); // Habilitado en caso de ingreso manual
+        txtDescripcion.setText("");
+        txtCaracteristicas.setText("");
+        txtCantidad.setText("");
 
         txtDescripcion.requestFocus();
-        txtCaracteristicas.requestFocus();
-        txtCantidad.requestFocus();
+
         esNuevo = true;
         tblarticulo.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnAgregarActionPerformed
@@ -300,41 +297,54 @@ public class frmArticulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        String opcion = DatosArticulo.CapturarCat(cmbCategoria);
-        String opcion1 = DatosArticulo.CapturarMarca(cboMarca);
-        
-        Articulo art = new Articulo(txtId.getText(), opcion, opcion1, txtCaracteristicas.getText() ,txtDescripcion.getText(),Double.parseDouble(txtCantidad.getText()) );
+        String opcionCategoria = DatosArticulo.CapturarCat(cmbCategoria);
+        String opcionMarca = DatosArticulo.CapturarMarca(cboMarca);
 
+        // Validar campos
+        if (txtId.getText().isEmpty() || txtCaracteristicas.getText().isEmpty()
+                || txtDescripcion.getText().isEmpty() || txtCantidad.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Completar bien los campos");
+            return;
+        }
+
+        int idArticulo;
+        try {
+            idArticulo = Integer.parseInt(txtId.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "El ID debe ser un número entero.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            txtId.requestFocus();
+            return;
+        }
+
+        double cantidad;
+        try {
+            cantidad = Double.parseDouble(txtCantidad.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Cantidad inválida.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            txtCantidad.requestFocus();
+            return;
+        }
+
+        // Crear objeto Articulo
+        Articulo art = new Articulo(idArticulo, Integer.parseInt(opcionCategoria), Integer.parseInt(opcionMarca), txtCaracteristicas.getText());
         art.setDescripcion(txtDescripcion.getText());
+        art.setCantidad(cantidad);
+
         if (esNuevo) {
-            if (txtId.getText().isEmpty() || txtCaracteristicas.getText().isEmpty() ||txtDescripcion.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            } else if (!txtId.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
-                JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto. Debe ser 'CAR0002'.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                txtId.requestFocus();
-            } else {
-                if (DatosArticulo.Insertar(art, tblarticulo)) {
-                    DatosArticulo.Limpiar(escritorio);
-                    DatosArticulo.Habilitar(escritorio, false);
-                    tblarticulo.clearSelection();
-                    tblarticulo.setRowSelectionAllowed(true);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        } else {
-            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            } else {
-                art.setCodigoArticulo(txtId.getText());
-                DatosArticulo.Actualizar(art, tblarticulo, cmbCategoria, cboMarca);
+            if (DatosArticulo.Insertar(art, tblarticulo)) {
                 DatosArticulo.Limpiar(escritorio);
                 DatosArticulo.Habilitar(escritorio, false);
                 tblarticulo.clearSelection();
                 tblarticulo.setRowSelectionAllowed(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
             }
+        } else {
+            DatosArticulo.Actualizar(art, tblarticulo, cmbCategoria, cboMarca);
+            DatosArticulo.Limpiar(escritorio);
+            DatosArticulo.Habilitar(escritorio, false);
+            tblarticulo.clearSelection();
+            tblarticulo.setRowSelectionAllowed(true);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 

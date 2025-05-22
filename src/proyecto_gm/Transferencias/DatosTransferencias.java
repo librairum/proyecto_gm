@@ -253,27 +253,6 @@ public class DatosTransferencias {
                 return false;
             }
         }
-        /*
-        for (JComboBox combo : combos) {
-            if (combo.getSelectedIndex() == 0) {
-                JOptionPane.showMessageDialog(null, "Seleccione una opción en los combos.");
-                combo.requestFocus();
-                return false;
-            }
-        }*/
-
- /*
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            sdf.setLenient(false);
-            sdf.parse(campos[2].getText());
-        } catch (ParseException e) {
-            JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd/mm/aaaa. Inténtelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            campos[2].requestFocus();
-            return false;
-        }
-         */
-        // Si se llega aquí, todos los campos son válidos
         return true;
     }
 }

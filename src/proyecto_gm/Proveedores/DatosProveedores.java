@@ -22,54 +22,22 @@ public class DatosProveedores {
 
     static Connection conn = ConexionBD.getConnection();
 
-    public static void Limpiar(Container contenedor) {
-        for (Component componente : contenedor.getComponents()) {
-            if (componente instanceof JTextField) {
-                ((JTextField) componente).setText("");
-            } else if (componente instanceof Container) {
-                Limpiar((Container) componente);
-            }
-        }
-    }
-
     public static String GenerarCodigo() {
         String codigoGenerado = "";
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }")) {
-            cstmt.setString(1, "proveedores");   // Tabla
-            cstmt.setString(2, "IdProveedor");    // Campo numérico
-            cstmt.setString(3, "");
-            cstmt.registerOutParameter(4, Types.VARCHAR);    // ID generado como texto
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?) }")) {
+            cstmt.setString(1, "proveedores");
+            cstmt.setString(2, "IdProveedor");
+            cstmt.registerOutParameter(3, Types.INTEGER);
+
             cstmt.execute();
 
-            String idGenerado = cstmt.getString(4);
-
-            int id = Integer.parseInt(idGenerado);
-            codigoGenerado = String.format("PRO%06d", id);
+            int idGenerado = cstmt.getInt(3); // Recibe directamente el número
+            codigoGenerado = String.valueOf(idGenerado);
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         return codigoGenerado;
-    }
-
-    // Habilitar o bloquear campos y botones
-    public static void Habilitar(Container contenedor, boolean bloquear) {
-        Component[] components = contenedor.getComponents();
-        for (Component component : components) {
-            if (component instanceof JTextField) {
-                ((JTextField) component).setEnabled(bloquear);
-
-            } else if (component instanceof JButton) {
-                String button = ((JButton) component).getName();
-                if (button.equals("guardar") || button.equals("deshacer")) {
-                    ((JButton) component).setEnabled(bloquear);
-                } else if (button.equals("agregar") || button.equals("editar") || button.equals("eliminar")) {
-                    ((JButton) component).setEnabled(!bloquear); // aplicar logica inversa
-                }
-            } else {
-                // No hace nada para otros tipos de componentes
-            }
-        }
     }
 
     // Mostrar datos
@@ -78,7 +46,7 @@ public class DatosProveedores {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 modelo.addRow(new Object[]{
-                    rs.getString("codigoProveedor"),
+                    rs.getString("IdProveedor"),
                     rs.getString("Descripcion"), // Departamento
                     rs.getString("Nombres"),
                     rs.getString("Direccion"),
@@ -95,7 +63,7 @@ public class DatosProveedores {
     //cargar combobox
     public static void llenarComboBoxDepartamentos(JComboBox<String> cboModulo2) {
         try {
-            PreparedStatement pstmt = conn.prepareStatement("CALL listar_proveedores_departamentos()"); //select * from departamentos
+            PreparedStatement pstmt = conn.prepareStatement("CALL listar_departamentos()");
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
@@ -109,7 +77,7 @@ public class DatosProveedores {
 
     public static String Capturar(JComboBox<String> cboModulo2) {
         String idModulo = "";
-        try ( PreparedStatement pstmt = conn.prepareStatement(" CALL Obtener_IdDepartamentoPorDescripcion(?)")) {
+        try ( PreparedStatement pstmt = conn.prepareStatement("CALL obtener_id_departamento(?)")) {
             pstmt.setString(1, cboModulo2.getSelectedItem().toString());
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -124,8 +92,7 @@ public class DatosProveedores {
     public static boolean InsertarDatos(Proveedores pro, JTable tabla) {
         System.out.println("Entró al método InsertarDatos...");
 
-        String idTexto = pro.getIdProveedor();
-        int idProveedor = Integer.parseInt(idTexto.substring(3));
+        int idProveedor = Integer.parseInt(pro.getIdProveedor());
 
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL insertar_proveedores(?, ?, ?, ?, ?, ?, ?) }")) {
             cstmt.setInt(1, idProveedor);
@@ -240,4 +207,33 @@ public class DatosProveedores {
         }
     }
 
+    // Habilitar o bloquear campos y botones
+    public static void Habilitar(Container contenedor, boolean bloquear) {
+        Component[] components = contenedor.getComponents();
+        for (Component component : components) {
+            if (component instanceof JTextField) {
+                ((JTextField) component).setEnabled(bloquear);
+
+            } else if (component instanceof JButton) {
+                String button = ((JButton) component).getName();
+                if (button.equals("guardar") || button.equals("deshacer")) {
+                    ((JButton) component).setEnabled(bloquear);
+                } else if (button.equals("agregar") || button.equals("editar") || button.equals("eliminar")) {
+                    ((JButton) component).setEnabled(!bloquear); // aplicar logica inversa
+                }
+            } else {
+                // No hace nada para otros tipos de componentes
+            }
+        }
+    }
+
+    public static void Limpiar(Container contenedor) {
+        for (Component componente : contenedor.getComponents()) {
+            if (componente instanceof JTextField) {
+                ((JTextField) componente).setText("");
+            } else if (componente instanceof Container) {
+                Limpiar((Container) componente);
+            }
+        }
+    }
 }

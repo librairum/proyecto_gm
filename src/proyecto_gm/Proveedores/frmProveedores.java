@@ -155,7 +155,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Id", "Modulo", "Nombres", "Direccion", "Correo", "Telefono", "Ruc"
+                "Id", "Departamento", "Nombres", "Direccion", "Correo", "Telefono", "Ruc"
             }
         ) {
             boolean[] canEdit = new boolean [] {

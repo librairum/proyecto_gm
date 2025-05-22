@@ -21,6 +21,24 @@ public class DatosDepartamentos {
 
     static Connection conn = ConexionBD.getConnection();
 
+    public static String GenerarCodigo() {
+        String codigoGenerado = "";
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?) }")) {
+            cstmt.setString(1, "departamentos");
+            cstmt.setString(2, "IdDepartamento");
+            cstmt.registerOutParameter(3, Types.INTEGER);
+
+            cstmt.execute();
+
+            int idGenerado = cstmt.getInt(3); // Recibe directamente el número
+            codigoGenerado = String.valueOf(idGenerado);
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return codigoGenerado;
+    }
+
     // Mostrar datos
     public static void mostrarDatos(DefaultTableModel modelo) {
         try {
@@ -108,43 +126,6 @@ public class DatosDepartamentos {
         }
     }
 
-    public static String GenerarCodigo() {
-        String codigoGenerado = "";
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?) }")) {
-            cstmt.setString(1, "departamentos");
-            cstmt.setString(2, "IdDepartamento");
-            cstmt.registerOutParameter(3, Types.INTEGER);
-
-            cstmt.execute();
-
-            int idGenerado = cstmt.getInt(3); // Recibe directamente el número
-            codigoGenerado = String.valueOf(idGenerado);
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        return codigoGenerado;
-    }
-
-    /*public static String GenerarCodigo() {
-        String codigoGenerado = "";
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }")) {
-            cstmt.setString(1, "departamentos");
-            cstmt.setString(2, "IdDepartamento");
-            cstmt.setString(3, "");
-            cstmt.registerOutParameter(4, Types.VARCHAR); // El SP retorna un texto
-            cstmt.execute();
-
-            String idGenerado = cstmt.getString(4);
-
-            int id = Integer.parseInt(idGenerado);
-            codigoGenerado = String.valueOf(id); // Solo el número, sin DEP ni ceros
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        return codigoGenerado;
-    }*/
     public static void editar(JTable tabla, JTextField[] cajas) {
         // Obtener el indice de la fila seleccionada
         int fila = tabla.getSelectedRow();
