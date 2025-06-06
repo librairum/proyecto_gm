@@ -208,46 +208,30 @@ public class frmModulo extends javax.swing.JInternalFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         Modulo are = new Modulo();
 
-        // Verificar si es nuevo registro
+        // Validación común
+        if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Completar bien los campos");
+            return;
+        }
+
+        // Convertir el código 'MO0005' a entero 5
+        String codigo = txtId.getText(); // Ej: MO0005
+        int idNumerico = Integer.parseInt(codigo.replaceAll("\\D+", "")); // Extrae solo números
+        are.setId(idNumerico); // CAMBIADO: ahora setId recibe un int
+        are.setDescripcion(txtDescripcion.getText());
+
         if (esNuevo) {
-            // Validación de campos
-            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            }
-
-            // Convertir el código 'MO0005' a entero 5
-            String codigo = txtId.getText(); // Ej: MO0005
-            int idNumerico = Integer.parseInt(codigo.replaceAll("\\D+", "")); // Extrae solo números
-
-            are.setId(String.valueOf(idNumerico)); // Si setId es String
-            are.setDescripcion(txtDescripcion.getText());
-
             DatosModulo.Insertar(are, tblModulo);
             JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-            DatosModulo.Limpiar(escritorio);
-            DatosModulo.Habilitar(escritorio, false);
-            tblModulo.clearSelection();
-            tblModulo.setRowSelectionAllowed(true);
-
         } else {
-            // Actualizar registro existente
-            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            }
-
-            // En actualización, se usa el ID tal como está (ya viene convertido)
-            are.setId(txtId.getText());
-            are.setDescripcion(txtDescripcion.getText());
-
             DatosModulo.Actualizar(are, tblModulo);
             JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
-            DatosModulo.Limpiar(escritorio);
-            DatosModulo.Habilitar(escritorio, false);
-            tblModulo.clearSelection();
-            tblModulo.setRowSelectionAllowed(true);
         }
+
+        DatosModulo.Limpiar(escritorio);
+        DatosModulo.Habilitar(escritorio, false);
+        tblModulo.clearSelection();
+        tblModulo.setRowSelectionAllowed(true);
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed

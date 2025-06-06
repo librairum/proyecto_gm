@@ -11,8 +11,10 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -24,6 +26,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import proyecto_gm.Area.Area;
+import proyecto_gm.Cargo.Cargo;
 import proyecto_gm.Exportar;
 
 /**
@@ -72,8 +76,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         tcm.removeColumn(col);
 
         DatosEmpleados.Habilitar(escritorio, opcionesTipo, false);
-        DatosEmpleados.CargarArea(cboArea);
-        DatosEmpleados.CargarCargo(cboCargo);
+        inicializaComboAreasYCargos();        
         rbPartime.setSelected(true);
         DatosEmpleados.Listar(modelo);
 
@@ -82,6 +85,25 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         // Habilitar la seleccion de filas
         tblEmpleados.setRowSelectionAllowed(true);
     }
+    
+    private void inicializaComboAreasYCargos() {
+    // Cargar áreas
+    List<Area> listaAreas = DatosEmpleados.listaAreas(); 
+    DefaultComboBoxModel<Area> modeloAreas = new DefaultComboBoxModel<>();
+    for (Area a : listaAreas) {
+        modeloAreas.addElement(a);
+    }
+    cboArea.setModel(modeloAreas); 
+
+    // Cargar cargos
+    List<Cargo> listaCargos = DatosEmpleados.listaCargo(); 
+    DefaultComboBoxModel<Cargo> modeloCargos = new DefaultComboBoxModel<>();
+    for (Cargo c : listaCargos) {
+        modeloCargos.addElement(c);
+    }
+    cboCargo.setModel(modeloCargos);
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -457,7 +479,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(txtDirec, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(309, 434, Short.MAX_VALUE))
+                        .addGap(309, 433, Short.MAX_VALUE))
                     .addGroup(escritorioLayout.createSequentialGroup()
                         .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel9)
@@ -597,12 +619,6 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // Validar los campos del formulario (descomenta si ya tienes el método)
-        /*JTextField[] campos = {txtApe, txtNom, txtFecNac, txtCorreo, txtDni, txtCel, txtDistrito, txtDirec};
-    if (!DatosEmpleados.Validar(campos)) {
-        return;
-    }*/
-
         // Crear un objeto Empleados y asignar los valores
         Empleados empleado = new Empleados();
         empleado.setId(txtId.getText());
@@ -616,9 +632,9 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         empleado.setDireccion(txtDirec.getText());
 
         // Capturar los IDs reales desde métodos separados
-        empleado.setIdArea(DatosEmpleados.CapturarArea(cboArea)); // <- si creaste ese método
-        empleado.setIdCargo(DatosEmpleados.CapturarCargo(cboCargo));
-        empleado.setIdTipo(DatosEmpleados.CapturarTipoEmpleado(opcionesTipo));
+        empleado.setIdArea(Integer.parseInt(DatosEmpleados.CapturarArea(cboArea)));
+        empleado.setIdCargo(Integer.parseInt(DatosEmpleados.CapturarCargo(cboCargo)));
+        empleado.setIdTipo(Integer.parseInt(DatosEmpleados.CapturarTipoEmpleado(opcionesTipo)));
 
         // Insertar o actualizar según sea el caso
         if (esNuevo) {
@@ -780,8 +796,8 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnExportar;
     public static javax.swing.JButton btnGuardar;
     public static javax.swing.JButton btnNuevo;
-    private javax.swing.JComboBox<String> cboArea;
-    private javax.swing.JComboBox<String> cboCargo;
+    private javax.swing.JComboBox<Area> cboArea;
+    private javax.swing.JComboBox<Cargo> cboCargo;
     private javax.swing.JDesktopPane escritorio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

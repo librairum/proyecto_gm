@@ -9,6 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -16,6 +19,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import proyecto_gm.Categoria.Categoria;
 import proyecto_gm.ConexionBD;
 
 /**
@@ -56,15 +60,19 @@ public class DatosArticulo {
         }
     }
 
-    public static void CargarCategoria(JComboBox<String> cmbCategoria) {
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_categorias() }")) {
+    public static List<Categoria> obtenerCategorias() {
+        List<Categoria> lista = new ArrayList<>();
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL listar_categorias() }")) {
             ResultSet rs = cstmt.executeQuery();
             while (rs.next()) {
-                cmbCategoria.addItem(rs.getString("Descripcion"));
+                int id = rs.getInt("IdCategoria");
+                String descripcion = rs.getString("Descripcion");
+                lista.add(new Categoria(id, descripcion));
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+        return lista;
     }
 
     public static void CargarMarcas(JComboBox<String> cboMarca) {
@@ -76,21 +84,6 @@ public class DatosArticulo {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
-    
-    //PRUEBA 01
-    public static String CapturarCat(JComboBox<String> cmbCategoria) {
-        String idCategoria = "";
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_id_categoria(?) }")) {
-            cstmt.setString(1, cmbCategoria.getSelectedItem().toString());
-            ResultSet rs = cstmt.executeQuery();
-            if (rs.next()) {
-                idCategoria = rs.getString("IdCategoria");
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar Categoría", JOptionPane.ERROR_MESSAGE);
-        }
-        return idCategoria;
     }
 
     public static String CapturarMarca(JComboBox<String> cboMarca) {
@@ -149,13 +142,18 @@ public class DatosArticulo {
         }
     }
 
-    public static void Actualizar(Articulo art, JTable tabla, JComboBox<String> cmbCategoria, JComboBox<String> cboMarca) {
+    public static void Actualizar(Articulo art, JTable tabla, JComboBox<Categoria> cmbCategoria, JComboBox<String> cboMarca) {
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_articulos(?, ?, ?, ?, ?, ?) }")) {
-            String idCategoria = CapturarCat(cmbCategoria);
+
+            Categoria categoriaSeleccionada = (Categoria) cmbCategoria.getSelectedItem();
+            if (categoriaSeleccionada == null) {
+                throw new SQLException("No se seleccionó una categoría válida.");
+            }
+
             String idMarca = CapturarMarca(cboMarca);
 
             cstmt.setInt(1, art.getIdArticulo());
-            cstmt.setInt(2, Integer.parseInt(idCategoria));
+            cstmt.setInt(2, categoriaSeleccionada.getIdCat());
             cstmt.setInt(3, Integer.parseInt(idMarca));
             cstmt.setString(4, art.getCaracteristicas());
             cstmt.setString(5, art.getDescripcion());
@@ -176,7 +174,7 @@ public class DatosArticulo {
     public static void Eliminar(JTable tabla) {
         int fila = tabla.getSelectedRow();
         if (fila >= 0) {
-            String codigoTipo = tabla.getModel().getValueAt(fila, 0).toString(); // "ART0003"
+            String codigoTipo = tabla.getModel().getValueAt(fila, 0).toString();
             int idArticulo = Integer.parseInt(codigoTipo.replace("ART", ""));
             int confirm = JOptionPane.showConfirmDialog(null, "¿Eliminar articulo?", "Confirmar", JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
@@ -192,7 +190,7 @@ public class DatosArticulo {
             JOptionPane.showMessageDialog(null, "Seleccione un articulo para eliminar.");
         }
     }
-    
+
     public static void Editar(Container contenedor, JTable tabla, JTextField[] camposTexto, JComboBox[] combos) {
         int filaSeleccionada = tabla.getSelectedRow();
 

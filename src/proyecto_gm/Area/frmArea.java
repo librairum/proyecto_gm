@@ -251,7 +251,7 @@ public class frmArea extends javax.swing.JInternalFrame {
             int filaSeleccionada = tblArea.getSelectedRow();
             if (filaSeleccionada >= 0) {
                 // Obtener el IdArea directamente desde la tabla
-                int idArea = Integer.parseInt(tblArea.getModel().getValueAt(filaSeleccionada, 0).toString());
+                String idArea = tblArea.getModel().getValueAt(filaSeleccionada, 0).toString();
                 are.setIdArea(idArea);
 
                 DatosArea.ActualizarArea(are, tblArea);

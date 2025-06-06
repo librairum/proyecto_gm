@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JButton;
 
 import javax.swing.JComboBox;
@@ -17,6 +19,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.ConexionBD;
+import proyecto_gm.Modulo.Modulo;
 
 public class DatosTipoDocumento {
 
@@ -33,21 +36,6 @@ public class DatosTipoDocumento {
         }
     }
 
-    public static String GenerarCodigo() {
-        String codigoGenerado = "";
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }");) {
-            cstmt.setString(1, "tiposdocumentos");
-            cstmt.setString(2, "IdTipoDocumento");
-            cstmt.setString(3, "TDO");
-            cstmt.registerOutParameter(4, Types.VARCHAR);
-            cstmt.execute();
-            codigoGenerado = cstmt.getString(4);
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        return codigoGenerado;
-    }
-
     public static void Habilitar(Container contenedor, boolean bloquear) {
         Component[] components = contenedor.getComponents();
         for (Component component : components) {
@@ -60,15 +48,19 @@ public class DatosTipoDocumento {
         }
     }
 
-    public static void CargarCombo(JComboBox<String> cboModulo) {
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_modulo() }")) {
+    public static List<Modulo> obtenerModulos() {
+        List<Modulo> lista = new ArrayList<>();
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL listar_modulo() }")) {
             ResultSet rs = cstmt.executeQuery();
             while (rs.next()) {
-                cboModulo.addItem(rs.getString("descripcion"));
+                int Id = rs.getInt("IdModulo");  // obtener el int directamente
+                String descripcion = rs.getString("Descripcion");
+                lista.add(new Modulo(Id, descripcion));
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+        return lista;
     }
 
     public static void Mostrar(DefaultTableModel modelo) {
@@ -85,25 +77,9 @@ public class DatosTipoDocumento {
         }
     }
 
-    public static String Capturar(JComboBox<String> cboModulo) {
-        String idModulo = "";
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_id_modulo(?) }")) {
-            cstmt.setString(1, cboModulo.getSelectedItem().toString());
-            ResultSet rs = cstmt.executeQuery();
-            if (rs.next()) {
-                idModulo = rs.getString("IdModulo");
-            } else {
-                throw new SQLException("No se encontró un Id para el módulo seleccionado.");
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar Opciones", JOptionPane.ERROR_MESSAGE);
-        }
-        return idModulo;
-    }
-
     public static boolean Insertar(TipoDocumento tip, JTable tabla) {
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL insertar_tipodocumento(?, ?, ?) }")) {
-            cstmt.setString(1, tip.getCodigoTipoDoc());
+            cstmt.setInt(1, tip.getIdTipoDocumento());
             cstmt.setString(2, tip.getIdModulo());
             cstmt.setString(3, tip.getDescripcion());
             cstmt.execute();
@@ -112,8 +88,6 @@ public class DatosTipoDocumento {
             modelo.setRowCount(0);
             Mostrar(modelo);
 
-            
-            //JOptionPane.showMessageDialog(null, "Registro exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             return true;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -142,26 +116,27 @@ public class DatosTipoDocumento {
         }
     }
 
-    public static void Actualizar(TipoDocumento tip, JTable tabla, JComboBox<String> cboModulo) {
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_tipodocumento(?, ?, ?) }")) {
-            // Capturar el IdModulo del ComboBox seleccionado
-            String idModulo = Capturar(cboModulo);
+    public static void Actualizar(TipoDocumento tip, JTable tabla, JComboBox<Modulo> cboModulo) {
+    try (CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_tipodocumento(?, ?, ?) }")) {
+        // Usamos el idModulo directamente del objeto tip
+        String idModulo = tip.getIdModulo();
 
-            cstmt.setString(1, tip.getCodigoTipoDoc());         // ID del documento
-            cstmt.setString(2, tip.getDescripcion());           // Descripción (2do parámetro esperado)
-            cstmt.setInt(3, Integer.parseInt(idModulo));        // Id del módulo (3er parámetro esperado)
+        cstmt.setInt(1, tip.getIdTipoDocumento());   // ID del tipo de documento
+        cstmt.setString(2, tip.getDescripcion());    // Descripción
+        cstmt.setString(3, idModulo);                // ID del módulo como string
 
-            cstmt.execute();
+        cstmt.execute();
 
-            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            modelo.setRowCount(0);
-            Mostrar(modelo);
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        modelo.setRowCount(0);
+        Mostrar(modelo);
 
-            JOptionPane.showMessageDialog(null, "Datos actualizados correctamente.");
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        JOptionPane.showMessageDialog(null, "Datos actualizados correctamente.");
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
+}
+
 
     public static void Eliminar(JTable tabla) {
         int fila = tabla.getSelectedRow();

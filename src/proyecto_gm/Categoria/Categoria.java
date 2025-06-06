@@ -31,7 +31,7 @@ public class Categoria {
     
     @Override
     public String toString() {
-        return descripcionCat; // esto es lo que se verá en el combo
+        return descripcionCat;
     }
 
 }

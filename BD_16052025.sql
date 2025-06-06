@@ -1110,7 +1110,7 @@ UNLOCK TABLES;
 
 --
 -- Table structure for table `tiposdocumentos`
---
+-- 
 
 DROP TABLE IF EXISTS `tiposdocumentos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1162,7 +1162,7 @@ UNLOCK TABLES;
 
 --
 -- Table structure for table `transferenciasbancarias`
---
+-- 
 
 DROP TABLE IF EXISTS `transferenciasbancarias`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1182,11 +1182,10 @@ CREATE TABLE `transferenciasbancarias` (
 
 --
 -- Dumping data for table `transferenciasbancarias`
---
+-- 
 
 LOCK TABLES `transferenciasbancarias` WRITE;
 /*!40000 ALTER TABLE `transferenciasbancarias` DISABLE KEYS */;
-INSERT INTO transferenciasbancarias VALUES (1,1,'1','Juan Carrasco','Carlos Bustamante','2025-04-30');
 /*!40000 ALTER TABLE `transferenciasbancarias` ENABLE KEYS */;
 UNLOCK TABLES;
 

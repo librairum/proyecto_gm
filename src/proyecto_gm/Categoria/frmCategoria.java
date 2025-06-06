@@ -46,10 +46,7 @@ public class frmCategoria extends javax.swing.JInternalFrame {
 
         tblCategoria.setCellSelectionEnabled(false);
         tblCategoria.setRowSelectionAllowed(true);
-    }
-    
-    //Prueba 01 Categoria --> Articulo para combobox
-    
+    }    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

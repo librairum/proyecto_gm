@@ -1,20 +1,20 @@
 package proyecto_gm.TipoDocumento;
 
 public class TipoDocumento {
-    private String codigoTipoDoc;
-    private String idModulo;
-    private String descripcion;
+    int idTipoDocumento;
+    String idModulo;
+    String descripcion;
 
     // Constructor
-    public TipoDocumento(String codigoTipoDoc, String idModulo, String descripcion) {
-        this.codigoTipoDoc = codigoTipoDoc;
+    public TipoDocumento(int idTipoDocumento, String idModulo, String descripcion) {
+        this.idTipoDocumento = idTipoDocumento;
         this.idModulo = idModulo;
         this.descripcion = descripcion;
     }
 
     // Getters
-    public String getCodigoTipoDoc() {
-        return codigoTipoDoc;
+    public int getIdTipoDocumento() {
+        return idTipoDocumento;
     }
 
     public String getIdModulo() {
@@ -25,9 +25,8 @@ public class TipoDocumento {
         return descripcion;
     }
 
-    // Setters
-    public void setCodigoTipoDoc(String codigoTipoDoc) {
-        this.codigoTipoDoc = codigoTipoDoc;
+    public void setIdTipoDocumento(int idTipoDocumento) {
+        this.idTipoDocumento = idTipoDocumento;
     }
 
     public void setIdModulo(String idModulo) {

@@ -28,52 +28,22 @@ public class DatosRecibosHonorarios {
 
     static Connection conn = ConexionBD.getConnection();
 
-    public static void Limpiar(Container contenedor) {
-        for (Component componente : contenedor.getComponents()) {
-            if (componente instanceof JTextField) {
-                ((JTextField) componente).setText("");
-            } else if (componente instanceof JComboBox) {
-                ((JComboBox) componente).setSelectedIndex(-1);
-            } else if (componente instanceof Container) {
-                Limpiar((Container) componente);
-            } else {
-                // No hace nada para otros tipos de componentes
-            }
-        }
-    }
-
     public static String GenerarCodigo() {
         String codigoGenerado = "";
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }");) {
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?) }")) {
             cstmt.setString(1, "reciboshonorarios");
             cstmt.setString(2, "IdReciboHonorario");
-            cstmt.setString(3, "REH");
-            cstmt.registerOutParameter(4, Types.VARCHAR);
+            cstmt.registerOutParameter(3, Types.INTEGER);
+
             cstmt.execute();
-            codigoGenerado = cstmt.getString(4);
+
+            int idGenerado = cstmt.getInt(3); // Recibe directamente el número
+            codigoGenerado = String.valueOf(idGenerado);
+
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         return codigoGenerado;
-    }
-
-    public static void Habilitar(Container contenedor, boolean bloquear) {
-        for (Component componente : contenedor.getComponents()) {
-            if (componente instanceof JTextField) {
-                ((JTextField) componente).setEnabled(bloquear);
-            } else if (componente instanceof JComboBox) {
-                ((JComboBox) componente).setEnabled(bloquear);
-            } else if (componente instanceof JButton) {
-                String button = ((JButton) componente).getName();
-                if (button.equals("guardar") || button.equals("cancelar")) {
-                    ((JButton) componente).setEnabled(bloquear);
-                } else if (button.equals("nuevo") || button.equals("editar") || button.equals("eliminar")) {
-                    ((JButton) componente).setEnabled(!bloquear); // aplicar logica inversa
-                }
-            } else {
-                // No hace nada para otros tipos de componentes
-            }
-        }
     }
 
     public static void Mostrar(DefaultTableModel modelo) {
@@ -103,9 +73,7 @@ public class DatosRecibosHonorarios {
     public static boolean Insertar(ReciboHonorario rec, JTable tabla) {
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL insertar_recibo_honorario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }")) {
 
-            // Extraer solo el número entero del código generado
-            String codigo = rec.getCodigoRecibo(); // "REH0002"
-            int id = Integer.parseInt(codigo.replaceAll("[^0-9]", "")); // 2
+            int id = Integer.parseInt(rec.getCodigoRecibo());
 
             cstmt.setInt(1, id); // Aquí se usa como número entero
             cstmt.setString(2, rec.getNroRecibo());
@@ -132,46 +100,6 @@ public class DatosRecibosHonorarios {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return false;
-        }
-    }
-
-    public static void Editar(Container contenedor, JTable tabla, JTextField[] camposTexto, JComboBox[] combos) {
-        int filaSeleccionada = tabla.getSelectedRow();
-        if (filaSeleccionada >= 0) {
-            Habilitar(contenedor, true);
-            camposTexto[0].setEnabled(false);
-            camposTexto[1].requestFocus();
-
-            camposTexto[0].setText(tabla.getValueAt(filaSeleccionada, 0).toString());
-            camposTexto[1].setText(tabla.getValueAt(filaSeleccionada, 1).toString());
-            camposTexto[2].setText(tabla.getValueAt(filaSeleccionada, 2).toString());
-            camposTexto[3].setText(tabla.getValueAt(filaSeleccionada, 3).toString());
-            camposTexto[4].setText(tabla.getValueAt(filaSeleccionada, 4).toString());
-            camposTexto[5].setText(tabla.getValueAt(filaSeleccionada, 6).toString());
-            camposTexto[6].setText(tabla.getValueAt(filaSeleccionada, 8).toString());
-            camposTexto[7].setText(tabla.getValueAt(filaSeleccionada, 9).toString());
-            camposTexto[8].setText(tabla.getValueAt(filaSeleccionada, 10).toString());
-            camposTexto[9].setText(tabla.getValueAt(filaSeleccionada, 11).toString());
-            camposTexto[10].setText(tabla.getValueAt(filaSeleccionada, 12).toString());
-
-            String distrito = tabla.getValueAt(filaSeleccionada, 5).toString();
-            String pago = tabla.getValueAt(filaSeleccionada, 7).toString();
-
-            for (int i = 0; i < combos[0].getItemCount(); i++) {
-                if (combos[0].getItemAt(i).equals(distrito)) {
-                    combos[0].setSelectedIndex(i);  // Seleccionar la categoría correspondiente
-                    break;
-                }
-            }
-
-            for (int i = 0; i < combos[1].getItemCount(); i++) {
-                if (combos[1].getItemAt(i).equals(pago)) {
-                    combos[1].setSelectedIndex(i);
-                    break;
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.");
         }
     }
 
@@ -284,5 +212,78 @@ public class DatosRecibosHonorarios {
         }
 
         return true;
+    }
+
+    public static void Limpiar(Container contenedor) {
+        for (Component componente : contenedor.getComponents()) {
+            if (componente instanceof JTextField) {
+                ((JTextField) componente).setText("");
+            } else if (componente instanceof JComboBox) {
+                ((JComboBox) componente).setSelectedIndex(-1);
+            } else if (componente instanceof Container) {
+                Limpiar((Container) componente);
+            } else {
+                // No hace nada para otros tipos de componentes
+            }
+        }
+    }
+
+    public static void Editar(Container contenedor, JTable tabla, JTextField[] camposTexto, JComboBox[] combos) {
+        int filaSeleccionada = tabla.getSelectedRow();
+        if (filaSeleccionada >= 0) {
+            Habilitar(contenedor, true);
+            camposTexto[0].setEnabled(false);
+            camposTexto[1].requestFocus();
+
+            camposTexto[0].setText(tabla.getValueAt(filaSeleccionada, 0).toString());
+            camposTexto[1].setText(tabla.getValueAt(filaSeleccionada, 1).toString());
+            camposTexto[2].setText(tabla.getValueAt(filaSeleccionada, 2).toString());
+            camposTexto[3].setText(tabla.getValueAt(filaSeleccionada, 3).toString());
+            camposTexto[4].setText(tabla.getValueAt(filaSeleccionada, 4).toString());
+            camposTexto[5].setText(tabla.getValueAt(filaSeleccionada, 6).toString());
+            camposTexto[6].setText(tabla.getValueAt(filaSeleccionada, 8).toString());
+            camposTexto[7].setText(tabla.getValueAt(filaSeleccionada, 9).toString());
+            camposTexto[8].setText(tabla.getValueAt(filaSeleccionada, 10).toString());
+            camposTexto[9].setText(tabla.getValueAt(filaSeleccionada, 11).toString());
+            camposTexto[10].setText(tabla.getValueAt(filaSeleccionada, 12).toString());
+
+            String distrito = tabla.getValueAt(filaSeleccionada, 5).toString();
+            String pago = tabla.getValueAt(filaSeleccionada, 7).toString();
+
+            for (int i = 0; i < combos[0].getItemCount(); i++) {
+                if (combos[0].getItemAt(i).equals(distrito)) {
+                    combos[0].setSelectedIndex(i);  // Seleccionar la categoría correspondiente
+                    break;
+                }
+            }
+
+            for (int i = 0; i < combos[1].getItemCount(); i++) {
+                if (combos[1].getItemAt(i).equals(pago)) {
+                    combos[1].setSelectedIndex(i);
+                    break;
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.");
+        }
+    }
+
+    public static void Habilitar(Container contenedor, boolean bloquear) {
+        for (Component componente : contenedor.getComponents()) {
+            if (componente instanceof JTextField) {
+                ((JTextField) componente).setEnabled(bloquear);
+            } else if (componente instanceof JComboBox) {
+                ((JComboBox) componente).setEnabled(bloquear);
+            } else if (componente instanceof JButton) {
+                String button = ((JButton) componente).getName();
+                if (button.equals("guardar") || button.equals("cancelar")) {
+                    ((JButton) componente).setEnabled(bloquear);
+                } else if (button.equals("nuevo") || button.equals("editar") || button.equals("eliminar")) {
+                    ((JButton) componente).setEnabled(!bloquear); // aplicar logica inversa
+                }
+            } else {
+                // No hace nada para otros tipos de componentes
+            }
+        }
     }
 }

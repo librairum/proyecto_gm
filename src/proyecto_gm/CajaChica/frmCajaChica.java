@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -57,6 +59,9 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
                 return this;
             }
         });
+        
+        //calculo de entrada y salida
+        agregarListenersCalculoTotal();
 
     }
 
@@ -100,8 +105,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         // Asignar el total al JTextField "txtTotal"
         txtTotal.setText(String.valueOf(total));
     }
-     */
- /*  
+    /*
     private void initializeTable() {
         final int entradaColumn = 4; // Número de columna de entrada
         final int salidaColumn = 5; // Número de columna de salida
@@ -138,8 +142,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
                 return result;
             }
         });
-    }
-     */
+    }*/
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -368,6 +371,36 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void actualizarSaldo() {
+        try {
+            float entrada = Float.parseFloat(txtEntrada.getText());
+            float salida = Float.parseFloat(txtSalida.getText());
+            float saldo = Math.round((entrada - salida) * 100.0f) / 100.0f;
+            txtTotal.setText(String.format("%.2f", saldo));
+        } catch (NumberFormatException e) {
+            txtTotal.setText(""); // Si hay error, dejar el campo vacío o mostrar mensaje
+        }
+    }
+
+    private void agregarListenersCalculoTotal() {
+        DocumentListener listener = new DocumentListener() { // DocumentListener, sirve para detectar cambios en el texto de un JTextField.
+            public void insertUpdate(DocumentEvent e) {
+                actualizarSaldo(); 
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                actualizarSaldo();
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                actualizarSaldo();
+            }
+        };
+
+        txtEntrada.getDocument().addDocumentListener(listener);
+        txtSalida.getDocument().addDocumentListener(listener);
+    }             
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // Verificar si es una nueva fila (cuando 'esNuevo' es verdadero)

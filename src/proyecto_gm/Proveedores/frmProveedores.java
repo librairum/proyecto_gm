@@ -1,12 +1,13 @@
 package proyecto_gm.Proveedores;
 
 import java.awt.Toolkit;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.Departamentos.Departamentos;
-import static proyecto_gm.Proveedores.DatosProveedores.llenarComboBoxDepartamentos;
 
 public class frmProveedores extends javax.swing.JInternalFrame {
 
@@ -16,8 +17,8 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         initComponents();
         //llenarComboBoxDepartamentos(cboModulo2); // Llenar el JComboBox al abrir la ventana
         DefaultTableModel modelo = (DefaultTableModel) tblProveedores.getModel();
-        DatosProveedores.llenarComboBoxDepartamentos(cboModulo2);
-
+        //DatosProveedores.llenarComboBoxDepartamentos(cboModulo2);
+        inicializaComboDepartamentos(); 
         btnGuardar.setEnabled(false);
         btnDeshacer.setEnabled(false);
         DatosProveedores.Habilitar(escritorio, false);
@@ -29,6 +30,16 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         tblProveedores.setRowSelectionAllowed(true);
     }
 
+     private void inicializaComboDepartamentos() {
+        List<Departamentos> listaDepartamentos = DatosProveedores.listaDepartamentos(); 
+
+        DefaultComboBoxModel<Departamentos> modelo = new DefaultComboBoxModel<>();
+        for (Departamentos c : listaDepartamentos) {
+            modelo.addElement(c);
+        }
+        cmbDepartamentos.setModel(modelo);
+    }
+     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -54,7 +65,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProveedores = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
-        cboModulo2 = new javax.swing.JComboBox<>();
+        cmbDepartamentos = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -171,9 +182,9 @@ public class frmProveedores extends javax.swing.JInternalFrame {
 
         jLabel7.setText("Departamento:");
 
-        cboModulo2.addActionListener(new java.awt.event.ActionListener() {
+        cmbDepartamentos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboModulo2ActionPerformed(evt);
+                cmbDepartamentosActionPerformed(evt);
             }
         });
 
@@ -221,7 +232,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
                                     .addGap(10, 10, 10)
                                     .addComponent(jLabel7)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(cboModulo2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(cmbDepartamentos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGap(29, 29, 29)
                             .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(escritorioLayout.createSequentialGroup()
@@ -251,7 +262,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
                     .addComponent(jLabel3)
                     .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
-                    .addComponent(cboModulo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbDepartamentos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -298,7 +309,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
-        String opcion = DatosProveedores.Capturar(cboModulo2);
+        String opcion = DatosProveedores.Capturar(cmbDepartamentos);
 
         // Creamos un objeto tipo Proveedores
         Proveedores pro = new Proveedores(
@@ -348,7 +359,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
             }
         } else {
             pro.setIdProveedor(txtId.getText());
-            if (DatosProveedores.Actualizar(pro, tblProveedores, cboModulo2)) {
+            if (DatosProveedores.Actualizar(pro, tblProveedores, cmbDepartamentos)) {
                 JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
             } else {
                 JOptionPane.showMessageDialog(null, "Error al actualizar los datos", "Error", JOptionPane.ERROR_MESSAGE);
@@ -382,7 +393,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         cod[5] = txtRuc;
 
         // Crear el arreglo con el ComboBox de departamento
-        JComboBox[] combos = {cboModulo2}; // Pasamos solo el ComboBox
+        JComboBox[] combos = {cmbDepartamentos}; // Pasamos solo el ComboBox
 
         // Llamar al método Editar pasándole el ComboBox junto con los campos de texto
         DatosProveedores.Editar(escritorio, tblProveedores, cod, combos);
@@ -445,9 +456,9 @@ public class frmProveedores extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_txtDireccionKeyTyped
 
-    private void cboModulo2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboModulo2ActionPerformed
+    private void cmbDepartamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbDepartamentosActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cboModulo2ActionPerformed
+    }//GEN-LAST:event_cmbDepartamentosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -456,7 +467,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JComboBox<String> cboModulo2;
+    private javax.swing.JComboBox<Departamentos> cmbDepartamentos;
     private javax.swing.JPanel escritorio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

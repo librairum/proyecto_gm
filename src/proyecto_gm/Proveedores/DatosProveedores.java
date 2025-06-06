@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -61,24 +63,27 @@ public class DatosProveedores {
     }
 
     //cargar combobox
-    public static void llenarComboBoxDepartamentos(JComboBox<String> cboModulo2) {
-        try {
-            PreparedStatement pstmt = conn.prepareStatement("CALL listar_departamentos()");
-            ResultSet rs = pstmt.executeQuery();
-
+    public static List<Departamentos> listaDepartamentos() {
+        List<Departamentos> lista = new ArrayList<>();
+        try (CallableStatement cstmt = conn.prepareCall("{ CALL listar_departamentos() }")) {
+            ResultSet rs = cstmt.executeQuery();
             while (rs.next()) {
-                cboModulo2.addItem(rs.getString("Descripcion"));
+                String id = rs.getString("IdDepartamento");
+                String descripcion = rs.getString("Descripcion");
+                lista.add(new Departamentos(id, descripcion));
             }
-
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al llenar el ComboBox: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error al obtener departamentos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+        return lista;
     }
 
-    public static String Capturar(JComboBox<String> cboModulo2) {
+    
+
+    public static String Capturar(JComboBox<Departamentos> cmbDepartamentos) {
         String idModulo = "";
         try ( PreparedStatement pstmt = conn.prepareStatement("CALL obtener_id_departamento(?)")) {
-            pstmt.setString(1, cboModulo2.getSelectedItem().toString());
+            pstmt.setString(1, cmbDepartamentos.getSelectedItem().toString());
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 idModulo = rs.getString("IdDepartamento");
@@ -114,13 +119,13 @@ public class DatosProveedores {
         }
     }
 
-    public static boolean Actualizar(Proveedores pro, JTable tabla, JComboBox<String> cboModulo2) {
+    public static boolean Actualizar(Proveedores pro, JTable tabla, JComboBox<Departamentos> cmbDepartamentos) {
         try {
             // Llamada al procedimiento almacenado
             CallableStatement cstmt = conn.prepareCall("{CALL actualizar_proveedores(?,?,?,?,?,?,?)}");
 
             // Capturamos el IdDepartamento desde el ComboBox
-            String idDepartamento = Capturar(cboModulo2);
+            String idDepartamento = Capturar(cmbDepartamentos);
 
             // Definir los parámetros de la consulta
             cstmt.setString(1, pro.IdProveedor);
@@ -236,4 +241,5 @@ public class DatosProveedores {
             }
         }
     }
+
 }

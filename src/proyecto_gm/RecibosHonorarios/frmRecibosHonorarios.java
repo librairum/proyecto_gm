@@ -504,10 +504,11 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
     }
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        String codigo = DatosRecibosHonorarios.GenerarCodigo();
+        txtId.setText(codigo);
         DatosRecibosHonorarios.Habilitar(escritorio, true);
 
         // Preparar todos los campos
-        txtId.setText("");
         txtId.setEnabled(false);
 
         txtNroRecibo.setText("NUM-");
@@ -571,12 +572,6 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         if (txtId.getText().isEmpty() || txtRuc.getText().isEmpty() || txtNom.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Completar bien los campos");
             return; // Se detiene el proceso si los campos requeridos están vacíos
-        }
-
-        if (esNuevo && !txtId.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
-            JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto. Debe ser 'CAR0002'.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            txtId.requestFocus();
-            return; // Se detiene el proceso si el formato del Id no es correcto
         }
 
         ReciboHonorario rec = new ReciboHonorario(

@@ -12,10 +12,11 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
@@ -27,6 +28,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import proyecto_gm.Area.Area;
+import proyecto_gm.Cargo.Cargo;
 import proyecto_gm.ConexionBD;
 
 /**
@@ -79,18 +82,22 @@ public class DatosEmpleados {
     }
 
     // Cargar opciones para los combo boxes
-    public static void CargarArea(JComboBox<String> cboArea) {
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_areas() }")) {
+    public static List<Area> listaAreas() {
+        List<Area> lista = new ArrayList<>();
+        try (CallableStatement cstmt = conn.prepareCall("{ CALL listar_areas() }")) {
             ResultSet rs = cstmt.executeQuery();
             while (rs.next()) {
-                cboArea.addItem(rs.getString("descripcion"));
+                String id = rs.getString("IdArea");
+                String descripcion = rs.getString("descripcion");
+                lista.add(new Area(id, descripcion));
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error al cargar Áreas", JOptionPane.ERROR_MESSAGE);
         }
+        return lista;
     }
 
-    public static String CapturarArea(JComboBox<String> cboArea) {
+    public static String CapturarArea(JComboBox<Area> cboArea) {
         String idArea = "";
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_id_area(?) }")) {
             cstmt.setString(1, cboArea.getSelectedItem().toString());
@@ -103,19 +110,23 @@ public class DatosEmpleados {
         }
         return idArea;
     }
-
-    public static void CargarCargo(JComboBox<String> cboCargo) {
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_cargos() }")) {
+    
+    public static List<Cargo> listaCargo() {
+        List<Cargo> lista = new ArrayList<>();
+        try (CallableStatement cstmt = conn.prepareCall("{ CALL listar_cargos }")) {
             ResultSet rs = cstmt.executeQuery();
             while (rs.next()) {
-                cboCargo.addItem(rs.getString("Descripcion"));
+                int id = rs.getInt("idCargo");
+                String descripcion = rs.getString("descripcion");
+                lista.add(new Cargo(id, descripcion));
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error al cargar Cargos", JOptionPane.ERROR_MESSAGE);
         }
+        return lista;
     }
 
-    public static String CapturarCargo(JComboBox<String> cboCargo) {
+    public static String CapturarCargo(JComboBox<Cargo> cboCargo) {
         String idCargo = "";
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_id_cargo(?) }")) {
             cstmt.setString(1, cboCargo.getSelectedItem().toString());
@@ -129,64 +140,6 @@ public class DatosEmpleados {
         return idCargo;
     }
 
-    /*
-    public static void CargarCombos(JComboBox cboArea, JComboBox cboCargo) {
-        PreparedStatement pstmtArea = null;
-        PreparedStatement pstmtCargo = null;
-        ResultSet rsAreas = null;
-        ResultSet rsCargos = null;
-
-        // Mapas para almacenar los IDs
-        Map<String, String> areaMap = new HashMap<>();
-        Map<String, String> cargoMap = new HashMap<>();
-
-        try {
-            // Preparamos las consultas
-            pstmtArea = conn.prepareStatement("CALL listar_empleados_areas()");
-            pstmtCargo = conn.prepareStatement("CALL listar_empleados_cargos()");
-
-            // Las ejecutamos
-            rsAreas = pstmtArea.executeQuery();
-            rsCargos = pstmtCargo.executeQuery();
-
-            // Agregamos las áreas en cboArea
-            while (rsAreas.next()) {
-                String idArea = rsAreas.getString("IdArea");
-                String nomArea = rsAreas.getString("descripcion");
-                cboArea.addItem(nomArea); // Añadimos solo el nombre
-                areaMap.put(nomArea, idArea); // Asociamos el nombre con el ID
-            }
-
-            // Agregamos los cargos en cboCargo
-            while (rsCargos.next()) {
-                String idCargo = rsCargos.getString("IdCargo");
-                String nomCargo = rsCargos.getString("Descripcion");
-                cboCargo.addItem(nomCargo); // Añadimos solo el nombre
-                cargoMap.put(nomCargo, idCargo); // Asociamos el nombre con el ID
-            }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            // Cerramos los recursos
-            try {
-                if (rsAreas != null) {
-                    rsAreas.close();
-                }
-                if (rsCargos != null) {
-                    rsCargos.close();
-                }
-                if (pstmtArea != null) {
-                    pstmtArea.close();
-                }
-                if (pstmtCargo != null) {
-                    pstmtCargo.close();
-                }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }*/
     // Listar datos
     public static void Listar(DefaultTableModel modelo) {
         PreparedStatement pstmt = null;
@@ -263,8 +216,7 @@ public class DatosEmpleados {
     }
 
     // Insertar datos
-    // Insertar datos
-    public static void Insertar(Empleados empleado, JTable tabla, JComboBox<String> cboArea, JComboBox<String> cboCargo) {
+    public static void Insertar(Empleados empleado, JTable tabla, JComboBox<Area> cboArea, JComboBox<Cargo> cboCargo) {
         CallableStatement cstmt = null;
         try {
             // Obtener los IDs de los combo boxes de Área y Cargo
@@ -294,9 +246,9 @@ public class DatosEmpleados {
             cstmt.setString(7, empleado.getCelular());
             cstmt.setString(8, empleado.getDistrito());
             cstmt.setString(9, empleado.getDireccion());
-            cstmt.setString(10, idArea);  // Usar el ID de Área
-            cstmt.setString(11, idCargo); // Usar el ID de Cargo
-            cstmt.setString(12, empleado.getIdTipo());
+            cstmt.setInt(10, Integer.parseInt(idArea));  // Usar el ID de Área
+            cstmt.setInt(11, Integer.parseInt(idCargo)); // Usar el ID de Cargo
+            cstmt.setInt(12, Integer.parseInt(idCargo));
 
             // Ejecutar la inserción
             cstmt.execute();
@@ -375,9 +327,9 @@ public class DatosEmpleados {
             cstmt.setString(7, empleados.getCelular());
             cstmt.setString(8, empleados.getDistrito());
             cstmt.setString(9, empleados.getDireccion());
-            cstmt.setString(10, empleados.getIdArea());
-            cstmt.setString(11, empleados.getIdCargo());
-            cstmt.setString(12, empleados.getIdTipo());
+            cstmt.setInt(10, empleados.getIdArea());
+            cstmt.setInt(11, empleados.getIdCargo());
+            cstmt.setInt(12, empleados.getIdTipo());
 
             cstmt.execute(); // se actualiza los datos en la BD
 
@@ -529,18 +481,18 @@ public class DatosEmpleados {
         CallableStatement cstmt = null;
         String codigo_generado = "";
         try {
-            cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?, ?) }");
+            cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?) }");
             cstmt.setString(1, tabla);
             cstmt.setString(2, campoId);
-            cstmt.setString(3, prefijo);
-            cstmt.registerOutParameter(4, Types.VARCHAR);
+            cstmt.registerOutParameter(3, Types.VARCHAR);
 
             cstmt.execute();
 
-            codigo_generado = cstmt.getString(4);
+            codigo_generado = cstmt.getString(3);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } finally {
+            
             if (cstmt != null) {
                 try {
                     cstmt.close();

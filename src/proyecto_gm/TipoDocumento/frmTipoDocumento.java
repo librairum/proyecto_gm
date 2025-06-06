@@ -2,10 +2,13 @@ package proyecto_gm.TipoDocumento;
 
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import proyecto_gm.Modulo.Modulo;
 
 public class frmTipoDocumento extends javax.swing.JInternalFrame {
 
@@ -15,7 +18,7 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
         initComponents();
         DefaultTableModel modelo = (DefaultTableModel) tblTipoDocumento.getModel();
         DatosTipoDocumento.Habilitar(escritorio, false);
-        DatosTipoDocumento.CargarCombo(cboModulo);
+        inicializaComboCategoria();
 
         DatosTipoDocumento.Mostrar(modelo);
         // Quitar la edicion de las celdas
@@ -23,6 +26,16 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
         // Poder seleccionar fila(s) de la tabla
         tblTipoDocumento.setRowSelectionAllowed(true);
 
+    }
+
+    private void inicializaComboCategoria() {
+        List<Modulo> listaCategoria = DatosTipoDocumento.obtenerModulos(); // o CategoriaDAO si lo separas
+
+        DefaultComboBoxModel<Modulo> modelo = new DefaultComboBoxModel<>();
+        for (Modulo c : listaCategoria) {
+            modelo.addElement(c);
+        }
+        cboModulo.setModel(modelo);
     }
 
     @SuppressWarnings("unchecked")
@@ -252,50 +265,49 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-
         if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Completar bien los campos");
             return;
         }
 
+        Modulo modSeleccionado = (Modulo) cboModulo.getSelectedItem();
+        if (modSeleccionado == null) {
+            JOptionPane.showMessageDialog(null, "Seleccione un módulo válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int idTipoDocumento;
+        int idModulo;
+
+        try {
+            idTipoDocumento = Integer.parseInt(txtId.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "El ID debe ser un número entero.", "Error", JOptionPane.ERROR_MESSAGE);
+            txtId.requestFocus();
+            return;
+        }
+
+        // ✅ CORRECTO: ya es un entero
+        idModulo = modSeleccionado.getId();
+
+        // Crea el objeto TipoDocumento
+        TipoDocumento tip = new TipoDocumento(idTipoDocumento, String.valueOf(idModulo), txtDescripcion.getText());
+
         if (esNuevo) {
-            if (!txtId.getText().matches("^[A-Z]{3}[0-9]{4}$")) {
-                JOptionPane.showMessageDialog(null, "El formato del Id es incorrecto. Debe ser 'CAR0002'.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                txtId.requestFocus();
-                return;
-            }
-
-            int idNumerico = Integer.parseInt(txtId.getText().replaceAll("\\D+", ""));
-            String idModuloStr = DatosTipoDocumento.Capturar(cboModulo);
-            int idModulo = Integer.parseInt(idModuloStr.replaceAll("\\D+", ""));
-
-            TipoDocumento tip = new TipoDocumento(String.valueOf(idNumerico), String.valueOf(idModulo), txtDescripcion.getText());
-
             if (DatosTipoDocumento.Insertar(tip, tblTipoDocumento)) {
                 JOptionPane.showMessageDialog(null, "Registro exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                DatosTipoDocumento.Limpiar(escritorio);
-                DatosTipoDocumento.Habilitar(escritorio, false);
-                tblTipoDocumento.clearSelection();
-                tblTipoDocumento.setRowSelectionAllowed(true);
             } else {
                 JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
         } else {
-            // Para actualizar no es necesario validar el formato del ID
-            String idModuloStr = DatosTipoDocumento.Capturar(cboModulo);
-            int idModulo = Integer.parseInt(idModuloStr.replaceAll("\\D+", ""));
-
-            TipoDocumento tip = new TipoDocumento("0006", "2", "Carnet de Extranjería");
-            tip.setCodigoTipoDoc(txtId.getText().replaceAll("\\D+", "")); // Solo el número
-            tip.setIdModulo(String.valueOf(idModulo));
-            tip.setDescripcion(txtDescripcion.getText());
-
             DatosTipoDocumento.Actualizar(tip, tblTipoDocumento, cboModulo);
-            DatosTipoDocumento.Limpiar(escritorio);
-            DatosTipoDocumento.Habilitar(escritorio, false);
-            tblTipoDocumento.clearSelection();
-            tblTipoDocumento.setRowSelectionAllowed(true);
         }
+
+        DatosTipoDocumento.Limpiar(escritorio);
+        DatosTipoDocumento.Habilitar(escritorio, false);
+        tblTipoDocumento.clearSelection();
+        tblTipoDocumento.setRowSelectionAllowed(true);
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
@@ -337,17 +349,12 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         DatosTipoDocumento.Habilitar(escritorio, true);
-        String codigo = DatosTipoDocumento.GenerarCodigo();
 
-        if (codigo != null) {
-            txtId.setText(codigo);
-            txtId.setEnabled(false);
-        } else {
-            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+        txtId.setEnabled(true);              // Habilitar campo para ingreso manual
+        txtId.setText("");                   // Limpiar el campo
+        txtDescripcion.setText("");         // Limpiar descripción
 
-        txtDescripcion.requestFocus();
+        txtId.requestFocus();               // Colocar el foco en el campo ID
         esNuevo = true;
         tblTipoDocumento.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnAgregarActionPerformed
@@ -359,7 +366,7 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
     public static javax.swing.JButton btnEditar;
     public static javax.swing.JButton btnEliminar;
     public static javax.swing.JButton btnGuardar;
-    private javax.swing.JComboBox<String> cboModulo;
+    private javax.swing.JComboBox<Modulo> cboModulo;
     private javax.swing.JDesktopPane escritorio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

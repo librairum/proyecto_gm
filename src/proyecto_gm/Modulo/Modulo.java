@@ -1,25 +1,26 @@
-
 package proyecto_gm.Modulo;
 
 public class Modulo {
-    //Atributos
-    String Id;
-    String Descripcion;
+    // Atributos
+    private int Id;
+    private String Descripcion;
 
-    public Modulo(String Id, String Descripcion) {
+    // Constructor con parámetros
+    public Modulo(int Id, String Descripcion) {
         this.Id = Id;
         this.Descripcion = Descripcion;
     }
 
+    // Constructor vacío
     public Modulo() {
-        
     }
 
-    public String getId() {
+    // Getters y setters
+    public int getId() {
         return Id;
     }
 
-    public void setId(String Id) {
+    public void setId(int Id) {
         this.Id = Id;
     }
 
@@ -29,5 +30,10 @@ public class Modulo {
 
     public void setDescripcion(String Descripcion) {
         this.Descripcion = Descripcion;
+    }
+
+    @Override
+    public String toString() {
+        return Descripcion;
     }
 }

@@ -150,7 +150,6 @@ public class DatosAsistencia {
     }
 
     public static void CargarEmpleados(JComboBox combo) {
-        //String query = "SELECT CONCAT(dni,'-',ifnull(Nombres,''), ' ', ifnull(Apellidos,'')) AS NombreCompleto FROM empleados ORDER BY Nombres ASC";
         String query = "CALL ObtenerEmpleadosOrdenados()";
         try ( PreparedStatement pstmt = conn.prepareStatement(query);  ResultSet rs = pstmt.executeQuery();) {
             while (rs.next()) {

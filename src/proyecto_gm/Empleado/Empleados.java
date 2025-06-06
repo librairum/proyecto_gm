@@ -10,8 +10,8 @@ package proyecto_gm.Empleado;
  */
 public class Empleados {
 
-    private String id, apellidos, nombres, fNacimiento, correo, dni, celular, distrito, direccion, idArea, idCargo, idTipo;
-
+    private String id, apellidos, nombres, fNacimiento, correo, dni, celular, distrito, direccion;
+    private int idArea, idCargo,idTipo;
     // Constructor
     public Empleados() {
         // Constructor vacio
@@ -89,27 +89,27 @@ public class Empleados {
         this.direccion = direccion;
     }
 
-    public String getIdArea() {
+    public int getIdArea() {
         return idArea;
     }
 
-    public void setIdArea(String idArea) {
+    public void setIdArea(int idArea) {
         this.idArea = idArea;
     }
 
-    public String getIdCargo() {
+    public int getIdCargo() {
         return idCargo;
     }
 
-    public void setIdCargo(String idCargo) {
+    public void setIdCargo(int idCargo) {
         this.idCargo = idCargo;
     }
 
-    public String getIdTipo() {
+    public int getIdTipo() {
         return idTipo;
     }
 
-    public void setIdTipo(String idTipo) {
+    public void setIdTipo(int idTipo) {
         this.idTipo = idTipo;
     }
 

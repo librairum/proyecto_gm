@@ -10,6 +10,7 @@ import proyecto_gm.ConexionBD;
 public class DatosCategoria {
 
     static Connection conn = ConexionBD.getConnection();
+    //
 
     public static void LimpiarCat(Container contenedor) {
         for (Component componente : contenedor.getComponents()) {

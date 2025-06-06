@@ -6,29 +6,44 @@ package proyecto_gm.Articulo;
 
 import java.awt.Toolkit;
 import java.io.IOException;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import proyecto_gm.Categoria.Categoria;
 import proyecto_gm.Exportar;
 
 public class frmArticulo extends javax.swing.JInternalFrame {
 
     Exportar obj;
     boolean esNuevo = false;
+    //
 
     public frmArticulo() {
         initComponents();
         DefaultTableModel modelo = (DefaultTableModel) tblarticulo.getModel();
         DatosArticulo.Habilitar(escritorio, false);
-        DatosArticulo.CargarCategoria(cmbCategoria);
+
         DatosArticulo.CargarMarcas(cboMarca);
+        inicializaComboCategoria(); 
 
         DatosArticulo.Mostrar(modelo);
         tblarticulo.setCellSelectionEnabled(false);
         tblarticulo.setRowSelectionAllowed(true);
+    }
+
+    private void inicializaComboCategoria() {
+        List<Categoria> listaCategoria = DatosArticulo.obtenerCategorias(); // o CategoriaDAO si lo separas
+
+        DefaultComboBoxModel<Categoria> modelo = new DefaultComboBoxModel<>();
+        for (Categoria c : listaCategoria) {
+            modelo.addElement(c);
+        }
+        cmbCategoria.setModel(modelo);
     }
 
     @SuppressWarnings("unchecked")
@@ -297,7 +312,14 @@ public class frmArticulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        String opcionCategoria = DatosArticulo.CapturarCat(cmbCategoria);
+        Categoria categoriaSeleccionada = (Categoria) cmbCategoria.getSelectedItem();
+        if (categoriaSeleccionada == null) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una categoría.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        int idCategoria = categoriaSeleccionada.getIdCat(); // ✅ Aquí ya tienes el ID directamente
+
+        // Obtener marca por su nombre (se mantiene igual)
         String opcionMarca = DatosArticulo.CapturarMarca(cboMarca);
 
         // Validar campos
@@ -325,8 +347,8 @@ public class frmArticulo extends javax.swing.JInternalFrame {
             return;
         }
 
-        // Crear objeto Articulo
-        Articulo art = new Articulo(idArticulo, Integer.parseInt(opcionCategoria), Integer.parseInt(opcionMarca), txtCaracteristicas.getText());
+        // Crear objeto Articulo con ID de categoría como int
+        Articulo art = new Articulo(idArticulo, idCategoria, Integer.parseInt(opcionMarca), txtCaracteristicas.getText());
         art.setDescripcion(txtDescripcion.getText());
         art.setCantidad(cantidad);
 
@@ -402,7 +424,7 @@ public class frmArticulo extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnExportar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JComboBox<String> cboMarca;
-    private javax.swing.JComboBox<String> cmbCategoria;
+    private javax.swing.JComboBox<Categoria> cmbCategoria;
     private javax.swing.JPanel escritorio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

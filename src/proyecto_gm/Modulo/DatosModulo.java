@@ -43,7 +43,7 @@ public class DatosModulo {
             ResultSet rs = ate.executeQuery();
             while (rs.next()) {
                 Object[] row = new Object[]{
-                    rs.getString("IdModulo"),
+                    rs.getInt("IdModulo"), // Cambiado a getInt para consistencia con tu clase
                     rs.getString("Descripcion")
                 };
                 modelo.addRow(row);
@@ -55,9 +55,8 @@ public class DatosModulo {
 
     public static void Insertar(Modulo mod, JTable tabla) {
         try {
-
             PreparedStatement ate = conn.prepareStatement("{CALL insertar_modulo (?,?)}");
-            ate.setString(1, mod.getId());
+            ate.setInt(1, mod.getId());  // CAMBIADO de setString a setInt
             ate.setString(2, mod.getDescripcion());
             ate.executeUpdate();
 
@@ -65,10 +64,8 @@ public class DatosModulo {
             Object[] rowData = {mod.getId(), mod.getDescripcion()};
             modelo.addRow(rowData);
 
-            // Actualiza la vista del JTable con el modelo de tabla actualizado
             tabla.setModel(modelo);
             ate.close();
-
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -77,14 +74,12 @@ public class DatosModulo {
     public static void Actualizar(Modulo mod, JTable tabla) {
         try {
             CallableStatement ate = conn.prepareCall("{CALL actualizar_modulo (?,?)}");
-            //defino los parametros de la bd para ser actualizado mediante el id
-            ate.setString(1, mod.Id);
-            ate.setString(2, mod.Descripcion);
+            ate.setInt(1, mod.getId());  // CAMBIADO de setString a setInt
+            ate.setString(2, mod.getDescripcion());
             ate.executeUpdate();
-            // Actualizamos la tabla
+
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
-
             DatosModulo.Mostrar(modelo);
 
             ate.close();
@@ -95,34 +90,28 @@ public class DatosModulo {
 
     public static void Eliminar(JTable tabla) {
         try {
-            // Obtener el indice de la fila seleccionada
             int fila = tabla.getSelectedRow();
 
             if (fila >= 0) {
                 String[] options = {"Sí", "No", "Cancelar"};
                 int opcion = JOptionPane.showOptionDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
                 if (opcion == JOptionPane.YES_OPTION) {
-                    // Obtener los datos de fila seleccionada
-                    String id = tabla.getModel().getValueAt(fila, 0).toString(); //Se asume que el ID se encuentra en la primera columna
+                    int id = Integer.parseInt(tabla.getModel().getValueAt(fila, 0).toString());  // CAMBIADO a int
 
-                    // Ejecutar el procedimiento almacenado
                     CallableStatement stmt = conn.prepareCall("{ CALL eliminar_modulo(?) }");
-                    stmt.setString(1, id);
+                    stmt.setInt(1, id);  // CAMBIADO de setString a setInt
                     stmt.execute();
 
-                    // Actualizar el JTable
                     DefaultTableModel model = (DefaultTableModel) tabla.getModel();
                     model.removeRow(fila);
-                    // JOptionPane.showMessageDialog(null, "La fila ha sido eliminada exitosamente");                
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para eliminar.");
             }
 
-        } catch (SQLException ex) {
+        } catch (SQLException | NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-
     }
 
     public static boolean Editar(Container contenedor, JTable tabla, JTextField[] cod) {

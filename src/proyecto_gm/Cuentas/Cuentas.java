@@ -73,4 +73,9 @@ public class Cuentas {
         this.idBanco = idBanco;
     }
     
+    @Override
+    public String toString() {
+        return nombres;
+    }
+    
 }

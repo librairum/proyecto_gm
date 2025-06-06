@@ -115,7 +115,7 @@
                                   <Component id="txtDirec" min="-2" pref="200" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace min="309" pref="434" max="32767" attributes="0"/>
+                          <EmptySpace min="309" pref="433" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -402,7 +402,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Cargo&gt;"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JComboBox" name="cboArea">
@@ -415,7 +415,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Area&gt;"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JTextField" name="txtDirec">
