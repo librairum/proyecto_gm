@@ -21,6 +21,9 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.ConexionBD;
 import proyecto_gm.Empleado.Empleados;
+import proyecto_gm.Periodos.Periodos;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  *
@@ -30,6 +33,7 @@ public class DatosViaticos {
 
     static Connection conn = ConexionBD.getConnection();
 
+    // 
     public static String GenerarCodigo() {
         String codigoGenerado = "";
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?) }")) {
@@ -48,60 +52,50 @@ public class DatosViaticos {
         return codigoGenerado;
     }
 
-    public static void llenarComboBoxViaticos(JComboBox<Empleados> cboEmpleado, JComboBox<String> cboPeriodo) {
+    public static void llenarComboBoxViaticos(JComboBox<Empleados> cboEmpleado, JComboBox<Periodos> cboPeriodo) {
         try {
+            List<Empleados> listaEmpleados = new ArrayList<>();
+            List<Periodos> listaPeriodos = new ArrayList<>();
+
+            // Llenar empleados
             PreparedStatement pstmtEmpleado = conn.prepareStatement("CALL listar_viaticos_empleado()");
             ResultSet rsEmpleado = pstmtEmpleado.executeQuery();
-
             while (rsEmpleado.next()) {
                 Empleados e = new Empleados();
                 e.setId(rsEmpleado.getString("IdEmpleado"));
                 e.setNombres(rsEmpleado.getString("Nombre_Completo"));
-                e.setApellidos("");  // para evitar null
-                cboEmpleado.addItem(e);
+                e.setApellidos(""); // evitar null
+                listaEmpleados.add(e);
             }
 
+            // Llenar periodos
             PreparedStatement pstmtPeriodo = conn.prepareStatement("CALL listar_periodos()");
             ResultSet rsPeriodo = pstmtPeriodo.executeQuery();
-
             while (rsPeriodo.next()) {
-                cboPeriodo.addItem(rsPeriodo.getString("Mes"));
+                Periodos p = new Periodos();
+                p.setId(rsPeriodo.getString("IdPeriodo")); // o el nombre real de la columna en la BD
+                p.setDescripcion(rsPeriodo.getString("Mes")); // o el nombre real de la columna en la BD
+                listaPeriodos.add(p);
+            }
+
+            // Llenar ComboBox empleados
+            cboEmpleado.removeAllItems();
+            for (Empleados emp : listaEmpleados) {
+                cboEmpleado.addItem(emp);
+            }
+
+            // Llenar ComboBox periodos
+            cboPeriodo.removeAllItems();
+            for (Periodos per : listaPeriodos) {
+                cboPeriodo.addItem(per);
             }
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al llenar el ComboBox: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error al llenar ComboBox: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public static String capturarIdEmpleado(JComboBox<String> cboEmpleado) {
-        String idEmpleado = "";
-        try ( CallableStatement cstmt = conn.prepareCall("{CALL obtener_id_empleado(?)}")) {
-            cstmt.setString(1, cboEmpleado.getSelectedItem().toString().trim());
-            ResultSet rs = cstmt.executeQuery();
-            if (rs.next()) {
-                idEmpleado = rs.getString("IdEmpleado");
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar IdEmpleado", JOptionPane.ERROR_MESSAGE);
-        }
-        return idEmpleado;
-    }
-
-    public static String capturarIdPeriodo(JComboBox<String> cboPeriodo) {
-        String idPeriodo = "";
-        try ( CallableStatement cstmt = conn.prepareCall("{CALL obtener_id_periodo(?)}")) {
-            cstmt.setString(1, cboPeriodo.getSelectedItem().toString());
-            ResultSet rs = cstmt.executeQuery();
-            if (rs.next()) {
-                idPeriodo = rs.getString("IdPeriodo");
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar IdPeriodo", JOptionPane.ERROR_MESSAGE);
-        }
-        return idPeriodo;
-    }
-
-// Mostrar datos
+    // Mostrar datos
     public static void Listar(DefaultTableModel modelo) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -152,6 +146,27 @@ public class DatosViaticos {
     // Actualizar datos
     public static boolean Actualizar(Viaticos viatico, JTable tabla) {
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_viaticos(?, ?, ?, ?, ?, ?) }")) {
+
+            // Validaciones de entrada
+            if (viatico == null) {
+                JOptionPane.showMessageDialog(null, "Objeto viático es nulo.", "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+
+            if (viatico.getEmpleado() == null || viatico.getPeriodo() == null) {
+                JOptionPane.showMessageDialog(null, "Faltan datos de empleado o periodo.", "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+
+            // Depuración de datos
+            System.out.println("ID: " + viatico.getId());
+            System.out.println("Descripción: " + viatico.getDescripcion());
+            System.out.println("Pasaje: " + viatico.getPasaje());
+            System.out.println("Menu: " + viatico.getMenu());
+            System.out.println("Empleado: " + viatico.getEmpleado());
+            System.out.println("Periodo: " + viatico.getPeriodo());
+
+            // Enviar parámetros al SP
             cstmt.setInt(1, viatico.getId());
             cstmt.setString(2, viatico.getDescripcion());
             cstmt.setDouble(3, viatico.getPasaje());
@@ -168,8 +183,12 @@ public class DatosViaticos {
 
             JOptionPane.showMessageDialog(null, "¡Viático actualizado correctamente!");
             return true;
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Error al convertir datos: " + e.getMessage(), "Error de formato", JOptionPane.ERROR_MESSAGE);
+            return false;
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al actualizar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error al actualizar: " + ex.getMessage(), "Error SQL", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }

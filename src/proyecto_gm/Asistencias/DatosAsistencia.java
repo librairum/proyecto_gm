@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -54,7 +55,7 @@ public class DatosAsistencia {
         int asistencias = 0;
 
         // Utiliza un bucle para iterar sobre cada día del mes en el período seleccionado
-        for (int i = 0; i < lastDayOfMonth; i++) { 
+        for (int i = 0; i < lastDayOfMonth; i++) {
             // Obtiene el nombre del día de la semana y lo convierte a mayúscula
             String dayName = new SimpleDateFormat("EEEE").format(cal.getTime());
             dayName = dayName.substring(0, 1).toUpperCase() + dayName.substring(1).toLowerCase();
@@ -70,7 +71,7 @@ public class DatosAsistencia {
 
             try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_horario_empleado (?, ?) }")) {
                 cstmt.setString(1, dni);
-                System.out.println("dni consultado:" +  dni);
+                System.out.println("dni consultado:" + dni);
                 cstmt.setString(2, date);
                 try ( ResultSet rs = cstmt.executeQuery();) {
                     if (rs.next()) {
@@ -82,22 +83,21 @@ public class DatosAsistencia {
                         System.out.println(duracion);
                         observaciones = rs.getString("Observaciones");
                         System.out.println(observaciones);
-                       
+
                     }
                 }
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
 
-            
-             // Agrega los datos a la matriz bidimensional
-                        data[i][0] = dayName;
-                        data[i][1] = date;
-                        data[i][2] = entrada;
-                        data[i][3] = salida;
-                        data[i][4] = duracion;
-                        data[i][5] = observaciones;
-                        
+            // Agrega los datos a la matriz bidimensional
+            data[i][0] = dayName;
+            data[i][1] = date;
+            data[i][2] = entrada;
+            data[i][3] = salida;
+            data[i][4] = duracion;
+            data[i][5] = observaciones;
+
             // Suma las horas, minutos y segundos de la duración
             if (!duracion.isEmpty()) {
                 String[] duracionParts = duracion.split(":");
@@ -111,8 +111,8 @@ public class DatosAsistencia {
 
             // Incrementa el objeto Calendar para apuntar al siguiente día del mes
             cal.add(Calendar.DAY_OF_MONTH, 1);
-            
-       //aca cerraba la llave de los 30 dias
+
+            //aca cerraba la llave de los 30 dias
         }
         // Convierte los segundos adicionales a minutos y los minutos adicionales a horas si exceden 60
         int additionalMinutes = totalSegundosSum / 60;
@@ -132,39 +132,41 @@ public class DatosAsistencia {
         // Muestra el total de horas en el JTextField
         String totalHorasText = String.format("%02d:%02d:%02d", totalHorasSum, totalMinutosSum, totalSegundosSum);
         totalHoras.setText(totalHorasText);
-        
+
         // Muestra la cantidad de asistencias durante el periodo seleccionado
-        try (CallableStatement cstmt = conn.prepareCall("{ CALL obtener_cantidad_asistencias(?, ?, ?) }")){
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_cantidad_asistencias(?, ?, ?) }")) {
             cstmt.setString(1, dni);
             cstmt.setString(2, periodo);
             cstmt.registerOutParameter(3, Types.INTEGER);
-            
             cstmt.execute();
             asistencias = cstmt.getInt(3);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
+
         String cantidad_asistencias = String.valueOf(asistencias);
         totalAsistencias.setText(cantidad_asistencias);
     }
 
-    public static void CargarEmpleados(JComboBox combo) {
-        String query = "CALL ObtenerEmpleadosOrdenados()";
-        try ( PreparedStatement pstmt = conn.prepareStatement(query);  ResultSet rs = pstmt.executeQuery();) {
+    public static ArrayList<String> obtenerEmpleados() {
+        ArrayList<String> empleados = new ArrayList<>();
+
+        try ( Connection conn = ConexionBD.getConnection();  PreparedStatement stmt = conn.prepareCall("CALL ObtenerEmpleadosOrdenados()");  java.sql.ResultSet rs = stmt.executeQuery()) {
+
             while (rs.next()) {
-                String nombre_completo = rs.getString("NombreCompleto");
-                combo.addItem(nombre_completo);
+                empleados.add(rs.getString("NombreCompleto"));
             }
+
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(null, e.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
+
+        return empleados;
     }
 
     public static String ObtenerDNI(JComboBox combo) {
         String dni = "";
         String empleado = combo.getSelectedItem().toString();
-        /*String query = "SELECT Dni FROM empleados WHERE CONCAT(Nombres, ' ', Apellidos) = ?";**/
         String query = "CALL ObtenerEmpleadoPorDni(?)";
         try ( PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, empleado);
@@ -186,9 +188,7 @@ public class DatosAsistencia {
             cstmt.setString(2, fecha);
             cstmt.setString(3, hora);
             cstmt.registerOutParameter(4, Types.INTEGER);
-
             cstmt.execute();
-
             id = cstmt.getInt(4);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -202,10 +202,9 @@ public class DatosAsistencia {
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_detalle_asistencia(?, ?) }");) {
             cstmt.setInt(1, id_detalle);
             cstmt.setString(2, a.getHora());
-
             cstmt.execute();
-
             // Actualizamos la tabla
+            // 
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
             RellenarTabla(tabla, periodo, combo, totalHoras, totalAsistencias);
@@ -219,17 +218,14 @@ public class DatosAsistencia {
             cstmt.setString(1, a.getDni());
             cstmt.setString(2, a.getFecha());
             cstmt.setString(3, a.getHora());
-
             cstmt.execute();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-
     }
 
     public static void ColocarObservacion(String dni, String fecha, String entrada, String observacion) {
         int id_detalle = obtenerIdDetalleAsistencia(dni, fecha, entrada);
-
         if (id_detalle != 0) {
             try ( CallableStatement castmt = conn.prepareCall("{ CALL actualizar_observacion(?, ?) }")) {
                 castmt.setInt(1, id_detalle);
@@ -243,20 +239,16 @@ public class DatosAsistencia {
 
     private static int obtenerIdDetalleAsistencia(String dni, String fecha, String entrada) {
         int id_detalle = 0;
-
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_id_detalle_asistencia(?, ?, ?, ?) }")) {
             cstmt.setString(1, dni);
             cstmt.setString(2, fecha);
             cstmt.setString(3, entrada);
             cstmt.registerOutParameter(4, Types.INTEGER);
-
             cstmt.execute();
-
             id_detalle = cstmt.getInt(4);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-
         return id_detalle;
     }
 
@@ -268,5 +260,4 @@ public class DatosAsistencia {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
 }

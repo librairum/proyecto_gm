@@ -76,9 +76,7 @@ public class DatosProveedores {
             JOptionPane.showMessageDialog(null, "Error al obtener departamentos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         return lista;
-    }
-
-    
+    }    
 
     public static String Capturar(JComboBox<Departamentos> cmbDepartamentos) {
         String idModulo = "";

@@ -40,33 +40,42 @@ public class DatosCuentas {
             cstmt.setString(1, "cuentasbancarias");
             cstmt.setString(2, "IdCuentaBancaria");
             cstmt.registerOutParameter(3, Types.INTEGER);
-
             cstmt.execute();
-
             int idGenerado = cstmt.getInt(3); // Recibe el número
             codigoGenerado = String.valueOf(idGenerado);
-
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         return codigoGenerado;
     }
 
-    // Cargar opciones el combo box "cboBanco"
-    public static void CargarBancos(JComboBox<String> cboBanco) {
-        String sql = "{CALL listar_bancos()}";
-        List<String> bancos = new ArrayList<>();
-
-        try ( CallableStatement cstmt = conn.prepareCall(sql);  ResultSet rs = cstmt.executeQuery()) {
-
+    // Llenar ComboBox de bancos desde la BD
+    public static void CargarBancos(JComboBox<Banco> combo) {
+        combo.removeAllItems();
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL listar_bancos() }")) {
+            ResultSet rs = cstmt.executeQuery();
             while (rs.next()) {
-                bancos.add(rs.getString("Descripcion"));
+                int id = rs.getInt("idBanco");
+                String descripcion = rs.getString("descripcion");
+                combo.addItem(new Banco(id, descripcion));
             }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            System.err.println("Error al cargar bancos: " + e.getMessage());
         }
+    }
 
-        cboBanco.setModel(new DefaultComboBoxModel<>(bancos.toArray(new String[0])));
+    // Llenar ComboBox de tipo propietario con datos estáticos
+    public static void CargarTipoPropietario(JComboBox<String> combo) {
+        combo.removeAllItems();
+        combo.addItem("Persona Natural");
+        combo.addItem("Empresa");
+    }
+
+    // (Si usas getSelectedIndex + 1 para banco, no necesitarías esto,
+    // pero si quieres obtener el ID real del banco seleccionado, usa esto:)
+    public static int obtenerIdBancoSeleccionado(JComboBox<Banco> combo) {
+        Banco banco = (Banco) combo.getSelectedItem();
+        return banco != null ? banco.getId() : -1;
     }
 
     // Mostrar datos
@@ -100,7 +109,6 @@ public class DatosCuentas {
         CallableStatement cstmt = null;
         try {
             cstmt = conn.prepareCall("{ CALL insertar_cuenta(?, ?, ?, ?, ?, ?, ?) }");
-
             cstmt.setInt(1, cuenta.getIdCuenta());
             cstmt.setString(2, cuenta.getTipoPropietario());
             cstmt.setString(3, cuenta.getNombres());
@@ -108,7 +116,6 @@ public class DatosCuentas {
             cstmt.setString(5, cuenta.getNroCuenta());
             cstmt.setString(6, cuenta.getNroCuentaInterbancaria());
             cstmt.setString(7, cuenta.getTipoMoneda());
-
             cstmt.execute(); // se inserta los datos a la BD
             JOptionPane.showMessageDialog(null, "Cuenta registrada satisfactoriamente.", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
 
@@ -116,7 +123,6 @@ public class DatosCuentas {
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
             Listar(modelo);
-
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -127,7 +133,6 @@ public class DatosCuentas {
         CallableStatement cstmt = null;
         try {
             cstmt = conn.prepareCall("{ CALL actualizar_cuenta(?, ?, ?, ?, ?, ?, ?) }");
-
             cstmt.setInt(1, cuenta.getIdCuenta());
             cstmt.setString(2, cuenta.getTipoPropietario());
             cstmt.setString(3, cuenta.getNombres());
@@ -135,7 +140,6 @@ public class DatosCuentas {
             cstmt.setString(5, cuenta.getNroCuenta());
             cstmt.setString(6, cuenta.getNroCuentaInterbancaria());
             cstmt.setString(7, cuenta.getTipoMoneda());
-
             int rowsUpdated = cstmt.executeUpdate(); // Devuelve el número de filas afectadas
 
             // Verificar si se actualizó alguna fila
@@ -144,14 +148,12 @@ public class DatosCuentas {
                 DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
                 modelo.setRowCount(0);
                 Listar(modelo); // Volver a listar los datos
-
                 // Mostrar mensaje de éxito
                 JOptionPane.showMessageDialog(null, "Los datos se actualizaron correctamente.", "Actualización exitosa", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 // Si no se actualizó nada
                 JOptionPane.showMessageDialog(null, "No se encontró la cuenta o no hubo cambios.", "Sin cambios", JOptionPane.WARNING_MESSAGE);
             }
-
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -163,40 +165,33 @@ public class DatosCuentas {
         try {
             // Obtener el índice de la fila seleccionada
             int fila = tabla.getSelectedRow();
-
             if (fila >= 0) {
                 String[] options = {"Sí", "No", "Cancelar"};
                 int opcion = JOptionPane.showOptionDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
                 if (opcion == JOptionPane.YES_OPTION) {
                     // Obtener los datos de la fila seleccionada
                     int id = Integer.parseInt(tabla.getModel().getValueAt(fila, 0).toString()); // ID primera columna
-
                     // Ejecutar el procedimiento almacenado
                     cstmt = conn.prepareCall("{ CALL eliminar_cuenta(?) }");
                     cstmt.setInt(1, id);
-
                     int rowsDeleted = cstmt.executeUpdate(); // Devuelve el número de filas eliminadas
-
                     if (rowsDeleted > 0) {
                         // Si se eliminó correctamente, actualizamos la tabla
                         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
                         modelo.setRowCount(0);
                         Listar(modelo); // Volver a listar los datos
-
                         // Mostrar mensaje de éxito
                         JOptionPane.showMessageDialog(null, "La cuenta se eliminó correctamente.", "Eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);
                     } else {
                         // Si no se eliminó ninguna fila
                         JOptionPane.showMessageDialog(null, "No se encontró la cuenta o no hubo cambios.", "Sin cambios", JOptionPane.WARNING_MESSAGE);
                     }
-
                 } else {
                     tabla.clearSelection(); // Cancelar la acción
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
-
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -204,24 +199,19 @@ public class DatosCuentas {
 
     // Boton Editar
     public static void Editar(Container contenedor, JTable tabla, JTextField[] cajas, JComboBox[] combos, ButtonGroup grupoBotones) {
-
         // Obtener la fila seleccionada
         int fila = tabla.getSelectedRow();
         if (fila >= 0) {
             Habilitar(contenedor, grupoBotones, true);
             tabla.clearSelection();
             tabla.setRowSelectionAllowed(false);
-
             cajas[0].setText(tabla.getModel().getValueAt(fila, 0).toString());
             cajas[1].setText(tabla.getModel().getValueAt(fila, 2).toString());
             cajas[2].setText(tabla.getModel().getValueAt(fila, 4).toString());
             cajas[3].setText(tabla.getModel().getValueAt(fila, 5).toString());
-
             cajas[0].setEnabled(false);
-
             combos[0].setSelectedItem(tabla.getModel().getValueAt(fila, 1).toString()); // la columna "Tip. Propietario" está en la posición 1
             combos[1].setSelectedItem(tabla.getModel().getValueAt(fila, 3).toString()); // la columna "Banco" está en la posición 3
-
             combos[0].requestFocus();
 
             // Seleccionar las opciones de los radio buttons
@@ -246,19 +236,16 @@ public class DatosCuentas {
                 return false;
             }
         }
-
         if (campos[1].getText().length() != 14) {
             JOptionPane.showMessageDialog(null, "El número de cuenta debe contener 14 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             campos[1].requestFocus();
             return false;
         }
-
         if (campos[2].getText().length() != 20) {
             JOptionPane.showMessageDialog(null, "El número de cuenta interbancaria debe contener 20 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             campos[2].requestFocus();
             return false;
         }
-
         return true;
     }
 
@@ -284,7 +271,6 @@ public class DatosCuentas {
             if (component instanceof JTextField) {
                 ((JTextField) component).setEnabled(bloquear);
             } else if (component instanceof JComboBox) {
-
                 ((JComboBox) component).setEnabled(bloquear);
             } else if (component instanceof JButton) {
                 String button = ((JButton) component).getName();
@@ -297,7 +283,6 @@ public class DatosCuentas {
                 // No hace nada para otros tipos de componentes
             }
         }
-
         for (Enumeration<AbstractButton> buttons = opciones.getElements(); buttons.hasMoreElements();) {
             buttons.nextElement().setEnabled(bloquear);
         }

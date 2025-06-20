@@ -26,6 +26,14 @@ public class Comunicacion {
     private String estado;
     private String enlace;
 
+    Comunicacion() {
+        
+    }
+    
+    public Comunicacion(String tipo) {
+        this.tipo = tipo;        
+    }    
+
     /**
      * @return the id
      */
@@ -208,5 +216,8 @@ public class Comunicacion {
         this.enlace = enlace;
     }
     
-    
+    @Override
+    public String toString() {
+        return tipo;            
+    }
 }

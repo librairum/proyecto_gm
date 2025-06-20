@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -49,11 +50,12 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
         System.out.println("Estado recibido en constructor: " + estado);
 
         // ⚠️ Cargar combos ANTES de usar setDatos
-        DatosComunicacion.CargarCombo(cboPeriodo);
-        DatosComunicacion.CargarComboTipoComunicacion(cboTipoComunicacion);
-        DatosComunicacion.CargarComboFlujo(cboFlujo1);
-        DatosComunicacion.CargarComboEstado(cboEstado);
-
+        DatosComunicacion.cargarCombo(cboFlujo1, DatosComunicacion.CargarComboFlujo());
+        DatosComunicacion.cargarCombo(cboEstado, DatosComunicacion.CargarComboEstado());
+        
+        
+        inicializaComboComunicacion();
+        
         if (estado == Utilitario.EstadoProceso.EDITAR) {
             HabilitarControles2(true);
         } else {
@@ -65,6 +67,26 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
         initComponents();
         estado = Utilitario.EstadoProceso.EDITAR;
 
+    }
+      
+
+        
+    private void inicializaComboComunicacion() {
+    // Cargar áreas
+    List<Comunicacion> listaAreas = DatosComunicacion.listarTipoComunicacion(); 
+    DefaultComboBoxModel<Comunicacion> modelo = new DefaultComboBoxModel<>();
+    for (Comunicacion a : listaAreas) {
+        modelo.addElement(a);
+    }
+    cboTipoComunicacion.setModel(modelo); 
+    
+    // Cargar áreas
+    List<Comunicacion> listaPeriodo = DatosComunicacion.listarPeriodo(); 
+    DefaultComboBoxModel<Comunicacion> modelop = new DefaultComboBoxModel<>();
+    for (Comunicacion a : listaPeriodo) {
+        modelop.addElement(a);
+    }
+    cboPeriodo.setModel(modelop); 
     }
 
     /**
@@ -196,8 +218,6 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
         jLabel2.setText("Proyecto");
         getContentPane().add(jLabel2);
         jLabel2.setBounds(18, 45, 47, 16);
-
-        cboTipoComunicacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Carta", "Correo", "Llamada" }));
         getContentPane().add(cboTipoComunicacion);
         cboTipoComunicacion.setBounds(520, 70, 90, 22);
 
@@ -219,7 +239,6 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
         });
         getContentPane().add(cboNomProyecto);
         cboNomProyecto.setBounds(71, 42, 490, 22);
-
         getContentPane().add(cboPeriodo);
         cboPeriodo.setBounds(660, 40, 100, 22);
 
@@ -276,8 +295,6 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
         jLabel12.setText("Estado");
         getContentPane().add(jLabel12);
         jLabel12.setBounds(20, 280, 35, 16);
-
-        cboEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Proceso", "Resuelto", "Archivado" }));
         getContentPane().add(cboEstado);
         cboEstado.setBounds(61, 274, 125, 22);
 
@@ -454,7 +471,8 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
         }
 
         for (int i = 0; i < cboTipoComunicacion.getItemCount(); i++) {
-            if (cboTipoComunicacion.getItemAt(i).equalsIgnoreCase(tipo)) {
+            Comunicacion item = (Comunicacion) cboTipoComunicacion.getItemAt(i);
+            if (item.getTipo().equalsIgnoreCase(tipo)) {
                 cboTipoComunicacion.setSelectedIndex(i);
                 break;
             }
@@ -701,8 +719,8 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> cboEstado;
     private javax.swing.JComboBox<String> cboFlujo1;
     private javax.swing.JComboBox<String> cboNomProyecto;
-    private javax.swing.JComboBox<String> cboPeriodo;
-    private javax.swing.JComboBox<String> cboTipoComunicacion;
+    private javax.swing.JComboBox<Comunicacion> cboPeriodo;
+    private javax.swing.JComboBox<Comunicacion> cboTipoComunicacion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

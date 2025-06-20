@@ -21,10 +21,11 @@ import javax.swing.table.DefaultTableModel;
 import proyecto_gm.ConexionBD;
 
 /**
- *
+ * 
  * @author EduardoPC
  */
 public class DatosRecibosHonorarios {
+    //
 
     static Connection conn = ConexionBD.getConnection();
 
@@ -45,6 +46,7 @@ public class DatosRecibosHonorarios {
         }
         return codigoGenerado;
     }
+    // 
 
     public static void Mostrar(DefaultTableModel modelo) {
         try ( PreparedStatement pstmt = conn.prepareStatement("CALL listar_recibos_honorarios()")) {
@@ -210,7 +212,6 @@ public class DatosRecibosHonorarios {
             campos[1].requestFocus();
             return false;
         }
-
         return true;
     }
 

@@ -8,12 +8,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import proyecto_gm.Area.Area;
 import proyecto_gm.ConexionBD;
 
 public class DatosCajaChica {
@@ -59,22 +62,41 @@ public class DatosCajaChica {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
-    public static void CargarCombo(JComboBox<String> cboNroOperacion) {
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_operacion() }")) {
+    
+    // Cargar opciones para los combo boxes
+    public static List<CajaChica> listaidTransBanca() {
+        List<CajaChica> lista = new ArrayList<>();
+        try (CallableStatement cstmt = conn.prepareCall("{ CALL listar_id_TransBanca }")) {
             ResultSet rs = cstmt.executeQuery();
             while (rs.next()) {
-                cboNroOperacion.addItem(rs.getString("NroOperacion"));
+                int IdTransferenciasBancarias = rs.getInt("IdTransferenciaBancaria");
+                lista.add(new CajaChica(IdTransferenciasBancarias));
             }
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error al cargar IdTransferenciaBancaria", JOptionPane.ERROR_MESSAGE);
         }
+        return lista;
     }
-
-    public static String CapturarIdOperacion(JComboBox<String> cboNroOperacion) {
+    
+    public static String CapturarIdTransBanca(JComboBox<CajaChica> cbontransferencias) {
+        String IdTransferenciaBancaria = "";
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_id_TransBanca(?) }")) {
+            cstmt.setString(1, cbontransferencias.getSelectedItem().toString());
+            ResultSet rs = cstmt.executeQuery();
+            if (rs.next()) {
+                IdTransferenciaBancaria = rs.getString("IdTransferenciaBancaria");
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar IdTransferenciaBancaria", JOptionPane.ERROR_MESSAGE);
+        }
+        return IdTransferenciaBancaria;
+    }
+    
+    //luego borrar
+    public static String CapturarIdOperacion(JComboBox<CajaChica> cbontransferencias) {
         String idCategoria = "";
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_id_Operacion(?) }")) {
-            cstmt.setString(1, cboNroOperacion.getSelectedItem().toString());
+            cstmt.setString(1, cbontransferencias.getSelectedItem().toString());
             ResultSet rs = cstmt.executeQuery();
             if (rs.next()) {
                 idCategoria = rs.getString("IdTransferenciaBancaria");
@@ -90,7 +112,7 @@ public class DatosCajaChica {
             CallableStatement cstmt = conn.prepareCall("{ CALL insertar_cajachica(?,?, ?, ?, ?, ?, ?) }");
 
             cstmt.setString(1, caj.getId());
-            cstmt.setString(2, caj.getIdTransferenciasBancarias());
+            cstmt.setInt(2, caj.getIdTransferenciasBancarias());
             cstmt.setString(3, caj.getFecha());
             cstmt.setString(4, caj.getDescripcion());
             cstmt.setFloat(5, caj.getEntrada());
@@ -98,7 +120,6 @@ public class DatosCajaChica {
             cstmt.setFloat(7, caj.getSaldo());
 
             cstmt.execute(); // Se inserta los datos a la BD
-
             // Mostrar mensaje de éxito
             JOptionPane.showMessageDialog(null, "¡Registro guardado correctamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
@@ -125,7 +146,7 @@ public class DatosCajaChica {
             CallableStatement cstmt = conn.prepareCall("{CALL actualizar_cajachica(?, ?, ?, ?, ?, ?, ?) }");
 
             cstmt.setString(1, caj.getId());
-            cstmt.setString(2, caj.getIdTransferenciasBancarias());
+            cstmt.setInt(2, caj.getIdTransferenciasBancarias());
             cstmt.setString(3, caj.getFecha());
             cstmt.setString(4, caj.getDescripcion());
             cstmt.setFloat(5, caj.getEntrada());

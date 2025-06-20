@@ -5,7 +5,7 @@
 package proyecto_gm.Transferencias;
 
 /**
- *
+ * 
  * @author jeanv
  */
 public class Transferencia {
@@ -14,8 +14,8 @@ public class Transferencia {
     private String periodo, nroOperacion, cuentaOrigen, cuentaDestino, fecha;
 
     public Transferencia() {
-        // constructo vacio
     }
+    // 
 
     // Getters & Setters
     public int getId() {

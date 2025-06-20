@@ -33,7 +33,7 @@ public class Periodos {
     
     @Override
     public String toString() {
-        return descripcion;
+        return id;
     }    
     
 }

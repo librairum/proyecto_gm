@@ -80,7 +80,9 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
         tblDatos.revalidate();
 
         HabilitarBotones(true);
-
+        
+        DatosComunicacion.cargarCombo(cboFlujo, DatosComunicacion.CargarComboFlujo());
+        DatosComunicacion.cargarCombo(cboEstado, DatosComunicacion.CargarComboEstado());
     }
 
     /**
@@ -199,11 +201,7 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Flujo");
 
-        cboFlujo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Emision", "Recepcion" }));
-
         jLabel4.setText("Estado");
-
-        cboEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Proceso", "Resuelto", "Archivado" }));
 
         jLabel6.setText("Fecha inicial");
 

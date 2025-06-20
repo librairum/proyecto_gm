@@ -382,7 +382,6 @@ public class frmProveedores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
         // Crear el arreglo con los campos de texto
         JTextField[] cod = new JTextField[6];
         cod[0] = txtId;

@@ -6,11 +6,15 @@ package proyecto_gm.Contactos;
 
 import java.awt.Toolkit;
 import java.io.IOException;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import proyecto_gm.Departamentos.Departamentos;
 import proyecto_gm.Exportar;
+import proyecto_gm.Proveedores.DatosProveedores;
 
 /**
  *
@@ -37,8 +41,19 @@ public class frmContacto extends javax.swing.JInternalFrame {
         tblContacto.setCellSelectionEnabled(false);
         // Poder seleccionar fila(s) de la tabla
         tblContacto.setRowSelectionAllowed(true);
-        DatosContacto.CargarCombos(cboDepartamento);
+        inicializaComboDepartamentos(); 
     }
+    
+    private void inicializaComboDepartamentos() {
+        List<Departamentos> listaDepartamentos = DatosProveedores.listaDepartamentos(); 
+
+        DefaultComboBoxModel<Departamentos> modelo = new DefaultComboBoxModel<>();
+        for (Departamentos c : listaDepartamentos) {
+            modelo.addElement(c);
+        }
+        cboDepartamento.setModel(modelo);
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -155,6 +170,11 @@ public class frmContacto extends javax.swing.JInternalFrame {
         });
 
         cboDepartamento.setNextFocusableComponent(txtDireccion);
+        cboDepartamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboDepartamentoActionPerformed(evt);
+            }
+        });
 
         txtDireccion.setNextFocusableComponent(txtNota);
         txtDireccion.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -604,6 +624,10 @@ public class frmContacto extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txtDireccionKeyTyped
 
+    private void cboDepartamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboDepartamentoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboDepartamentoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
@@ -612,7 +636,7 @@ public class frmContacto extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnExportar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JComboBox<String> cboDepartamento;
+    private javax.swing.JComboBox<Departamentos> cboDepartamento;
     private javax.swing.JPanel escritorio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

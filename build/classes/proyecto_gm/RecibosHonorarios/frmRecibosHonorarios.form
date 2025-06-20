@@ -406,7 +406,7 @@
         <Component class="javax.swing.JComboBox" name="cboPago">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] { &quot;&lt;&lt;Seleccionar&gt;&gt;&quot;,  &quot;Transferencia&quot;, &quot;Al contado&quot; })" type="code"/>
+              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] {})" type="code"/>
             </Property>
             <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
               <ComponentRef name="txtImpNeto"/>
@@ -422,12 +422,15 @@
         <Component class="javax.swing.JComboBox" name="cboDistrito">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] {&#xa;    &quot;&lt;&lt;Seleccionar&gt;&gt;&quot;,&#xa;    &quot;Anc&#xf3;n&quot;,&#xa;    &quot;Ate&quot;,&#xa;    &quot;Barranco&quot;,&#xa;    &quot;Bre&#xf1;a&quot;,&#xa;    &quot;Carabayllo&quot;,&#xa;    &quot;Chaclacayo&quot;,&#xa;    &quot;Chorrillos&quot;,&#xa;    &quot;Cieneguilla&quot;,&#xa;    &quot;Comas&quot;,&#xa;    &quot;El Agustino&quot;,&#xa;    &quot;Independencia&quot;,&#xa;    &quot;Jes&#xfa;s Mar&#xed;a&quot;,&#xa;    &quot;La Molina&quot;,&#xa;    &quot;La Victoria&quot;,&#xa;    &quot;Lima&quot;,&#xa;    &quot;Lince&quot;,&#xa;    &quot;Los Olivos&quot;,&#xa;    &quot;Lurigancho&quot;,&#xa;    &quot;Lurin&quot;,&#xa;    &quot;Magdalena del Mar&quot;,&#xa;    &quot;Miraflores&quot;,&#xa;    &quot;Pachacamac&quot;,&#xa;    &quot;Pucusana&quot;,&#xa;    &quot;Pueblo Libre&quot;,&#xa;    &quot;Puente Piedra&quot;,&#xa;    &quot;Punta Hermosa&quot;,&#xa;    &quot;Punta Negra&quot;,&#xa;    &quot;R&#xed;mac&quot;,&#xa;    &quot;San Bartolo&quot;,&#xa;    &quot;San Borja&quot;,&#xa;    &quot;San Isidro&quot;,&#xa;    &quot;San Juan de Lurigancho&quot;,&#xa;    &quot;San Juan de Miraflores&quot;,&#xa;    &quot;San Luis&quot;,&#xa;    &quot;San Mart&#xed;n de Porres&quot;,&#xa;    &quot;San Miguel&quot;,&#xa;    &quot;Santa Anita&quot;,&#xa;    &quot;Santa Mar&#xed;a del Mar&quot;,&#xa;    &quot;Santa Rosa&quot;,&#xa;    &quot;Santiago de Surco&quot;,&#xa;    &quot;Surquillo&quot;,&#xa;    &quot;Villa El Salvador&quot;,&#xa;    &quot;Villa Mar&#xed;a del Triunfo&quot;&#xa;})" type="code"/>
+              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] {&#xa;&#xa;})" type="code"/>
             </Property>
             <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
               <ComponentRef name="txtDirec"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboDistritoActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
@@ -452,6 +455,9 @@
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtImpTotalActionPerformed"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane1">
           <AuxValues>

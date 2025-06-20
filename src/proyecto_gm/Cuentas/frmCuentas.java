@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import proyecto_gm.Cuentas.Banco;
 
 /**
  *
@@ -28,16 +29,13 @@ public class frmCuentas extends javax.swing.JInternalFrame {
      */
     public frmCuentas() {
         initComponents();
-        // Personalizar header
+
+        // Personalizar header de la tabla
         JTableHeader header = tblCuentas.getTableHeader();
         header.setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table,
-                    Object value,
-                    boolean isSelected,
-                    boolean hasFocus,
-                    int row,
-                    int column) {
+                    Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 setHorizontalAlignment(JLabel.CENTER);
                 setBackground(Color.DARK_GRAY);
@@ -50,12 +48,14 @@ public class frmCuentas extends javax.swing.JInternalFrame {
         DefaultTableModel modelo = (DefaultTableModel) tblCuentas.getModel();
         DatosCuentas.Listar(modelo);
         DatosCuentas.Habilitar(panel, monedas, false);
-        DatosCuentas.CargarBancos(cboBanco);
+
+        // Cargar datos en ComboBoxes
+        DatosCuentas.CargarTipoPropietario(cboTipoPropietario); // datos locales
+        DatosCuentas.CargarBancos(cboBanco); // datos desde BD
+
         rbSoles.setSelected(true);
 
-        // Quitar la edicion de las celdas
         tblCuentas.setCellSelectionEnabled(false);
-        // Poder seleccionar fila(s) de la tabla
         tblCuentas.setRowSelectionAllowed(true);
     }
 
@@ -375,7 +375,7 @@ public class frmCuentas extends javax.swing.JInternalFrame {
         cuenta.setIdCuenta(Integer.parseInt(txtId.getText()));
         cuenta.setTipoPropietario(cboTipoPropietario.getSelectedItem().toString().substring(0, 1));
         cuenta.setNombres(txtNombres.getText());
-        cuenta.setIdBanco(cboBanco.getSelectedIndex() + 1);
+        cuenta.setIdBanco(DatosCuentas.obtenerIdBancoSeleccionado(cboBanco));
         cuenta.setNroCuenta(txtCCC.getText());
         cuenta.setNroCuentaInterbancaria(txtCCI.getText());
         cuenta.setTipoMoneda(monedas.getSelection().getActionCommand().substring(0, 1));
@@ -446,7 +446,7 @@ public class frmCuentas extends javax.swing.JInternalFrame {
     public static javax.swing.JButton btnEliminar;
     public static javax.swing.JButton btnGuardar;
     public static javax.swing.JButton btnNuevo;
-    private javax.swing.JComboBox<String> cboBanco;
+    private javax.swing.JComboBox<Banco> cboBanco;
     private javax.swing.JComboBox<String> cboTipoPropietario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -30,7 +31,6 @@ public class DatosComunicacion {
 
     public DatosComunicacion() {
     }
-    Comunicacion entidad = new Comunicacion();
     static Connection conn = ConexionBD.getConnection();
 
     //funcion para obtener el numero numero de codigo
@@ -74,22 +74,8 @@ public class DatosComunicacion {
         }
         return estado;
     }
-    //Proceso para insertar un registor al tabla comunicacion
-
-    //cargar periodo
-    public static void CargarCombo(JComboBox<String> cboPeriodo) {
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL listar_periodos() }")) {
-            ResultSet rs = cstmt.executeQuery();
-            while (rs.next()) {
-                cboPeriodo.addItem(String.valueOf(rs.getInt("Mes")));
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     //capturar id comboperiodo
-    public static String CapturarIdPeriodo(JComboBox<String> cboPeriodo) {
+    public static String CapturarIdPeriodo(JComboBox<Comunicacion> cboPeriodo) {
         String idCategoria = "";
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL obtener_id_Periodo(?) }")) {
             cstmt.setString(1, cboPeriodo.getSelectedItem().toString());
@@ -102,25 +88,59 @@ public class DatosComunicacion {
         }
         return idCategoria;
     }
-
-    public static void CargarComboTipoComunicacion(JComboBox<String> cboTipo) {
-        cboTipo.removeAllItems();
-        cboTipo.addItem("Carta");
-        cboTipo.addItem("Correo");
-        cboTipo.addItem("Llamada");
+    
+    
+    // Cargar opciones para los combo boxes
+    public static List<Comunicacion> listarPeriodo() {
+        List<Comunicacion> lista = new ArrayList<>();
+        try (CallableStatement cstmt = conn.prepareCall("{ CALL listar_periodos() }")) {
+            ResultSet rs = cstmt.executeQuery();
+            while (rs.next()) {
+                String idCategoria = rs.getString("IdPeriodo");
+                lista.add(new Comunicacion(idCategoria));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error al cargar listarPeriodo", JOptionPane.ERROR_MESSAGE);
+        }
+        return lista;
+    }
+    
+    public static List<Comunicacion> listarTipoComunicacion() {
+        List<Comunicacion> lista = new ArrayList<>();
+        try (CallableStatement cstmt = conn.prepareCall("{ CALL listar_tipodocumento }")) {
+            ResultSet rs = cstmt.executeQuery();
+            while (rs.next()) {
+                String tipo = rs.getString("Descripcion");
+                lista.add(new Comunicacion(tipo));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error al cargar listarTipoComunicacion", JOptionPane.ERROR_MESSAGE);
+        }
+        return lista;
+    }
+          
+    public static ArrayList<String> CargarComboFlujo() {
+    ArrayList<String> lista = new ArrayList<>();
+    lista.add("<<Seleccionar>>");
+    lista.add("Emision");
+    lista.add("Recepcion");
+    return lista;
     }
 
-    public static void CargarComboFlujo(JComboBox<String> cboFlujo) {
-        cboFlujo.removeAllItems();
-        cboFlujo.addItem("Emision");
-        cboFlujo.addItem("Recepcion");
+    public static ArrayList<String> CargarComboEstado() {
+        ArrayList<String> lista = new ArrayList<>();
+        lista.add("<<Seleccionar>>");
+        lista.add("Proceso");
+        lista.add("Resuelto");
+        lista.add("Archivado");
+        return lista;
     }
-
-    public static void CargarComboEstado(JComboBox<String> cboEstado) {
-        cboEstado.removeAllItems();
-        cboEstado.addItem("Proceso");
-        cboEstado.addItem("Resuelto");
-        cboEstado.addItem("Archivado");
+    
+    public static void cargarCombo(JComboBox<String> combo, ArrayList<String> lista) {
+    combo.removeAllItems();
+        for (String item : lista) {
+            combo.addItem(item);
+        }
     }
 
     static boolean Insertar(Comunicacion entidad) {

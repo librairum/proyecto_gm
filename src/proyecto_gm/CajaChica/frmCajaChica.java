@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,6 +21,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
+import proyecto_gm.Area.Area;
+import proyecto_gm.Cargo.Cargo;
+import proyecto_gm.Empleado.DatosEmpleados;
 
 public class frmCajaChica extends javax.swing.JInternalFrame {
 
@@ -30,13 +35,11 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
     public frmCajaChica() {
         initComponents();
         //initializeTable();
-
-        DatosCajaChica.CargarCombo(cboNroOperacion);
-        //  Crea un objeto ComboBox y asigna el modelo creado en el paso anterior
-        DatosCajaChica.CargarCombo(cbotransferencias);
+         
+        //DatosCajaChica.CargarCombo(cbontransferencias);
+        inicializaComboIdTransferenciaBancaria();
         //  Agrega el objeto ComboBox a la celda correspondiente en cada fila de la tabla tblCajaChica
         TableColumn comboColumn = tblCajaChica.getColumnModel().getColumn(1); // Reemplaza "columna" por el índice de la columna donde deseas agregar el ComboBox
-        comboColumn.setCellEditor(new DefaultCellEditor(cbotransferencias));
         DatosCajaChica.Habilitar(escritorio, false);
 
         cargarDatosCajaChica(); //mostrar en JTable
@@ -64,6 +67,15 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         agregarListenersCalculoTotal();
 
     }
+    private void inicializaComboIdTransferenciaBancaria() {
+    // Cargar áreas
+    List<CajaChica> lista = DatosCajaChica.listaidTransBanca(); 
+    DefaultComboBoxModel<CajaChica> modelo = new DefaultComboBoxModel<>();
+    for (CajaChica c : lista) {
+        modelo.addElement(c);
+    }
+    cbontransferencias.setModel(modelo); 
+}
 
     private void cargarDatosCajaChica() {
         DefaultTableModel modelo = (DefaultTableModel) tblCajaChica.getModel();
@@ -154,13 +166,12 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         btnDeshacer = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCajaChica = new javax.swing.JTable();
-        cbotransferencias = new javax.swing.JComboBox<>();
         txtTotal = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        cboNroOperacion = new javax.swing.JComboBox<>();
+        cbontransferencias = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         txtFecha = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -214,7 +225,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Id", "NroOperacion", "Fecha", "Descripcion", "Entrada", "Salida", "Saldo"
+                "Id", "N° Transacción:", "Fecha", "Descripcion", "Entrada", "Salida", "Saldo"
             }
         ));
         tblCajaChica.setFocusable(false);
@@ -232,17 +243,23 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
             tblCajaChica.getColumnModel().getColumn(6).setResizable(false);
         }
 
+        txtTotal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTotalActionPerformed(evt);
+            }
+        });
+
         jLabel1.setText("Saldo Actual:");
 
         jLabel3.setText("ID:");
 
         txtId.setEnabled(false);
 
-        jLabel4.setText("N° Operacion:");
+        jLabel4.setText("N° Transacción:");
 
-        cboNroOperacion.addActionListener(new java.awt.event.ActionListener() {
+        cbontransferencias.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboNroOperacionActionPerformed(evt);
+                cbontransferenciasActionPerformed(evt);
             }
         });
 
@@ -289,7 +306,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
                                 .addGap(15, 15, 15)
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
-                                .addComponent(cboNroOperacion, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cbontransferencias, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(47, 47, 47)
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -312,12 +329,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
                         .addComponent(btnGuardar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnDeshacer)))
-                .addContainerGap(14, Short.MAX_VALUE))
-            .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(escritorioLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(cbotransferencias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -335,7 +347,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
                     .addComponent(jLabel3)
                     .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(cboNroOperacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbontransferencias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -351,11 +363,6 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
                 .addGap(26, 26, 26)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(escritorioLayout.createSequentialGroup()
-                    .addGap(0, 153, Short.MAX_VALUE)
-                    .addComponent(cbotransferencias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 154, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -377,7 +384,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
             float entrada = Float.parseFloat(txtEntrada.getText());
             float salida = Float.parseFloat(txtSalida.getText());
             float saldo = Math.round((entrada - salida) * 100.0f) / 100.0f;
-            txtTotal.setText(String.format("%.2f", saldo));
+            txtTotal.setText("" + saldo); 
         } catch (NumberFormatException e) {
             txtTotal.setText(""); // Si hay error, dejar el campo vacío o mostrar mensaje
         }
@@ -412,7 +419,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
             // Crear el objeto CajaChica y asignar los valores de los campos de texto
             CajaChica caj = new CajaChica();
             caj.setId(txtId.getText());  // ID capturado anteriormente
-            caj.setIdTransferenciasBancarias(DatosCajaChica.CapturarIdOperacion(cboNroOperacion));
+            caj.setIdTransferenciasBancarias(Integer.parseInt(DatosCajaChica.CapturarIdTransBanca(cbontransferencias)));
             String fechaFormateada = formatearFecha(txtFecha.getText());  // Formateamos la fecha antes de asignarla
             caj.setFecha(fechaFormateada);
 
@@ -449,7 +456,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
             CajaChica caj = new CajaChica();
 
             caj.setId(txtId.getText());
-            caj.setIdTransferenciasBancarias(DatosCajaChica.CapturarIdOperacion(cboNroOperacion));
+            caj.setIdTransferenciasBancarias(Integer.parseInt(DatosCajaChica.CapturarIdTransBanca(cbontransferencias)));
             String fechaFormateada = formatearFecha(txtFecha.getText());
             caj.setFecha(fechaFormateada);
             caj.setDescripcion(txtDescripcion.getText());
@@ -479,8 +486,8 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
             txtTotal.setText("");
 
             // Reiniciar combo box si lo deseas (opcional)
-            if (cboNroOperacion.getItemCount() > 0) {
-                cboNroOperacion.setSelectedIndex(0);
+            if (cbontransferencias.getItemCount() > 0) {
+                cbontransferencias.setSelectedIndex(0);
             }
         }
 
@@ -509,7 +516,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
         // Agrupa tus campos
         JTextField[] camposTexto = {txtId, txtFecha, txtDescripcion, txtEntrada, txtSalida, txtTotal};
-        JComboBox[] combos = {cboNroOperacion};
+        JComboBox[] combos = {cbontransferencias};
 
         // Limpia los campos
         DatosCajaChica.LimpiarCampos(camposTexto, combos);
@@ -525,9 +532,9 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         //calcularSumaTotal();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
-    private void cboNroOperacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboNroOperacionActionPerformed
+    private void cbontransferenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbontransferenciasActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cboNroOperacionActionPerformed
+    }//GEN-LAST:event_cbontransferenciasActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         int filaSeleccionada = tblCajaChica.getSelectedRow();
@@ -556,7 +563,7 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
             }
 
             txtId.setText(id);
-            cboNroOperacion.setSelectedItem(nroOperacion);
+            cbontransferencias.setSelectedItem(nroOperacion);
             txtFecha.setText(fechaFormateada);
             txtDescripcion.setText(descripcion);
             txtEntrada.setText(entrada);
@@ -570,14 +577,17 @@ public class frmCajaChica extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnEditarActionPerformed
 
+    private void txtTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTotalActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnDeshacer;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JComboBox<String> cboNroOperacion;
-    private javax.swing.JComboBox<String> cbotransferencias;
+    private javax.swing.JComboBox<CajaChica> cbontransferencias;
     private javax.swing.JPanel escritorio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;

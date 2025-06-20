@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -62,10 +63,35 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
         });
 
         // Cargar empleados
-        DatosAsistencia.CargarEmpleados(cboEmpleado);
+        cargarEmpleadosDesdeBD();
+        cargarPeriodos();
 
         RowsRenderer renderer = new RowsRenderer(0);
         tblAsistencias.setDefaultRenderer(Object.class, renderer);
+    }
+
+    private ArrayList<String> listaEmpleados = new ArrayList<>();
+    private ArrayList<String> listaPeriodos = new ArrayList<>();
+
+    private void cargarPeriodos() {
+        listaPeriodos.clear();
+        listaPeriodos.add("102022");
+        listaPeriodos.add("022023");
+        listaPeriodos.add("042023");
+
+        cboPeriodo.removeAllItems();
+        for (String periodo : listaPeriodos) {
+            cboPeriodo.addItem(periodo);
+        }
+    }
+
+    private void cargarEmpleadosDesdeBD() {
+        listaEmpleados = DatosAsistencia.obtenerEmpleados();
+
+        cboEmpleado.removeAllItems();
+        for (String empleado : listaEmpleados) {
+            cboEmpleado.addItem(empleado);
+        }
     }
 
     // Metodo para leer la edicion en las celdas
@@ -94,7 +120,6 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
                             DatosAsistencia.Actualizar(a, horas[0], tblAsistencias, cboPeriodo, cboEmpleado, txtTotalHoras, totalAsistencias);
                         }
                     }
-
                 }
                 return result;
             }
@@ -206,7 +231,6 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
         lblEmpleado.setText("jLabel1");
         lblEmpleado.setHorizontalAlignment(JLabel.CENTER);
 
-        cboPeriodo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "102022", "022023", "042023" }));
         cboPeriodo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboPeriodoActionPerformed(evt);
@@ -368,14 +392,19 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
     }
 
     private void cboEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEmpleadoActionPerformed
-        String empleadoSeleccionado = cboEmpleado.getSelectedItem().toString();
-        String periodoSeleccionado = cboPeriodo.getSelectedItem().toString();
+        Object selectedItem = cboEmpleado.getSelectedItem();
+        Object selectedPeriodo = cboPeriodo.getSelectedItem();
+
+        if (selectedItem == null || selectedPeriodo == null) {
+            return;
+        }
+
+        String empleadoSeleccionado = selectedItem.toString();
+        String periodoSeleccionado = selectedPeriodo.toString();
 
         if (!empleadoSeleccionado.equals(ultimoEmpleadoSeleccionado) || !periodoSeleccionado.equals(ultimoPeriodoSeleccionado)) {
             actualizarEmpleadoSeleccionado();
-
             DatosAsistencia.RellenarTabla(tblAsistencias, cboPeriodo, cboEmpleado, txtTotalHoras, totalAsistencias);
-
             ultimoEmpleadoSeleccionado = empleadoSeleccionado;
             ultimoPeriodoSeleccionado = periodoSeleccionado;
         }
@@ -387,7 +416,6 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
 
         if (!periodoSeleccionado.equals(ultimoPeriodoSeleccionado) || !empleadoSeleccionado.equals(ultimoEmpleadoSeleccionado)) {
             actualizarEmpleadoSeleccionado();
-
             DatosAsistencia.RellenarTabla(tblAsistencias, cboPeriodo, cboEmpleado, txtTotalHoras, totalAsistencias);
 
             ultimoPeriodoSeleccionado = periodoSeleccionado;
@@ -403,7 +431,6 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
     private void tblAsistenciasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAsistenciasMouseClicked
         int selectedRow = tblAsistencias.getSelectedRow();
         int selectedColumn = tblAsistencias.getSelectedColumn();
-
         if (selectedRow != -1 && selectedRow != lastSelectedRow || selectedColumn != lastSelectedColumn) {
             lastSelectedRow = selectedRow;
             lastSelectedColumn = selectedColumn;
@@ -414,7 +441,6 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
             for (int i = 0; i < horas.length; i++) {
                 System.out.println(horario[i] + ": " + horas[i]);
             }
-
             System.out.println("Dato[2]: " + datos[2]);
 
             a.setDni(datos[0]);
@@ -428,7 +454,6 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             String fileName = selectedFile.getAbsolutePath();
-
             try {
                 ImpAsistencias.importData(fileName);
             } catch (ParseException ex) {
@@ -470,7 +495,6 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
 
         return new String[]{horaEntrada, horaSalida};
     }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExportar;

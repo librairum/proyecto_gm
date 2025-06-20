@@ -15,6 +15,8 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import proyecto_gm.Cuentas.Cuentas;
+import proyecto_gm.Periodos.Periodos;
 
 /**
  *
@@ -53,7 +55,7 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
         DatosTransferencias.Listar(modelo);
         DatosTransferencias.Habilitar(panel, false);
         DatosTransferencias.CargarCuentas(cboOrigen, cboDestino);
-        DatosTransferencias.CargarCombo(cboPeriodo);
+        DatosTransferencias.CargarPeriodos(cboPeriodo);
 
         // Dejamos los combo boxes sin seleccion
         cboOrigen.setSelectedIndex(-1);
@@ -357,20 +359,27 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
         }
 
         // Obtenemos el id de las cuentas
-        int origenSeleccionado = cboOrigen.getSelectedIndex();
-        int destinoSeleccionado = cboDestino.getSelectedIndex();
-        String prefijo = "CB";
+        // Obtenemos los objetos seleccionados
+        Periodos periodo = (Periodos) cboPeriodo.getSelectedItem();
+        Cuentas cuentaOrigen = (Cuentas) cboOrigen.getSelectedItem();
+        Cuentas cuentaDestino = (Cuentas) cboDestino.getSelectedItem();
 
-        String origen = prefijo + String.format("%0" + (7 - prefijo.length()) + "d", origenSeleccionado + 1);
-        String destino = prefijo + String.format("%0" + (7 - prefijo.length()) + "d", destinoSeleccionado + 1);
-
-        // Creamos un objeto ReciboHonorario y le asignamos los valores de los campos
+        // Creamos el objeto Transferencia y asignamos valores
         Transferencia transferencia = new Transferencia();
-        transferencia.setPeriodo(cboPeriodo.getSelectedItem().toString());
+        transferencia.setPeriodo(periodo != null ? periodo.getId() : "");
         transferencia.setNroOperacion(txtNroOperacion.getText());
-        transferencia.setCuentaOrigen(origen);
-        transferencia.setCuentaDestino(destino);
-        transferencia.setFecha(txtFecha.getText());
+        transferencia.setCuentaOrigen(String.valueOf(cuentaOrigen.getIdCuenta()));
+        transferencia.setCuentaDestino(String.valueOf(cuentaDestino.getIdCuenta()));
+        // Convertir fecha de dd/MM/yyyy a yyyy-MM-dd
+        String fechaIngresada = txtFecha.getText();
+        String[] partes = fechaIngresada.split("/");
+
+        if (partes.length == 3) {
+            String fechaSQL = partes[2] + "-" + partes[1] + "-" + partes[0]; // yyyy-MM-dd
+            transferencia.setFecha(fechaSQL);
+        } else {
+            transferencia.setFecha(""); // O lanza un mensaje de error si es inválida
+        }
 
         // Insertamos o actualizamos el recibo en la base de datos
         if (esNuevo) {
@@ -451,9 +460,9 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
     public static javax.swing.JButton btnEliminar;
     public static javax.swing.JButton btnGuardar;
     public static javax.swing.JButton btnNuevo;
-    private javax.swing.JComboBox<String> cboDestino;
-    private javax.swing.JComboBox<String> cboOrigen;
-    private javax.swing.JComboBox<String> cboPeriodo;
+    private javax.swing.JComboBox<Cuentas> cboDestino;
+    private javax.swing.JComboBox<Cuentas> cboOrigen;
+    private javax.swing.JComboBox<Periodos> cboPeriodo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -21,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import proyecto_gm.ConexionBD;
 import proyecto_gm.Empleado.Empleados;
+import proyecto_gm.Periodos.Periodos;
 
 /**
  *
@@ -318,6 +320,7 @@ public class frmViaticos extends javax.swing.JInternalFrame {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         String codigo = DatosViaticos.GenerarCodigo();
+        // 
         txtId.setText(codigo);
         tblViatico.clearSelection();
         tblViatico.setRowSelectionAllowed(false);
@@ -328,7 +331,17 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         // Ponemos el foco en descripcion
         txtDescripcion.requestFocus();
         esNuevo = true; // Indicamos que sera un nuevo registro
+        // 
     }//GEN-LAST:event_btnNuevoActionPerformed
+
+    public static void Habilitar(JPanel panel, boolean estado) {
+        for (Component comp : panel.getComponents()) {
+            if (comp instanceof JTextField || comp instanceof JComboBox) {
+                comp.setEnabled(estado);
+            }
+        }
+    }
+
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // IMPORTANTE: Al presionar en "Editar", txtId quedará deshabilitado.
@@ -336,6 +349,11 @@ public class frmViaticos extends javax.swing.JInternalFrame {
 
         JTextField[] cajas = {txtId, txtDescripcion, txtPasaje, txtMenu};
         DatosViaticos.Editar(escritorio, tblViatico, cajas, cboEmpleado, cboPeriodo);
+
+        // Habilitar campos de pasaje y menú para edición
+        txtPasaje.setEnabled(true);
+        txtMenu.setEnabled(true);
+
         esNuevo = false;
     }//GEN-LAST:event_btnEditarActionPerformed
 
@@ -407,14 +425,14 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         char c = evt.getKeyChar();
         String text = txtPasaje.getText();
 
-        if (!(Character.isDigit(c) || c == '.')) {
-            evt.consume(); // Si no es un número o un punto, se ignora el evento de tecla
+        if (!Character.isDigit(c) && c != '.') {
+            evt.consume(); // Solo se permiten dígitos y punto
         } else if (c == '.' && text.contains(".")) {
-            evt.consume(); // Si el carácter ingresado es un punto y ya hay un punto en el campo de texto, se ignora el evento de tecla
-        } else if (text.contains(".") && text.length() - text.indexOf(".") > 2) {
-            evt.consume(); // Si ya hay dos decimales en el campo de texto, se ignora el evento de tecla
-        } else if (text.equals("0") && c != '.') {
-            evt.consume(); // Si el primer carácter es 0 y el siguiente carácter no es un punto, se ignora el evento de tecla
+            evt.consume(); // Solo un punto decimal
+        } else if (text.contains(".") && text.substring(text.indexOf(".") + 1).length() >= 2) {
+            if (txtPasaje.getCaretPosition() > text.indexOf(".")) {
+                evt.consume(); // Solo dos decimales permitidos
+            }
         }
     }//GEN-LAST:event_txtPasajeKeyTyped
 
@@ -422,14 +440,14 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         char c = evt.getKeyChar();
         String text = txtMenu.getText();
 
-        if (!(Character.isDigit(c) || c == '.')) {
-            evt.consume(); // Si no es un número o un punto, se ignora el evento de tecla
+        if (!Character.isDigit(c) && c != '.') {
+            evt.consume(); // Solo se permiten dígitos y punto
         } else if (c == '.' && text.contains(".")) {
-            evt.consume(); // Si el carácter ingresado es un punto y ya hay un punto en el campo de texto, se ignora el evento de tecla
-        } else if (text.contains(".") && text.length() - text.indexOf(".") > 2) {
-            evt.consume(); // Si ya hay dos decimales en el campo de texto, se ignora el evento de tecla
-        } else if (text.equals("0") && c != '.') {
-            evt.consume(); // Si el primer carácter es 0 y el siguiente carácter no es un punto, se ignora el evento de tecla
+            evt.consume(); // Solo un punto decimal
+        } else if (text.contains(".") && text.substring(text.indexOf(".") + 1).length() >= 2) {
+            if (txtMenu.getCaretPosition() > text.indexOf(".")) {
+                evt.consume(); // Solo dos decimales permitidos
+            }
         }
     }//GEN-LAST:event_txtMenuKeyTyped
 
@@ -451,7 +469,7 @@ public class frmViaticos extends javax.swing.JInternalFrame {
     public static javax.swing.JButton btnGuardar;
     public static javax.swing.JButton btnNuevo;
     private javax.swing.JComboBox<Empleados> cboEmpleado;
-    private javax.swing.JComboBox<String> cboPeriodo;
+    private javax.swing.JComboBox<Periodos> cboPeriodo;
     private javax.swing.JPanel escritorio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

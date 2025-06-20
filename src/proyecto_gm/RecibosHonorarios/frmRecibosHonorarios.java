@@ -33,6 +33,67 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
 
     public frmRecibosHonorarios() {
         initComponents();
+        // Poblar cboDistrito con ArrayList
+        java.util.ArrayList<String> distritos = new java.util.ArrayList<>();
+        distritos.add("<<Seleccionar>>");
+        distritos.add("Ancón");
+        distritos.add("Ate");
+        distritos.add("Barranco");
+        distritos.add("Breña");
+        distritos.add("Carabayllo");
+        distritos.add("Chaclacayo");
+        distritos.add("Chorrillos");
+        distritos.add("Cieneguilla");
+        distritos.add("Comas");
+        distritos.add("El Agustino");
+        distritos.add("Independencia");
+        distritos.add("Jesús María");
+        distritos.add("La Molina");
+        distritos.add("La Victoria");
+        distritos.add("Lima");
+        distritos.add("Lince");
+        distritos.add("Los Olivos");
+        distritos.add("Lurigancho");
+        distritos.add("Lurin");
+        distritos.add("Magdalena del Mar");
+        distritos.add("Miraflores");
+        distritos.add("Pachacamac");
+        distritos.add("Pucusana");
+        distritos.add("Pueblo Libre");
+        distritos.add("Puente Piedra");
+        distritos.add("Punta Hermosa");
+        distritos.add("Punta Negra");
+        distritos.add("Rímac");
+        distritos.add("San Bartolo");
+        distritos.add("San Borja");
+        distritos.add("San Isidro");
+        distritos.add("San Juan de Lurigancho");
+        distritos.add("San Juan de Miraflores");
+        distritos.add("San Luis");
+        distritos.add("San Martín de Porres");
+        distritos.add("San Miguel");
+        distritos.add("Santa Anita");
+        distritos.add("Santa María del Mar");
+        distritos.add("Santa Rosa");
+        distritos.add("Santiago de Surco");
+        distritos.add("Surquillo");
+        distritos.add("Villa El Salvador");
+        distritos.add("Villa María del Triunfo");
+
+        for (String distrito : distritos) {
+            cboDistrito.addItem(distrito);
+        }
+
+        // Poblar cboPago con ArrayList
+        java.util.ArrayList<String> formasPago = new java.util.ArrayList<>();
+        formasPago.add("<<Seleccionar>>");
+        formasPago.add("Transferencia");
+        formasPago.add("Al contado");
+
+        for (String pago : formasPago) {
+            cboPago.addItem(pago);
+        }
+
         JTableHeader header = tblHonorarios.getTableHeader();
         header.setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
@@ -52,11 +113,9 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         });
 
         DefaultTableModel modelo = (DefaultTableModel) tblHonorarios.getModel();
-
         btnGuardar.setEnabled(false);
         btnCancelar.setEnabled(false);
         DatosRecibosHonorarios.Habilitar(escritorio, false);
-
         DatosRecibosHonorarios.Mostrar(modelo);
         tblHonorarios.setCellSelectionEnabled(false);
         tblHonorarios.setRowSelectionAllowed(true);
@@ -226,7 +285,7 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
 
         txtConcepto.setNextFocusableComponent(txtFecEmi);
 
-        cboPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<<Seleccionar>>",  "Transferencia", "Al contado" }));
+        cboPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {}));
         cboPago.setNextFocusableComponent(txtImpNeto);
         cboPago.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -235,52 +294,14 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         });
 
         cboDistrito.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {
-            "<<Seleccionar>>",
-            "Ancón",
-            "Ate",
-            "Barranco",
-            "Breña",
-            "Carabayllo",
-            "Chaclacayo",
-            "Chorrillos",
-            "Cieneguilla",
-            "Comas",
-            "El Agustino",
-            "Independencia",
-            "Jesús María",
-            "La Molina",
-            "La Victoria",
-            "Lima",
-            "Lince",
-            "Los Olivos",
-            "Lurigancho",
-            "Lurin",
-            "Magdalena del Mar",
-            "Miraflores",
-            "Pachacamac",
-            "Pucusana",
-            "Pueblo Libre",
-            "Puente Piedra",
-            "Punta Hermosa",
-            "Punta Negra",
-            "Rímac",
-            "San Bartolo",
-            "San Borja",
-            "San Isidro",
-            "San Juan de Lurigancho",
-            "San Juan de Miraflores",
-            "San Luis",
-            "San Martín de Porres",
-            "San Miguel",
-            "Santa Anita",
-            "Santa María del Mar",
-            "Santa Rosa",
-            "Santiago de Surco",
-            "Surquillo",
-            "Villa El Salvador",
-            "Villa María del Triunfo"
+
         }));
         cboDistrito.setNextFocusableComponent(txtDirec);
+        cboDistrito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboDistritoActionPerformed(evt);
+            }
+        });
 
         txtImpNeto.setNextFocusableComponent(txtIR);
         txtImpNeto.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -297,6 +318,11 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         jLabel12.setText("Importe Total:");
 
         txtImpTotal.setEditable(false);
+        txtImpTotal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtImpTotalActionPerformed(evt);
+            }
+        });
 
         tblHonorarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -510,7 +536,6 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
 
         // Preparar todos los campos
         txtId.setEnabled(false);
-
         txtNroRecibo.setText("NUM-");
         txtRuc.setText("");
         txtNom.setText("");
@@ -524,9 +549,7 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         txtImpTotal.setText("");
         txtImpTotal.setEnabled(true); // ✅ Asegura que esté habilitado
         txtFecEmi.setText("");
-
         txtNroRecibo.requestFocus();
-
         esNuevo = true;
         tblHonorarios.clearSelection();
         tblHonorarios.setRowSelectionAllowed(false);
@@ -534,12 +557,26 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // Agrupar las cajas de texto
-        JTextField[] camposTexto = {txtId, txtNroRecibo, txtRuc, txtNom, txtApe,
-            txtDirec, txtConcepto, txtImpNeto, txtIR, txtImpTotal, txtFecEmi};
+        JTextField[] camposTexto = {
+            txtId, txtNroRecibo, txtRuc, txtNom, txtApe,
+            txtDirec, txtConcepto, txtImpNeto, txtIR, txtImpTotal, txtFecEmi
+        };
         JComboBox[] combos = {cboDistrito, cboPago};
 
+        // Llamar al método para llenar los datos seleccionados
         DatosRecibosHonorarios.Editar(escritorio, tblHonorarios, camposTexto, combos);
-        esNuevo = false; // Indicamos que no sera un nuevo registro
+
+        // Asegurar que los campos estén habilitados y editables
+        txtImpNeto.setEnabled(true);
+        txtImpNeto.setEditable(true);
+
+        txtIR.setEnabled(true);
+        txtIR.setEditable(true);
+
+        txtImpTotal.setEnabled(true);
+        txtImpTotal.setEditable(true);
+
+        esNuevo = false; // Indicamos que no será un nuevo registro
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -551,38 +588,61 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         String distrito = null;
         String pago = null;
 
-        if (cboDistrito.getSelectedItem() == null || cboPago.getSelectedItem() == null) {
-            JOptionPane.showMessageDialog(null, "Por favor, selecciona un valor en los combo boxes.");
-            return; // Se detiene el proceso si algún combo box no tiene selección
+        // Validar selección de distrito y forma de pago
+        if (cboDistrito.getSelectedItem() == null || cboPago.getSelectedItem() == null
+                || cboDistrito.getSelectedItem().toString().equals("<<Seleccionar>>")
+                || cboPago.getSelectedItem().toString().equals("<<Seleccionar>>")) {
+            JOptionPane.showMessageDialog(null, "Por favor, selecciona un distrito y una forma de pago.");
+            return;
         } else {
             distrito = cboDistrito.getSelectedItem().toString();
             pago = cboPago.getSelectedItem().toString();
         }
 
-        if (txtImpNeto.getText().isEmpty() || txtIR.getText().isEmpty() || txtImpTotal.getText().isEmpty()) {
+        // Validar campos vacíos
+        if (txtImpNeto.getText().trim().isEmpty() || txtIR.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Por favor, completa los campos de importe.");
-            return; // Se detiene el proceso si algún campo de importe está vacío
+            return;
         }
 
-        if (txtId == null || txtNroRecibo == null || txtRuc == null || txtNom == null || txtApe == null || txtDirec == null || txtImpNeto == null || txtConcepto == null || txtFecEmi == null) {
+        try {
+            // Convertir a float
+            float impNeto = Float.parseFloat(txtImpNeto.getText().trim());
+            float impIR = Float.parseFloat(txtIR.getText().trim());
+
+            // Calcular Importe Total
+            float impTotal = Math.round((impNeto - impIR) * 100.0f) / 100.0f;
+            txtImpTotal.setText(String.valueOf(impTotal));
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Los importes deben ser valores numéricos.");
+            return;
+        }
+
+        // Verificar si algún campo está mal inicializado
+        if (txtId == null || txtNroRecibo == null || txtRuc == null || txtNom == null
+                || txtApe == null || txtDirec == null || txtImpNeto == null
+                || txtConcepto == null || txtFecEmi == null) {
             JOptionPane.showMessageDialog(null, "Alguno de los campos no está inicializado.");
-            return; // Se detiene el proceso si algún campo no está inicializado
+            return;
         }
 
+        // Validar campos importantes
         if (txtId.getText().isEmpty() || txtRuc.getText().isEmpty() || txtNom.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Completar bien los campos");
-            return; // Se detiene el proceso si los campos requeridos están vacíos
+            JOptionPane.showMessageDialog(null, "Completar bien los campos.");
+            return;
         }
 
+        // Crear objeto ReciboHonorario
         ReciboHonorario rec = new ReciboHonorario(
                 txtId.getText(),
                 txtNroRecibo.getText(),
                 txtRuc.getText(),
                 txtNom.getText(),
                 txtApe.getText(),
-                distrito, // Asignación del distrito seleccionado
+                distrito,
                 txtDirec.getText(),
-                pago, // Asignación del pago seleccionado
+                pago,
                 txtConcepto.getText(),
                 txtFecEmi.getText(),
                 Float.parseFloat(txtImpNeto.getText()),
@@ -594,15 +654,14 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         JComboBox[] combos = {cboDistrito, cboPago};
 
         if (!DatosRecibosHonorarios.Validar(campos, combos)) {
-            return; // Se corta la ejecución del botón si la validación no es exitosa
+            return;
         }
 
         if (esNuevo) {
             if (txtId.getText().isEmpty() || txtRuc.getText().isEmpty() || txtNom.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return; // Se detiene el proceso si los campos están vacíos
+                JOptionPane.showMessageDialog(null, "Completar bien los campos.");
+                return;
             } else {
-                // Se realiza la inserción del nuevo recibo
                 if (DatosRecibosHonorarios.Insertar(rec, tblHonorarios)) {
                     DatosRecibosHonorarios.Limpiar(escritorio);
                     DatosRecibosHonorarios.Habilitar(escritorio, false);
@@ -613,10 +672,9 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
                 }
             }
         } else {
-            // Actualiza el recibo existente
             if (txtId.getText().isEmpty() || txtRuc.getText().isEmpty() || txtNom.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return; // Se detiene el proceso si los campos están vacíos
+                JOptionPane.showMessageDialog(null, "Completar bien los campos.");
+                return;
             } else {
                 rec.setCodigoRecibo(txtId.getText());
                 DatosRecibosHonorarios.Actualizar(rec, tblHonorarios);
@@ -626,7 +684,6 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
                 tblHonorarios.setRowSelectionAllowed(true);
             }
         }
-
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -661,14 +718,12 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         } else if (!Character.isDigit(c)) {
             evt.consume(); // Si no es un número, se ignora el evento de tecla
         }
-
         String fecha = txtFecEmi.getText();
         int length = fecha.length();
         if (length == 2 || length == 5) { // Si se ha ingresado un día o un mes completo, se agrega el guión correspondiente
             fecha += "/";
             txtFecEmi.setText(fecha);
         }
-
         if (length >= 10) {
             evt.consume(); // Si ya se ha ingresado la fecha completa, se ignora el evento de tecla
         }
@@ -703,14 +758,32 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         char c = evt.getKeyChar();
         String text = txtImpNeto.getText();
 
+        // Permitir borrado
+        if (Character.isISOControl(c)) {
+            return;
+        }
+
+        // Permitir solo dígitos y un punto decimal
         if (!(Character.isDigit(c) || c == '.')) {
-            evt.consume(); // Si no es un número o un punto, se ignora el evento de tecla
-        } else if (c == '.' && text.contains(".")) {
-            evt.consume(); // Si el carácter ingresado es un punto y ya hay un punto en el campo de texto, se ignora el evento de tecla
-        } else if (text.contains(".") && text.length() - text.indexOf(".") > 2) {
-            evt.consume(); // Si ya hay dos decimales en el campo de texto, se ignora el evento de tecla
-        } else if (text.equals("0") && c != '.') {
-            evt.consume(); // Si el primer carácter es 0 y el siguiente carácter no es un punto, se ignora el evento de tecla
+            evt.consume();
+            return;
+        }
+
+        // Solo permitir un punto decimal
+        if (c == '.' && text.contains(".")) {
+            evt.consume();
+            return;
+        }
+
+        // Permitir máximo 2 decimales SOLO si ya hay punto decimal
+        if (text.contains(".")) {
+            int index = text.indexOf(".");
+            int decimals = text.length() - index - 1;
+
+            // Si el cursor está después del punto y ya hay 2 decimales, bloquear
+            if (txtImpNeto.getCaretPosition() > index && decimals >= 2) {
+                evt.consume();
+            }
         }
     }//GEN-LAST:event_txtImpNetoKeyTyped
 
@@ -730,8 +803,8 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
             txtIR.setText(impIR); // Agrega esta línea para establecer el valor en la caja de texto
         }
         float rentaBruta = Float.parseFloat(txtImpNeto.getText());
-        float impRenta = Float.parseFloat(impIR);
-        float rentaNeta = Math.round((rentaBruta - impRenta) * 100.0) / 100.0f;
+        float impRenta = Float.parseFloat(txtIR.getText());
+        float rentaNeta = Math.round((rentaBruta - impRenta) * 100.0f) / 100.0f;
         txtImpTotal.setText(String.valueOf(rentaNeta));
     }//GEN-LAST:event_txtIRFocusLost
 
@@ -771,6 +844,13 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtIRActionPerformed
 
+    private void cboDistritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboDistritoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboDistritoActionPerformed
+
+    private void txtImpTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtImpTotalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtImpTotalActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btnCancelar;

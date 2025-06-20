@@ -13,6 +13,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -20,6 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import proyecto_gm.ConexionBD;
+import proyecto_gm.Departamentos.Departamentos;
 
 /**
  *
@@ -70,26 +73,19 @@ public class DatosContacto {
         }
 
     }
-
-    public static void CargarCombos(JComboBox cboidCat) {
-        try {
-            // Preparamos la consultas
-            PreparedStatement pstmtArea = conn.prepareStatement("CALL ObtenerDescripcionesDepartamentos()");
-            //PreparedStatement pstmtCargo = conn.prepareStatement("SELECT Descripcion FROM cargos");
-
-            // Las ejecutamos
-            ResultSet categoria = pstmtArea.executeQuery();
-            //ResultSet cargos = pstmtCargo.executeQuery();
-
-            // Agregamos las areas en cbxArea
-            while (categoria.next()) {
-                String nomCat = categoria.getString("Descripcion");
-                cboidCat.addItem(nomCat);
+    public static List<Departamentos> listaDepartamentos() {
+        List<Departamentos> lista = new ArrayList<>();
+        try (CallableStatement cstmt = conn.prepareCall("{ CALL listar_departamentos() }")) {
+            ResultSet rs = cstmt.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString("IdDepartamento");
+                String descripcion = rs.getString("Descripcion");
+                lista.add(new Departamentos(id, descripcion));
             }
-
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en cargar opciones", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error al obtener departamentos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+        return lista;
     }
 
     //metodo para insertar datos (nuevo cambio)

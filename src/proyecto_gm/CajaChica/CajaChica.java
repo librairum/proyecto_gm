@@ -5,14 +5,14 @@ public class CajaChica {
     
     //Atributos
     String Id;    
-    String IdTransferenciasBancarias;
+    int IdTransferenciasBancarias;
     String Fecha;
     String Descripcion;
     float Entrada;
     float Salida;
     float Saldo;
 
-    public CajaChica(String Id, String IdTransferenciasBancarias, String Fecha, String Descripcion, float Entrada, float Salida, float Saldo) {
+    public CajaChica(String Id, int IdTransferenciasBancarias, String Fecha, String Descripcion, float Entrada, float Salida, float Saldo) {
         this.Id = Id;
         this.IdTransferenciasBancarias = IdTransferenciasBancarias;
         this.Fecha = Fecha;
@@ -21,8 +21,12 @@ public class CajaChica {
         this.Salida = Salida;
         this.Saldo = Saldo;
     }
-
+    
     public CajaChica() {
+    }
+
+    public CajaChica(int IdTransferenciasBancarias) {
+        this.IdTransferenciasBancarias = IdTransferenciasBancarias;
     }
 
     public String getId() {
@@ -33,11 +37,11 @@ public class CajaChica {
         this.Id = Id;
     }
 
-    public String getIdTransferenciasBancarias() {
+    public int getIdTransferenciasBancarias() {
         return IdTransferenciasBancarias;
     }
 
-    public void setIdTransferenciasBancarias(String IdTransferenciasBancarias) {
+    public void setIdTransferenciasBancarias(int IdTransferenciasBancarias) {
         this.IdTransferenciasBancarias = IdTransferenciasBancarias;
     }
 
@@ -81,6 +85,9 @@ public class CajaChica {
         this.Saldo = Saldo;
     }
 
-  
+  @Override
+   public String toString() {
+    return String.valueOf(IdTransferenciasBancarias);
+}
     
 }
