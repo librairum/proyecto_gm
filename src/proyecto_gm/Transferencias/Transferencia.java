@@ -15,7 +15,6 @@ public class Transferencia {
 
     public Transferencia() {
     }
-    // 
 
     // Getters & Setters
     public int getId() {

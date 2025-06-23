@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.UIManager;
 
-
 /**
  *
  * @author Mariluz
@@ -22,43 +21,60 @@ public class inicio extends javax.swing.JFrame {
     int intentos;
 
     public inicio() {
-        
+
         initComponents();
-        
+
     }
     static Connection conn = ConexionBD.getConnection();
-    
-    public void ingresar(){
-        Connection con1 = null;
+
+    public void ingresar() {
         PreparedStatement pst = null;
         ResultSet rs = null;
+
         String User = txtusuario.getText();
         String Pass = txtcontraseña.getText();
         menu contenedor = new menu();
-        if (User.equals("") || Pass.equals("")){
+
+        if (User.equals("") || Pass.equals("")) {
             JOptionPane.showMessageDialog(this, "Llenar completamente los campos");
-        }else {
+        } else {
             try {
-                
-                pst = conn.prepareStatement("select username, pass from usuarios where username='" + User + 
-                        "'and pass = '" + Pass + "'");
-                rs = (ResultSet) pst.executeQuery();
-                if (rs.next()){
-                    this.dispose();
-                    contenedor.setExtendedState(Frame.MAXIMIZED_BOTH);
-                    contenedor.setVisible(true);
-                    /*new menu().setVisible(true);*/
-                    
-                }else {
-                    JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrecta, vuelva a intentarlo");
+                // Llamada al procedimiento almacenado
+                pst = conn.prepareStatement("CALL validar_usuario(?, ?)");
+                pst.setString(1, User);
+                pst.setString(2, Pass);
+                rs = pst.executeQuery();
+
+                if (rs.next()) {
+                    String resultado = rs.getString("resultado");
+
+                    switch (resultado) {
+                        case "ACCESO PERMITIDO":
+                            this.dispose();
+                            contenedor.setExtendedState(Frame.MAXIMIZED_BOTH);
+                            contenedor.setVisible(true);
+                            break;
+                        case "ACCESO DENEGADO":
+                            JOptionPane.showMessageDialog(this, "Usuario inactivo. Contacte al administrador.");
+                            break;
+                        case "USUARIO NO ENCONTRADO":
+                            JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrecta, vuelva a intentarlo.");
+                            break;
+                        default:
+                            JOptionPane.showMessageDialog(this, "Error desconocido en validación.");
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al procesar la respuesta del procedimiento.");
                 }
-                
-            }catch (SQLException e){
-                System.err.print(e.toString());
-                JOptionPane.showMessageDialog(this, "Ocurrio un error inesperado");
+
+            } catch (SQLException e) {
+                System.err.println("Error en ingresar(): " + e.toString());
+                JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado");
             }
         }
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -77,14 +93,12 @@ public class inicio extends javax.swing.JFrame {
 
         usuario.setText("USUARIO");
 
-        txtusuario.setText("gmingenieros");
         txtusuario.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtusuarioKeyTyped(evt);
             }
         });
 
-        txtcontraseña.setText("123456789");
         txtcontraseña.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtcontraseñaActionPerformed(evt);
@@ -171,7 +185,7 @@ public class inicio extends javax.swing.JFrame {
 
     private void btningresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btningresarActionPerformed
         // TODO add your handling code here:
-    ingresar();
+        ingresar();
     }//GEN-LAST:event_btningresarActionPerformed
 
     private void btnsalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsalirActionPerformed
@@ -181,14 +195,14 @@ public class inicio extends javax.swing.JFrame {
 
     private void txtusuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtusuarioKeyTyped
         // TODO add your handling code here:
-        if(txtusuario.getText().length() == 20){
+        if (txtusuario.getText().length() == 20) {
             evt.consume();
         }
     }//GEN-LAST:event_txtusuarioKeyTyped
 
     private void txtcontraseñaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcontraseñaKeyTyped
         // TODO add your handling code here:
-        if(txtcontraseña.getText().length() == 20){
+        if (txtcontraseña.getText().length() == 20) {
             evt.consume();
         }
     }//GEN-LAST:event_txtcontraseñaKeyTyped
@@ -224,13 +238,13 @@ public class inicio extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 //new inicio().setVisible(true);
-                try{
+                try {
                     UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
                     new inicio().show();
-                }catch(Exception e){
-                
+                } catch (Exception e) {
+
                 }
-                
+
             }
         });
     }
