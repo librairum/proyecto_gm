@@ -84,7 +84,7 @@ public class DatosEmpleados {
     // Cargar opciones para los combo boxes
     public static List<Area> listaAreas() {
         List<Area> lista = new ArrayList<>();
-        try (CallableStatement cstmt = conn.prepareCall("{ CALL listar_areas() }")) {
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL listar_areas() }")) {
             ResultSet rs = cstmt.executeQuery();
             while (rs.next()) {
                 String id = rs.getString("IdArea");
@@ -110,10 +110,10 @@ public class DatosEmpleados {
         }
         return idArea;
     }
-    
+
     public static List<Cargo> listaCargo() {
         List<Cargo> lista = new ArrayList<>();
-        try (CallableStatement cstmt = conn.prepareCall("{ CALL listar_cargos }")) {
+        try ( CallableStatement cstmt = conn.prepareCall("{ CALL listar_cargos }")) {
             ResultSet rs = cstmt.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt("idCargo");
@@ -146,6 +146,7 @@ public class DatosEmpleados {
         ResultSet rs = null;
         try {
             pstmt = conn.prepareStatement("CALL listar_emple()");
+            // 
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 Object[] row = new Object[]{
@@ -160,34 +161,27 @@ public class DatosEmpleados {
                     rs.getString("Direccion"),
                     rs.getString("Area"),
                     rs.getString("Cargo"),
-                    rs.getString("TipoEmpleado")};
+                    rs.getString("TipoEmpleado")
+                };
                 modelo.addRow(row);
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
+            if (rs != null) try {
+                rs.close();
+            } catch (SQLException e) {
+                /* manejar error */ }
+            if (pstmt != null) try {
+                pstmt.close();
+            } catch (SQLException e) {
+                /* manejar error */ }
         }
     }
 
     // Método para capturar el ID del tipo de empleado desde los RadioButtons
     public static String CapturarTipoEmpleado(ButtonGroup opciones) {
         String idTipoEmpleado = "";
-
         ButtonModel selectedRadioButton = opciones.getSelection();
         if (selectedRadioButton != null) {
             String tipoEmpleado = selectedRadioButton.getActionCommand();
@@ -203,7 +197,6 @@ public class DatosEmpleados {
                 case "Partime":
                     idTipoEmpleado = "3";
                     break;
-
                 default:
                     // o puedes lanzar un error
                     break;
@@ -211,7 +204,6 @@ public class DatosEmpleados {
         } else {
             JOptionPane.showMessageDialog(null, "Debe seleccionar un tipo de empleado.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
-
         return idTipoEmpleado;
     }
 
@@ -273,45 +265,44 @@ public class DatosEmpleados {
     }
 
     public static void Editar(Container contenedor, JTable tabla, JTextField[] camposTexto, JComboBox[] combos, ButtonGroup grupoBotones) {
-    // Obtener la fila seleccionada
-    int fila = tabla.getSelectedRow();
-    if (fila >= 0) {
-        DatosEmpleados.Habilitar(contenedor, grupoBotones, true);
-        tabla.clearSelection();
-        tabla.setRowSelectionAllowed(false);
+        // Obtener la fila seleccionada
+        int fila = tabla.getSelectedRow();
+        if (fila >= 0) {
+            DatosEmpleados.Habilitar(contenedor, grupoBotones, true);
+            tabla.clearSelection();
+            tabla.setRowSelectionAllowed(false);
 
-        // Llenar los campos de texto con los valores de la fila
-        for (int i = 0; i < camposTexto.length; i++) {
-            Object valor = tabla.getModel().getValueAt(fila, i);
-            String dato = (valor != null) ? valor.toString() : "";
-            camposTexto[i].setText(dato);
-        }
-
-        camposTexto[0].setEnabled(false);
-        camposTexto[1].requestFocus();
-
-        // Seleccionar las opciones de los combos
-        for (int i = 0; i < combos.length; i++) {
-            combos[i].setSelectedItem(tabla.getModel().getValueAt(fila, camposTexto.length + i).toString());
-        }
-
-        // Obtener el valor del tipo de empleado desde la tabla
-        Object tipoEmpleadoObj = tabla.getModel().getValueAt(fila, camposTexto.length + combos.length);
-        String tipoEmpleado = (tipoEmpleadoObj != null) ? tipoEmpleadoObj.toString().trim() : "";
-
-        // Seleccionar el radio button correspondiente
-        for (Enumeration<AbstractButton> botones = grupoBotones.getElements(); botones.hasMoreElements();) {
-            AbstractButton boton = botones.nextElement();
-            // Comparar ignorando mayúsculas/minúsculas y espacios
-            if (boton.getText().trim().equalsIgnoreCase(tipoEmpleado)) {
-                boton.setSelected(true);
-                break;
+            // Llenar los campos de texto con los valores de la fila
+            for (int i = 0; i < camposTexto.length; i++) {
+                Object valor = tabla.getModel().getValueAt(fila, i);
+                String dato = (valor != null) ? valor.toString() : "";
+                camposTexto[i].setText(dato);
             }
+            camposTexto[0].setEnabled(false);
+            camposTexto[1].requestFocus();
+
+            // Seleccionar las opciones de los combos
+            for (int i = 0; i < combos.length; i++) {
+                combos[i].setSelectedItem(tabla.getModel().getValueAt(fila, camposTexto.length + i).toString());
+            }
+
+            // Obtener el valor del tipo de empleado desde la tabla
+            Object tipoEmpleadoObj = tabla.getModel().getValueAt(fila, camposTexto.length + combos.length);
+            String tipoEmpleado = (tipoEmpleadoObj != null) ? tipoEmpleadoObj.toString().trim() : "";
+
+            // Seleccionar el radio button correspondiente
+            for (Enumeration<AbstractButton> botones = grupoBotones.getElements(); botones.hasMoreElements();) {
+                AbstractButton boton = botones.nextElement();
+                // Comparar ignorando mayúsculas/minúsculas y espacios
+                if (boton.getText().trim().equalsIgnoreCase(tipoEmpleado)) {
+                    boton.setSelected(true);
+                    break;
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
-    } else {
-        JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
     }
-}
     // Actualizar datos
 
     public static void Actualizar(Empleados empleados, JTable tabla) {
@@ -397,50 +388,8 @@ public class DatosEmpleados {
                 }
             }
         }
-
     }
 
-    // Validar campos
-    /*public static boolean Validar(JTextField[] campos) {
-        for (JTextField campo : campos) {
-            if (campo.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                campo.requestFocus();
-                return false;
-            }
-        }
-
-        if (!campos[3].getText().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
-            JOptionPane.showMessageDialog(null, "El formato de correo es el siguiente: someone@mail.com\nInténtelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            campos[3].requestFocus();
-            return false;
-        }
-
-        if (campos[4].getText().length() != 8) {
-            JOptionPane.showMessageDialog(null, "El DNI debe contener 8 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            campos[4].requestFocus();
-            return false;
-        }
-
-        if (campos[5].getText().length() != 9) {
-            JOptionPane.showMessageDialog(null, "El celular debe contener 9 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            campos[5].requestFocus();
-            return false;
-        }
-
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            sdf.setLenient(false);
-            sdf.parse(campos[2].getText());
-        } catch (ParseException e) {
-            JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd/mm/aaaa. Inténtelo de nuevo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            campos[2].requestFocus();
-            return false;
-        }
-
-        // Si se llega aquí, todos los campos son válidos
-        return true;
-    }*/
     // Obtener datos académicos del empleado
     public static String[] DatAcadEmpleado(String dni) {
         String[] datos = new String[5];
@@ -450,7 +399,6 @@ public class DatosEmpleados {
             cstmt = conn.prepareCall("{ CALL obtener_datos_academicos(?) }");
             cstmt.setString(1, dni);
             rs = cstmt.executeQuery();
-
             if (rs.next()) {
                 datos[0] = rs.getString("Institucion");
                 datos[1] = rs.getString("Facultad");
@@ -458,7 +406,6 @@ public class DatosEmpleados {
                 datos[3] = rs.getString("Ciclo");
                 datos[4] = rs.getString("Codigo");
             }
-
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error al cargar datos", JOptionPane.ERROR_MESSAGE);
         } finally {
@@ -473,7 +420,6 @@ public class DatosEmpleados {
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-
         return datos;
     }
 
@@ -485,14 +431,13 @@ public class DatosEmpleados {
             cstmt.setString(1, tabla);
             cstmt.setString(2, campoId);
             cstmt.registerOutParameter(3, Types.VARCHAR);
-
             cstmt.execute();
 
             codigo_generado = cstmt.getString(3);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } finally {
-            
+
             if (cstmt != null) {
                 try {
                     cstmt.close();
@@ -501,8 +446,6 @@ public class DatosEmpleados {
                 }
             }
         }
-
         return codigo_generado;
     }
-
 }
