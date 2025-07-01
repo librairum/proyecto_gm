@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.UIManager;
+import java.sql.CallableStatement;
+
 
 /**
  *
@@ -182,9 +184,25 @@ public class inicio extends javax.swing.JFrame {
     private void txtcontraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcontraseñaActionPerformed
 
     }//GEN-LAST:event_txtcontraseñaActionPerformed
+    void TraerPerfil(String nombreUsuario){
+        try{
+          CallableStatement cstmt =  conn.prepareCall("call listar_perfilxusuario(?,?)");
+            cstmt.setString(1, "01");
+            cstmt.setString(2, nombreUsuario);
+           ResultSet rs = cstmt.executeQuery();
+           while(rs.next()){
+             ConexionBD.codPerfil=  rs.getString("codperfil");
+               System.out.println("Menu inicio, Codigo perfil:" + ConexionBD.codPerfil);
+           }
+        }catch(SQLException exSQL){
+             JOptionPane.showMessageDialog(null,exSQL.getMessage(), 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     private void btningresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btningresarActionPerformed
         // TODO add your handling code here:
+        TraerPerfil(this.txtusuario.getText());
         ingresar();
     }//GEN-LAST:event_btningresarActionPerformed
 

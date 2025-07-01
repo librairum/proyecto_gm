@@ -1,5 +1,4 @@
 package proyecto_gm;
-
 import java.awt.Graphics;
 import java.awt.Image;
 import java.sql.Connection;
@@ -31,6 +30,9 @@ import proyecto_gm.Viaticos.frmViaticos;
 import proyecto_gm.CajaChica.frmCajaChica;
 import proyecto_gm.Departamentos.frmDepartamentos;
 import proyecto_gm.credencial.frmCredencial;
+import java.sql.CallableStatement;
+import java.util.ArrayList;
+import java.sql.ResultSet;
 
 public class menu extends javax.swing.JFrame {
 
@@ -41,9 +43,230 @@ public class menu extends javax.swing.JFrame {
         initComponents();        
         setSize(1100, 700);
         this.setLocationRelativeTo(null);
+        DeshabilitarMenu();
+        System.out.println("formulario Menu , codigo perfil: " +ConexionBD.codPerfil);
+        TraerMenu(ConexionBD.codPerfil);
+
+    }
+    
+    void DeshabilitarMenu(){
+        this.menuAdministracion.setVisible(false);
+        this.menuFacturacion.setVisible(false);
+        this.menuLogistica.setVisible(false);
+        this.menuProyecto.setVisible(false);
+        this.menuRecursosHumanos.setVisible(false);
+        this.menuTesoreria.setVisible(false);
+        this.menuConfiguracion.setVisible(false);
+        this.menuSeguridad.setVisible(false);
         
+        this.subMenuCargos.setVisible(false);
+        this.subMenuAreas.setVisible(false);
+        this.subMenuTipoEmpleado.setVisible(false);
+        this.submenuAsistencia.setVisible(false);
+        this.subMenuTipoDocumento.setVisible(false);
+        this.submenuContratosPersonal.setVisible(false);
+
+        this.subMenuReciboHonorario.setVisible(false);
+        this.subMenuComprobante.setVisible(false);
+        this.subMenuTransferencia.setVisible(false);
+
+        this.subMenuCategoria.setVisible(false);
+        this.subMenuArticulos.setVisible(false);
+
+        this.subMenuClientes.setVisible(false);
+        this.subMenuComunicaciones.setVisible(false);
+        this.subMenuContactos.setVisible(false);
+        this.submenuContratoProyecto.setVisible(false);
+
+        this.subMenuExpLaboral.setVisible(false);
+        this.subMenuCarreras.setVisible(false);
+        this.subMenuInstituciones.setVisible(false);
+        this.subMenuFacultades.setVisible(false);
+        this.subMenuProveedores.setVisible(false);
+        this.subMenuEmpleados.setVisible(false);
+
+        this.subMenuBancos.setVisible(false);
+        this.subMenuFlujoCaja.setVisible(false);
+        this.subMenuCuentasBancarias.setVisible(false);
+        this.subMenuViaticos.setVisible(false);
+
+        this.subMenuPeriodos.setVisible(false);
+        this.subMenuModulos.setVisible(false);
+        this.subMenuDepartamentos.setVisible(false);
+        this.subMenuCredencial.setVisible(false);
+
         
     }
+    void TraerMenu(String codperfil){
+         //deshabiliar todo
+        
+        try{
+            
+        CallableStatement cstmt =  conn.prepareCall("call listar_Menuxperfil(?,?)");
+        cstmt.setString(1, "01");
+        cstmt.setString(2, codperfil);
+        System.out.println(codperfil);
+        ResultSet rs = cstmt.executeQuery();
+         
+        //pst.setString(1, "01"); // codmodulo
+        //pst.setString(2, "01"); // perfil 
+        //ResultSet rs = pst.executeQuery();
+        
+        while(rs.next()){
+            String nombre = rs.getString("nombre");
+            this.Habilitar(nombre);
+            //System.out.println(nombre); 
+        }
+        }catch(SQLException exSql){
+            JOptionPane.showMessageDialog(null,exSql.getMessage(), 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    void Habilitar(String nombreMenu){
+        switch (nombreMenu) {
+            case "menuAdministracion":
+                this.menuAdministracion.setVisible(true);
+             
+                break;
+            case "menuFacturacion":
+                this.menuFacturacion.setVisible(true);
+                break;
+             case "menuLogistica": 
+                this.menuLogistica.setVisible(true);
+                break;
+            case "menuProyecto": 
+                this.menuProyecto.setVisible(true);
+                break;
+             case "menuRecursosHumanos": 
+                 this.menuRecursosHumanos.setVisible(true);
+                 break;
+            case "menuTesoreria": 
+                this.menuTesoreria.setVisible(true);
+                break;
+            
+            case "menuConfiguracion":
+                this.menuConfiguracion.setVisible(true);
+                break;                                                                                    
+            case "menuSeguridad": 
+                this.menuSeguridad.setVisible(true);
+                break;
+            case "subMenuCargos":
+                this.subMenuCargos.setVisible(true);
+                break;
+            case "subMenuAreas":
+                this.subMenuAreas.setVisible(true);
+                break;
+            case "subMenuTipoEmpleado":
+                this.subMenuTipoEmpleado.setVisible(true);
+                break;
+            case "submenuAsistencia":
+                this.submenuAsistencia.setVisible(true);
+                break;
+            case "subMenuTipoDocumento": 
+                this.subMenuTipoDocumento.setVisible(true);
+                break;
+            
+            case "submenuContratosPersonal":
+                this.submenuContratosPersonal.setVisible(true);
+                break;
+
+            case "subMenuReciboHonorario":
+                this.subMenuReciboHonorario.setVisible(true);
+                break;
+            case "subMenuComprobante":
+                this.subMenuComprobante.setVisible(true);
+                break;
+            case "subMenuTransferencia": 
+                this.subMenuTransferencia.setVisible(true);
+                break;
+                
+            case "subMenuCategoria":
+                this.subMenuCategoria.setVisible(true);
+                break;
+
+            case "subMenuArticulos": 
+                this.subMenuArticulos.setVisible(true);
+                break;
+            case "subMenuClientes"    :
+                this.subMenuClientes.setVisible(true);
+                break;
+            case "subMenuComunicaciones":
+                this.subMenuComunicaciones.setVisible(true);
+                break;
+             
+            case "subMenuContactos":
+                this.subMenuContactos.setVisible(true);
+                break;
+                
+            case "submenuContratoProyecto":
+                this.submenuContratoProyecto.setVisible(true);
+                break;
+                
+            case "subMenuExpLaboral":
+                this.subMenuExpLaboral.setVisible(true);
+                break;
+
+            case "subMenuCarreras":
+                this.subMenuCarreras.setVisible(true);
+                break;
+                
+            case "subMenuInstituciones":
+                this.subMenuInstituciones.setVisible(true);
+                break;
+                
+            case "subMenuFacultades":
+                this.subMenuFacultades.setVisible(true);
+                break;
+
+            case "subMenuProveedores":
+                this.subMenuProveedores.setVisible(true);
+                break;
+                
+                
+            case "subMenuEmpleados":
+                this.subMenuEmpleados.setVisible(true);
+                break;
+                
+                
+            case "subMenuBancos":
+                this.subMenuBancos.setVisible(true);
+                break;
+                
+            case "subMenuFlujoCaja":
+                this.subMenuFlujoCaja.setVisible(true);
+                break;
+            case "subMenuCuentasBancarias":
+                this.subMenuCuentasBancarias.setVisible(true);
+                break;
+            case "subMenuViaticos":
+                this.subMenuViaticos.setVisible(true);
+                break;
+                
+
+                case "subMenuPeriodos":
+                this.subMenuPeriodos.setVisible(true);
+                break;
+                
+                
+                case "subMenuModulos":
+                this.subMenuModulos.setVisible(true);
+                break;
+                
+                
+                case "subMenuDepartamentos":
+                this.subMenuDepartamentos.setVisible(true);
+                break;
+                
+                case "subMenuCredencial":
+                this.subMenuCredencial.setVisible(true);
+                break;
+     
+            default:
+                throw new AssertionError();
+        }
+    }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -410,7 +633,6 @@ public class menu extends javax.swing.JFrame {
            frmAsistencias verventana = new frmAsistencias();
         escritorio.add(verventana);
         verventana.show(); 
-            
         }
         
         
