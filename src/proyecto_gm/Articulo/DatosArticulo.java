@@ -93,7 +93,7 @@ public class DatosArticulo {
             ResultSet rs = cstmt.executeQuery();
             if (rs.next()) {
                 idMarca = rs.getString("IdMarca");
-            }
+            } 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar Marca", JOptionPane.ERROR_MESSAGE);
         }

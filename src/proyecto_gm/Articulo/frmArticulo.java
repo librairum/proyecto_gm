@@ -21,10 +21,14 @@ public class frmArticulo extends javax.swing.JInternalFrame {
 
     Exportar obj;
     boolean esNuevo = false;
-    //
+    DefaultTableModel modelo;
 
     public frmArticulo() {
         initComponents();
+         setTitle("Articulos");
+         bloquear();
+         desbloquear();
+         
         DefaultTableModel modelo = (DefaultTableModel) tblarticulo.getModel();
         DatosArticulo.Habilitar(escritorio, false);
 
@@ -34,6 +38,29 @@ public class frmArticulo extends javax.swing.JInternalFrame {
         DatosArticulo.Mostrar(modelo);
         tblarticulo.setCellSelectionEnabled(false);
         tblarticulo.setRowSelectionAllowed(true);
+        btnGuardar.setEnabled(false);
+        btnDeshacer.setEnabled(false);
+    }
+    
+    void Limpiar() {
+        txtId.setText("");
+        txtDescripcion.setText("");
+
+    }
+
+    void bloquear() {
+        txtId.setEditable(false);
+        txtDescripcion.setEditable(false);
+        btnGuardar.setEnabled(false);
+        btnDeshacer.setEnabled(false);
+        btnAgregar.setEnabled(true);
+        btnEditar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+    }
+
+    void desbloquear() {
+        txtId.setEditable(true);
+        txtDescripcion.setEditable(true);
     }
 
     private void inicializaComboCategoria() {
@@ -282,6 +309,14 @@ public class frmArticulo extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        desbloquear();
+        btnEditar.setEnabled(false);
+        btnEliminar.setEnabled(false);
+        btnGuardar.setEnabled(true);
+        btnDeshacer.setEnabled(true);
+        btnAgregar.setEnabled(false);
+        esNuevo = true;
+        
         DatosArticulo.Habilitar(escritorio, true);
 
         // Limpiar los campos para nuevo ingreso
@@ -298,7 +333,14 @@ public class frmArticulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // Agrupar las cajas de texto
+        // TODO add your handling code here:
+        btnAgregar.setEnabled(false);
+        btnEliminar.setEnabled(false);
+        btnGuardar.setEnabled(true);
+        btnDeshacer.setEnabled(true);
+        btnEditar.setEnabled(false);
+        // Habilitar campos
+// Agrupar las cajas de texto
         JTextField[] camposTexto = {txtId, txtDescripcion, txtCaracteristicas, txtCantidad};
         JComboBox[] combos = {cmbCategoria, cboMarca};
         DatosArticulo.Editar(escritorio, tblarticulo, camposTexto, combos);
@@ -309,6 +351,10 @@ public class frmArticulo extends javax.swing.JInternalFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         DatosArticulo.Eliminar(tblarticulo);
         DatosArticulo.Habilitar(escritorio, false);
+        
+        // Deshabilitar los botones Guardar y Deshacer
+        btnGuardar.setEnabled(false);
+        btnDeshacer.setEnabled(false);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -368,6 +414,12 @@ public class frmArticulo extends javax.swing.JInternalFrame {
             tblarticulo.clearSelection();
             tblarticulo.setRowSelectionAllowed(true);
         }
+        //HABILITAR DESHABILITAR BOTONES 
+        btnGuardar.setEnabled(false);
+        btnDeshacer.setEnabled(false);
+        btnEditar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+        btnAgregar.setEnabled(true);
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
@@ -375,6 +427,11 @@ public class frmArticulo extends javax.swing.JInternalFrame {
         DatosArticulo.Habilitar(escritorio, false);
         tblarticulo.clearSelection();
         tblarticulo.setRowSelectionAllowed(true);
+        btnGuardar.setEnabled(false);
+        btnDeshacer.setEnabled(false);
+        btnEditar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+        btnAgregar.setEnabled(true);
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped

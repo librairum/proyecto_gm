@@ -1,5 +1,4 @@
 package proyecto_gm.Carreras;
-
 import java.awt.HeadlessException;
 import java.sql.*;
 import javax.swing.JOptionPane;

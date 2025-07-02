@@ -19,35 +19,69 @@ public class frmCategoria extends javax.swing.JInternalFrame {
 
     Exportar obj;
     boolean esNuevo = false;
+    DefaultTableModel modelo;
 
     public frmCategoria() {
         initComponents();
-        JTableHeader header = tblCategoria.getTableHeader();
-        header.setDefaultRenderer(new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table,
-                    Object value,
-                    boolean isSelected,
-                    boolean hasFocus,
-                    int row,
-                    int column) {
-                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                setHorizontalAlignment(JLabel.CENTER);
-                setBackground(Color.DARK_GRAY);
-                setForeground(Color.WHITE);
-                setFont(getFont().deriveFont(Font.BOLD, 13));
-                return this;
-            }
-        }); 
-        DefaultTableModel modelo = (DefaultTableModel) tblCategoria.getModel();
+        setTitle("Categorias");
+        bloquear();
+        desbloquear();
+        modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
+        modelo.addColumn("DESCRIPCION");
+        this.tblCategoria.setModel(modelo);
+        DatosCategoria dc = new DatosCategoria();
+        dc.MostrarCat(modelo);
+        btnGuardar.setEnabled(false);
+        btnDeshacer.setEnabled(false);
 
-        DatosCategoria.HabilitarCat(escritorio, false);
-        DatosCategoria.MostrarCat(modelo);
-
-        tblCategoria.setCellSelectionEnabled(false);
-        tblCategoria.setRowSelectionAllowed(true);
+        DatosFacultades.bloquearCampos(escritorio);
+        
+        
+        //JTableHeader header = tblCategoria.getTableHeader();
+        //Jheader.setDefaultRenderer(new DefaultTableCellRenderer() {
+         //  @Override
+          //  public Component getTableCellRendererComponent(JTable table,
+           //         Object value,
+             //       boolean isSelected,
+             //       boolean hasFocus,
+             //       int row,
+             //       int column) {
+             //   super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+             //   setHorizontalAlignment(JLabel.CENTER);
+             //   setBackground(Color.DARK_GRAY);
+             //   setForeground(Color.WHITE);
+        //        setFont(getFont().deriveFont(Font.BOLD, 13));
+      //          return this;
+      //      }
+      //  }); 
+      //  DefaultTableModel modelo = (DefaultTableModel) tblCategoria.getModel();
+      //  DatosCategoria.HabilitarCat(escritorio, false);
+      //  DatosCategoria.MostrarCat(modelo);
+      //  tblCategoria.setCellSelectionEnabled(false);
+      //  tblCategoria.setRowSelectionAllowed(true);
     }    
+    void Limpiar() {
+        txtCodigo.setText("");
+        txtDescripcion.setText("");
+    }
 
+    void bloquear() {
+        txtCodigo.setEditable(false);
+        txtDescripcion.setEditable(false);
+        btnGuardar.setEnabled(false);
+        btnDeshacer.setEnabled(false);
+        btnAgregar.setEnabled(true);
+        btnEditar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+    }
+
+    void desbloquear() {
+        txtCodigo.setEditable(true);
+        txtDescripcion.setEditable(true);
+    }
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -220,7 +254,15 @@ public class frmCategoria extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        
         DatosCategoria.HabilitarCat(escritorio, true);
+        desbloquear();
+        btnEditar.setEnabled(false);
+        btnEliminar.setEnabled(false);
+        btnGuardar.setEnabled(true);
+        btnDeshacer.setEnabled(true);
+        btnAgregar.setEnabled(false);
+        esNuevo = true;
 
         // Limpiar los campos
         txtCodigo.setText("");               // Se deja vacío ya que se generará automáticamente
@@ -233,6 +275,14 @@ public class frmCategoria extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+        btnAgregar.setEnabled(false);
+        btnEliminar.setEnabled(false);
+        btnGuardar.setEnabled(true);
+        btnDeshacer.setEnabled(true);
+        btnEditar.setEnabled(false);
+        // Habilitar campos
+        
         JTextField[] cod = new JTextField[2];
         cod[0] = txtCodigo;
         cod[1] = txtDescripcion;
@@ -243,6 +293,9 @@ public class frmCategoria extends javax.swing.JInternalFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         DatosCategoria.EliminarCat(tblCategoria);
         DatosCategoria.HabilitarCat(escritorio, false);
+        // Deshabilitar los botones Guardar y Deshacer
+        btnGuardar.setEnabled(false);
+        btnDeshacer.setEnabled(false);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -284,9 +337,15 @@ public class frmCategoria extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Datos actualizados correctamente.");
             DatosCategoria.LimpiarCat(escritorio);
             DatosCategoria.HabilitarCat(escritorio, false);
+            
             tblCategoria.clearSelection();
             tblCategoria.setRowSelectionAllowed(true);
         }
+            btnGuardar.setEnabled(false);
+            btnDeshacer.setEnabled(false);
+            btnEditar.setEnabled(true);
+            btnEliminar.setEnabled(true);
+            btnAgregar.setEnabled(true);
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
@@ -313,6 +372,12 @@ public class frmCategoria extends javax.swing.JInternalFrame {
         tblCategoria.clearSelection();
         // Habilitamos la seleccion de filas de la tabla
         tblCategoria.setRowSelectionAllowed(true);
+        // Deshabilitar los botones Guardar y Deshacer
+        btnGuardar.setEnabled(false);
+        btnDeshacer.setEnabled(false);
+        btnEditar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+        btnAgregar.setEnabled(true);
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void txtDescripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyTyped

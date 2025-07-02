@@ -12,7 +12,6 @@ import proyecto_gm.Instituciones.DatosInstituciones;
 public class frmCarreras extends javax.swing.JInternalFrame {
 
     Exportar obj;
-
     DefaultTableModel modelo;
     boolean esNuevo = false;
 
