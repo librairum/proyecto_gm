@@ -5,6 +5,7 @@
 package proyecto_gm;
 
 import java.awt.Frame;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import javax.swing.JOptionPane;
 import java.sql.PreparedStatement;
@@ -34,7 +35,7 @@ public class inicio extends javax.swing.JFrame {
         ResultSet rs = null;
 
         String User = txtusuario.getText();
-        String Pass = txtcontraseña.getText();
+        String Pass = txtcontrasena.getText();
         menu contenedor = new menu();
 
         if (User.equals("") || Pass.equals("")) {
@@ -81,114 +82,94 @@ public class inicio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel3 = new javax.swing.JLabel();
         usuario = new javax.swing.JLabel();
         txtusuario = new javax.swing.JTextField();
-        txtcontraseña = new javax.swing.JPasswordField();
+        txtcontrasena = new javax.swing.JPasswordField();
         contraseña = new javax.swing.JLabel();
         btningresar = new javax.swing.JButton();
         btnsalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setAutoRequestFocus(false);
+        setTitle("GM SISTEMAS");
         setBackground(new java.awt.Color(0, 0, 153));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
-        jLabel3.setFont(new java.awt.Font("Serif", 1, 12)); // NOI18N
-        jLabel3.setText("INICIAR SESION");
+        setMaximumSize(new java.awt.Dimension(280, 130));
+        setMinimumSize(new java.awt.Dimension(290, 140));
+        setPreferredSize(new java.awt.Dimension(280, 130));
+        setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
+        getContentPane().setLayout(null);
 
         usuario.setFont(new java.awt.Font("Serif", 1, 12)); // NOI18N
-        usuario.setText("USUARIO : ");
+        usuario.setText("usuario:");
+        getContentPane().add(usuario);
+        usuario.setBounds(30, 20, 50, 20);
 
         txtusuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtusuarioKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtusuarioKeyTyped(evt);
             }
         });
+        getContentPane().add(txtusuario);
+        txtusuario.setBounds(90, 10, 170, 30);
 
-        txtcontraseña.addActionListener(new java.awt.event.ActionListener() {
+        txtcontrasena.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtcontraseñaActionPerformed(evt);
+                txtcontrasenaActionPerformed(evt);
             }
         });
-        txtcontraseña.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtcontrasena.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtcontrasenaKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtcontraseñaKeyTyped(evt);
+                txtcontrasenaKeyTyped(evt);
             }
         });
+        getContentPane().add(txtcontrasena);
+        txtcontrasena.setBounds(90, 40, 170, 30);
 
         contraseña.setFont(new java.awt.Font("Serif", 1, 12)); // NOI18N
-        contraseña.setText("CONTRASEÑA : ");
+        contraseña.setText("contraseña:");
+        getContentPane().add(contraseña);
+        contraseña.setBounds(20, 50, 61, 17);
 
         btningresar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btningresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/ingresar.png"))); // NOI18N
         btningresar.setText("INGRESAR");
+        btningresar.setMaximumSize(new java.awt.Dimension(200, 28));
+        btningresar.setMinimumSize(new java.awt.Dimension(90, 28));
         btningresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btningresarActionPerformed(evt);
             }
         });
+        getContentPane().add(btningresar);
+        btningresar.setBounds(90, 70, 100, 26);
 
         btnsalir.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnsalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/salir.png"))); // NOI18N
         btnsalir.setText("SALIR");
         btnsalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnsalirActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btningresar, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnsalir, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(contraseña)
-                            .addComponent(usuario))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtusuario)
-                            .addComponent(txtcontraseña)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(93, 93, 93)
-                        .addComponent(jLabel3)))
-                .addContainerGap(10, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel3)
-                .addGap(8, 8, 8)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtusuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(usuario))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(contraseña)
-                    .addComponent(txtcontraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnsalir, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btningresar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap(16, Short.MAX_VALUE))
-        );
+        getContentPane().add(btnsalir);
+        btnsalir.setBounds(190, 70, 71, 26);
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtcontraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcontraseñaActionPerformed
+    private void txtcontrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcontrasenaActionPerformed
 
-    }//GEN-LAST:event_txtcontraseñaActionPerformed
+    }//GEN-LAST:event_txtcontrasenaActionPerformed
     void TraerPerfil(String nombreUsuario){
         try{
           CallableStatement cstmt =  conn.prepareCall("call listar_perfilxusuario(?,?)");
@@ -197,6 +178,7 @@ public class inicio extends javax.swing.JFrame {
            ResultSet rs = cstmt.executeQuery();
            while(rs.next()){
              ConexionBD.codPerfil=  rs.getString("codperfil");
+             ConexionBD.nomPerfil = rs.getString("nomperfil");
                System.out.println("Menu inicio, Codigo perfil:" + ConexionBD.codPerfil);
            }
         }catch(SQLException exSQL){
@@ -208,6 +190,7 @@ public class inicio extends javax.swing.JFrame {
     private void btningresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btningresarActionPerformed
         // TODO add your handling code here:
         TraerPerfil(this.txtusuario.getText());
+        ConexionBD.nomUsuario = txtusuario.getText();
         ingresar();
     }//GEN-LAST:event_btningresarActionPerformed
 
@@ -223,12 +206,33 @@ public class inicio extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtusuarioKeyTyped
 
-    private void txtcontraseñaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcontraseñaKeyTyped
+    private void txtcontrasenaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcontrasenaKeyTyped
         // TODO add your handling code here:
-        if (txtcontraseña.getText().length() == 20) {
+        if (txtcontrasena.getText().length() == 20) {
             evt.consume();
         }
-    }//GEN-LAST:event_txtcontraseñaKeyTyped
+        
+    }//GEN-LAST:event_txtcontrasenaKeyTyped
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        this.txtusuario.requestFocus();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void txtcontrasenaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcontrasenaKeyPressed
+       if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            
+            TraerPerfil(this.txtusuario.getText());
+        ConexionBD.nomUsuario = txtusuario.getText();
+        ingresar();
+        }
+    }//GEN-LAST:event_txtcontrasenaKeyPressed
+
+    private void txtusuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtusuarioKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            
+            txtcontrasena.requestFocus();
+        }
+    }//GEN-LAST:event_txtusuarioKeyPressed
 
     /**
      * @param args the command line arguments
@@ -276,8 +280,7 @@ public class inicio extends javax.swing.JFrame {
     private javax.swing.JButton btningresar;
     private javax.swing.JButton btnsalir;
     private javax.swing.JLabel contraseña;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPasswordField txtcontraseña;
+    private javax.swing.JPasswordField txtcontrasena;
     private javax.swing.JTextField txtusuario;
     private javax.swing.JLabel usuario;
     // End of variables declaration//GEN-END:variables

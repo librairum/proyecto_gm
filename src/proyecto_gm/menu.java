@@ -33,6 +33,8 @@ import proyecto_gm.credencial.frmCredencial;
 import java.sql.CallableStatement;
 import java.util.ArrayList;
 import java.sql.ResultSet;
+import javax.swing.JLabel;
+import org.apache.poi.hssf.record.TextObjectRecord;
 
 public class menu extends javax.swing.JFrame {
 
@@ -46,7 +48,12 @@ public class menu extends javax.swing.JFrame {
         DeshabilitarMenu();
         System.out.println("formulario Menu , codigo perfil: " +ConexionBD.codPerfil);
         TraerMenu(ConexionBD.codPerfil);
-
+        this.setTitle("SISTEMAS GM");
+        String datoUsuario= "Usuario:" + ConexionBD.nomUsuario +"\t\t";
+         String datoPerfil = "Perfil:"+ ConexionBD.nomPerfil+"\t\t\t";
+        String datoEmpresa = "20555841095-GM INGENIEROS Y CONSULTORES" ;
+        
+        this.lblEstadoSesion.setText(datoUsuario +"        " + datoPerfil + "       " +datoEmpresa);
     }
     
     void DeshabilitarMenu(){
@@ -272,6 +279,7 @@ public class menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel2 = new javax.swing.JPanel();
         ImageIcon icon = new ImageIcon(getClass().getResource("/iconos/fondogm.png"));
         Image img = icon.getImage();
         escritorio = new javax.swing.JDesktopPane(){
@@ -281,14 +289,8 @@ public class menu extends javax.swing.JFrame {
                 g.drawImage(img, x, y, null);
             }
         };
-        jPanel3 = new javax.swing.JPanel();
-        label1 = new java.awt.Label();
-        jPanel2 = new javax.swing.JPanel();
-        label3 = new java.awt.Label();
-        label7 = new java.awt.Label();
-        label8 = new java.awt.Label();
-        label9 = new java.awt.Label();
-        label10 = new java.awt.Label();
+        pnlEstado = new javax.swing.JPanel();
+        lblEstadoSesion = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuAdministracion = new javax.swing.JMenu();
         subMenuCargos = new javax.swing.JMenuItem();
@@ -335,83 +337,43 @@ public class menu extends javax.swing.JFrame {
             }
         });
 
-        jPanel3.setBackground(new java.awt.Color(102, 102, 255));
-
-        label1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        label1.setText("SISTEMA GM INGENIEROS Y CONSULTORES S.A.C");
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(474, 474, 474)
-                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(514, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        jPanel2.setBackground(new java.awt.Color(102, 102, 255));
-
-        label3.setText("Usuario : ");
-
-        label7.setText("label7");
-
-        label8.setText("Perfil : ");
-
-        label9.setText("label9");
-
-        label10.setText("RUC: 2055584109 - GM INGENIEROS Y CONSULTORES S.A.C");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(label7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(label8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(label9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(label10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(label7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(label8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(label9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(label10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-
-        escritorio.setLayer(jPanel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        escritorio.setLayer(jPanel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jPanel2.setLayout(new java.awt.GridLayout(1, 1));
 
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
         escritorio.setLayout(escritorioLayout);
         escritorioLayout.setHorizontalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(0, 1292, Short.MAX_VALUE)
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(escritorioLayout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 754, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGap(0, 605, Short.MAX_VALUE)
         );
 
-        getContentPane().add(escritorio, java.awt.BorderLayout.PAGE_START);
+        jPanel2.add(escritorio);
+
+        getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
+
+        pnlEstado.setBackground(new java.awt.Color(0, 102, 204));
+
+        lblEstadoSesion.setForeground(new java.awt.Color(255, 255, 255));
+        lblEstadoSesion.setText("jLabel1");
+
+        javax.swing.GroupLayout pnlEstadoLayout = new javax.swing.GroupLayout(pnlEstado);
+        pnlEstado.setLayout(pnlEstadoLayout);
+        pnlEstadoLayout.setHorizontalGroup(
+            pnlEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlEstadoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblEstadoSesion)
+                .addContainerGap(1245, Short.MAX_VALUE))
+        );
+        pnlEstadoLayout.setVerticalGroup(
+            pnlEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblEstadoSesion)
+        );
+
+        getContentPane().add(pnlEstado, java.awt.BorderLayout.SOUTH);
 
         menuAdministracion.setText("Administracion");
 
@@ -591,7 +553,7 @@ public class menu extends javax.swing.JFrame {
         });
         menuRecursosHumanos.add(subMenuProveedores);
 
-        subMenuEmpleados.setText("Empleados");
+        subMenuEmpleados.setText("Personal");
         subMenuEmpleados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 subMenuEmpleadosActionPerformed(evt);
@@ -1026,13 +988,7 @@ public class menu extends javax.swing.JFrame {
     private javax.swing.JDesktopPane escritorio;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private java.awt.Label label1;
-    private java.awt.Label label10;
-    private java.awt.Label label3;
-    private java.awt.Label label7;
-    private java.awt.Label label8;
-    private java.awt.Label label9;
+    private javax.swing.JLabel lblEstadoSesion;
     private javax.swing.JMenu menuAdministracion;
     private javax.swing.JMenu menuConfiguracion;
     private javax.swing.JMenu menuFacturacion;
@@ -1041,6 +997,7 @@ public class menu extends javax.swing.JFrame {
     private javax.swing.JMenu menuRecursosHumanos;
     private javax.swing.JMenu menuSeguridad;
     private javax.swing.JMenu menuTesoreria;
+    private javax.swing.JPanel pnlEstado;
     private javax.swing.JMenuItem subMenuAreas;
     private javax.swing.JMenuItem subMenuArticulos;
     private javax.swing.JMenuItem subMenuBancos;
