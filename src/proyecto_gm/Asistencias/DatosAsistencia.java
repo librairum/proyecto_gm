@@ -13,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -28,7 +30,8 @@ public class DatosAsistencia {
 
     static final Connection conn = ConexionBD.getConnection();
 
-    public static void RellenarTabla(JTable tabla, JComboBox mes, JComboBox empleado, JTextField totalHoras, JTextField totalAsistencias) {
+    public static void RellenarTabla(JTable tabla, JComboBox mes, 
+            JComboBox empleado, JTextField totalHoras, JTextField totalAsistencias) {
         // Obtener el dni del empleado
         String dni = ObtenerDNI(empleado);
         String periodo = mes.getSelectedItem().toString();
@@ -151,7 +154,10 @@ public class DatosAsistencia {
     public static ArrayList<String> obtenerEmpleados() {
         ArrayList<String> empleados = new ArrayList<>();
 
-        try ( Connection conn = ConexionBD.getConnection();  PreparedStatement stmt = conn.prepareCall("CALL ObtenerEmpleadosOrdenados()");  java.sql.ResultSet rs = stmt.executeQuery()) {
+        try ( 
+                Connection conn = ConexionBD.getConnection();  
+                PreparedStatement stmt = conn.prepareCall("CALL ObtenerEmpleadosOrdenados()");  
+                java.sql.ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 empleados.add(rs.getString("NombreCompleto"));
@@ -260,4 +266,85 @@ public class DatosAsistencia {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
+    
+    public static void ObtenerAsistenciaImagenes(JTable tabla,  String fechaFiltro ){
+        
+        //traer data de tabla
+        try{
+            CallableStatement cstmt = conn.prepareCall("{CALL listar_asistenciaimagenes(?)}");
+            cstmt.setString(1, fechaFiltro);
+            ResultSet rs = cstmt.executeQuery();
+            ArrayList<AsistenciaImagenes> lista = new ArrayList<>();
+            
+            String[][] data = new String[1][1];
+            
+            while(rs.next()){
+                 String dni = rs.getString("dni");
+                 String nombrePc = rs.getString("nombre_equipo");
+                 String fecha = rs.getString("FechaFormato");
+                 String hora = rs.getString("hora");
+                 
+                 lista.add(new AsistenciaImagenes(dni, nombrePc, fecha, hora));
+                 
+                
+            }
+            //pasar de ArrayList<Entidad> a => object[][]
+            data = new String[lista.size()][4];
+            for(int i = 0 ; i < lista.size(); i++){
+                AsistenciaImagenes registro = lista.get(i);
+                data[i][0] = registro.getDni();
+                data[i][1] = registro.getNombreEquipo();
+                data[i][2] = registro.getFecha();
+                data[i][3] = registro.getHora();
+            }
+            
+              DefaultTableModel model = new DefaultTableModel(data, new String[]{"DNI", "NOMBREPC", 
+                  "FECHA", "HORA"});               
+                tabla.setModel(model);
+                
+                
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+          // Crea un nuevo modelo de tabla utilizando la matriz bidimensional
+          
+      
+        
+    }
+    
+    
+    public static AsistenciaImagenes ObtenerAsistenciaImagenDetalle(String fecha, String dni, String hora){
+    
+        AsistenciaImagenes registro = new AsistenciaImagenes();
+        try{
+            
+            CallableStatement cstmt = conn.prepareCall("{CALL listar_asistenciaimagendetalle(?,?,?)}");
+            cstmt.setString(1, fecha);
+            cstmt.setString(2, dni);
+            cstmt.setString(3, hora);
+            ResultSet rs = cstmt.executeQuery();
+            while(rs.next()){
+               
+                String pdni = rs.getString("dni");
+                String pFechaFormato = rs.getString("fechaformato");
+                String phora = rs.getString("hora");
+                String pNombrePC = rs.getString("nombre_equipo");
+                byte[] pbytesImage =  rs.getBytes("imagen_en_bytes");
+                registro.setDni(pdni);
+                registro.setFecha(pFechaFormato);
+                registro.setHora(phora);
+                registro.setNombreEquipo(pNombrePC);
+                registro.setImagenEnBytes(pbytesImage);
+            }
+            
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return registro;
+    }
+    
+    
+    
 }

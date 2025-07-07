@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.sql.ResultSet;
 import javax.swing.JLabel;
 import org.apache.poi.hssf.record.TextObjectRecord;
+import proyecto_gm.Asistencias.frmAsistenciaImagen;
 
 public class menu extends javax.swing.JFrame {
 
@@ -72,7 +73,8 @@ public class menu extends javax.swing.JFrame {
         this.submenuAsistencia.setVisible(false);
         this.subMenuTipoDocumento.setVisible(false);
         this.submenuContratosPersonal.setVisible(false);
-
+        this.subMenuRelojActividad.setVisible(false);
+        
         this.subMenuReciboHonorario.setVisible(false);
         this.subMenuComprobante.setVisible(false);
         this.subMenuTransferencia.setVisible(false);
@@ -268,7 +270,9 @@ public class menu extends javax.swing.JFrame {
                 case "subMenuCredencial":
                 this.subMenuCredencial.setVisible(true);
                 break;
-     
+            case "subMenuRelojActividad":
+                this.subMenuRelojActividad.setVisible(true);
+                break;
             default:
                 throw new AssertionError();
         }
@@ -299,6 +303,7 @@ public class menu extends javax.swing.JFrame {
         submenuAsistencia = new javax.swing.JMenuItem();
         subMenuTipoDocumento = new javax.swing.JMenuItem();
         submenuContratosPersonal = new javax.swing.JMenuItem();
+        subMenuRelojActividad = new javax.swing.JMenuItem();
         menuFacturacion = new javax.swing.JMenu();
         subMenuReciboHonorario = new javax.swing.JMenuItem();
         subMenuComprobante = new javax.swing.JMenuItem();
@@ -424,6 +429,14 @@ public class menu extends javax.swing.JFrame {
             }
         });
         menuAdministracion.add(submenuContratosPersonal);
+
+        subMenuRelojActividad.setText("Reloj actividad");
+        subMenuRelojActividad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuRelojActividadActionPerformed(evt);
+            }
+        });
+        menuAdministracion.add(subMenuRelojActividad);
 
         jMenuBar1.add(menuAdministracion);
 
@@ -816,6 +829,11 @@ public class menu extends javax.swing.JFrame {
             escritorio.add(verventana);
             verventana.show();
         }
+        private void AbrirAsistenciaImagen(){
+            proyecto_gm.Asistencias.frmAsistenciaImagen verventana = new frmAsistenciaImagen();
+            escritorio.add(verventana);
+            verventana.show();
+        }
     private void menuCajaChicaActionPerformed (java.awt.event.ActionEvent evt){
        
     }
@@ -951,6 +969,10 @@ public class menu extends javax.swing.JFrame {
         Abrirmodulos();
     }//GEN-LAST:event_subMenuModulosActionPerformed
 
+    private void subMenuRelojActividadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuRelojActividadActionPerformed
+        AbrirAsistenciaImagen();
+    }//GEN-LAST:event_subMenuRelojActividadActionPerformed
+
    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1020,6 +1042,7 @@ public class menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem subMenuPeriodos;
     private javax.swing.JMenuItem subMenuProveedores;
     private javax.swing.JMenuItem subMenuReciboHonorario;
+    private javax.swing.JMenuItem subMenuRelojActividad;
     private javax.swing.JMenuItem subMenuTipoDocumento;
     private javax.swing.JMenuItem subMenuTipoEmpleado;
     private javax.swing.JMenuItem subMenuTransferencia;

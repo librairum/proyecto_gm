@@ -9,13 +9,17 @@ public class ConexionBD {
     private static final String USERNAME = "avnadmin";
     private static final String PASSWORD = "AVNS_kXJ4QR-qGBL7IF5RygC";
     private static final String CONN_STRING = "jdbc:mysql://mysql-a21bb78-sistemasnet26-321c.k.aivencloud.com:10658/gmingenieros?useSSL=true&requireSSL=true";
+    
     public static String codPerfil = "";
-   public static String nomPerfil = "";
-   public static String nomUsuario = "";
+    public static String nomPerfil = "";
+    public static String nomUsuario = "";
+    //conexion a base de datoa Reloj de actividad GMADMINISTRACIOn MYSQL
+    private static final String connReloj = "jdbc:mysql://mysql-a21bb78-sistemasnet26-321c.k.aivencloud.com:10658/gmadministracion?useSSL=true&requireSSL=true";
+    
     private ConexionBD() {
         // Evitar instanciación 
     }
-
+    
     public static Connection getConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -25,4 +29,18 @@ public class ConexionBD {
             return null;
         }
     }
+    
+    public static Connection getConnectionAsistencia(){
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            return DriverManager.getConnection(connReloj, USERNAME,PASSWORD);
+            
+        }catch(ClassNotFoundException | SQLException ex){
+            System.err.println("Error en la conexión: " + ex.getMessage());
+            return null;
+        }
+    }
+    
+    
+    
 }
