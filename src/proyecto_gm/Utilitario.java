@@ -1,0 +1,120 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package proyecto_gm;
+
+import java.awt.TrayIcon;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+import proyecto_gm.Empleado.Empleados;
+
+/**
+ *
+ * @author pc_sistemas2022
+ */
+public class Utilitario {
+    public static enum EstadoProceso{
+        NUEVO,
+        EDITAR,
+        ELIMINAR,
+        CONSULTAR
+    }
+    public static enum TipoMensaje{
+        alerta,
+        informativo,
+        error,
+        pregunta
+    }
+    public static void MostrarMensaje(String mensaje, TipoMensaje tipo  ){
+        if(null != tipo)switch (tipo) {
+            case informativo:
+                JOptionPane.showMessageDialog(null, mensaje, "Sistema", JOptionPane.INFORMATION_MESSAGE);
+                break;
+            case alerta:
+                JOptionPane.showMessageDialog(null, mensaje, "Sistema", JOptionPane.WARNING_MESSAGE);
+                break;
+            case error:
+                JOptionPane.showMessageDialog(null, mensaje, "Sistema", JOptionPane.ERROR_MESSAGE);
+                break;
+            default:
+                
+                break;
+        }
+        
+    }
+    public static boolean MostrarMensajePregunta(String mensaje, TipoMensaje tipo){
+        
+        int respuesta = JOptionPane.showConfirmDialog(null, mensaje,"Sisteka", 
+                        JOptionPane.YES_NO_OPTION);
+        //yesy => 0, No => 1
+        if(respuesta == 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    static String TraerFechaActual(){
+        String resultado = "";
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");  
+        LocalDateTime fechaActual = LocalDateTime.now();
+        
+        String sFecha = fechaActual.format(dtf);
+        resultado = sFecha;
+        return resultado;
+    }
+    public static String TraerFechaInicial(){
+        String resultado = "";
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");  
+        LocalDateTime fechaActual = LocalDateTime.now();
+        LocalDateTime fechaInicio = LocalDateTime.of(2023, 3, 1,0,0);
+        resultado   = fechaInicio.format(dtf);
+        return resultado;
+    }
+    
+    protected static String LeerValor(JTable tabla, String[] nombresColumnas, String nombreBusqueda){
+        String indiceColumn = nombresColumnas[0];
+        
+        //codigo
+        //descripcion
+        //categoaia
+        //nombres
+        //apellidos
+        //recorrer las columnas
+        String dato = "";
+        for (int i = 0; i < nombresColumnas.length; i++) {
+            if(nombresColumnas[i].equals(nombreBusqueda) ){
+                dato =  tabla.getValueAt(tabla.getSelectedRow(), i).toString();
+                return dato;
+            }
+        }
+        //tabla.getValueAt(tabla.getSelectedRow(), 0)
+        //DefaultTableModel modelo  =  (DefaultTableModel) tabla.getModel();
+        return "";
+    }
+    
+    public static String LeerValortexto(JTable tabla, int posicionColumna){
+         return tabla.getValueAt(tabla.getSelectedRow(), posicionColumna).toString();
+    }
+    public static Object LeerValor(JTable tabla, int posicionColumna){
+         return tabla.getValueAt(tabla.getSelectedRow(), posicionColumna);
+    }
+    public static String LeerValortexto(DefaultTableModel modelo, int fila,int columna){
+        if (modelo.getValueAt(fila, columna) == null){
+            return "";
+        }
+        return modelo.getValueAt(fila, columna).toString();
+    }
+//    static void MostrarMensajeInformacion(String mensaje, String titulo){
+//    
+//    }
+    
+    
+}

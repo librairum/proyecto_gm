@@ -4,6 +4,7 @@
  */
 package proyecto_gm.Comunicacion;
 
+import proyecto_gm.Utilitario;
 import java.io.Console;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -20,7 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import proyecto_gm.Comunicacion.Utilitario.EstadoProceso;
+import proyecto_gm.Utilitario.EstadoProceso;
 import proyecto_gm.proyectos.DatosProyectos;
 import proyecto_gm.proyectos.Proyectos;
 

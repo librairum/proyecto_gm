@@ -36,6 +36,7 @@ import java.sql.ResultSet;
 import javax.swing.JLabel;
 import org.apache.poi.hssf.record.TextObjectRecord;
 import proyecto_gm.Asistencias.frmAsistenciaImagen;
+import proyecto_gm.Empleado.frmListaEmpleado;
 
 public class menu extends javax.swing.JFrame {
 
@@ -749,9 +750,13 @@ public class menu extends javax.swing.JFrame {
         }
         
         private void Abrirempleados(){
-        frmEmpleado verventana = new frmEmpleado();
-        escritorio.add(verventana);
-        verventana.show();
+//        frmEmpleado verventana = new frmEmpleado();
+//        escritorio.add(verventana);
+//        verventana.show();
+            frmListaEmpleado verventana = new frmListaEmpleado(escritorio);
+            escritorio.add(verventana);
+            verventana.show();
+        
         }
         
         private void Abrirexperiencialaboral(){

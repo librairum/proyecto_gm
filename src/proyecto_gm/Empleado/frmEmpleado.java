@@ -28,6 +28,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import proyecto_gm.Area.Area;
 import proyecto_gm.Cargo.Cargo;
+import proyecto_gm.Utilitario;
 import proyecto_gm.Exportar;
 
 /**
@@ -37,17 +38,42 @@ import proyecto_gm.Exportar;
 public class frmEmpleado extends javax.swing.JInternalFrame {
 
     boolean esNuevo = false;
-
+    protected Empleados registro  = new Empleados(); 
+    private Utilitario.EstadoProceso estadoProceso;
+    
     /**
      * Creates new form frmEmpleado
      */
-    public frmEmpleado() {
+    private void ObtenerDatos(){
+        txtApe.setText(registro.getApellidos()); 
+        txtNom.setText(registro.getNombres());
+        txtCel.setText(registro.getCelular());
+        txtCorreo.setText(registro.getCorreo());
+        txtDirec.setText(registro.getDireccion());
+        cboArea.setSelectedItem(registro.getIdArea());
+        txtId.setText(registro.getId());
+        txtDni.setText(registro.getDni());
+        txtFecNac.setText(registro.getfNacimiento());
+        //cboCargo.setSelectedItem(registro.getIdCargo());
+        //cboCargo.setSelectedItem(registro.getCargo());
+        cboCargo.getModel().setSelectedItem(registro.getCargo());
+        cboArea.getModel().setSelectedItem(registro.getArea());
+        txtDistrito.setText(registro.getDistrito());
+        //cboCargo.setSelectedItem(new Cargo(2, "Sub Gerente"));
+//        Cargo c = new Cargo();
+//        c.setIdCargo(2);
+//        c.setDescripcion("Sub Gerente");
+        //cboCargo.getModel().setSelectedItem(c);
+    }
+    public frmEmpleado(Empleados registro,Utilitario.EstadoProceso estado ) {
+        
         initComponents();
+        this.registro = registro;
         //  Establecer comandos para los radio buttons
         rbPracticante.setActionCommand("Practicante");
         rbEstable.setActionCommand("completo");
         rbPartime.setActionCommand("Partime");
-
+        this.estadoProceso = estado;
         // Personalizar header
         JTableHeader header = tblEmpleados.getTableHeader();
         header.setDefaultRenderer(new DefaultTableCellRenderer() {
@@ -76,7 +102,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         tcm.removeColumn(col);
 
         DatosEmpleados.Habilitar(escritorio, opcionesTipo, false);
-        inicializaComboAreasYCargos();        
+        //inicializaComboAreasYCargos();        
         rbPartime.setSelected(true);
         DatosEmpleados.Listar(modelo);
 
@@ -84,25 +110,28 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         tblEmpleados.setCellSelectionEnabled(false);
         // Habilitar la seleccion de filas
         tblEmpleados.setRowSelectionAllowed(true);
+        
+        
     }
     
     private void inicializaComboAreasYCargos() {
-    // Cargar áreas
-    List<Area> listaAreas = DatosEmpleados.listaAreas(); 
-    DefaultComboBoxModel<Area> modeloAreas = new DefaultComboBoxModel<>();
-    for (Area a : listaAreas) {
-        modeloAreas.addElement(a);
+        // Cargar áreas
+        
+        List<Area> listaAreas = DatosEmpleados.listaAreas(); 
+        DefaultComboBoxModel<Area> modeloAreas = new DefaultComboBoxModel<>();
+        for (Area a : listaAreas) {
+            modeloAreas.addElement(a);
+        }
+        cboArea.setModel(modeloAreas); 
+        
+        // Cargar cargos
+        List<Cargo> listaCargos = DatosEmpleados.listaCargo(); 
+        DefaultComboBoxModel<Cargo> modeloCargos = new DefaultComboBoxModel<>();
+        for (Cargo c : listaCargos) {
+            modeloCargos.addElement(c);
+        }
+        cboCargo.setModel(modeloCargos);
     }
-    cboArea.setModel(modeloAreas); 
-
-    // Cargar cargos
-    List<Cargo> listaCargos = DatosEmpleados.listaCargo(); 
-    DefaultComboBoxModel<Cargo> modeloCargos = new DefaultComboBoxModel<>();
-    for (Cargo c : listaCargos) {
-        modeloCargos.addElement(c);
-    }
-    cboCargo.setModel(modeloCargos);
-}
 
 
     /**
@@ -167,6 +196,23 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("EMPLEADOS");
         setPreferredSize(new java.awt.Dimension(1086, 640));
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
+            }
+        });
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
         btnNuevo.setName("nuevo"); // NOI18N
@@ -256,6 +302,11 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         cboCargo.setNextFocusableComponent(rbPartime);
 
         cboArea.setNextFocusableComponent(cboCargo);
+        cboArea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboAreaActionPerformed(evt);
+            }
+        });
 
         txtDirec.setNextFocusableComponent(cboArea);
         txtDirec.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -568,7 +619,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(txtDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -609,13 +660,17 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         // que esta en el button group
         JComboBox[] combos = {cboArea, cboCargo};
         DatosEmpleados.Editar(escritorio, tblEmpleados, campos, combos, opcionesTipo);
-
+        
         esNuevo = false; // Indicamos que no sera un nuevo registro
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // Eliminamos el registro seleccionado y bloqueamos los campos
-        DatosEmpleados.Eliminar(tblEmpleados);
+        boolean respuesta = Utilitario.MostrarMensajePregunta("¿Desea elminar el registro?", Utilitario.TipoMensaje.pregunta);
+        if(respuesta == true){
+            DatosEmpleados.Eliminar(tblEmpleados);
+        }
+        //actualizar la lista del formulario padre
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -636,6 +691,16 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         empleado.setIdCargo(Integer.parseInt(DatosEmpleados.CapturarCargo(cboCargo)));
         empleado.setIdTipo(Integer.parseInt(DatosEmpleados.CapturarTipoEmpleado(opcionesTipo)));
 
+        //obtneer el id seleccion del combo
+         int indice = 0;
+         indice = this.cboArea.getSelectedIndex();
+         int idArea = this.cboArea.getModel().getElementAt(indice).getIdArea();
+        empleado.setIdArea(idArea);
+        
+        indice = 0;
+         indice = this.cboCargo.getSelectedIndex();
+        int idCargo = this.cboCargo.getModel().getElementAt(indice).getIdCargo();
+        empleado.setIdCargo(idCargo);
         // Insertar o actualizar según sea el caso
         if (esNuevo) {
             DatosEmpleados.Insertar(empleado, tblEmpleados, cboArea, cboCargo);
@@ -646,9 +711,13 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
 
         // Limpiar y deshabilitar el formulario
         DatosEmpleados.Limpiar(escritorio, rbPartime);
+        //deshabilita los controles del formulario
         DatosEmpleados.Habilitar(escritorio, opcionesTipo, false);
         tblEmpleados.clearSelection();
         tblEmpleados.setRowSelectionAllowed(true);
+        
+        //actualizar la grilla del fromulario frmListaEmpleado
+        
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -787,6 +856,31 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
     private void rbPracticanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbPracticanteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_rbPracticanteActionPerformed
+
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+        //validar si trae registro desde el formulario principal
+        if(this.estadoProceso == estadoProceso.NUEVO){
+            registro = null;
+        }else if(this.estadoProceso == estadoProceso.EDITAR){
+            inicializaComboAreasYCargos();
+            ObtenerDatos();                        
+        }
+        this.tblEmpleados.setVisible(false);
+        this.jScrollPane1.setVisible(false);
+//        if(registro != null){
+//            ObtenerDatos();
+//            
+//        }
+    }//GEN-LAST:event_formInternalFrameOpened
+
+    private void cboAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboAreaActionPerformed
+        if(this.cboArea.getSelectedIndex()>-1){
+            int indice = this.cboArea.getSelectedIndex();
+            Area registro = this.cboArea.getModel().getElementAt(indice);
+            System.err.println("Area valor id:" + registro.getIdArea());
+        }
+        
+    }//GEN-LAST:event_cboAreaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btnCancelar;

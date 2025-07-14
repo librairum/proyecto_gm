@@ -2,22 +2,22 @@ package proyecto_gm.Area;
 
 public class Area {
     //Atributos
-    String idArea;  
+    int idArea;  
     String descripcionArea;
 
     public Area() {   
     }
      
-    public Area(String idArea, String descripcionArea) {
+    public Area(int idArea, String descripcionArea) {
         this.idArea = idArea;
         this.descripcionArea = descripcionArea;
     }
     
-    public String getIdArea() {
+    public int getIdArea() {
         return idArea;
     }
 
-    public void setIdArea(String idArea) {
+    public void setIdArea(int idArea) {
         this.idArea = idArea;
     }
     

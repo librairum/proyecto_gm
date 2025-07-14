@@ -31,6 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import proyecto_gm.Area.Area;
 import proyecto_gm.Cargo.Cargo;
 import proyecto_gm.ConexionBD;
+import proyecto_gm.Utilitario;
 
 /**
  *
@@ -87,7 +88,7 @@ public class DatosEmpleados {
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL listar_areas() }")) {
             ResultSet rs = cstmt.executeQuery();
             while (rs.next()) {
-                String id = rs.getString("IdArea");
+                int id = rs.getInt("IdArea");
                 String descripcion = rs.getString("descripcion");
                 lista.add(new Area(id, descripcion));
             }
@@ -150,18 +151,20 @@ public class DatosEmpleados {
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 Object[] row = new Object[]{
-                    rs.getString("Id"),
-                    rs.getString("Apellidos"),
-                    rs.getString("Nombres"),
-                    rs.getString("FechaNacimiento"),
-                    rs.getString("Correo"),
-                    rs.getString("Dni"),
-                    rs.getString("Celular"),
-                    rs.getString("Distrito"),
-                    rs.getString("Direccion"),
-                    rs.getString("Area"),
-                    rs.getString("Cargo"),
-                    rs.getString("TipoEmpleado")
+                    rs.getString("Id"), // 0
+                    rs.getString("Apellidos"), // 1
+                    rs.getString("Nombres"), // 2
+                    rs.getString("FechaNacimiento"), //3
+                    rs.getString("Correo"), //4
+                    rs.getString("Dni"), // 5
+                    rs.getString("Celular"), // 6
+                    rs.getString("Distrito"), // 7
+                    rs.getString("Direccion"), // 8
+                    rs.getString("IdArea"), // 9
+                    rs.getString("Area"), // 10
+                    rs.getString("IdCargo"), //11
+                    rs.getString("Cargo"), // 12 
+                    rs.getString("TipoEmpleado") // 13
                 };
                 modelo.addRow(row);
             }
@@ -206,7 +209,98 @@ public class DatosEmpleados {
         }
         return idTipoEmpleado;
     }
+    //insertar 13/07/2025
+    public static void Insertar(Empleados empleado){
+        
+        CallableStatement cstmt = null;
+        try{
+            // Preparar la llamada al procedimiento almacenado
+            cstmt = conn.prepareCall("{ CALL insertar_datos_empleado(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
 
+            // Extraer los datos del objeto empleado
+            String codigoEmpleado = empleado.getId();
+            int idEmpleado = Integer.parseInt(codigoEmpleado.replace("E", ""));
+            // Setear los parámetros para el procedimiento
+            cstmt.setInt(1, idEmpleado);
+            cstmt.setString(2, empleado.getApellidos());
+            cstmt.setString(3, empleado.getNombres());
+            cstmt.setString(4, empleado.getfNacimiento());
+            cstmt.setString(5, empleado.getCorreo());
+            cstmt.setString(6, empleado.getDni());
+            cstmt.setString(7, empleado.getCelular());
+            cstmt.setString(8, empleado.getDistrito());
+            cstmt.setString(9, empleado.getDireccion());
+            cstmt.setInt(10, empleado.getIdArea());  // Usar el ID de Área
+            cstmt.setInt(11, empleado.getIdCargo()); // Usar el ID de Cargo
+            cstmt.setInt(12, empleado.getIdTipo() ); // id tipo empleado
+
+            // Ejecutar la inserción
+            cstmt.execute();
+             Utilitario.MostrarMensaje("Insercion exitosa", Utilitario.TipoMensaje.informativo);
+         } catch (SQLException e) {
+             Utilitario.MostrarMensaje("Error "+e.getMessage(), Utilitario.TipoMensaje.error);
+            
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    Utilitario.MostrarMensaje("Error " + e.getMessage(), Utilitario.TipoMensaje.error);
+                }
+            }
+        }
+    }
+    public static void Eliminar(String idEmpleado ){
+        CallableStatement cstmt = null;
+        try{
+         cstmt = conn.prepareCall("{ CALL eliminar_empleados(?) }");
+                    cstmt.setString(1, idEmpleado);
+                    cstmt.execute();
+        }catch(SQLException ex){
+            Utilitario.MostrarMensaje("Error al eliminar "+ex.getMessage(), Utilitario.TipoMensaje.error);
+        }
+    }
+    public static void Actualizar(Empleados empleado){
+        CallableStatement cstmt = null;
+        try {
+            cstmt = conn.prepareCall("{ CALL actualizar_datos_empleado(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+            cstmt.setString(1, empleado.getId());
+            cstmt.setString(2, empleado.getApellidos());
+            cstmt.setString(3, empleado.getNombres());
+            cstmt.setString(4, empleado.getfNacimiento());
+            cstmt.setString(5, empleado.getCorreo());
+            cstmt.setString(6, empleado.getDni());
+            cstmt.setString(7, empleado.getCelular());
+            cstmt.setString(8, empleado.getDistrito());
+            cstmt.setString(9, empleado.getDireccion());
+            cstmt.setInt(10, empleado.getIdArea());
+            cstmt.setInt(11, empleado.getIdCargo());
+            cstmt.setInt(12, empleado.getIdTipo());
+
+            cstmt.execute(); // se actualiza los datos en la BD
+
+            // Mostrar mensaje de éxito
+            //JOptionPane.showMessageDialog(null, "Registro actualizado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            Utilitario.MostrarMensaje("Actualizacion exitos", Utilitario.TipoMensaje.informativo);
+            // Actualizamos la tabla
+//            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+//            modelo.setRowCount(0);
+//            DatosEmpleados.Listar(modelo);
+
+        } catch (SQLException e) {
+            //JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            Utilitario.MostrarMensaje("Error:"+e.getMessage(), Utilitario.TipoMensaje.informativo);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    //JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    Utilitario.MostrarMensaje("Error:"+e.getMessage(), Utilitario.TipoMensaje.informativo);
+                }
+            }
+        }
+    }
     // Insertar datos
     public static void Insertar(Empleados empleado, JTable tabla, JComboBox<Area> cboArea, JComboBox<Cargo> cboCargo) {
         CallableStatement cstmt = null;
@@ -264,7 +358,8 @@ public class DatosEmpleados {
         }
     }
 
-    public static void Editar(Container contenedor, JTable tabla, JTextField[] camposTexto, JComboBox[] combos, ButtonGroup grupoBotones) {
+    public static void Editar(Container contenedor, JTable tabla, 
+            JTextField[] camposTexto, JComboBox[] combos, ButtonGroup grupoBotones) {
         // Obtener la fila seleccionada
         int fila = tabla.getSelectedRow();
         if (fila >= 0) {
@@ -305,6 +400,8 @@ public class DatosEmpleados {
     }
     // Actualizar datos
 
+    
+    
     public static void Actualizar(Empleados empleados, JTable tabla) {
         CallableStatement cstmt = null;
         try {
@@ -353,8 +450,13 @@ public class DatosEmpleados {
             int fila = tabla.getSelectedRow();
 
             if (fila >= 0) {
+                
                 String[] options = {"Sí", "No", "Cancelar"};
-                int opcion = JOptionPane.showOptionDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
+                int opcion = JOptionPane.showOptionDialog(null,
+                        "¿Está seguro de que quiere eliminar la fila seleccionada?", 
+                        "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.QUESTION_MESSAGE, null, 
+                        options, options[2]);
                 if (opcion == JOptionPane.YES_OPTION) {
                     // Obtener los datos de fila seleccionada
                     String id = tabla.getModel().getValueAt(fila, 0).toString(); //Se asume que el ID se encuentra en la primera columna

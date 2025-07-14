@@ -4,6 +4,7 @@
  */
 package proyecto_gm.Comunicacion;
 
+import proyecto_gm.Utilitario;
 import com.mysql.cj.protocol.Resultset;
 import java.sql.*;
 
@@ -20,7 +21,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.ConexionBD;
 import proyecto_gm.proyectos.Proyectos;
-
+import proyecto_gm.Utilitario;
 
 /**
  *
@@ -37,6 +38,7 @@ public class DatosComunicacion {
     static boolean Validar(Comunicacion entidad) {
         boolean estado = true;
         if (entidad.getNombreProyecto().equals("")) {
+            
             Utilitario.MostrarMensaje("Ingresar nombre de proeyecto", Utilitario.TipoMensaje.alerta);
             return false;
         }

@@ -4,6 +4,9 @@
  */
 package proyecto_gm.Empleado;
 
+import proyecto_gm.Area.Area;
+import proyecto_gm.Cargo.Cargo;
+
 /**
  *
  * @author jeanv
@@ -12,6 +15,8 @@ public class Empleados {
 
     private String id, apellidos, nombres, fNacimiento, correo, dni, celular, distrito, direccion;
     private int idArea, idCargo,idTipo;
+    private Cargo cargo;
+    private Area area;
     // Constructor
     public Empleados() {
         // Constructor vacio
@@ -113,9 +118,38 @@ public class Empleados {
         this.idTipo = idTipo;
     }
 
+    
     @Override
     public String toString() {
         return nombres + " " + apellidos;
+    }
+
+    /**
+     * @return the cargo
+     */
+    public Cargo getCargo() {
+        return cargo;
+    }
+
+    /**
+     * @param cargo the cargo to set
+     */
+    public void setCargo(Cargo cargo) {
+        this.cargo = cargo;
+    }
+
+    /**
+     * @return the area
+     */
+    public Area getArea() {
+        return area;
+    }
+
+    /**
+     * @param area the area to set
+     */
+    public void setArea(Area area) {
+        this.area = area;
     }
  
 }

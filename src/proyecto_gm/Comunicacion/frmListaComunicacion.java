@@ -4,6 +4,7 @@
  */
 package proyecto_gm.Comunicacion;
 
+import proyecto_gm.Utilitario;
 import com.mysql.cj.jdbc.CallableStatement;
 import com.sun.jdi.connect.spi.Connection;
 import java.awt.Color;
@@ -391,7 +392,7 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
             frmComunicacion frm = new frmComunicacion(panelPadre, Utilitario.EstadoProceso.EDITAR);
             //frm.setEsEdicion(true);
             frm.setVisible(true);
-            frm.setDatos(id, periodo, proyecto, tipo, codDoc, origen, destino,
+                frm.setDatos(id, periodo, proyecto, tipo, codDoc, origen, destino,
                     flujo, asunto, fecha, codDocResp, estado, enlace);
 
         } catch (Exception e) {

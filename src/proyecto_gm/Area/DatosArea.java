@@ -55,7 +55,7 @@ public class DatosArea {
 
     public static void ActualizarArea(Area are, JTable tabla) {
         try ( CallableStatement stmt = conn.prepareCall("{CALL actualizar_areas(?, ?)}")) {
-            stmt.setString(1, are.getIdArea()); // Usa IdArea
+            stmt.setInt(1, are.getIdArea()); // Usa IdArea
             stmt.setString(2, are.getDescripcionArea());
             stmt.executeUpdate();
 
