@@ -39,8 +39,8 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="428" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" pref="409" max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -56,7 +56,7 @@
         <Component class="javax.swing.JTable" name="tblEmpleados">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="14" rowCount="0">
+              <Table columnCount="15" rowCount="0">
                 <Column editable="false" title="ID" type="java.lang.Object"/>
                 <Column editable="false" title="APELLIDOS" type="java.lang.Object"/>
                 <Column editable="false" title="NOMBRES" type="java.lang.Object"/>
@@ -71,10 +71,16 @@
                 <Column editable="false" title="IdCargo" type="java.lang.Object"/>
                 <Column editable="false" title="CARGO" type="java.lang.Object"/>
                 <Column editable="false" title="TIP. EMPLEADO" type="java.lang.Object"/>
+                <Column editable="false" title="IdTipoEmpleado" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
               <TableColumnModel selectionModel="0">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
                   <Editor/>
@@ -160,6 +166,9 @@
               <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="12"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
@@ -182,15 +191,18 @@
                   <Component id="btnEditar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnEliminar" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="btnRefrescar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="btnNuevo" alignment="1" max="32767" attributes="0"/>
+              <Component id="btnNuevo" alignment="0" pref="34" max="32767" attributes="0"/>
               <Component id="btnEditar" alignment="0" max="32767" attributes="0"/>
-              <Component id="btnEliminar" alignment="0" min="-2" max="-2" attributes="0"/>
+              <Component id="btnEliminar" alignment="0" max="32767" attributes="0"/>
+              <Component id="btnRefrescar" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -200,6 +212,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/iconos/eliminar.png"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Eliminar"/>
             <Property name="name" type="java.lang.String" value="eliminar" noResource="true"/>
           </Properties>
           <Events>
@@ -214,6 +227,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/iconos/editar.png"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Editar"/>
             <Property name="name" type="java.lang.String" value="editar" noResource="true"/>
           </Properties>
           <Events>
@@ -228,6 +242,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/iconos/agregar.png"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Nuevo"/>
             <Property name="name" type="java.lang.String" value="nuevo" noResource="true"/>
           </Properties>
           <Events>
@@ -236,6 +251,17 @@
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
           </AuxValues>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnRefrescar">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/iconos/icons8-refrescar-20.png"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Refrescar"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRefrescarActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -257,34 +283,23 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="txtBusqueda" min="-2" pref="412" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="btnBuscar" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="btnRefrescar" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="cboCargo" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="cboArea" min="-2" max="-2" attributes="0"/>
+                  <Component id="cboEstado" min="-2" pref="108" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="btnBuscar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                  <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cboArea" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="txtBusqueda" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnBuscar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cboCargo" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnRefrescar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cboEstado" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -310,41 +325,25 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Cargo"/>
+            <Property name="text" type="java.lang.String" value="Estado:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="cboCargo">
+        <Component class="javax.swing.JComboBox" name="cboEstado">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
+              <StringArray count="3">
+                <StringItem index="0" value="Todos"/>
+                <StringItem index="1" value="Activo"/>
+                <StringItem index="2" value="Inactivo"/>
+              </StringArray>
             </Property>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Cargo&gt;"/>
-          </AuxValues>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel3">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Area"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JComboBox" name="cboArea">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
-            </Property>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Area&gt;"/>
-          </AuxValues>
-        </Component>
-        <Component class="javax.swing.JButton" name="btnRefrescar">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Resfrescar"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRefrescarActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboEstadoActionPerformed"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

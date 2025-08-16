@@ -141,14 +141,19 @@ public class DatosEmpleados {
         return idCargo;
     }
 
+    
     // Listar datos
-    public static void Listar(DefaultTableModel modelo) {
-        PreparedStatement pstmt = null;
+    public static void Listar(DefaultTableModel modelo, String estado) {
+        modelo.setRowCount(0);
+        CallableStatement cstmt = null;
         ResultSet rs = null;
         try {
-            pstmt = conn.prepareStatement("CALL listar_emple()");
+            cstmt = conn.prepareCall("{ CALL listar_emple(?)}");
+            
+            cstmt.setString(1, estado);
+            
             // 
-            rs = pstmt.executeQuery();
+            rs = cstmt.executeQuery();
             while (rs.next()) {
                 Object[] row = new Object[]{
                     rs.getString("Id"), // 0
@@ -164,7 +169,8 @@ public class DatosEmpleados {
                     rs.getString("Area"), // 10
                     rs.getString("IdCargo"), //11
                     rs.getString("Cargo"), // 12 
-                    rs.getString("TipoEmpleado") // 13
+                    rs.getString("TipoEmpleado"),
+                    rs.getString("IdTipoEmpleado")// 13
                 };
                 modelo.addRow(row);
             }
@@ -175,13 +181,17 @@ public class DatosEmpleados {
                 rs.close();
             } catch (SQLException e) {
                 /* manejar error */ }
-            if (pstmt != null) try {
-                pstmt.close();
+            if (cstmt != null) try {
+                cstmt.close();
             } catch (SQLException e) {
                 /* manejar error */ }
         }
     }
-
+    
+    public static void Listar(DefaultTableModel modelo){
+        
+            Listar(modelo, "T");
+    }
     // Método para capturar el ID del tipo de empleado desde los RadioButtons
     public static String CapturarTipoEmpleado(ButtonGroup opciones) {
         String idTipoEmpleado = "";
@@ -302,7 +312,7 @@ public class DatosEmpleados {
         }
     }
     // Insertar datos
-    public static void Insertar(Empleados empleado, JTable tabla, JComboBox<Area> cboArea, JComboBox<Cargo> cboCargo) {
+    public static void Insertar(Empleados empleado,  JComboBox<Area> cboArea, JComboBox<Cargo> cboCargo) {
         CallableStatement cstmt = null;
         try {
             // Obtener los IDs de los combo boxes de Área y Cargo
@@ -334,16 +344,16 @@ public class DatosEmpleados {
             cstmt.setString(9, empleado.getDireccion());
             cstmt.setInt(10, Integer.parseInt(idArea));  // Usar el ID de Área
             cstmt.setInt(11, Integer.parseInt(idCargo)); // Usar el ID de Cargo
-            cstmt.setInt(12, Integer.parseInt(idCargo));
+            cstmt.setInt(12, empleado.getIdTipo());
 
             // Ejecutar la inserción
             cstmt.execute();
             JOptionPane.showMessageDialog(null, "Empleado registrado satisfactoriamente.", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
 
             // Actualizamos la tabla
-            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            modelo.setRowCount(0);
-            DatosEmpleados.Listar(modelo);
+//            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+//            modelo.setRowCount(0);
+//            DatosEmpleados.Listar(modelo);
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -357,90 +367,61 @@ public class DatosEmpleados {
             }
         }
     }
-
-    public static void Editar(Container contenedor, JTable tabla, 
-            JTextField[] camposTexto, JComboBox[] combos, ButtonGroup grupoBotones) {
-        // Obtener la fila seleccionada
-        int fila = tabla.getSelectedRow();
-        if (fila >= 0) {
-            DatosEmpleados.Habilitar(contenedor, grupoBotones, true);
-            tabla.clearSelection();
-            tabla.setRowSelectionAllowed(false);
-
-            // Llenar los campos de texto con los valores de la fila
-            for (int i = 0; i < camposTexto.length; i++) {
-                Object valor = tabla.getModel().getValueAt(fila, i);
-                String dato = (valor != null) ? valor.toString() : "";
-                camposTexto[i].setText(dato);
-            }
-            camposTexto[0].setEnabled(false);
-            camposTexto[1].requestFocus();
-
-            // Seleccionar las opciones de los combos
-            for (int i = 0; i < combos.length; i++) {
-                combos[i].setSelectedItem(tabla.getModel().getValueAt(fila, camposTexto.length + i).toString());
-            }
-
-            // Obtener el valor del tipo de empleado desde la tabla
-            Object tipoEmpleadoObj = tabla.getModel().getValueAt(fila, camposTexto.length + combos.length);
-            String tipoEmpleado = (tipoEmpleadoObj != null) ? tipoEmpleadoObj.toString().trim() : "";
-
-            // Seleccionar el radio button correspondiente
-            for (Enumeration<AbstractButton> botones = grupoBotones.getElements(); botones.hasMoreElements();) {
-                AbstractButton boton = botones.nextElement();
-                // Comparar ignorando mayúsculas/minúsculas y espacios
-                if (boton.getText().trim().equalsIgnoreCase(tipoEmpleado)) {
-                    boton.setSelected(true);
-                    break;
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
+    //<editor-fold defaultstate="collapsed" desc="TablaDatos"> 
+    public static void cargarTabla(JTable tabla, String estado){
+        DefaultTableModel  modelo = (DefaultTableModel) tabla.getModel();
+        //limpiar
+        modelo.setRowCount(0);
+        //refresca el modelo con datos actualizado
+        DatosEmpleados.Listar(modelo, estado);
     }
+
+    // </editor-fold>
+//    public static void Editar(Container contenedor,  
+//            JTextField[] camposTexto, JComboBox[] combos, ButtonGroup grupoBotones) {
+//        // Obtener la fila seleccionada
+//        int fila = tabla.getSelectedRow();
+//        if (fila >= 0) {
+//            DatosEmpleados.Habilitar(contenedor, grupoBotones, true);
+//            tabla.clearSelection();
+//            tabla.setRowSelectionAllowed(false);
+//
+//            // Llenar los campos de texto con los valores de la fila
+//            for (int i = 0; i < camposTexto.length; i++) {
+//                Object valor = tabla.getModel().getValueAt(fila, i);
+//                String dato = (valor != null) ? valor.toString() : "";
+//                camposTexto[i].setText(dato);
+//            }
+//            camposTexto[0].setEnabled(false);
+//            camposTexto[1].requestFocus();
+//
+//            // Seleccionar las opciones de los combos
+//            for (int i = 0; i < combos.length; i++) {
+//                combos[i].setSelectedItem(tabla.getModel().getValueAt(fila, camposTexto.length + i).toString());
+//            }
+//
+//            // Obtener el valor del tipo de empleado desde la tabla
+//            Object tipoEmpleadoObj = tabla.getModel().getValueAt(fila, camposTexto.length + combos.length);
+//            String tipoEmpleado = (tipoEmpleadoObj != null) ? tipoEmpleadoObj.toString().trim() : "";
+//
+//            // Seleccionar el radio button correspondiente
+//            for (Enumeration<AbstractButton> botones = grupoBotones.getElements(); botones.hasMoreElements();) {
+//                AbstractButton boton = botones.nextElement();
+//                // Comparar ignorando mayúsculas/minúsculas y espacios
+//                if (boton.getText().trim().equalsIgnoreCase(tipoEmpleado)) {
+//                    boton.setSelected(true);
+//                    break;
+//                }
+//            }
+//        } else {
+//            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+//        }
+//    }
     // Actualizar datos
 
     
     
-    public static void Actualizar(Empleados empleados, JTable tabla) {
-        CallableStatement cstmt = null;
-        try {
-            cstmt = conn.prepareCall("{ CALL actualizar_datos_empleado(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
-            cstmt.setString(1, empleados.getId());
-            cstmt.setString(2, empleados.getApellidos());
-            cstmt.setString(3, empleados.getNombres());
-            cstmt.setString(4, empleados.getfNacimiento());
-            cstmt.setString(5, empleados.getCorreo());
-            cstmt.setString(6, empleados.getDni());
-            cstmt.setString(7, empleados.getCelular());
-            cstmt.setString(8, empleados.getDistrito());
-            cstmt.setString(9, empleados.getDireccion());
-            cstmt.setInt(10, empleados.getIdArea());
-            cstmt.setInt(11, empleados.getIdCargo());
-            cstmt.setInt(12, empleados.getIdTipo());
 
-            cstmt.execute(); // se actualiza los datos en la BD
-
-            // Mostrar mensaje de éxito
-            JOptionPane.showMessageDialog(null, "Registro actualizado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
-            // Actualizamos la tabla
-            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            modelo.setRowCount(0);
-            DatosEmpleados.Listar(modelo);
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            if (cstmt != null) {
-                try {
-                    cstmt.close();
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        }
-    }
 
     // Eliminar datos
     public static void Eliminar(JTable tabla) {
@@ -469,7 +450,7 @@ public class DatosEmpleados {
                     // Actualizar el JTable
                     DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
                     modelo.setRowCount(0);
-                    DatosEmpleados.Listar(modelo);
+                    //DatosEmpleados.Listar(modelo);
 
                     // JOptionPane.showMessageDialog(null, "La fila ha sido eliminada exitosamente");                
                 } else {

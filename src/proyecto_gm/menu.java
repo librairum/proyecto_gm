@@ -37,6 +37,8 @@ import javax.swing.JLabel;
 import org.apache.poi.hssf.record.TextObjectRecord;
 import proyecto_gm.Asistencias.frmAsistenciaImagen;
 import proyecto_gm.Empleado.frmListaEmpleado;
+import proyecto_gm.Proveedores.frmListaProveedores;
+import proyecto_gm.seguridad.frmUsuario;
 
 public class menu extends javax.swing.JFrame {
 
@@ -66,7 +68,7 @@ public class menu extends javax.swing.JFrame {
         this.menuRecursosHumanos.setVisible(false);
         this.menuTesoreria.setVisible(false);
         this.menuConfiguracion.setVisible(false);
-        this.menuSeguridad.setVisible(false);
+        //this.menuSeguridad.setVisible(false);
         
         this.subMenuCargos.setVisible(false);
         this.subMenuAreas.setVisible(false);
@@ -335,6 +337,7 @@ public class menu extends javax.swing.JFrame {
         subMenuDepartamentos = new javax.swing.JMenuItem();
         subMenuCredencial = new javax.swing.JMenuItem();
         menuSeguridad = new javax.swing.JMenu();
+        subMenuUsuario = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -650,6 +653,15 @@ public class menu extends javax.swing.JFrame {
         jMenuBar1.add(menuConfiguracion);
 
         menuSeguridad.setText("Seguridad");
+
+        subMenuUsuario.setText("Usuario");
+        subMenuUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuUsuarioActionPerformed(evt);
+            }
+        });
+        menuSeguridad.add(subMenuUsuario);
+
         jMenuBar1.add(menuSeguridad);
 
         setJMenuBar(jMenuBar1);
@@ -789,8 +801,10 @@ public class menu extends javax.swing.JFrame {
         }
         
         private void Abrirproveedores(){
-             frmProveedores verventana = new frmProveedores();
+            frmListaProveedores verventana = new frmListaProveedores(escritorio);
             escritorio.add(verventana);
+             //frmProveedores verventana = new frmProveedores();
+            //escritorio.add(verventana);
         
             verventana.show();
         }
@@ -836,6 +850,12 @@ public class menu extends javax.swing.JFrame {
         }
         private void AbrirAsistenciaImagen(){
             proyecto_gm.Asistencias.frmAsistenciaImagen verventana = new frmAsistenciaImagen();
+            escritorio.add(verventana);
+            verventana.show();
+        }
+        
+        private void AbrirUsuario(){
+            proyecto_gm.seguridad.frmUsuario verventana = new frmUsuario();
             escritorio.add(verventana);
             verventana.show();
         }
@@ -978,6 +998,10 @@ public class menu extends javax.swing.JFrame {
         AbrirAsistenciaImagen();
     }//GEN-LAST:event_subMenuRelojActividadActionPerformed
 
+    private void subMenuUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuUsuarioActionPerformed
+        AbrirUsuario();
+    }//GEN-LAST:event_subMenuUsuarioActionPerformed
+
    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1051,6 +1075,7 @@ public class menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem subMenuTipoDocumento;
     private javax.swing.JMenuItem subMenuTipoEmpleado;
     private javax.swing.JMenuItem subMenuTransferencia;
+    private javax.swing.JMenuItem subMenuUsuario;
     private javax.swing.JMenuItem subMenuViaticos;
     private javax.swing.JMenuItem submenuAsistencia;
     private javax.swing.JMenuItem submenuContratoProyecto;

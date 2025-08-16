@@ -35,7 +35,7 @@ import proyecto_gm.Utilitario;
  */
 public class frmListaEmpleado extends javax.swing.JInternalFrame {
 
-    private JDesktopPane panelPadre;
+    static JDesktopPane panelPadre;
     /**
      * Creates new form frmEmpleadoLista
      */
@@ -59,15 +59,13 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
         btnEliminar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnNuevo = new javax.swing.JButton();
+        btnRefrescar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtBusqueda = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        cboCargo = new javax.swing.JComboBox<>();
-        jLabel3 = new javax.swing.JLabel();
-        cboArea = new javax.swing.JComboBox<>();
-        btnRefrescar = new javax.swing.JButton();
+        cboEstado = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -95,11 +93,11 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "ID", "APELLIDOS", "NOMBRES", "FEC. NACIMIENTO", "CORREO", "DNI", "CELULAR", "DISTRITO", "DIRECCIÓN", "IdArea", "ÁREA", "IdCargo", "CARGO", "TIP. EMPLEADO"
+                "ID", "APELLIDOS", "NOMBRES", "FEC. NACIMIENTO", "CORREO", "DNI", "CELULAR", "DISTRITO", "DIRECCIÓN", "IdArea", "ÁREA", "IdCargo", "CARGO", "TIP. EMPLEADO", "IdTipoEmpleado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -117,6 +115,7 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/eliminar.png"))); // NOI18N
+        btnEliminar.setToolTipText("Eliminar");
         btnEliminar.setName("eliminar"); // NOI18N
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -125,6 +124,7 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
         });
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
+        btnEditar.setToolTipText("Editar");
         btnEditar.setName("editar"); // NOI18N
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -133,10 +133,19 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
         });
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
+        btnNuevo.setToolTipText("Nuevo");
         btnNuevo.setName("nuevo"); // NOI18N
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoActionPerformed(evt);
+            }
+        });
+
+        btnRefrescar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/icons8-refrescar-20.png"))); // NOI18N
+        btnRefrescar.setToolTipText("Refrescar");
+        btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefrescarActionPerformed(evt);
             }
         });
 
@@ -151,13 +160,16 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
                 .addComponent(btnEditar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEliminar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnRefrescar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnNuevo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
             .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(btnEliminar)
+            .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnRefrescar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -177,14 +189,12 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel2.setText("Cargo");
+        jLabel2.setText("Estado:");
 
-        jLabel3.setText("Area");
-
-        btnRefrescar.setText("Resfrescar");
-        btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
+        cboEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Activo", "Inactivo" }));
+        cboEstado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRefrescarActionPerformed(evt);
+                cboEstadoActionPerformed(evt);
             }
         });
 
@@ -198,31 +208,21 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnBuscar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnRefrescar)
-                .addGap(57, 57, 57)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cboCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cboArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnBuscar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jLabel3)
-                .addComponent(cboArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(jLabel1)
                 .addComponent(btnBuscar)
                 .addComponent(jLabel2)
-                .addComponent(cboCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(btnRefrescar))
+                .addComponent(cboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -240,7 +240,7 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -281,6 +281,7 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
         String idCargo =Utilitario.LeerValortexto(modelo, indiceSeleccionadoModelo, 11);
         String cargo =Utilitario.LeerValortexto(modelo, indiceSeleccionadoModelo, 12);
         String tipEmpleado =Utilitario.LeerValortexto(modelo, indiceSeleccionadoModelo, 13);
+        String idtipEmpleado =Utilitario.LeerValortexto(modelo, indiceSeleccionadoModelo, 14);
 
 
         Empleados registro = new Empleados();
@@ -301,6 +302,8 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
         //id area
         registro.setIdArea(Integer.parseInt(idArea));
         registro.setArea(new Area(Integer.parseInt(idArea) , area));
+        
+        registro.setIdTipo(Integer.parseInt(idtipEmpleado));
         //nombre de area
         
         frmEmpleado frm = new frmEmpleado(registro,Utilitario.EstadoProceso.EDITAR);
@@ -351,23 +354,6 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
                 // Considera notificar al usuario
             }
             
-                   // 2. Filtro por Cargo (ComboBox)
-                String cargoSeleccionado = ((Cargo) this.cboCargo.getSelectedItem()).getDescripcion();
-                if (cargoSeleccionado != null) {
-                //if (cargoSeleccionado != null && !cargoSeleccionado.equals("Todos")) {
-                    // Columna Cargo es la 10
-                    filters.add(RowFilter.regexFilter("(?i)" + Pattern.quote(cargoSeleccionado), 12));
-                }
-
-                // 3. Filtro por Área (ComboBox)
-                String areaSeleccionada = ((Area) this.cboArea.getSelectedItem()).getDescripcionArea();
-                System.err.println("Area:" + areaSeleccionada);
-                
-                //if (areaSeleccionada != null && !areaSeleccionada.equals("Todos")) {
-                if (areaSeleccionada != null ) {
-                    // Columna Área es la 9
-                    filters.add(RowFilter.regexFilter("(?i)" + Pattern.quote(areaSeleccionada), 10));
-                }
 
                 // Aplicar todos los filtros combinados con AND
                 if (filters.isEmpty()) {
@@ -425,7 +411,7 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
         }
     //11 cargo Id
     }
-    private void Cargar(){
+    protected  void Cargar(){
     JTableHeader header = tblEmpleados.getTableHeader();
         header.setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
@@ -451,9 +437,12 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
 
         TableColumn colIdArea = tblEmpleados.getColumnModel().getColumn(9);
         TableColumn colIdCargo = tblEmpleados.getColumnModel().getColumn(11);
+        TableColumn colIdTipoEmpleado = tblEmpleados.getColumnModel().getColumn(14);
         TableColumnModel tcmModelo = tblEmpleados.getColumnModel();
         tcmModelo.removeColumn(colIdArea);
         tcmModelo.removeColumn(colIdCargo);
+        tcmModelo.removeColumn(colIdTipoEmpleado);
+       
          
         // Quitar la edicion de las celdas
         tblEmpleados.setCellSelectionEnabled(false);
@@ -463,51 +452,28 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
          
     }
     
-    private void inicializaComboAreasYCargos() {
-        // Cargar áreas
-        
-        List<Area> listaAreas = DatosEmpleados.listaAreas(); 
-        DefaultComboBoxModel<Area> modeloAreas = new DefaultComboBoxModel<>();
-        for (Area a : listaAreas) {
-            modeloAreas.addElement(a);
-        }
-        cboArea.setModel(modeloAreas); 
-        
-        // Cargar cargos
-        List<Cargo> listaCargos = DatosEmpleados.listaCargo(); 
-        DefaultComboBoxModel<Cargo> modeloCargos = new DefaultComboBoxModel<>();
-        for (Cargo c : listaCargos) {
-            modeloCargos.addElement(c);
-        }
-        cboCargo.setModel(modeloCargos);
+    static void CargarLista(){
+            DefaultTableModel modelo = (DefaultTableModel) tblEmpleados.getModel();       
+         DatosEmpleados.Listar(modelo);
     }
+    
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // Eliminamos el registro seleccionado y bloqueamos los campos
         if(this.tblEmpleados.getSelectedRowCount() == 0){
             Utilitario.MostrarMensaje("Debe seleccioanr registro a elminar ", Utilitario.TipoMensaje.alerta);
         }
         DatosEmpleados.Eliminar(tblEmpleados);
+        Cargar();
         
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
         Cargar();
-        cargarFiltroTabla();
-        inicializaComboAreasYCargos();
-        //String [] nombreColumnas = {"ID","APELLIDOS", "NOMBRES","FEC. NACIMIENTO",  "CORREO", "DNI"
-        //"CELULAR, DISTRITO, "DIRECCIÓN",ÁREA, CARGO , TIP. EMPLEADO
-        //Utilitario util = new Utilitario();
-        this.jLabel2.setVisible(false);
-        this.cboArea.setVisible(false);
-        this.jLabel3.setVisible(false);
-        this.cboCargo.setVisible(false);
-        
-                
+        cargarFiltroTabla();                             
     }//GEN-LAST:event_formInternalFrameOpened
    
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-         filtrar(txtBusqueda.getText());
-         //filtroCombinado();
+         filtrar(txtBusqueda.getText());                          
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void txtBusquedaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaKeyTyped
@@ -524,6 +490,25 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
         Cargar();
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
+    private void cboEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEstadoActionPerformed
+       
+        String nombreEstado = this.cboEstado.getSelectedItem().toString().toLowerCase();
+        
+        DefaultTableModel modelo = (DefaultTableModel) tblEmpleados.getModel();
+            switch (nombreEstado) {
+                case "activo":
+                    DatosEmpleados.Listar(modelo,"A");
+                    
+                    break;
+                case "inactivo":
+                    DatosEmpleados.Listar(modelo, "I");
+                    
+                default:
+                    DatosEmpleados.Listar(modelo);
+                    break;
+            }         
+    }//GEN-LAST:event_cboEstadoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
@@ -531,15 +516,13 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
     public static javax.swing.JButton btnEliminar;
     public static javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnRefrescar;
-    private javax.swing.JComboBox<Area> cboArea;
-    private javax.swing.JComboBox<Cargo> cboCargo;
+    private javax.swing.JComboBox<String> cboEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblEmpleados;
+    protected static javax.swing.JTable tblEmpleados;
     private javax.swing.JTextField txtBusqueda;
     // End of variables declaration//GEN-END:variables
 }

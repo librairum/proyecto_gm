@@ -11,8 +11,10 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import proyecto_gm.InterfazBase.OperacionesBasicas;
+import proyecto_gm.Utilitario;
 
-public class frmCargo extends javax.swing.JInternalFrame {
+public class frmCargo extends javax.swing.JInternalFrame implements OperacionesBasicas {
 
     boolean esNuevo = false;
 
@@ -35,83 +37,55 @@ public class frmCargo extends javax.swing.JInternalFrame {
                 return this;
             }
         });
-        DefaultTableModel modelo = (DefaultTableModel) tblCargo.getModel();
+        
 
-        btnGuardar.setEnabled(true);
-        btnDeshacer.setEnabled(true);
-        DatosCargo.Habilitar(escritorio, false);
+        habilitarBotonesMantenimiento(true);
 
-        DatosCargo.Mostrar(modelo);
+        Cargar();
         tblCargo.setCellSelectionEnabled(false);
         tblCargo.setRowSelectionAllowed(true);
 
     }
-
+    private void Cargar(){
+        DefaultTableModel modelo = (DefaultTableModel) tblCargo.getModel();
+        DatosCargo.Mostrar(modelo);
+        
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        escritorio = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        txtCodigo = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtDescripcion = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
         btnAgregar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         btnDeshacer = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        txtDescripcion = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCargo = new javax.swing.JTable();
-        txtCodigo = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
 
         setClosable(true);
         setIconifiable(true);
         setTitle("CARGO");
+        setMaximumSize(new java.awt.Dimension(500, 312));
+        setMinimumSize(new java.awt.Dimension(500, 312));
+        setPreferredSize(new java.awt.Dimension(500, 312));
 
-        escritorio.setBackground(new java.awt.Color(255, 248, 239));
-
-        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
-        btnAgregar.setName("agregar"); // NOI18N
-        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarActionPerformed(evt);
-            }
-        });
-
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
-        btnEditar.setName("editar"); // NOI18N
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
-            }
-        });
-
-        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/eliminar.png"))); // NOI18N
-        btnEliminar.setName("eliminar"); // NOI18N
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
-
-        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
-        btnGuardar.setName("guardar"); // NOI18N
-        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
-            }
-        });
-
-        btnDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
-        btnDeshacer.setName("deshacer"); // NOI18N
-        btnDeshacer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeshacerActionPerformed(evt);
-            }
-        });
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel1.setText("Id:");
+
+        txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCodigoKeyTyped(evt);
+            }
+        });
 
         jLabel2.setText("Descripción:");
 
@@ -120,6 +94,120 @@ public class frmCargo extends javax.swing.JInternalFrame {
                 txtDescripcionActionPerformed(evt);
             }
         });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 473, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(18, 18, 18)
+                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jLabel2)
+                    .addGap(18, 18, 18)
+                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(4, 4, 4)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2)
+                        .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
+        btnAgregar.setMaximumSize(new java.awt.Dimension(40, 29));
+        btnAgregar.setMinimumSize(new java.awt.Dimension(40, 29));
+        btnAgregar.setName("agregar"); // NOI18N
+        btnAgregar.setPreferredSize(new java.awt.Dimension(30, 29));
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
+
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
+        btnEditar.setMaximumSize(new java.awt.Dimension(30, 29));
+        btnEditar.setMinimumSize(new java.awt.Dimension(30, 29));
+        btnEditar.setName("editar"); // NOI18N
+        btnEditar.setPreferredSize(new java.awt.Dimension(30, 29));
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/eliminar.png"))); // NOI18N
+        btnEliminar.setMaximumSize(new java.awt.Dimension(30, 29));
+        btnEliminar.setMinimumSize(new java.awt.Dimension(30, 29));
+        btnEliminar.setName("eliminar"); // NOI18N
+        btnEliminar.setPreferredSize(new java.awt.Dimension(30, 29));
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
+        btnGuardar.setMaximumSize(new java.awt.Dimension(30, 29));
+        btnGuardar.setMinimumSize(new java.awt.Dimension(30, 29));
+        btnGuardar.setName("guardar"); // NOI18N
+        btnGuardar.setPreferredSize(new java.awt.Dimension(30, 29));
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+
+        btnDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
+        btnDeshacer.setMaximumSize(new java.awt.Dimension(30, 29));
+        btnDeshacer.setMinimumSize(new java.awt.Dimension(30, 29));
+        btnDeshacer.setName("deshacer"); // NOI18N
+        btnDeshacer.setPreferredSize(new java.awt.Dimension(30, 29));
+        btnDeshacer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeshacerActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnDeshacer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(btnDeshacer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
 
         tblCargo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -139,102 +227,76 @@ public class frmCargo extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(tblCargo);
 
-        txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtCodigoKeyTyped(evt);
-            }
-        });
-
-        javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
-        escritorio.setLayout(escritorioLayout);
-        escritorioLayout.setHorizontalGroup(
-            escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(escritorioLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
-                    .addGroup(escritorioLayout.createSequentialGroup()
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(escritorioLayout.createSequentialGroup()
-                                .addComponent(btnAgregar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnEditar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnEliminar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnGuardar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnDeshacer))
-                            .addGroup(escritorioLayout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(57, 57, 57)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(28, Short.MAX_VALUE))
-        );
-        escritorioLayout.setVerticalGroup(
-            escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(escritorioLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnGuardar, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnEditar)
-                        .addComponent(btnAgregar))
-                    .addComponent(btnDeshacer, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(18, 18, 18)
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
-        );
-
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+//    void habilitarControles(boolean estado){
+//    
+//    }
+//    void habilitarBotonesMantenimiento(boolean estado){
+//    
+//    }
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        DatosCargo.Eliminar(tblCargo);
-        DatosCargo.Habilitar(escritorio, false);
+        //DatosCargo.Eliminar(tblCargo);
+        //selecionar id de la fila y columna seleccionad
+        boolean respuesta =  Utilitario.MostrarMensajePregunta("¿Dese eliminar el registro?", Utilitario.TipoMensaje.pregunta);
+        if(respuesta){
+            String id =  tblCargo.getValueAt(tblCargo.getSelectedRow(), 2).toString();
+            if(DatosCargo.Eliminar(id)){
+                Utilitario.MostrarMensaje("Elminacion exitosa", Utilitario.TipoMensaje.informativo);
 
+                tblCargo.clearSelection();
+                tblCargo.setRowSelectionAllowed(true);
+                Cargar();
+            }
+        }
+        
+//        DatosCargo.Habilitar(escritorio, false);
+        
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         JTextField[] cod = new JTextField[2];
         cod[0] = txtCodigo;
         cod[1] = txtDescripcion;
-        DatosCargo.Editar(escritorio, tblCargo, cod);
+//        DatosCargo.Editar(escritorio, tblCargo, cod);
+        habilitarBotonesMantenimiento(false);
         esNuevo = false;
+        
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        DatosCargo.Habilitar(escritorio, true);
+//        DatosCargo.Habilitar(escritorio, true);
 
         // No generar código manualmente porque IdCargo es auto_increment
         txtCodigo.setText("");
         txtCodigo.setEnabled(false);  // o podrías ocultarlo si quieres
 
         txtDescripcion.requestFocus();
+        habilitarBotonesMantenimiento(false);
         esNuevo = true;
         tblCargo.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnAgregarActionPerformed
@@ -244,53 +306,68 @@ public class frmCargo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtDescripcionActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
-        DatosCargo.Limpiar(escritorio);
-        DatosCargo.Habilitar(escritorio, false);
+//        DatosCargo.Limpiar(escritorio);
+//        DatosCargo.Habilitar(escritorio, false);
         tblCargo.clearSelection();
         tblCargo.setRowSelectionAllowed(true);
+        Cargar();
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        Cargo car = new Cargo();
+      
 
         // Para insertar, el IdCargo no se setea (queda 0)
         // Para actualizar, debe ser un número válido
-        if (!esNuevo) {
+        
             try {
-                car.setIdCargo(Integer.parseInt(txtCodigo.getText()));
+                
+                
+                Cargo car = new Cargo();
+                int codigo = Integer.parseInt(txtCodigo.getText());
+                car.setIdCargo(codigo);
+                
+                 String descripcion = txtDescripcion.getText().trim();
+                if (descripcion.isEmpty()) {
+                    //JOptionPane.showMessageDialog(null, "La descripción es obligatoria.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                    Utilitario.MostrarMensaje("La descripción es obligatoria.", Utilitario.TipoMensaje.alerta);
+                    txtDescripcion.requestFocus();
+                    return;
+                }
+                car.setDescripcion(descripcion);
+                
+                //operacion insertar o actualizaqr
+                if (esNuevo) {
+                        if (DatosCargo.Insertar(car)) {
+                            //JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+                            Utilitario.MostrarMensaje("Datos guardados correctamente", Utilitario.TipoMensaje.informativo);
+                            habilitarBotonesMantenimiento(true);
+                            //                DatosCargo.Limpiar(escritorio);
+                            //                DatosCargo.Habilitar(escritorio, false);
+                            tblCargo.clearSelection();
+                            tblCargo.setRowSelectionAllowed(true);
+                            Cargar();
+                        } else {
+                        //JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
+                            Utilitario.MostrarMensaje("Error al guardar los datos", Utilitario.TipoMensaje.error);
+                        }
+                }else{
+                    if(DatosCargo.Actualizar(car)) {
+                        Utilitario.MostrarMensaje("Datos actualizados correctamente", Utilitario.TipoMensaje.informativo);
+                        Cargar();
+                        habilitarBotonesMantenimiento(true);
+
+                        tblCargo.clearSelection();
+                        tblCargo.setRowSelectionAllowed(true);
+                        Cargar();
+                    }
+                }
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "El Id debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
+                Utilitario.MostrarMensaje("El codigo debe ser un numero", Utilitario.TipoMensaje.error);
+                
             }
-        }
+            
+        
 
-        String descripcion = txtDescripcion.getText().trim();
-        if (descripcion.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "La descripción es obligatoria.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            txtDescripcion.requestFocus();
-            return;
-        }
-
-        car.setDescripcion(descripcion);
-
-        if (esNuevo) {
-            if (DatosCargo.Insertar(car, tblCargo)) {
-                JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-                DatosCargo.Limpiar(escritorio);
-                DatosCargo.Habilitar(escritorio, false);
-                tblCargo.clearSelection();
-                tblCargo.setRowSelectionAllowed(true);
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            DatosCargo.Actualizar(car, tblCargo);
-            JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
-            DatosCargo.Limpiar(escritorio);
-            DatosCargo.Habilitar(escritorio, false);
-            tblCargo.clearSelection();
-            tblCargo.setRowSelectionAllowed(true);
-        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
@@ -308,13 +385,29 @@ public class frmCargo extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JPanel escritorio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTable tblCargo;
     public static javax.swing.JTextField txtCodigo;
     public static javax.swing.JTextField txtDescripcion;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void habilitarControles(boolean estado) {
+        txtCodigo.setEnabled(false);
+        txtDescripcion.setEnabled(estado);
+    }
+
+    @Override
+    public void habilitarBotonesMantenimiento(boolean estado) {
+        btnAgregar.setEnabled(estado);
+        btnEditar.setEnabled(estado);
+        btnEliminar.setEnabled(estado);
+        btnGuardar.setEnabled(!estado);
+        btnDeshacer.setEnabled(!estado);
+    }
 }
