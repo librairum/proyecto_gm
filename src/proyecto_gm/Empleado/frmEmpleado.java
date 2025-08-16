@@ -560,33 +560,28 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         
         //empleado.setIdArea(Integer.parseInt(DatosEmpleados.CapturarArea(cboArea)));
         //empleado.setIdCargo(Integer.parseInt(DatosEmpleados.CapturarCargo(cboCargo)));
-        empleado.setIdTipo(Integer.parseInt(DatosEmpleados.CapturarTipoEmpleado(opcionesTipo)));
-
+        //empleado.setIdTipo(Integer.parseInt(DatosEmpleados.CapturarTipoEmpleado(opcionesTipo)));
+            
         //obtneer el id seleccion del combo
-         int indice = 0;
-         //indice = this.cboArea.getSelectedIndex();
+         int indice = 0;           
+        //int idArea =  ((Area)this.cboArea.getModel().getSelectedItem()).getIdArea();
+        Area areaSeleccionada = (Area)this.cboArea.getModel().getSelectedItem();
+        empleado.setArea(areaSeleccionada);
+         //empleado.setIdArea(idArea); 
          
-         //int idArea = this.cboArea.getModel().getElementAt(indice).getIdArea();
-        int idArea =  ((Area)this.cboArea.getModel().getSelectedItem()).getIdArea();
-        //int idArea = regArea.getIdArea();
-         empleado.setIdArea(idArea);
-       
-       //this.cboArea.getSelectedItem()
-       
-//        Area a =  this.ObtenerIdCombo(cboArea, indice);
-//        System.out.println("Obtener id area"); 
-//        System.out.println(a.getIdArea()); 
-        indice = 0;
-         //indice = this.cboCargo.getSelectedIndex();
-        //int idCargo = this.cboCargo.getModel().getElementAt(indice).getIdCargo();
-        int idCargo = ((Cargo)this.cboCargo.getModel().getSelectedItem()).getIdCargo();
-        empleado.setIdCargo(idCargo);
+        indice = 0;         
+        
+        //int idCargo = ((Cargo)this.cboCargo.getModel().getSelectedItem()).getIdCargo();
+        //empleado.setIdCargo(idCargo);
+        Cargo cargoSeleccionado = (Cargo)this.cboCargo.getModel().getSelectedItem();
+        empleado.setCargo(cargoSeleccionado);
+        
         empleado.setIdTipo(ObtenerIdTipo());
         
         
         // Insertar o actualizar según sea el caso
         if (esNuevo) {
-            DatosEmpleados.Insertar(empleado,  cboArea, cboCargo);
+            DatosEmpleados.Insertar(empleado);
             //DatosEmpleados.cargarTabla(this.tblEmpleados);
         } else {
             DatosEmpleados.Actualizar(empleado);
@@ -619,11 +614,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         //int fila = tblEmpleados.getSelectedRow();
         String dni = txtDni.getText();
         String[] datos = DatosEmpleados.DatAcadEmpleado(dni);
-//        if(datos.length >0) {
-//            Utilitario.MostrarMensaje("No hay registro", Utilitario.TipoMensaje.alerta);
-//          return;
-//        }
-        
+
         
         String nombreCompleto = txtNom.getText() + " " + txtApe.getText();
         JComboBox[] combos = {verventana.cboInstitucion, verventana.cboFacultad, verventana.cboCarrera, verventana.cboCiclo};
@@ -645,35 +636,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
             frmListaEmpleado.panelPadre.add((verventana));
             //escritorio.add(verventana);
             verventana.setVisible(true);
-            
-//        if (fila >= 0) {
-//            String apellidos = tblEmpleados.getValueAt(fila, 1).toString();
-//            String nombres = tblEmpleados.getValueAt(fila, 2).toString();
-//            String dni = tblEmpleados.getValueAt(fila, 5).toString();
-//            String nombreCompleto = nombres + " " + apellidos;
-//            //String[] datos = DatosEmpleados.DatAcadEmpleado(dni);
-//            JComboBox[] combos = {verventana.cboInstitucion, verventana.cboFacultad, verventana.cboCarrera, verventana.cboCiclo};
-//            
-//            for (String dato : datos) {
-//                if (dato != null) {
-//                    for (JComboBox combo : combos) {
-//                        combo.setSelectedItem(dato);
-//                        if (dato.equals(datos[4])) {
-//                            verventana.txtCodEs.setText(dato);
-//                        }
-//                    }
-//                }
-//            }
-//
-//            verventana.txtNomCom.setText(nombreCompleto);
-//            verventana.txtDni.setText(dni);
-//            escritorio.add(verventana);
-//            verventana.setVisible(true);
-//            // Limpiamos alguna seleccion previa de alguna fila de la tabla
-//            tblEmpleados.clearSelection();
-//        } else {
-//            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-//        }
+        
 
     }//GEN-LAST:event_btnDatAcadActionPerformed
 

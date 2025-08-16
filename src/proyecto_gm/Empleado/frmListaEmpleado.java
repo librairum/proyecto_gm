@@ -255,7 +255,7 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         
-        if(this.tblEmpleados.getSelectedRow() == 0){
+        if(tblEmpleados.getSelectedRows().length==0){
             Utilitario.MostrarMensaje("Debe seleccionar registro", Utilitario.TipoMensaje.alerta);
             return;
         }

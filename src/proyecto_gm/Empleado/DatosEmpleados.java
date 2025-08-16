@@ -240,10 +240,12 @@ public class DatosEmpleados {
             cstmt.setString(7, empleado.getCelular());
             cstmt.setString(8, empleado.getDistrito());
             cstmt.setString(9, empleado.getDireccion());
-            cstmt.setInt(10, empleado.getIdArea());  // Usar el ID de Área
-            cstmt.setInt(11, empleado.getIdCargo()); // Usar el ID de Cargo
+            //cstmt.setInt(10, empleado.getIdArea());  // Usar el ID de Área
+            cstmt.setInt(10, empleado.getArea().getIdArea()); 
+            //cstmt.setInt(11, empleado.getIdCargo()); // Usar el ID de Cargo
+            cstmt.setInt(11, empleado.getCargo().getIdCargo()); 
             cstmt.setInt(12, empleado.getIdTipo() ); // id tipo empleado
-
+            
             // Ejecutar la inserción
             cstmt.execute();
              Utilitario.MostrarMensaje("Insercion exitosa", Utilitario.TipoMensaje.informativo);
@@ -283,19 +285,16 @@ public class DatosEmpleados {
             cstmt.setString(7, empleado.getCelular());
             cstmt.setString(8, empleado.getDistrito());
             cstmt.setString(9, empleado.getDireccion());
-            cstmt.setInt(10, empleado.getIdArea());
-            cstmt.setInt(11, empleado.getIdCargo());
+            cstmt.setInt(10, empleado.getArea().getIdArea());
+            cstmt.setInt(11, empleado.getCargo().getIdCargo());
+            //cstmt.setInt(10, empleado.getIdArea());
+            //cstmt.setInt(11, empleado.getIdCargo());
             cstmt.setInt(12, empleado.getIdTipo());
 
             cstmt.execute(); // se actualiza los datos en la BD
 
-            // Mostrar mensaje de éxito
-            //JOptionPane.showMessageDialog(null, "Registro actualizado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            
             Utilitario.MostrarMensaje("Actualizacion exitos", Utilitario.TipoMensaje.informativo);
-            // Actualizamos la tabla
-//            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-//            modelo.setRowCount(0);
-//            DatosEmpleados.Listar(modelo);
 
         } catch (SQLException e) {
             //JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -305,68 +304,65 @@ public class DatosEmpleados {
                 try {
                     cstmt.close();
                 } catch (SQLException e) {
-                    //JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                   
                     Utilitario.MostrarMensaje("Error:"+e.getMessage(), Utilitario.TipoMensaje.informativo);
                 }
             }
         }
     }
     // Insertar datos
-    public static void Insertar(Empleados empleado,  JComboBox<Area> cboArea, JComboBox<Cargo> cboCargo) {
-        CallableStatement cstmt = null;
-        try {
-            // Obtener los IDs de los combo boxes de Área y Cargo
-            String idArea = CapturarArea(cboArea);
-            String idCargo = CapturarCargo(cboCargo);
-
-            // Comprobar que los IDs no estén vacíos
-            if (idArea.isEmpty() || idCargo.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Debe seleccionar un área y un cargo válidos.", "Error", JOptionPane.ERROR_MESSAGE);
-                return; // Salir del método si no se han seleccionado correctamente
-            }
-
-            // Preparar la llamada al procedimiento almacenado
-            cstmt = conn.prepareCall("{ CALL insertar_datos_empleado(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
-
-            // Extraer los datos del objeto empleado
-            String codigoEmpleado = empleado.getId();
-            int idEmpleado = Integer.parseInt(codigoEmpleado.replace("E", ""));
-
-            // Setear los parámetros para el procedimiento
-            cstmt.setInt(1, idEmpleado);
-            cstmt.setString(2, empleado.getApellidos());
-            cstmt.setString(3, empleado.getNombres());
-            cstmt.setString(4, empleado.getfNacimiento());
-            cstmt.setString(5, empleado.getCorreo());
-            cstmt.setString(6, empleado.getDni());
-            cstmt.setString(7, empleado.getCelular());
-            cstmt.setString(8, empleado.getDistrito());
-            cstmt.setString(9, empleado.getDireccion());
-            cstmt.setInt(10, Integer.parseInt(idArea));  // Usar el ID de Área
-            cstmt.setInt(11, Integer.parseInt(idCargo)); // Usar el ID de Cargo
-            cstmt.setInt(12, empleado.getIdTipo());
-
-            // Ejecutar la inserción
-            cstmt.execute();
-            JOptionPane.showMessageDialog(null, "Empleado registrado satisfactoriamente.", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
-
-            // Actualizamos la tabla
-//            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-//            modelo.setRowCount(0);
-//            DatosEmpleados.Listar(modelo);
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            if (cstmt != null) {
-                try {
-                    cstmt.close();
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        }
-    }
+//    public static void Insertar(Empleados empleado) {
+//        CallableStatement cstmt = null;
+//        try {
+//            // Obtener los IDs de los combo boxes de Área y Cargo
+//            //String idArea = CapturarArea(cboArea);
+//            //String idCargo = CapturarCargo(cboCargo);
+//
+//            // Comprobar que los IDs no estén vacíos
+//            
+//            if (empleado.getArea().getIdArea() == -1 || empleado.getCargo().getIdCargo()==-1) {
+//                JOptionPane.showMessageDialog(null, "Debe seleccionar un área y un cargo válidos.", "Error", JOptionPane.ERROR_MESSAGE);
+//                return; // Salir del método si no se han seleccionado correctamente
+//            }
+//
+//            // Preparar la llamada al procedimiento almacenado
+//            cstmt = conn.prepareCall("{ CALL insertar_datos_empleado(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+//
+//            // Extraer los datos del objeto empleado
+//            String codigoEmpleado = empleado.getId();
+//            int idEmpleado = Integer.parseInt(codigoEmpleado.replace("E", ""));
+//
+//            // Setear los parámetros para el procedimiento
+//            cstmt.setInt(1, idEmpleado);
+//            cstmt.setString(2, empleado.getApellidos());
+//            cstmt.setString(3, empleado.getNombres());
+//            cstmt.setString(4, empleado.getfNacimiento());
+//            cstmt.setString(5, empleado.getCorreo());
+//            cstmt.setString(6, empleado.getDni());
+//            cstmt.setString(7, empleado.getCelular());
+//            cstmt.setString(8, empleado.getDistrito());
+//            cstmt.setString(9, empleado.getDireccion());
+//            cstmt.setInt(10,empleado.getArea().getIdArea());                        
+//            cstmt.setInt(11, empleado.getIdCargo());            
+//            cstmt.setInt(12, empleado.getIdTipo());
+//
+//            // Ejecutar la inserción
+//            cstmt.execute();
+//            JOptionPane.showMessageDialog(null, "Empleado registrado satisfactoriamente.", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
+//
+//
+//        } catch (SQLException e) {
+//            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//        } finally {
+//            if (cstmt != null) {
+//                try {
+//                    cstmt.close();
+//                } catch (SQLException e) {
+//                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//                }
+//            }
+//        }
+//    }
     //<editor-fold defaultstate="collapsed" desc="TablaDatos"> 
     public static void cargarTabla(JTable tabla, String estado){
         DefaultTableModel  modelo = (DefaultTableModel) tabla.getModel();
