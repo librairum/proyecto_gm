@@ -580,10 +580,10 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         
         
         // Insertar o actualizar según sea el caso
-        if (esNuevo) {
+        if (estadoProceso == estadoProceso.NUEVO) {
             DatosEmpleados.Insertar(empleado);
             //DatosEmpleados.cargarTabla(this.tblEmpleados);
-        } else {
+        } else if(estadoProceso == estadoProceso.EDITAR) {
             DatosEmpleados.Actualizar(empleado);
         }
         
@@ -775,12 +775,6 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
             HabilitaBotonesMantenimiento(false);
         }
         
-//        this.tblEmpleados.setVisible(false);
-//        this.jScrollPane1.setVisible(false);
-//        if(registro != null){
-//            ObtenerDatos();
-//            
-//        }
     }//GEN-LAST:event_formInternalFrameOpened
 
     private void cboAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboAreaActionPerformed

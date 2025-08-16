@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.UIManager;
 import java.sql.CallableStatement;
+import java.util.Locale;
 
 
 /**
@@ -266,7 +267,9 @@ public class inicio extends javax.swing.JFrame {
             public void run() {
                 //new inicio().setVisible(true);
                 try {
+                    Locale.setDefault(new Locale("es", "ES"));
                     UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+                    
                     new inicio().show();
                 } catch (Exception e) {
 

@@ -459,11 +459,18 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
     
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // Eliminamos el registro seleccionado y bloqueamos los campos
-        if(this.tblEmpleados.getSelectedRowCount() == 0){
+        if(tblEmpleados.getSelectedRowCount() == 0){
             Utilitario.MostrarMensaje("Debe seleccioanr registro a elminar ", Utilitario.TipoMensaje.alerta);
         }
-        DatosEmpleados.Eliminar(tblEmpleados);
-        Cargar();
+        //selecioanr id de empleado
+        int indice = tblEmpleados.getSelectedRow();
+        int id =  Integer.parseInt(tblEmpleados.getValueAt(indice, 0).toString());
+        System.err.println("id seleccionado:" +  id);
+        boolean estado = DatosEmpleados.Eliminar(id);
+        if(estado){
+            Cargar();
+        }
+        
         
     }//GEN-LAST:event_btnEliminarActionPerformed
 

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Locale;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
@@ -49,16 +50,27 @@ public class Utilitario {
         }
         
     }
+    
     public static boolean MostrarMensajePregunta(String mensaje, TipoMensaje tipo){
-        
-        int respuesta = JOptionPane.showConfirmDialog(null, mensaje,"Sisteka", 
-                        JOptionPane.YES_NO_OPTION);
+        Locale.setDefault(new Locale("es", "ES"));
+        String[] botones = new String[2] ;
+        botones[0]= "SI";
+        botones[1] = "NO";
+        boolean estado = false;
+        int seleccion = JOptionPane.showOptionDialog(null, 
+                mensaje, "sistema", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, 
+                null, botones, botones[0]);
+
         //yesy => 0, No => 1
-        if(respuesta == 0){
-            return true;
-        }else{
-            return false;
+        if(seleccion == JOptionPane.YES_OPTION){
+            estado =  true;
+        }else if(seleccion == JOptionPane.NO_OPTION){
+                estado = false;
         }
+
+        return estado;
+        
+        
     }
     
     static String TraerFechaActual(){
