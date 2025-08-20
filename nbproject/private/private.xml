@@ -33,16 +33,31 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/Utilitario.java</file>
-            <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/Empleado/DatosEmpleados.java</file>
-            <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/Empleado/frmListaEmpleado.java</file>
-            <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/ConexionBD.java</file>
-            <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/Empleado/frmEmpleado.java</file>
-            <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/Empleado/Empleados.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/ConexionBD.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/Articulo/DatosArticulo.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/Utilitario.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/Empleado/frmEmpleado.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/Articulo/frmArticulo.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/Articulo/Articulo.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/menu.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/Articulo/Marca.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/Articulo/frmListaArticulo.java</file>
         </group>
         <group>
-            <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/Utilitario.java</file>
-            <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/Empleado/Empleados.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/Categoria/Categoria.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/Empleado/frmEmpleado.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/Articulo/frmArticulo.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/menu.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/Categoria/DatosCategoria.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/Empleado/frmListaEmpleado.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/Empleado/Datosacad.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/ConexionBD.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/Articulo/DatosArticulo.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/Utilitario.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/Empleado/Empleados.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/Articulo/Articulo.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/Articulo/Marca.java</file>
+            <file>file:/C:/Users/elasp/Downloads/PRACTICAS/proyecto_gm-main/proyecto_gm-main/src/proyecto_gm/Articulo/frmListaArticulo.java</file>
         </group>
     </open-files>
 </project-private>

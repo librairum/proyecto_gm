@@ -51,6 +51,12 @@ public class frmCargo extends javax.swing.JInternalFrame implements OperacionesB
         DatosCargo.Mostrar(modelo);
         
     }
+    
+    private void limpiarCampos() {
+        txtCodigo.setText("");
+        txtDescripcion.setText("");
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -253,18 +259,12 @@ public class frmCargo extends javax.swing.JInternalFrame implements OperacionesB
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-//    void habilitarControles(boolean estado){
-//    
-//    }
-//    void habilitarBotonesMantenimiento(boolean estado){
-//    
-//    }
+
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        //DatosCargo.Eliminar(tblCargo);
         //selecionar id de la fila y columna seleccionad
         boolean respuesta =  Utilitario.MostrarMensajePregunta("¿Dese eliminar el registro?", Utilitario.TipoMensaje.pregunta);
         if(respuesta){
-            String id =  tblCargo.getValueAt(tblCargo.getSelectedRow(), 2).toString();
+            String id = tblCargo.getValueAt(tblCargo.getSelectedRow(), 0).toString();
             if(DatosCargo.Eliminar(id)){
                 Utilitario.MostrarMensaje("Elminacion exitosa", Utilitario.TipoMensaje.informativo);
 
@@ -272,28 +272,29 @@ public class frmCargo extends javax.swing.JInternalFrame implements OperacionesB
                 tblCargo.setRowSelectionAllowed(true);
                 Cargar();
             }
-        }
-        
-//        DatosCargo.Habilitar(escritorio, false);
-        
+        }    
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        JTextField[] cod = new JTextField[2];
-        cod[0] = txtCodigo;
-        cod[1] = txtDescripcion;
-//        DatosCargo.Editar(escritorio, tblCargo, cod);
+        int fila = tblCargo.getSelectedRow();
+        if (fila == -1) {
+            Utilitario.MostrarMensaje("Seleccione un registro para editar", Utilitario.TipoMensaje.alerta);
+            return;
+        }
+        txtCodigo.setText(tblCargo.getValueAt(fila, 0).toString());
+        txtDescripcion.setText(tblCargo.getValueAt(fila, 1).toString());
+
+        txtCodigo.setEnabled(false);
+        txtDescripcion.setEnabled(true);
+
         habilitarBotonesMantenimiento(false);
         esNuevo = false;
-        
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-//        DatosCargo.Habilitar(escritorio, true);
-
-        // No generar código manualmente porque IdCargo es auto_increment
+        // Genera codigo automaticos IdCargo es auto_increment
         txtCodigo.setText("");
-        txtCodigo.setEnabled(false);  // o podrías ocultarlo si quieres
+        txtCodigo.setEnabled(false);
 
         txtDescripcion.requestFocus();
         habilitarBotonesMantenimiento(false);
@@ -302,29 +303,28 @@ public class frmCargo extends javax.swing.JInternalFrame implements OperacionesB
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void txtDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_txtDescripcionActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
-//        DatosCargo.Limpiar(escritorio);
-//        DatosCargo.Habilitar(escritorio, false);
+        limpiarCampos();
+        txtCodigo.setText("");
+        txtDescripcion.setText("");
+        txtDescripcion.setEnabled(false);
+
         tblCargo.clearSelection();
         tblCargo.setRowSelectionAllowed(true);
-        Cargar();
+
+        habilitarBotonesMantenimiento(true);
+        esNuevo = false;
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-      
-
-        // Para insertar, el IdCargo no se setea (queda 0)
-        // Para actualizar, debe ser un número válido
-        
-            try {
-                
-                
+          try {
                 Cargo car = new Cargo();
-                int codigo = Integer.parseInt(txtCodigo.getText());
+                int codigo = txtCodigo.getText().isEmpty() ? 0 : Integer.parseInt(txtCodigo.getText());
                 car.setIdCargo(codigo);
+
                 
                  String descripcion = txtDescripcion.getText().trim();
                 if (descripcion.isEmpty()) {
@@ -346,6 +346,7 @@ public class frmCargo extends javax.swing.JInternalFrame implements OperacionesB
                             tblCargo.clearSelection();
                             tblCargo.setRowSelectionAllowed(true);
                             Cargar();
+                            limpiarCampos();
                         } else {
                         //JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
                             Utilitario.MostrarMensaje("Error al guardar los datos", Utilitario.TipoMensaje.error);
@@ -359,15 +360,12 @@ public class frmCargo extends javax.swing.JInternalFrame implements OperacionesB
                         tblCargo.clearSelection();
                         tblCargo.setRowSelectionAllowed(true);
                         Cargar();
+                        limpiarCampos();
                     }
                 }
             } catch (NumberFormatException e) {
-                Utilitario.MostrarMensaje("El codigo debe ser un numero", Utilitario.TipoMensaje.error);
-                
+                Utilitario.MostrarMensaje("El codigo debe ser un numero", Utilitario.TipoMensaje.error);            
             }
-            
-        
-
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
