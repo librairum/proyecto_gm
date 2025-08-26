@@ -37,20 +37,6 @@
             <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/seguridad/frmGestionBD.java</file>
             <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/Cargo/frmCargo.java</file>
             <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/Carreras/frmCarreras.java</file>
-            <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/seguridad/frmUsuario.java</file>
-            <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/Empleado/DatosEmpleados.java</file>
-            <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/Area/frmArea.java</file>
-            <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/Empleado/frmListaEmpleado.java</file>
-            <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/ConexionBD.java</file>
-            <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/Empleado/Empleados.java</file>
-            <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/Empleado/frmEmpleado.java</file>
-            <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/inicio.java</file>
-        </group>
-        <group>
-            <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/Utilitario.java</file>
-            <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/seguridad/frmGestionBD.java</file>
-            <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/Cargo/frmCargo.java</file>
-            <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/Carreras/frmCarreras.java</file>
             <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/Empleado/DatosEmpleados.java</file>
             <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/ConexionBD.java</file>
             <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/inicio.java</file>
@@ -60,6 +46,9 @@
             <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/Empleado/frmListaEmpleado.java</file>
             <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/Empleado/Empleados.java</file>
             <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/Empleado/frmEmpleado.java</file>
+        </group>
+        <group>
+            <file>file:/D:/trabajo/proyecto_gm/src/proyecto_gm/ConexionBD.java</file>
         </group>
     </open-files>
 </project-private>
