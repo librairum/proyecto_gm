@@ -34,7 +34,7 @@ public class DatosCargo {
                 modelo.addRow(row);
             }
 
-        } catch (SQLException ex) {
+        } catch (SQLException ex) { 
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }

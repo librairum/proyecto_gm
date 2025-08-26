@@ -1,499 +1,368 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package proyecto_gm.Articulo;
 
-import java.awt.Toolkit;
-import java.io.IOException;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 import proyecto_gm.Categoria.Categoria;
-import proyecto_gm.Exportar;
+import proyecto_gm.Utilitario;
 
 public class frmArticulo extends javax.swing.JInternalFrame {
+    private Articulo registro;
+    private Utilitario.EstadoProceso estadoProceso;
 
-    Exportar obj;
-    boolean esNuevo = false;
-    DefaultTableModel modelo;
+    public frmArticulo(Articulo registro, Utilitario.EstadoProceso estado) {
+        try {
+            initComponents();
+            
+            this.registro = registro;
+            this.estadoProceso = estado;
 
-    public frmArticulo() {
-        initComponents();
-         setTitle("Articulos");
-         bloquear();
-         desbloquear();
-         
-        DefaultTableModel modelo = (DefaultTableModel) tblarticulo.getModel();
-        DatosArticulo.Habilitar(escritorio, false);
+            // Inicializar combos
+            cargarCategorias();
+            cargarMarcas();
 
-        DatosArticulo.CargarMarcas(cboMarca);
-        inicializaComboCategoria(); 
-
-        DatosArticulo.Mostrar(modelo);
-        tblarticulo.setCellSelectionEnabled(false);
-        tblarticulo.setRowSelectionAllowed(true);
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-    }
-    
-    void Limpiar() {
-        txtId.setText("");
-        txtDescripcion.setText("");
-
-    }
-
-    void bloquear() {
-        txtId.setEditable(false);
-        txtDescripcion.setEditable(false);
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        btnAgregar.setEnabled(true);
-        btnEditar.setEnabled(true);
-        btnEliminar.setEnabled(true);
-    }
-
-    void desbloquear() {
-        txtId.setEditable(true);
-        txtDescripcion.setEditable(true);
-    }
-
-    private void inicializaComboCategoria() {
-        List<Categoria> listaCategoria = DatosArticulo.obtenerCategorias(); // o CategoriaDAO si lo separas
-
-        DefaultComboBoxModel<Categoria> modelo = new DefaultComboBoxModel<>();
-        for (Categoria c : listaCategoria) {
-            modelo.addElement(c);
+            if (estado == Utilitario.EstadoProceso.NUEVO) {
+                limpiarFormulario();
+                txtId.setEnabled(false); // El ID se genera automáticamente
+            } else if (estado == Utilitario.EstadoProceso.EDITAR) {
+                cargarDatosFormulario();
+                txtId.setEnabled(false); // El ID no se puede editar
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al inicializar formulario: " + e.getMessage(), 
+                                        "Error", JOptionPane.ERROR_MESSAGE);
         }
-        cmbCategoria.setModel(modelo);
     }
 
+    
+    private void cargarCategorias() {
+        try {
+            List<Categoria> listaCategorias = DatosArticulo.obtenerCategorias();
+            DefaultComboBoxModel<Categoria> modelo = new DefaultComboBoxModel<>();
+            
+            for (Categoria cat : listaCategorias) {
+                modelo.addElement(cat);
+            }
+            
+            cmbCategoria.setModel(modelo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al cargar categorías: " + e.getMessage(), 
+                                        "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void cargarMarcas() {
+        try {
+            List<Marca> listaMarcas = DatosArticulo.obtenerMarcas();
+            DefaultComboBoxModel<Marca> modelo = new DefaultComboBoxModel<>();
+            
+            for (Marca marca : listaMarcas) {
+                modelo.addElement(marca);
+            }
+            
+            cboMarca.setModel(modelo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al cargar marcas: " + e.getMessage(), 
+                                        "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    
+    private void cargarDatosFormulario() {
+        try {
+            if (registro == null) return;
+            
+            txtId.setText(String.valueOf(registro.getIdArticulo()));
+            txtDescripcion.setText(registro.getDescripcion() != null ? registro.getDescripcion() : "");
+            txtCaracteristicas.setText(registro.getCaracteristicas() != null ? registro.getCaracteristicas() : "");
+            txtCantidad.setText(String.valueOf(registro.getCantidad()));
+
+            // Seleccionar Marca en el ComboBox
+            if (registro.getMarca() != null) {
+                for (int i = 0; i < cboMarca.getItemCount(); i++) {
+                    Marca marcaCombo = cboMarca.getItemAt(i);
+                    if (marcaCombo != null && marcaCombo.getIdMarca() == registro.getMarca().getIdMarca()) {
+                        cboMarca.setSelectedIndex(i);
+                        break;
+                    }
+                }
+            }
+
+            // Seleccionar Categoría en el ComboBox
+            if (registro.getCategoria() != null) {
+                for (int i = 0; i < cmbCategoria.getItemCount(); i++) {
+                    Categoria catCombo = cmbCategoria.getItemAt(i);
+                    if (catCombo != null && catCombo.getIdCat() == registro.getCategoria().getIdCat()) {
+                        cmbCategoria.setSelectedIndex(i);
+                        break;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar datos en formulario: " + e.getMessage(), 
+                                        "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        escritorio = new javax.swing.JPanel();
-        btnAgregar = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
-        btnDeshacer = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
+        btnRegresar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        txtId = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        txtDescripcion = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        cmbCategoria = new javax.swing.JComboBox<>();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblarticulo = new javax.swing.JTable();
-        btnExportar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        cboMarca = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        txtCaracteristicas = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
+        txtId = new javax.swing.JTextField();
+        txtDescripcion = new javax.swing.JTextField();
+        txtCaracteristicas = new javax.swing.JTextField();
         txtCantidad = new javax.swing.JTextField();
+        cmbCategoria = new javax.swing.JComboBox<>();
+        cmbCategoria = new javax.swing.JComboBox<>();
+        cboMarca = new javax.swing.JComboBox<>();
 
-        setClosable(true);
-        setIconifiable(true);
-        setResizable(true);
-        setTitle("ARTICULO");
-
-        escritorio.setBackground(new java.awt.Color(255, 248, 239));
-
-        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
-        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarActionPerformed(evt);
-            }
-        });
-
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
-            }
-        });
-
-        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/eliminar.png"))); // NOI18N
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
-
-        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
+        btnGuardar.setText("GUARDAR");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
             }
         });
 
-        btnDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
-        btnDeshacer.addActionListener(new java.awt.event.ActionListener() {
+        btnLimpiar.setText("LIMPIAR");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeshacerActionPerformed(evt);
+                btnLimpiarActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("Id:");
-
-        txtId.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtIdKeyTyped(evt);
-            }
-        });
-
-        jLabel2.setText("Descripcion:");
-
-        txtDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtDescripcionKeyTyped(evt);
-            }
-        });
-
-        jLabel3.setText("Id_Categoria");
-
-        tblarticulo.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "IdArticulo", "Categoria", "Marca", "Caracteristicas", "Descripcion", "Cantidad"
-            }
-        ));
-        jScrollPane1.setViewportView(tblarticulo);
-
-        btnExportar.setText("Exportar Articulo");
-        btnExportar.addActionListener(new java.awt.event.ActionListener() {
+        btnRegresar.setText("REGRESAR");
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExportarActionPerformed(evt);
+                btnRegresarActionPerformed(evt);
             }
         });
 
-        jLabel4.setText("Marca");
+        jLabel1.setText("ID");
 
-        cboMarca.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboMarcaActionPerformed(evt);
-            }
-        });
+        jLabel2.setText("Descripicion");
 
-        jLabel5.setText("Caracteristicas");
+        jLabel3.setText("Caracteristicas");
 
-        txtCaracteristicas.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtCaracteristicasKeyTyped(evt);
-            }
-        });
+        jLabel4.setText("Categoria");
+
+        jLabel5.setText("Marca");
 
         jLabel6.setText("Cantidad");
 
-        txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtCantidadKeyTyped(evt);
-            }
-        });
+        cmbCategoria.setModel(new DefaultComboBoxModel<>());
 
-        javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
-        escritorio.setLayout(escritorioLayout);
-        escritorioLayout.setHorizontalGroup(
-            escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
-            .addGroup(escritorioLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(escritorioLayout.createSequentialGroup()
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(escritorioLayout.createSequentialGroup()
-                                .addComponent(btnAgregar)
-                                .addGap(3, 3, 3)
-                                .addComponent(btnEditar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnEliminar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnGuardar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnDeshacer))
-                            .addGroup(escritorioLayout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 17, Short.MAX_VALUE)
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(escritorioLayout.createSequentialGroup()
-                                .addGap(120, 120, 120)
-                                .addComponent(btnExportar)
-                                .addGap(0, 16, Short.MAX_VALUE))
-                            .addGroup(escritorioLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cboMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(escritorioLayout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDescripcion))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioLayout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCaracteristicas, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCantidad)))
-                .addContainerGap())
-        );
-        escritorioLayout.setVerticalGroup(
-            escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(escritorioLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnDeshacer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnExportar))
-                .addGap(23, 23, 23)
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(cboMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(escritorioLayout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel5)
-                        .addComponent(txtCaracteristicas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        cboMarca.setModel(new DefaultComboBoxModel<>());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(btnGuardar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnLimpiar)
+                        .addGap(28, 28, 28)
+                        .addComponent(btnRegresar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtCaracteristicas, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(jLabel1)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(35, 35, 35)
+                                    .addComponent(jLabel4)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel5)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(cboMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel2)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGuardar)
+                    .addComponent(btnLimpiar)
+                    .addComponent(btnRegresar))
+                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel6)
+                    .addComponent(txtCaracteristicas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        desbloquear();
-        btnEditar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnGuardar.setEnabled(true);
-        btnDeshacer.setEnabled(true);
-        btnAgregar.setEnabled(false);
-        esNuevo = true;
-        
-        DatosArticulo.Habilitar(escritorio, true);
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        try {
+            // Validaciones básicas
+            String descripcion = txtDescripcion.getText().trim();
+            String caracteristicas = txtCaracteristicas.getText().trim();
+            String cantidadTexto = txtCantidad.getText().trim();
 
-        // Limpiar los campos para nuevo ingreso
-        txtId.setText(""); // Ahora el usuario puede ingresar el ID si es manual
-        txtId.setEnabled(true); // Habilitado en caso de ingreso manual
+            if (descripcion.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "La descripción es obligatoria.", "Validación", JOptionPane.WARNING_MESSAGE);
+                txtDescripcion.requestFocus();
+                return;
+            }
+
+            if (cantidadTexto.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "La cantidad es obligatoria.", "Validación", JOptionPane.WARNING_MESSAGE);
+                txtCantidad.requestFocus();
+                return;
+            }
+
+            double cantidad;
+            try {
+                cantidad = Double.parseDouble(cantidadTexto);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "La cantidad debe ser un número válido.", "Validación", JOptionPane.WARNING_MESSAGE);
+                txtCantidad.requestFocus();
+                return;
+            }
+
+            Categoria categoriaSeleccionada = (Categoria) cmbCategoria.getSelectedItem();
+            Marca marcaSeleccionada = (Marca) cboMarca.getSelectedItem();
+
+            if (categoriaSeleccionada == null) {
+                JOptionPane.showMessageDialog(this, "Debe seleccionar una categoría.", "Validación", JOptionPane.WARNING_MESSAGE);
+                cmbCategoria.requestFocus();
+                return;
+            }
+
+            if (marcaSeleccionada == null) {
+                JOptionPane.showMessageDialog(this, "Debe seleccionar una marca.", "Validación", JOptionPane.WARNING_MESSAGE);
+                cboMarca.requestFocus();
+                return;
+            }
+
+            boolean exito = false;
+
+            if (estadoProceso == Utilitario.EstadoProceso.NUEVO) {
+                Articulo nuevo = new Articulo();
+                nuevo.setDescripcion(descripcion);
+                nuevo.setCaracteristicas(caracteristicas);
+                nuevo.setCantidad(cantidad);
+                nuevo.setCategoria(categoriaSeleccionada);
+                nuevo.setMarca(marcaSeleccionada);
+
+                exito = DatosArticulo.Insertar(nuevo);
+
+            } else if (estadoProceso == Utilitario.EstadoProceso.EDITAR) {
+                registro.setDescripcion(descripcion);
+                registro.setCaracteristicas(caracteristicas);
+                registro.setCantidad(cantidad);
+                registro.setCategoria(categoriaSeleccionada);
+                registro.setMarca(marcaSeleccionada);
+
+                exito = DatosArticulo.Actualizar(registro);
+            }
+
+            if (exito) {
+                // Actualizar la tabla en el formulario padre si existe
+                if (getParent() != null) {
+                    // Buscar y refrescar frmListaArticulo si está abierto
+                    javax.swing.JDesktopPane desktop = (javax.swing.JDesktopPane) getParent();
+                    javax.swing.JInternalFrame[] frames = desktop.getAllFrames();
+                    for (javax.swing.JInternalFrame frame : frames) {
+                        if (frame instanceof frmListaArticulo) {
+                            ((frmListaArticulo) frame).Cargar(); // Método público para refrescar
+                            break;
+                        }
+                    }
+                }
+                this.dispose();
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        limpiarFormulario();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void limpiarFormulario() {
+        txtId.setText("");
         txtDescripcion.setText("");
         txtCaracteristicas.setText("");
         txtCantidad.setText("");
-
-        txtDescripcion.requestFocus();
-
-        esNuevo = true;
-        tblarticulo.setRowSelectionAllowed(false);
-    }//GEN-LAST:event_btnAgregarActionPerformed
-
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
-        btnAgregar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnGuardar.setEnabled(true);
-        btnDeshacer.setEnabled(true);
-        btnEditar.setEnabled(false);
-        // Habilitar campos
-// Agrupar las cajas de texto
-        JTextField[] camposTexto = {txtId, txtDescripcion, txtCaracteristicas, txtCantidad};
-        JComboBox[] combos = {cmbCategoria, cboMarca};
-        DatosArticulo.Editar(escritorio, tblarticulo, camposTexto, combos);
-
-        esNuevo = false;
-    }//GEN-LAST:event_btnEditarActionPerformed
-
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        DatosArticulo.Eliminar(tblarticulo);
-        DatosArticulo.Habilitar(escritorio, false);
-        
-        // Deshabilitar los botones Guardar y Deshacer
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-    }//GEN-LAST:event_btnEliminarActionPerformed
-
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        Categoria categoriaSeleccionada = (Categoria) cmbCategoria.getSelectedItem();
-        if (categoriaSeleccionada == null) {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar una categoría.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        int idCategoria = categoriaSeleccionada.getIdCat(); // ✅ Aquí ya tienes el ID directamente
-
-        // Obtener marca por su nombre (se mantiene igual)
-        String opcionMarca = DatosArticulo.CapturarMarca(cboMarca);
-
-        // Validar campos
-        if (txtId.getText().isEmpty() || txtCaracteristicas.getText().isEmpty()
-                || txtDescripcion.getText().isEmpty() || txtCantidad.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Completar bien los campos");
-            return;
-        }
-
-        int idArticulo;
-        try {
-            idArticulo = Integer.parseInt(txtId.getText());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "El ID debe ser un número entero.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            txtId.requestFocus();
-            return;
-        }
-
-        double cantidad;
-        try {
-            cantidad = Double.parseDouble(txtCantidad.getText());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Cantidad inválida.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            txtCantidad.requestFocus();
-            return;
-        }
-
-        // Crear objeto Articulo con ID de categoría como int
-        Articulo art = new Articulo(idArticulo, idCategoria, Integer.parseInt(opcionMarca), txtCaracteristicas.getText());
-        art.setDescripcion(txtDescripcion.getText());
-        art.setCantidad(cantidad);
-
-        if (esNuevo) {
-            if (DatosArticulo.Insertar(art, tblarticulo)) {
-                DatosArticulo.Limpiar(escritorio);
-                DatosArticulo.Habilitar(escritorio, false);
-                tblarticulo.clearSelection();
-                tblarticulo.setRowSelectionAllowed(true);
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            DatosArticulo.Actualizar(art, tblarticulo, cmbCategoria, cboMarca);
-            DatosArticulo.Limpiar(escritorio);
-            DatosArticulo.Habilitar(escritorio, false);
-            tblarticulo.clearSelection();
-            tblarticulo.setRowSelectionAllowed(true);
-        }
-        //HABILITAR DESHABILITAR BOTONES 
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        btnEditar.setEnabled(true);
-        btnEliminar.setEnabled(true);
-        btnAgregar.setEnabled(true);
-    }//GEN-LAST:event_btnGuardarActionPerformed
-
-    private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
-        DatosArticulo.Limpiar(escritorio);
-        DatosArticulo.Habilitar(escritorio, false);
-        tblarticulo.clearSelection();
-        tblarticulo.setRowSelectionAllowed(true);
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        btnEditar.setEnabled(true);
-        btnEliminar.setEnabled(true);
-        btnAgregar.setEnabled(true);
-    }//GEN-LAST:event_btnDeshacerActionPerformed
-
-    private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped
-        // TODO add your handling code here:
-        if (txtId.getText().length() >= 4) {
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-        }
-    }//GEN-LAST:event_txtIdKeyTyped
-
-    private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
-        // TODO add your handling code here:
-        try {
-            obj = new Exportar(); //mandamos a llamar a la clase
-            obj.exportarExcel(tblarticulo); //llamamos el metodo desde la clase DatosEmpleados
-        } catch (IOException ex) {
-
-        }
-    }//GEN-LAST:event_btnExportarActionPerformed
-
-    private void txtDescripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyTyped
-        // TODO add your handling code here:
-        if (txtDescripcion.getText().length() >= 100) {
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-        }
-    }//GEN-LAST:event_txtDescripcionKeyTyped
-
-    private void txtCaracteristicasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCaracteristicasKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCaracteristicasKeyTyped
-
-    private void txtCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCantidadKeyTyped
-
-    private void cboMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMarcaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboMarcaActionPerformed
-
+        cboMarca.setSelectedIndex(-1);
+        cmbCategoria.setSelectedIndex(-1);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnDeshacer;
-    private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnExportar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JComboBox<String> cboMarca;
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnRegresar;
+    private javax.swing.JComboBox<Marca> cboMarca;
     private javax.swing.JComboBox<Categoria> cmbCategoria;
-    private javax.swing.JPanel escritorio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblarticulo;
     private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtCaracteristicas;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtId;
     // End of variables declaration//GEN-END:variables
+
 }

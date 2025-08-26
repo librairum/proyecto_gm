@@ -1,15 +1,14 @@
 package proyecto_gm.RecibosHonorarios;
 
-/**
- *
- * @author jeanv
- */
+import java.util.Date;
+
 public class ReciboHonorario {
 
-    String codigoRecibo, nroRecibo, ruc, nombres, apellidos, distrito, direccion, formaPago, concepto, fecha;
+    String codigoRecibo, nroRecibo, ruc, nombres, apellidos, distrito, direccion, formaPago, concepto;
+    Date fecha;
     float importeNeto, retencionIr, importeTotal;
 
-    public ReciboHonorario(String codigoRecibo, String nroRecibo, String ruc, String nombres, String apellidos, String distrito, String direccion, String formaPago, String concepto, String fecha, float importeNeto, float retencionIr, float importeTotal) {
+    public ReciboHonorario(String codigoRecibo, String nroRecibo, String ruc, String nombres, String apellidos, String distrito, String direccion, String formaPago, String concepto, Date fecha, float importeNeto, float retencionIr, float importeTotal) {
         this.codigoRecibo = codigoRecibo;
         this.nroRecibo = nroRecibo;
         this.ruc = ruc;
@@ -34,9 +33,10 @@ public class ReciboHonorario {
         return codigoRecibo;
     }
 
-    public void setCodigoRecibo(String id) {
+    public void setCodigoRecibo(String codigoRecibo) {
         this.codigoRecibo = codigoRecibo;
     }
+
 
     public String getNroRecibo() {
         return nroRecibo;
@@ -102,11 +102,11 @@ public class ReciboHonorario {
         this.concepto = concepto;
     }
 
-    public String getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 

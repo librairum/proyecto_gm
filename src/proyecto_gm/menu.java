@@ -13,7 +13,7 @@ import proyecto_gm.Carreras.frmCarreras;
 import proyecto_gm.Empleado.frmEmpleado;
 import proyecto_gm.Cargo.frmCargo;
 import proyecto_gm.Area.frmArea;
-import proyecto_gm.Articulo.frmArticulo;
+import proyecto_gm.Articulo.frmListaArticulo;
 import proyecto_gm.Asistencias.frmAsistencias;
 import proyecto_gm.CabeceraComprobante.frmCabeceraComprobante;
 import proyecto_gm.Categoria.frmCategoria;
@@ -23,7 +23,7 @@ import proyecto_gm.Cuentas.frmCuentas;
 import proyecto_gm.Modulo.frmModulo;
 import proyecto_gm.Periodos.frmPeriodos;
 import proyecto_gm.Proveedores.frmProveedores;
-import proyecto_gm.RecibosHonorarios.frmRecibosHonorarios;
+import proyecto_gm.RecibosHonorarios.frmListaRecibosHonorarios;
 import proyecto_gm.TipoDocumento.frmTipoDocumento;
 import proyecto_gm.Transferencias.frmTransferencias;
 import proyecto_gm.Viaticos.frmViaticos;
@@ -676,7 +676,7 @@ public class menu extends javax.swing.JFrame {
         }
         
         private void Abrirarticulos(){
-         frmArticulo verventana = new frmArticulo();
+         frmListaArticulo verventana = new frmListaArticulo();
         escritorio.add(verventana);
         verventana.show();
         }
@@ -810,7 +810,7 @@ public class menu extends javax.swing.JFrame {
         }
         
         private void Abrirreciboshonorarios(){
-         frmRecibosHonorarios verventana = new frmRecibosHonorarios();
+         frmListaRecibosHonorarios verventana = new frmListaRecibosHonorarios();
         escritorio.add(verventana);
         verventana.show();
         }

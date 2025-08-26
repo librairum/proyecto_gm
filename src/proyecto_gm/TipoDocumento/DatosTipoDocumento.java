@@ -104,13 +104,14 @@ public class DatosTipoDocumento {
             for (int i = 0; i < camposTexto.length; i++) {
                 camposTexto[i].setText(tabla.getValueAt(filaSeleccionada, i).toString());
             }
-            String moduloDescripcion = tabla.getValueAt(filaSeleccionada, 2).toString(); // xModulo
-            for (int i = 0; i < combos[0].getItemCount(); i++) {
-                if (combos[0].getItemAt(i).equals(moduloDescripcion)) {
-                    combos[0].setSelectedIndex(i);
-                    break;
+            String moduloDescripcion = tabla.getValueAt(filaSeleccionada, 2).toString(); // Columna "Modulo"
+                for (int i = 0; i < combos[0].getItemCount(); i++) {
+                    Modulo mod = (Modulo) combos[0].getItemAt(i);
+                    if (mod.getDescripcion().equals(moduloDescripcion)) {
+                        combos[0].setSelectedIndex(i);
+                        break;
+                    }
                 }
-            }
         } else {
             JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.");
         }
