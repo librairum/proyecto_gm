@@ -39,8 +39,5 @@ public class ConexionBD {
             System.err.println("Error en la conexión: " + ex.getMessage());
             return null;
         }
-    }
-    
-    
-    
+    } 
 }

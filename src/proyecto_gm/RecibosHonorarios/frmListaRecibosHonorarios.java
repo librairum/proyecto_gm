@@ -1,125 +1,41 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package proyecto_gm.RecibosHonorarios;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import proyecto_gm.Exportar;
 
-/**
- *
- * @author EduardoPC
- */
 public class frmListaRecibosHonorarios extends javax.swing.JInternalFrame {
 
-    boolean esNuevo = false;
+    private DefaultTableModel modelo;
 
     public frmListaRecibosHonorarios() {
         initComponents();
-        // Poblar cboDistrito con ArrayList
-        java.util.ArrayList<String> distritos = new java.util.ArrayList<>();
-        distritos.add("<<Seleccionar>>");
-        distritos.add("Ancón");
-        distritos.add("Ate");
-        distritos.add("Barranco");
-        distritos.add("Breña");
-        distritos.add("Carabayllo");
-        distritos.add("Chaclacayo");
-        distritos.add("Chorrillos");
-        distritos.add("Cieneguilla");
-        distritos.add("Comas");
-        distritos.add("El Agustino");
-        distritos.add("Independencia");
-        distritos.add("Jesús María");
-        distritos.add("La Molina");
-        distritos.add("La Victoria");
-        distritos.add("Lima");
-        distritos.add("Lince");
-        distritos.add("Los Olivos");
-        distritos.add("Lurigancho");
-        distritos.add("Lurin");
-        distritos.add("Magdalena del Mar");
-        distritos.add("Miraflores");
-        distritos.add("Pachacamac");
-        distritos.add("Pucusana");
-        distritos.add("Pueblo Libre");
-        distritos.add("Puente Piedra");
-        distritos.add("Punta Hermosa");
-        distritos.add("Punta Negra");
-        distritos.add("Rímac");
-        distritos.add("San Bartolo");
-        distritos.add("San Borja");
-        distritos.add("San Isidro");
-        distritos.add("San Juan de Lurigancho");
-        distritos.add("San Juan de Miraflores");
-        distritos.add("San Luis");
-        distritos.add("San Martín de Porres");
-        distritos.add("San Miguel");
-        distritos.add("Santa Anita");
-        distritos.add("Santa María del Mar");
-        distritos.add("Santa Rosa");
-        distritos.add("Santiago de Surco");
-        distritos.add("Surquillo");
-        distritos.add("Villa El Salvador");
-        distritos.add("Villa María del Triunfo");
-
-        for (String distrito : distritos) {
-            cboDistrito.addItem(distrito);
-        }
-
-        // Poblar cboPago con ArrayList
-        java.util.ArrayList<String> formasPago = new java.util.ArrayList<>();
-        formasPago.add("<<Seleccionar>>");
-        formasPago.add("Transferencia");
-        formasPago.add("Al contado");
-
-        for (String pago : formasPago) {
-            cboPago.addItem(pago);
-        }
-
-        JTableHeader header = tblHonorarios.getTableHeader();
-        header.setDefaultRenderer(new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table,
-                    Object value,
-                    boolean isSelected,
-                    boolean hasFocus,
-                    int row,
-                    int column) {
-                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                setHorizontalAlignment(JLabel.CENTER);
-                setBackground(Color.DARK_GRAY);
-                setForeground(Color.WHITE);
-                setFont(getFont().deriveFont(Font.BOLD, 13));
-                return this;
-            }
-        });
-
-        DefaultTableModel modelo = (DefaultTableModel) tblHonorarios.getModel();
-        btnGuardar.setEnabled(false);
-        btnCancelar.setEnabled(false);
-        DatosRecibosHonorarios.Habilitar(escritorio, false);
-        DatosRecibosHonorarios.Mostrar(modelo);
-        tblHonorarios.setCellSelectionEnabled(false);
-        tblHonorarios.setRowSelectionAllowed(true);
+        mostrarDatos();
     }
+    
+    public JTable getTabla() {
+        return tblHonorarios;
+    }
+    
+    // Método para listar los datos en la tabla
+    void mostrarDatos() {
+        String[] titulos = {
+            "ID", "Nro Recibo", "RUC", "Nombres", "Apellidos", "Distrito", 
+            "Dirección", "Forma Pago", "Concepto", "Imp. Neto", "Retención IR", 
+            "Imp. Total", "Fec. Emisión"
+        };
+
+        modelo = new DefaultTableModel(null, titulos);
+        tblHonorarios.setModel(modelo);
+
+        // 👉 Se delega la consulta a la clase DatosRecibosHonorarios
+        DatosRecibosHonorarios.Mostrar(modelo);
+    }
+    
+    
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -129,37 +45,8 @@ public class frmListaRecibosHonorarios extends javax.swing.JInternalFrame {
         btnNuevo = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
-        btnGuardar = new javax.swing.JButton();
-        btnCancelar = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        txtId = new javax.swing.JTextField();
-        txtRuc = new javax.swing.JTextField();
-        txtApe = new javax.swing.JTextField();
-        txtNom = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        txtDirec = new javax.swing.JTextField();
-        txtIR = new javax.swing.JTextField();
-        txtConcepto = new javax.swing.JTextField();
-        cboPago = new javax.swing.JComboBox<>();
-        cboDistrito = new javax.swing.JComboBox<>();
-        txtImpNeto = new javax.swing.JTextField();
-        jLabel12 = new javax.swing.JLabel();
-        txtImpTotal = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblHonorarios = new javax.swing.JTable();
-        txtFecEmi = new javax.swing.JTextField();
-        jLabel13 = new javax.swing.JLabel();
-        txtNroRecibo = new javax.swing.JTextField();
-        btnExportar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -194,136 +81,6 @@ public class frmListaRecibosHonorarios extends javax.swing.JInternalFrame {
             }
         });
 
-        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
-        btnGuardar.setName("guardar"); // NOI18N
-        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
-            }
-        });
-
-        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
-        btnCancelar.setName("cancelar"); // NOI18N
-        btnCancelar.setNextFocusableComponent(txtNroRecibo);
-        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("ID:");
-
-        jLabel2.setText("Nro. Recibo:");
-
-        jLabel3.setText("Nombres:");
-
-        jLabel4.setText("RUC:");
-
-        jLabel5.setText("Dirección:");
-
-        jLabel6.setText("Distrito:");
-
-        jLabel7.setText("Apellidos:");
-
-        txtRuc.setNextFocusableComponent(txtNom);
-        txtRuc.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtRucFocusLost(evt);
-            }
-        });
-        txtRuc.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtRucKeyTyped(evt);
-            }
-        });
-
-        txtApe.setNextFocusableComponent(cboDistrito);
-        txtApe.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtApeFocusLost(evt);
-            }
-        });
-
-        txtNom.setNextFocusableComponent(txtApe);
-        txtNom.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtNomFocusLost(evt);
-            }
-        });
-
-        jLabel8.setText("Concepto:");
-
-        jLabel9.setText("Forma de pago:");
-
-        jLabel10.setText("Importe Neto:");
-
-        jLabel11.setText("Retención IR:");
-
-        txtDirec.setNextFocusableComponent(cboPago);
-        txtDirec.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtDirecFocusLost(evt);
-            }
-        });
-
-        txtIR.setNextFocusableComponent(txtConcepto);
-        txtIR.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtIRFocusLost(evt);
-            }
-        });
-        txtIR.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIRActionPerformed(evt);
-            }
-        });
-        txtIR.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtIRKeyTyped(evt);
-            }
-        });
-
-        txtConcepto.setNextFocusableComponent(txtFecEmi);
-
-        cboPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {}));
-        cboPago.setNextFocusableComponent(txtImpNeto);
-        cboPago.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboPagoActionPerformed(evt);
-            }
-        });
-
-        cboDistrito.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {
-
-        }));
-        cboDistrito.setNextFocusableComponent(txtDirec);
-        cboDistrito.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboDistritoActionPerformed(evt);
-            }
-        });
-
-        txtImpNeto.setNextFocusableComponent(txtIR);
-        txtImpNeto.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtImpNetoFocusLost(evt);
-            }
-        });
-        txtImpNeto.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtImpNetoKeyTyped(evt);
-            }
-        });
-
-        jLabel12.setText("Importe Total:");
-
-        txtImpTotal.setEditable(false);
-        txtImpTotal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtImpTotalActionPerformed(evt);
-            }
-        });
-
         tblHonorarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -350,163 +107,34 @@ public class frmListaRecibosHonorarios extends javax.swing.JInternalFrame {
             tblHonorarios.getColumnModel().getColumn(0).setPreferredWidth(30);
         }
 
-        txtFecEmi.setNextFocusableComponent(btnGuardar);
-        txtFecEmi.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtFecEmiKeyTyped(evt);
-            }
-        });
-
-        jLabel13.setText("Fec. Emisión:");
-
-        txtNroRecibo.setActionCommand("<Not Set>");
-        txtNroRecibo.setFocusCycleRoot(true);
-        txtNroRecibo.setNextFocusableComponent(txtRuc);
-        txtNroRecibo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtNroReciboKeyTyped(evt);
-            }
-        });
-
-        btnExportar.setText("Exportar a Excel");
-        btnExportar.setName("exportar"); // NOI18N
-        btnExportar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExportarActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
         escritorio.setLayout(escritorioLayout);
         escritorioLayout.setHorizontalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(escritorioLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtRuc, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtApe, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNroRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(90, 90, 90)
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(escritorioLayout.createSequentialGroup()
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cboDistrito, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtDirec, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cboPago, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 203, Short.MAX_VALUE)
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel11)
-                                .addComponent(jLabel12))
-                            .addComponent(jLabel13))
-                        .addGap(37, 37, 37)
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtFecEmi, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtIR, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtImpTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(209, 209, 209))
-                    .addGroup(escritorioLayout.createSequentialGroup()
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtImpNeto, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtConcepto, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnExportar)
-                        .addGap(45, 45, 45))))
-            .addGroup(escritorioLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnNuevo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEditar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEliminar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnGuardar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCancelar)
-                .addGap(19, 19, 19))
-            .addGroup(escritorioLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1216, Short.MAX_VALUE)
+                    .addGroup(escritorioLayout.createSequentialGroup()
+                        .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(escritorioLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnNuevo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnCancelar))
-                .addGap(25, 25, 25)
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(escritorioLayout.createSequentialGroup()
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6)
-                            .addComponent(cboDistrito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(txtDirec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5)
-                            .addComponent(txtNroRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(txtRuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9)
-                            .addComponent(cboPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(escritorioLayout.createSequentialGroup()
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel11)
-                            .addComponent(txtIR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel12)
-                            .addComponent(txtImpTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel13)
-                            .addComponent(txtFecEmi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(escritorioLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10)
-                            .addComponent(txtImpNeto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7)
-                            .addComponent(txtApe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8)
-                            .addComponent(txtConcepto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(30, 30, 30)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(escritorioLayout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(btnExportar)))
-                .addContainerGap(10, Short.MAX_VALUE))
+                    .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -517,376 +145,71 @@ public class frmListaRecibosHonorarios extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(escritorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void OcultarColumna(JTable tabla, int indiceColumna) {
-        TableColumn col = tabla.getColumnModel().getColumn(indiceColumna);
-        TableColumnModel tcm = tabla.getColumnModel();
-        tcm.removeColumn(col);
-    }
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        String codigo = DatosRecibosHonorarios.GenerarCodigo();
-        txtId.setText(codigo);
-        DatosRecibosHonorarios.Habilitar(escritorio, true);
-
-        // Preparar todos los campos
-        txtId.setEnabled(false);
-        txtNroRecibo.setText("NUM-");
-        txtRuc.setText("");
-        txtNom.setText("");
-        txtApe.setText("");
-        cboDistrito.setSelectedIndex(0);
-        txtDirec.setText("");
-        cboPago.setSelectedIndex(0);
-        txtConcepto.setText("");
-        txtImpNeto.setText("");
-        txtIR.setText("");
-        txtImpTotal.setText("");
-        txtImpTotal.setEnabled(true); // ✅ Asegura que esté habilitado
-        txtFecEmi.setText("");
-        txtNroRecibo.requestFocus();
-        esNuevo = true;
-        tblHonorarios.clearSelection();
-        tblHonorarios.setRowSelectionAllowed(false);
+        frmRecibosHonorarios frm = new frmRecibosHonorarios(this); 
+        this.getDesktopPane().add(frm);
+        frm.setVisible(true);
+        frm.toFront();
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // Agrupar las cajas de texto
-        JTextField[] camposTexto = {
-            txtId, txtNroRecibo, txtRuc, txtNom, txtApe,
-            txtDirec, txtConcepto, txtImpNeto, txtIR, txtImpTotal, txtFecEmi
-        };
-        JComboBox[] combos = {cboDistrito, cboPago};
+        int fila = tblHonorarios.getSelectedRow();
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un recibo.");
+            return;
+        }
 
-        // Llamar al método para llenar los datos seleccionados
-        DatosRecibosHonorarios.Editar(escritorio, tblHonorarios, camposTexto, combos);
+        try {
+            // Obtener la fecha directamente como Date desde la tabla
+            Date fecha = (Date) modelo.getValueAt(fila, 12);
 
-        // Asegurar que los campos estén habilitados y editables
-        txtImpNeto.setEnabled(true);
-        txtImpNeto.setEditable(true);
+            // Crear objeto con datos de la fila seleccionada
+            ReciboHonorario rh = new ReciboHonorario(
+                String.valueOf(modelo.getValueAt(fila, 0)),
+                modelo.getValueAt(fila, 1).toString(),
+                modelo.getValueAt(fila, 2).toString(),
+                modelo.getValueAt(fila, 3).toString(),
+                modelo.getValueAt(fila, 4).toString(),
+                modelo.getValueAt(fila, 5).toString(),
+                modelo.getValueAt(fila, 6).toString(),
+                modelo.getValueAt(fila, 7).toString(),
+                modelo.getValueAt(fila, 8).toString(),
+                fecha, // fecha como Date
+                Float.parseFloat(modelo.getValueAt(fila, 9).toString()),
+                Float.parseFloat(modelo.getValueAt(fila, 10).toString()),
+                Float.parseFloat(modelo.getValueAt(fila, 11).toString())
+            );
 
-        txtIR.setEnabled(true);
-        txtIR.setEditable(true);
+            // Abrir formulario de edición pasando la referencia del listado
+            frmRecibosHonorarios frm = new frmRecibosHonorarios(this, rh);
+            this.getDesktopPane().add(frm);
+            frm.setVisible(true);
+            frm.toFront();
 
-        txtImpTotal.setEnabled(true);
-        txtImpTotal.setEditable(true);
-
-        esNuevo = false; // Indicamos que no será un nuevo registro
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al obtener la fecha: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        DatosRecibosHonorarios.Eliminar(tblHonorarios);
-        DatosRecibosHonorarios.Habilitar(escritorio, false);
+        DatosRecibosHonorarios.Eliminar(tblHonorarios);      
     }//GEN-LAST:event_btnEliminarActionPerformed
 
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        String distrito = null;
-        String pago = null;
-
-        // Validar selección de distrito y forma de pago
-        if (cboDistrito.getSelectedItem() == null || cboPago.getSelectedItem() == null
-                || cboDistrito.getSelectedItem().toString().equals("<<Seleccionar>>")
-                || cboPago.getSelectedItem().toString().equals("<<Seleccionar>>")) {
-            JOptionPane.showMessageDialog(null, "Por favor, selecciona un distrito y una forma de pago.");
-            return;
-        } else {
-            distrito = cboDistrito.getSelectedItem().toString();
-            pago = cboPago.getSelectedItem().toString();
-        }
-
-        // Validar campos vacíos
-        if (txtImpNeto.getText().trim().isEmpty() || txtIR.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Por favor, completa los campos de importe.");
-            return;
-        }
-
-        try {
-            // Convertir a float
-            float impNeto = Float.parseFloat(txtImpNeto.getText().trim());
-            float impIR = Float.parseFloat(txtIR.getText().trim());
-
-            // Calcular Importe Total
-            float impTotal = Math.round((impNeto - impIR) * 100.0f) / 100.0f;
-            txtImpTotal.setText(String.valueOf(impTotal));
-
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Los importes deben ser valores numéricos.");
-            return;
-        }
-
-        // Verificar si algún campo está mal inicializado
-        if (txtId == null || txtNroRecibo == null || txtRuc == null || txtNom == null
-                || txtApe == null || txtDirec == null || txtImpNeto == null
-                || txtConcepto == null || txtFecEmi == null) {
-            JOptionPane.showMessageDialog(null, "Alguno de los campos no está inicializado.");
-            return;
-        }
-
-        // Validar campos importantes
-        if (txtId.getText().isEmpty() || txtRuc.getText().isEmpty() || txtNom.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Completar bien los campos.");
-            return;
-        }
-
-        // Crear objeto ReciboHonorario
-        ReciboHonorario rec = new ReciboHonorario(
-                txtId.getText(),
-                txtNroRecibo.getText(),
-                txtRuc.getText(),
-                txtNom.getText(),
-                txtApe.getText(),
-                distrito,
-                txtDirec.getText(),
-                pago,
-                txtConcepto.getText(),
-                txtFecEmi.getText(),
-                Float.parseFloat(txtImpNeto.getText()),
-                Float.parseFloat(txtIR.getText()),
-                Float.parseFloat(txtImpTotal.getText())
-        );
-
-        JTextField[] campos = {txtNroRecibo, txtRuc, txtNom, txtApe, txtDirec, txtImpNeto, txtConcepto, txtFecEmi};
-        JComboBox[] combos = {cboDistrito, cboPago};
-
-        if (!DatosRecibosHonorarios.Validar(campos, combos)) {
-            return;
-        }
-
-        if (esNuevo) {
-            if (txtId.getText().isEmpty() || txtRuc.getText().isEmpty() || txtNom.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos.");
-                return;
-            } else {
-                if (DatosRecibosHonorarios.Insertar(rec, tblHonorarios)) {
-                    DatosRecibosHonorarios.Limpiar(escritorio);
-                    DatosRecibosHonorarios.Habilitar(escritorio, false);
-                    tblHonorarios.clearSelection();
-                    tblHonorarios.setRowSelectionAllowed(true);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        } else {
-            if (txtId.getText().isEmpty() || txtRuc.getText().isEmpty() || txtNom.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos.");
-                return;
-            } else {
-                rec.setCodigoRecibo(txtId.getText());
-                DatosRecibosHonorarios.Actualizar(rec, tblHonorarios);
-                DatosRecibosHonorarios.Limpiar(escritorio);
-                DatosRecibosHonorarios.Habilitar(escritorio, false);
-                tblHonorarios.clearSelection();
-                tblHonorarios.setRowSelectionAllowed(true);
-            }
-        }
-    }//GEN-LAST:event_btnGuardarActionPerformed
-
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        DatosRecibosHonorarios.Limpiar(escritorio);
-        DatosRecibosHonorarios.Habilitar(escritorio, false);
-        tblHonorarios.clearSelection();
-        tblHonorarios.setRowSelectionAllowed(true);
-    }//GEN-LAST:event_btnCancelarActionPerformed
-
-    private void txtImpNetoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtImpNetoFocusLost
-        String impBruto = txtImpNeto.getText();
-        if (impBruto.isEmpty()) {
-            impBruto = "0.00";
-            txtImpNeto.setText(impBruto); // Agrega esta línea para establecer el valor en la caja de texto
-        }
-        float rentaBruta = Float.parseFloat(impBruto);
-        float ir = Math.round(rentaBruta * 0.08f * 100.0f) / 100.0f;
-        txtIR.setText(String.valueOf(ir));
-        txtIR.selectAll(); // Agrega esta línea para seleccionar el contenido de txtIR
-    }//GEN-LAST:event_txtImpNetoFocusLost
-
-    private void txtFecEmiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFecEmiKeyTyped
-        char c = evt.getKeyChar();
-        if (c == KeyEvent.VK_BACK_SPACE) {
-            // permitir eliminar el carácter anterior incluso si es una diagonal
-            String fecha = txtFecEmi.getText();
-            if (!fecha.isEmpty()) {
-                // eliminar el último carácter de la cadena
-                fecha = fecha.substring(0, fecha.length() - 1);
-                txtFecEmi.setText(fecha);
-            }
-        } else if (!Character.isDigit(c)) {
-            evt.consume(); // Si no es un número, se ignora el evento de tecla
-        }
-        String fecha = txtFecEmi.getText();
-        int length = fecha.length();
-        if (length == 2 || length == 5) { // Si se ha ingresado un día o un mes completo, se agrega el guión correspondiente
-            fecha += "/";
-            txtFecEmi.setText(fecha);
-        }
-        if (length >= 10) {
-            evt.consume(); // Si ya se ha ingresado la fecha completa, se ignora el evento de tecla
-        }
-    }//GEN-LAST:event_txtFecEmiKeyTyped
-
-    private void txtRucKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRucKeyTyped
-        char c = evt.getKeyChar();
-        if (!((c >= '0') && (c <= '9') || (c == evt.VK_BACK_SPACE) || (c == evt.VK_DELETE))) {
-            evt.consume();// Si no es un número, se ignora el evento de tecla
-        }
-        if (txtRuc.getText().length() >= 11) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_txtRucKeyTyped
-
-    private void txtNomFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNomFocusLost
-        String text = txtNom.getText().trim();
-        txtNom.setText(text);
-    }//GEN-LAST:event_txtNomFocusLost
-
-    private void txtApeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtApeFocusLost
-        String text = txtApe.getText().trim();
-        txtApe.setText(text);
-    }//GEN-LAST:event_txtApeFocusLost
-
-    private void txtDirecFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDirecFocusLost
-        String text = txtDirec.getText().trim();
-        txtDirec.setText(text);
-    }//GEN-LAST:event_txtDirecFocusLost
-
-    private void txtImpNetoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtImpNetoKeyTyped
-        char c = evt.getKeyChar();
-        String text = txtImpNeto.getText();
-
-        // Permitir borrado
-        if (Character.isISOControl(c)) {
-            return;
-        }
-
-        // Permitir solo dígitos y un punto decimal
-        if (!(Character.isDigit(c) || c == '.')) {
-            evt.consume();
-            return;
-        }
-
-        // Solo permitir un punto decimal
-        if (c == '.' && text.contains(".")) {
-            evt.consume();
-            return;
-        }
-
-        // Permitir máximo 2 decimales SOLO si ya hay punto decimal
-        if (text.contains(".")) {
-            int index = text.indexOf(".");
-            int decimals = text.length() - index - 1;
-
-            // Si el cursor está después del punto y ya hay 2 decimales, bloquear
-            if (txtImpNeto.getCaretPosition() > index && decimals >= 2) {
-                evt.consume();
-            }
-        }
-    }//GEN-LAST:event_txtImpNetoKeyTyped
-
-    private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
-        try {
-            Exportar obj = new Exportar();
-            obj.exportarExcel(tblHonorarios);
-        } catch (IOException ex) {
-            Logger.getLogger(frmListaRecibosHonorarios.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnExportarActionPerformed
-
-    private void txtIRFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtIRFocusLost
-        String impIR = txtIR.getText();
-        if (impIR.isEmpty()) {
-            impIR = "0.00";
-            txtIR.setText(impIR); // Agrega esta línea para establecer el valor en la caja de texto
-        }
-        float rentaBruta = Float.parseFloat(txtImpNeto.getText());
-        float impRenta = Float.parseFloat(txtIR.getText());
-        float rentaNeta = Math.round((rentaBruta - impRenta) * 100.0f) / 100.0f;
-        txtImpTotal.setText(String.valueOf(rentaNeta));
-    }//GEN-LAST:event_txtIRFocusLost
-
-    private void txtIRKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIRKeyTyped
-        char c = evt.getKeyChar();
-        String text = txtImpNeto.getText();
-
-        if (!(Character.isDigit(c) || c == '.')) {
-            evt.consume(); // Si no es un número o un punto, se ignora el evento de tecla
-        } else if (c == '.' && text.contains(".")) {
-            evt.consume(); // Si el carácter ingresado es un punto y ya hay un punto en el campo de texto, se ignora el evento de tecla
-        } else if (text.contains(".") && text.length() - text.indexOf(".") > 2) {
-            evt.consume(); // Si ya hay dos decimales en el campo de texto, se ignora el evento de tecla
-        } else if (text.equals("0") && c != '.') {
-            evt.consume(); // Si el primer carácter es 0 y el siguiente carácter no es un punto, se ignora el evento de tecla
-        }
-    }//GEN-LAST:event_txtIRKeyTyped
-
-    private void txtNroReciboKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNroReciboKeyTyped
-        char c = evt.getKeyChar();
-        // Validar que sea un número o un carácter de control
-        if (!Character.isDigit(c) && !Character.isISOControl(c)) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_txtNroReciboKeyTyped
-
-    private void txtRucFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtRucFocusLost
-        String text = txtRuc.getText().trim();
-        txtRuc.setText(text);
-    }//GEN-LAST:event_txtRucFocusLost
-
-    private void cboPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboPagoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboPagoActionPerformed
-
-    private void txtIRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIRActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtIRActionPerformed
-
-    private void cboDistritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboDistritoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboDistritoActionPerformed
-
-    private void txtImpTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtImpTotalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtImpTotalActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public static javax.swing.JButton btnCancelar;
     public static javax.swing.JButton btnEditar;
     public static javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnExportar;
-    public static javax.swing.JButton btnGuardar;
     public static javax.swing.JButton btnNuevo;
-    private javax.swing.JComboBox<String> cboDistrito;
-    private javax.swing.JComboBox<String> cboPago;
     private javax.swing.JPanel escritorio;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblHonorarios;
-    private javax.swing.JTextField txtApe;
-    private javax.swing.JTextField txtConcepto;
-    private javax.swing.JTextField txtDirec;
-    private javax.swing.JTextField txtFecEmi;
-    private javax.swing.JTextField txtIR;
-    private javax.swing.JTextField txtId;
-    private javax.swing.JTextField txtImpNeto;
-    private javax.swing.JTextField txtImpTotal;
-    private javax.swing.JTextField txtNom;
-    private javax.swing.JTextField txtNroRecibo;
-    private javax.swing.JTextField txtRuc;
     // End of variables declaration//GEN-END:variables
 }

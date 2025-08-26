@@ -4,17 +4,12 @@
  */
 package proyecto_gm;
 
-import java.awt.TrayIcon;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Locale;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
-import proyecto_gm.Empleado.Empleados;
 
 /**
  *

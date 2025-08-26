@@ -10,8 +10,8 @@ public class Articulo {
     private String descripcion;
     private double cantidad;
     
-    private Marca marca;       // objeto Marca
-    private Categoria categoria; // objeto Categoria
+    private Marca marca;       
+    private Categoria categoria; 
 
     public Articulo() {}
 

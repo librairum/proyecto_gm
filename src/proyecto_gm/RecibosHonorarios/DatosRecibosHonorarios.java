@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package proyecto_gm.RecibosHonorarios;
 
 import java.awt.Component;
@@ -20,14 +16,17 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.ConexionBD;
 
-/**
- * 
- * @author EduardoPC
- */
 public class DatosRecibosHonorarios {
-    //
 
-    static Connection conn = ConexionBD.getConnection();
+    static Connection conn;
+
+    static {
+        conn = ConexionBD.getConnection();
+        if (conn == null) {
+            System.err.println("Error: no se pudo conectar a la base de datos.");
+        }
+    }
+
 
     public static String GenerarCodigo() {
         String codigoGenerado = "";
@@ -46,10 +45,9 @@ public class DatosRecibosHonorarios {
         }
         return codigoGenerado;
     }
-    // 
 
     public static void Mostrar(DefaultTableModel modelo) {
-        try ( PreparedStatement pstmt = conn.prepareStatement("CALL listar_recibos_honorarios()")) {
+        try (PreparedStatement pstmt = conn.prepareStatement("CALL listar_recibos_honorarios()")) {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 modelo.addRow(new Object[]{
@@ -65,31 +63,36 @@ public class DatosRecibosHonorarios {
                     rs.getString("ImporteNeto"),
                     rs.getString("RetencionIr"),
                     rs.getString("ImporteTotal"),
-                    rs.getString("FechaEmision"),});
+                    rs.getDate("FechaEmision")
+                });
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+
     public static boolean Insertar(ReciboHonorario rec, JTable tabla) {
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL insertar_recibo_honorario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }")) {
+        try (CallableStatement cstmt = conn.prepareCall("{ CALL insertar_recibo_honorario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }")) {
 
-            int id = Integer.parseInt(rec.getCodigoRecibo());
+            cstmt.setString(1, rec.getNroRecibo());
+            cstmt.setString(2, rec.getRuc());
+            cstmt.setString(3, rec.getNombres());
+            cstmt.setString(4, rec.getApellidos());
+            cstmt.setString(5, rec.getDistrito());
+            cstmt.setString(6, rec.getDireccion());
+            cstmt.setString(7, rec.getFormaPago());
+            cstmt.setString(8, rec.getConcepto());
+            cstmt.setFloat(9, rec.getImporteNeto());
+            cstmt.setFloat(10, rec.getRetencionIr());
+            cstmt.setFloat(11, rec.getImporteTotal());
 
-            cstmt.setInt(1, id); // Aquí se usa como número entero
-            cstmt.setString(2, rec.getNroRecibo());
-            cstmt.setString(3, rec.getRuc());
-            cstmt.setString(4, rec.getNombres());
-            cstmt.setString(5, rec.getApellidos());
-            cstmt.setString(6, rec.getDistrito());
-            cstmt.setString(7, rec.getDireccion());
-            cstmt.setString(8, rec.getFormaPago());
-            cstmt.setString(9, rec.getConcepto());
-            cstmt.setFloat(10, rec.getImporteNeto());
-            cstmt.setFloat(11, rec.getRetencionIr());
-            cstmt.setFloat(12, rec.getImporteTotal());
-            cstmt.setString(13, rec.getFecha());
+            // ✅ ahora usamos la fecha desde el objeto ReciboHonorario
+            if (rec.getFecha() != null) {
+                cstmt.setDate(12, new java.sql.Date(rec.getFecha().getTime()));
+            } else {
+                cstmt.setNull(12, java.sql.Types.DATE);
+            }
 
             cstmt.execute();
 
@@ -97,6 +100,7 @@ public class DatosRecibosHonorarios {
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
             Mostrar(modelo);
+            tabla.setModel(modelo); 
             return true;
 
         } catch (SQLException ex) {
@@ -106,15 +110,32 @@ public class DatosRecibosHonorarios {
     }
 
     public static void Actualizar(ReciboHonorario recibo, JTable tabla) {
+        if (conn == null) {
+            JOptionPane.showMessageDialog(null, "Error: La conexión a la base de datos no está inicializada.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         CallableStatement cstmt = null;
         try {
+            // Tomamos el código del recibo y limpiamos espacios
+            String codigo = recibo.getCodigoRecibo() != null ? recibo.getCodigoRecibo().trim() : "";
+            if (codigo.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "El código del recibo no está definido.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-            String codigo = recibo.getCodigoRecibo(); // ejemplo: "CAR0002"
-            int id = Integer.parseInt(codigo.replaceAll("[^0-9]", "")); // resultado: 2
+            // Extraemos solo los números del código
+            String numeros = codigo.replaceAll("[^0-9]", "");
+            if (numeros.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "El código del recibo no contiene un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
+            int id = Integer.parseInt(numeros); // ✅ ID listo para la BD
+
+            // Preparamos la llamada al procedimiento almacenado
             cstmt = conn.prepareCall("{ CALL actualizar_recibo_honorario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
-
-            cstmt.setInt(1, id); // aquí se usa el ID entero
+            cstmt.setInt(1, id);
             cstmt.setString(2, recibo.getNroRecibo());
             cstmt.setString(3, recibo.getRuc());
             cstmt.setString(4, recibo.getNombres());
@@ -126,28 +147,36 @@ public class DatosRecibosHonorarios {
             cstmt.setFloat(10, recibo.getImporteNeto());
             cstmt.setFloat(11, recibo.getRetencionIr());
             cstmt.setFloat(12, recibo.getImporteTotal());
-            cstmt.setString(13, recibo.getFecha());
+
+            // Fecha
+            java.util.Date fechaUtil = recibo.getFecha();
+            if (fechaUtil != null) {
+                cstmt.setDate(13, new java.sql.Date(fechaUtil.getTime()));
+            } else {
+                cstmt.setNull(13, java.sql.Types.DATE);
+            }
 
             cstmt.execute();
 
+            // Refrescar tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
-
             DatosRecibosHonorarios.Mostrar(modelo);
 
             JOptionPane.showMessageDialog(null, "Recibo actualizado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } finally {
             try {
-                if (cstmt != null) {
-                    cstmt.close();
-                }
+                if (cstmt != null) cstmt.close();
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
+
+
 
     public static void Eliminar(JTable tabla) {
         CallableStatement cstmt = null;
@@ -207,9 +236,9 @@ public class DatosRecibosHonorarios {
             }
         }
 
-        if (campos[1].getText().length() != 11) {
+        if (campos[0].getText().length() != 11) {
             JOptionPane.showMessageDialog(null, "El RUC debe contener 11 dígitos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            campos[1].requestFocus();
+            campos[0].requestFocus();
             return false;
         }
         return true;
@@ -241,12 +270,12 @@ public class DatosRecibosHonorarios {
             camposTexto[2].setText(tabla.getValueAt(filaSeleccionada, 2).toString());
             camposTexto[3].setText(tabla.getValueAt(filaSeleccionada, 3).toString());
             camposTexto[4].setText(tabla.getValueAt(filaSeleccionada, 4).toString());
-            camposTexto[5].setText(tabla.getValueAt(filaSeleccionada, 6).toString());
-            camposTexto[6].setText(tabla.getValueAt(filaSeleccionada, 8).toString());
-            camposTexto[7].setText(tabla.getValueAt(filaSeleccionada, 9).toString());
-            camposTexto[8].setText(tabla.getValueAt(filaSeleccionada, 10).toString());
-            camposTexto[9].setText(tabla.getValueAt(filaSeleccionada, 11).toString());
-            camposTexto[10].setText(tabla.getValueAt(filaSeleccionada, 12).toString());
+            camposTexto[5].setText(tabla.getValueAt(filaSeleccionada, 5).toString());
+            camposTexto[6].setText(tabla.getValueAt(filaSeleccionada, 6).toString());
+            camposTexto[7].setText(tabla.getValueAt(filaSeleccionada, 7).toString());
+            camposTexto[8].setText(tabla.getValueAt(filaSeleccionada, 8).toString());
+            camposTexto[9].setText(tabla.getValueAt(filaSeleccionada, 9).toString());
+            camposTexto[10].setText(tabla.getValueAt(filaSeleccionada, 10).toString());
 
             String distrito = tabla.getValueAt(filaSeleccionada, 5).toString();
             String pago = tabla.getValueAt(filaSeleccionada, 7).toString();
