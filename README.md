@@ -1,39 +1,41 @@
-# Gm1.0
+# GM1.5 - Reporte de Funcionalidades
 
-1. Administración<br>
-  Cargos - Percy              (correciones y funcionalidad correcta)<br>
-  áreas - Percy               (correciones y funcionalidad correcta)<br>
-  Tipos de empleados - Percy  (correciones y funcionalidad correcta)<br>
-  Asistencia - Percy          (correciones y funcionalidad correcta)<br>
-  Tipos de documentos - Percy (correciones y funcionalidad correcta)<br>
+## Administración
+- **Cargos**: Nuevo falla al guardar, editar falla no cargan los datos
+- **Áreas**: Funcionalidad correcta
+- **Tipos de empleados**: Funcionalidad correcta
+- **Asistencia**: Funcionalidad correcta
+- **Tipos de documentos**: Correcciones en editar módulo, no carga correctamente
 
-2. Facturación<br>
-  Recibo por honorarios - (avanzando) Percy<br>
-  Transferencias (faltante)<br>
+## Facturación
+- **Recibo por honorarios**: Fallas al guardar datos y falla de diseño
+- **Transferencias**: Faltante
 
-3. logística<br>
-  Categorías (faltante)<br>
-  Artículos (faltante)<br>
+## Logística
+- **Categorías**: Funcionalidad correcta
+- **Artículos**: Funcionalidad correcta
 
-4. Proyecto<br>
-  Comunicaciones (faltante)<br>
-  Contactos (faltante)<br>
+## Proyecto
+- **Comunicaciones**: Funcionalidad correcta
+- **Contactos**: Funcionalidad correcta, falla de diseño
 
-5. Recursos humanos<br>
-  Carreras (faltante)<br>
-  Instituciones (faltante)<br>
-  Facultades (faltante)<br>
-  Proveedores (faltante)<br>
-  Empleados - Percy (correciones y funcionalidad correcta)<br>
+## Recursos Humanos
+- **Carreras**: Funcionalidad correcta
+- **Instituciones**: Funcionalidad correcta y falla de diseño
+- **Facultades**: Funcionalidad correcta
+- **Proveedores**: Funcionalidad correcta, excepto búsqueda y validaciones
+- **Empleados**: Funcionalidad correcta y validaciones
 
-6. Tesorería<br>
-  Flujo de caja (faltante)<br>
-  Cuentas bancarias (avanzando) emerson<br>
-  Viáticos - emerson (correciones y funcionalidad correcta)<br>
+## Tesorería
+- **Flujo de caja**: Faltante
+- **Cuentas bancarias**: Faltante
+- **Viáticos**: Faltante
 
-7. Configuración<br>
-  Periodos - emerson      (correciones y funcionalidad correcta)<br>
-  Módulos - emerson       (correciones y funcionalidad correcta)<br>
-  Departamentos - emerson (correciones y funcionalidad correcta)<br>
-  Credencial - emerson    (correciones y funcionalidad correcta)<br>
+## Configuración
+- **Periodos**: Funcionalidad correcta
+- **Módulos**: Funcionalidad correcta
+- **Departamentos**: Faltante
+- **Credencial**: Faltante
 
+## Seguridad
+- **Módulos de seguridad**: Faltante
