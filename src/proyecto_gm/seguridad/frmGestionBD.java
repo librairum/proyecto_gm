@@ -40,6 +40,8 @@ public class frmGestionBD extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTree1 = new javax.swing.JTree();
 
+        setTitle("Backup base de datos");
+
         btnConectar.setText("Conectar");
 
         btnRespaldar.setText("Respaldar");

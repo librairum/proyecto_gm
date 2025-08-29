@@ -38,6 +38,7 @@ import org.apache.poi.hssf.record.TextObjectRecord;
 import proyecto_gm.Asistencias.frmAsistenciaImagen;
 import proyecto_gm.Empleado.frmListaEmpleado;
 import proyecto_gm.Proveedores.frmListaProveedores;
+import proyecto_gm.seguridad.frmPermisosxPerfil;
 import proyecto_gm.seguridad.frmUsuario;
 
 public class menu extends javax.swing.JFrame {
@@ -338,6 +339,7 @@ public class menu extends javax.swing.JFrame {
         subMenuCredencial = new javax.swing.JMenuItem();
         menuSeguridad = new javax.swing.JMenu();
         subMenuUsuario = new javax.swing.JMenuItem();
+        subMenuPermisosxPerfil = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -662,6 +664,14 @@ public class menu extends javax.swing.JFrame {
         });
         menuSeguridad.add(subMenuUsuario);
 
+        subMenuPermisosxPerfil.setText("Permisos por perfil");
+        subMenuPermisosxPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuPermisosxPerfilActionPerformed(evt);
+            }
+        });
+        menuSeguridad.add(subMenuPermisosxPerfil);
+
         jMenuBar1.add(menuSeguridad);
 
         setJMenuBar(jMenuBar1);
@@ -859,6 +869,12 @@ public class menu extends javax.swing.JFrame {
             escritorio.add(verventana);
             verventana.show();
         }
+        private void AbrirMenuxperfil()
+        {
+            proyecto_gm.seguridad.frmPermisosxPerfil verventana = new frmPermisosxPerfil();
+            escritorio.add(verventana);
+            verventana.show();
+        }
     private void menuCajaChicaActionPerformed (java.awt.event.ActionEvent evt){
        
     }
@@ -1002,6 +1018,10 @@ public class menu extends javax.swing.JFrame {
         AbrirUsuario();
     }//GEN-LAST:event_subMenuUsuarioActionPerformed
 
+    private void subMenuPermisosxPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuPermisosxPerfilActionPerformed
+        AbrirMenuxperfil();
+    }//GEN-LAST:event_subMenuPermisosxPerfilActionPerformed
+
    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1069,6 +1089,7 @@ public class menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem subMenuInstituciones;
     private javax.swing.JMenuItem subMenuModulos;
     private javax.swing.JMenuItem subMenuPeriodos;
+    private javax.swing.JMenuItem subMenuPermisosxPerfil;
     private javax.swing.JMenuItem subMenuProveedores;
     private javax.swing.JMenuItem subMenuReciboHonorario;
     private javax.swing.JMenuItem subMenuRelojActividad;
