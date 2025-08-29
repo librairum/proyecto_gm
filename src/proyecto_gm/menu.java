@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import proyecto_gm.Instituciones.frmInstituciones;
+import proyecto_gm.Instituciones.frmListaInstituciones;
 import proyecto_gm.Tipo.frmTipo;
 import proyecto_gm.Facultades.frmFacultades;
 import proyecto_gm.Carreras.frmCarreras;
@@ -18,7 +18,7 @@ import proyecto_gm.Asistencias.frmAsistencias;
 import proyecto_gm.CabeceraComprobante.frmCabeceraComprobante;
 import proyecto_gm.Categoria.frmCategoria;
 import proyecto_gm.Comunicacion.frmListaComunicacion;
-import proyecto_gm.Contactos.frmContacto;
+import proyecto_gm.Contactos.frmListaContacto;
 import proyecto_gm.Cuentas.frmCuentas;
 import proyecto_gm.Modulo.frmModulo;
 import proyecto_gm.Periodos.frmPeriodos;
@@ -735,7 +735,7 @@ public class menu extends javax.swing.JFrame {
         }
         
         private void Abrircontactos(){
-        frmContacto verventana = new frmContacto();
+        frmListaContacto verventana = new frmListaContacto();
         escritorio.add(verventana);
         verventana.show();
         }
@@ -783,7 +783,7 @@ public class menu extends javax.swing.JFrame {
         
         
         private void Abririnstitucioneseducativas(){
-         frmInstituciones verventana = new frmInstituciones();
+         frmListaInstituciones verventana = new frmListaInstituciones();
         escritorio.add(verventana);
         verventana.show();
         }

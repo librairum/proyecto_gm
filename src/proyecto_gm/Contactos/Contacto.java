@@ -1,39 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package proyecto_gm.Contactos;
 
-/**
- *
- * @author USUARIO
- */
 public class Contacto {
 
-    /**
-     * @return the cuenta
-     */
     public String getCuenta() {
         return cuenta;
     }
 
-    /**
-     * @param cuenta the cuenta to set
-     */
     public void setCuenta(String cuenta) {
         this.cuenta = cuenta;
     }
 
-    /**
-     * @return the clave
-     */
     public String getClave() {
         return clave;
     }
 
-    /**
-     * @param clave the clave to set
-     */
     public void setClave(String clave) {
         this.clave = clave;
     }

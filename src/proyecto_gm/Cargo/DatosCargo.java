@@ -22,6 +22,25 @@ public class DatosCargo {
         }
     }
     
+    public static java.util.List<Cargo> listarCargos() {
+        java.util.List<Cargo> lista = new java.util.ArrayList<>();
+        try (PreparedStatement stmt = conn.prepareStatement("CALL listar_cargos()");
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Cargo car = new Cargo(
+                    rs.getInt("IdCargo"),
+                    rs.getString("Descripcion")
+                );
+                lista.add(car);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return lista;
+    }
+
+    
     public static void Mostrar(DefaultTableModel modelo) {
         modelo.setRowCount(0);
         try ( PreparedStatement stmt = conn.prepareStatement("CALL listar_cargos()");  ResultSet rs = stmt.executeQuery()) {

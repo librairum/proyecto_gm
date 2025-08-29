@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package proyecto_gm.Contactos;
 
 import java.awt.Component;
@@ -24,10 +20,6 @@ import javax.swing.table.TableModel;
 import proyecto_gm.ConexionBD;
 import proyecto_gm.Departamentos.Departamentos;
 
-/**
- *
- * @author USUARIO
- */
 public class DatosContacto {
 
     static Connection conn = ConexionBD.getConnection();
@@ -91,41 +83,34 @@ public class DatosContacto {
     //metodo para insertar datos (nuevo cambio)
     public static void insertarDatos(Contacto contacto, JTable tabla) {
         try {
-            PreparedStatement cstmt = conn.prepareCall("{ CALL insertar_contactos(?, ?, ?,?, ?, ?,?, ?, ?,?,?,?,?) }");
-            if (contacto.getId() == 0) {
-                JOptionPane.showMessageDialog(null, "Ingrese un Id", "Sistema", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            cstmt.setInt(1, contacto.getId());
-            cstmt.setString(2, contacto.getNombre());
-            cstmt.setString(3, contacto.getFechaNacimiento());
-            cstmt.setString(4, contacto.getPersonasRelacionadas());
-            cstmt.setString(5, contacto.getEmpresa());
-            cstmt.setString(6, contacto.getCuenta());
-            cstmt.setString(7, contacto.getClave());
-
-            cstmt.setString(8, contacto.getCargo());
-            cstmt.setString(9, contacto.getCorreo());
-            cstmt.setString(10, contacto.getTelefono());
-            cstmt.setString(11, contacto.getDepartamento());
-            cstmt.setString(12, contacto.getDireccion());
-            cstmt.setString(13, contacto.getNotas());
+            PreparedStatement cstmt = conn.prepareCall("{ CALL insertar_contactos(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+            cstmt.setString(1, contacto.getNombre());
+            cstmt.setString(2, contacto.getFechaNacimiento());
+            cstmt.setString(3, contacto.getPersonasRelacionadas());
+            cstmt.setString(4, contacto.getEmpresa());
+            cstmt.setString(5, contacto.getCuenta());
+            cstmt.setString(6, contacto.getClave());
+            cstmt.setString(7, contacto.getCargo());
+            cstmt.setString(8, contacto.getCorreo());
+            cstmt.setString(9, contacto.getTelefono());
+            cstmt.setString(10, contacto.getDepartamento());
+            cstmt.setString(11, contacto.getDireccion());
+            cstmt.setString(12, contacto.getNotas());
 
             cstmt.execute(); // se inserta los datos a la BD
 
             // Actualiza el modelo de tabla con los nuevos datos
-            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            modelo.setRowCount(0);
-            DatosContacto.mostrarDatos(modelo);
+            if(tabla != null){
+                DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+                modelo.setRowCount(0);
+                DatosContacto.mostrarDatos(modelo);
+            }
 
-            // Actualiza la vista del JTable con el modelo de tabla actualizado
-//            tabla.setModel(modelo);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-
     }
+}
+
 
     // Mostrar datos
     public static void mostrarDatos(DefaultTableModel modelo) {
@@ -173,16 +158,18 @@ public class DatosContacto {
 
             cstmt.execute(); // se actualiza los datos en la BD
 
-            // Actualizamos la tabla
-            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            modelo.setRowCount(0);
-            DatosContacto.mostrarDatos(modelo);
+            // Solo actualizar la tabla si NO es null
+            if(tabla != null){
+                DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+                modelo.setRowCount(0);
+                DatosContacto.mostrarDatos(modelo);
+            }
 
         } catch (HeadlessException | SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    
     // Eliminar datos
     public static void eliminarDatos(JTable tabla) {
         try {

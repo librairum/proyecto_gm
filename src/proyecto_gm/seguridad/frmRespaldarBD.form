@@ -40,13 +40,13 @@
                           <Component id="cboBasedatos" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="btnConectar" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="40" max="32767" attributes="0"/>
                               <Component id="btnRespaldar" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jComboBox1" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="196" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -80,7 +80,7 @@
                   <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="167" max="32767" attributes="0"/>
+              <EmptySpace pref="19" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
