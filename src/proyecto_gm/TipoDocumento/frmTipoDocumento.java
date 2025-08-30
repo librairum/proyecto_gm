@@ -1,7 +1,6 @@
 package proyecto_gm.TipoDocumento;
 
 import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -21,15 +20,13 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
         inicializaComboCategoria();
 
         DatosTipoDocumento.Mostrar(modelo);
-        // Quitar la edicion de las celdas
         tblTipoDocumento.setCellSelectionEnabled(false);
-        // Poder seleccionar fila(s) de la tabla
         tblTipoDocumento.setRowSelectionAllowed(true);
 
     }
 
     private void inicializaComboCategoria() {
-        List<Modulo> listaCategoria = DatosTipoDocumento.obtenerModulos(); // o CategoriaDAO si lo separas
+        List<Modulo> listaCategoria = DatosTipoDocumento.obtenerModulos();
 
         DefaultComboBoxModel<Modulo> modelo = new DefaultComboBoxModel<>();
         for (Modulo c : listaCategoria) {
@@ -63,11 +60,6 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
 
         escritorio.setBackground(new java.awt.Color(255, 255, 255));
         escritorio.setForeground(new java.awt.Color(255, 255, 255));
-        escritorio.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentMoved(java.awt.event.ComponentEvent evt) {
-                escritorioComponentMoved(evt);
-            }
-        });
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
         btnEditar.setName("editar"); // NOI18N
@@ -103,11 +95,6 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
 
         jLabel1.setText("ID:");
 
-        txtId.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIdActionPerformed(evt);
-            }
-        });
         txtId.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtIdKeyTyped(evt);
@@ -116,19 +103,7 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Modulo:");
 
-        cboModulo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboModuloActionPerformed(evt);
-            }
-        });
-
         jLabel2.setText("Descripción:");
-
-        txtDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtDescripcionKeyTyped(evt);
-            }
-        });
 
         tblTipoDocumento.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -246,10 +221,8 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
 
-        // Agrupar las cajas de texto
         JTextField[] camposTexto = {txtId, txtDescripcion};
 
-        // Agrupar los combo boxes
         JComboBox[] combos = {cboModulo};
         DatosTipoDocumento.Editar(escritorio, tblTipoDocumento, camposTexto, combos);
 
@@ -258,7 +231,6 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
         DatosTipoDocumento.Eliminar(tblTipoDocumento);
         DatosTipoDocumento.Habilitar(escritorio, false);
 
@@ -286,11 +258,8 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
             txtId.requestFocus();
             return;
         }
-
-        // ✅ CORRECTO: ya es un entero
         idModulo = modSeleccionado.getId();
 
-        // Crea el objeto TipoDocumento
         TipoDocumento tip = new TipoDocumento(idTipoDocumento, String.valueOf(idModulo), txtDescripcion.getText());
 
         if (esNuevo) {
@@ -311,7 +280,6 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
-        // Limpiamos y bloqueamos los campos:
         DatosTipoDocumento.Limpiar(escritorio);
         DatosTipoDocumento.Habilitar(escritorio, false);
         // Limpiamos alguna seleccion previa de alguna fila de la tabla
@@ -319,16 +287,6 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
         // Habilitamos la seleccion de filas de la tabla
         tblTipoDocumento.setRowSelectionAllowed(true);
     }//GEN-LAST:event_btnDeshacerActionPerformed
-
-    private void cboModuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboModuloActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboModuloActionPerformed
-
-    private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
-        // TODO add your handling code here:
-
-
-    }//GEN-LAST:event_txtIdActionPerformed
 
     private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped
         // TODO add your handling code here:
@@ -339,22 +297,14 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txtIdKeyTyped
 
-    private void txtDescripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyTyped
-
-    }//GEN-LAST:event_txtDescripcionKeyTyped
-
-    private void escritorioComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_escritorioComponentMoved
-        // TODO add your handling code here:
-    }//GEN-LAST:event_escritorioComponentMoved
-
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         DatosTipoDocumento.Habilitar(escritorio, true);
 
-        txtId.setEnabled(true);              // Habilitar campo para ingreso manual
-        txtId.setText("");                   // Limpiar el campo
-        txtDescripcion.setText("");         // Limpiar descripción
+        txtId.setEnabled(true);            
+        txtId.setText("");                 
+        txtDescripcion.setText("");         
 
-        txtId.requestFocus();               // Colocar el foco en el campo ID
+        txtId.requestFocus();               
         esNuevo = true;
         tblTipoDocumento.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnAgregarActionPerformed

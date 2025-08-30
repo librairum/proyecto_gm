@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
@@ -53,7 +52,7 @@ public class DatosTipoDocumento {
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL listar_modulo() }")) {
             ResultSet rs = cstmt.executeQuery();
             while (rs.next()) {
-                int Id = rs.getInt("IdModulo");  // obtener el int directamente
+                int Id = rs.getInt("IdModulo");
                 String descripcion = rs.getString("Descripcion");
                 lista.add(new Modulo(Id, descripcion));
             }
@@ -118,25 +117,24 @@ public class DatosTipoDocumento {
     }
 
     public static void Actualizar(TipoDocumento tip, JTable tabla, JComboBox<Modulo> cboModulo) {
-    try (CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_tipodocumento(?, ?, ?) }")) {
-        // Usamos el idModulo directamente del objeto tip
-        String idModulo = tip.getIdModulo();
+        try (CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_tipodocumento(?, ?, ?) }")) {
+            String idModulo = tip.getIdModulo();
 
-        cstmt.setInt(1, tip.getIdTipoDocumento());   // ID del tipo de documento
-        cstmt.setString(2, tip.getDescripcion());    // Descripción
-        cstmt.setString(3, idModulo);                // ID del módulo como string
+            cstmt.setInt(1, tip.getIdTipoDocumento());   
+            cstmt.setString(2, tip.getDescripcion());   
+            cstmt.setString(3, idModulo);                
 
-        cstmt.execute();
+            cstmt.execute();
 
-        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-        modelo.setRowCount(0);
-        Mostrar(modelo);
+            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+            modelo.setRowCount(0);
+            Mostrar(modelo);
 
-        JOptionPane.showMessageDialog(null, "Datos actualizados correctamente.");
-    } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Datos actualizados correctamente.");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
-}
 
 
     public static void Eliminar(JTable tabla) {
@@ -151,8 +149,8 @@ public class DatosTipoDocumento {
 
                     // Refrescar la tabla completa
                     DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-                    modelo.setRowCount(0); // Limpiar
-                    Mostrar(modelo);       // Volver a cargar
+                    modelo.setRowCount(0); 
+                    Mostrar(modelo);       
 
                     // Confirmación
                     JOptionPane.showMessageDialog(null, "Registro eliminado correctamente.", "Eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);

@@ -33,24 +33,6 @@ public class DatosArticulo {
         }
     }
 
-    public static void Habilitar(Container contenedor, boolean bloquear) {
-        if (contenedor == null) {
-            System.out.println("Error: El contenedor recibido es null.");
-            return;
-        }
-        for (Component component : contenedor.getComponents()) {
-            if (component instanceof JTextField || component instanceof JComboBox) {
-                component.setEnabled(bloquear);
-            } else if (component instanceof JButton) {
-                String button = ((JButton) component).getName();
-                if (button != null) {
-                    ((JButton) component).setEnabled(button.equals("guardar") || button.equals("deshacer") ? bloquear : !bloquear);
-                } else {
-                }
-            }
-        }
-    }
-
     public static List<Categoria> obtenerCategorias() {
         List<Categoria> lista = new ArrayList<>();
         try (CallableStatement cstmt = conn.prepareCall("{ CALL listar_categorias() }")) {

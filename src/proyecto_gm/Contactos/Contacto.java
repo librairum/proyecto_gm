@@ -2,6 +2,41 @@ package proyecto_gm.Contactos;
 
 public class Contacto {
 
+    // Variables
+    private int Id;
+    private String cuenta;
+    private String clave;
+    protected String Nombre, FechaNacimiento, PersonasRelacionadas, Empresa, Cargo, Correo, Telefono, Departamento, Direccion, Notas;
+
+    // Constructor
+    public Contacto(int Id, String Nombre, String FechaNacimiento, String PersonasRelacionadas, String Empresa, 
+                    String cuenta, String clave, String Cargo, String Correo, String Telefono, 
+                    String Departamento, String Direccion, String Notas) {
+        this.Id = Id;
+        this.Nombre = Nombre;
+        this.FechaNacimiento = FechaNacimiento;
+        this.PersonasRelacionadas = PersonasRelacionadas;
+        this.Empresa = Empresa;
+        this.cuenta = cuenta;
+        this.clave = clave;
+        this.Cargo = Cargo;
+        this.Correo = Correo;
+        this.Telefono = Telefono;
+        this.Departamento = Departamento;
+        this.Direccion = Direccion;
+        this.Notas = Notas;
+    }
+
+    // Getters y Setters
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int Id) {
+        this.Id = Id;
+    }
+
     public String getCuenta() {
         return cuenta;
     }
@@ -17,40 +52,7 @@ public class Contacto {
     public void setClave(String clave) {
         this.clave = clave;
     }
-    private int Id;
-    protected String  Nombre, FechaNacimiento, PersonasRelacionadas, Empresa, Cargo, Correo, Telefono, Departamento, Direccion, Notas;
-    private String cuenta;
-    private String clave;
 
-    // Constructor
-    public Contacto(int Id, String Nombre, String FechaNacimiento, String PersonasRelacionadas, String Empresa, String cuenta, String clave,
-                            String Cargo, String Correo, String Telefono, String Departamento, String Direccion, String Notas) {
-        this.Id=Id;
-        this.Nombre=Nombre;
-        this.FechaNacimiento=FechaNacimiento;
-        this.PersonasRelacionadas=PersonasRelacionadas;
-        this.Empresa=Empresa;
-        this.cuenta = cuenta;
-        this.clave = clave;
-        this.Cargo=Cargo;
-        this.Correo=Correo;
-        this.Telefono=Telefono;
-        this.Departamento=Departamento;
-        this.Direccion=Direccion;
-        this.Notas=Notas;
-        
-    }
-    
-    //get y set
-
-    public int getId() {
-        return Id;
-    }
-
-    public void setId(int Id) {
-        this.Id = Id;
-    }
-    
     public String getNombre() {
         return Nombre;
     }
@@ -130,6 +132,4 @@ public class Contacto {
     public void setNotas(String Notas) {
         this.Notas = Notas;
     }
-    
-    
 }

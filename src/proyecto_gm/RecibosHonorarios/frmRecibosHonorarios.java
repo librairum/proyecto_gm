@@ -185,11 +185,6 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
                 txtIRFocusLost(evt);
             }
         });
-        txtIR.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIRActionPerformed(evt);
-            }
-        });
         txtIR.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtIRKeyReleased(evt);
@@ -224,11 +219,6 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
         jLabel12.setText("Importe Total:");
 
         txtImpTotal.setEditable(false);
-        txtImpTotal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtImpTotalActionPerformed(evt);
-            }
-        });
         txtImpTotal.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtImpTotalKeyReleased(evt);
@@ -542,14 +532,6 @@ public class frmRecibosHonorarios extends javax.swing.JInternalFrame {
     private void txtImpNetoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtImpNetoKeyReleased
         calcularImporteTotal();
     }//GEN-LAST:event_txtImpNetoKeyReleased
-
-    private void txtIRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIRActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtIRActionPerformed
-
-    private void txtImpTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtImpTotalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtImpTotalActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -1,6 +1,5 @@
 package proyecto_gm.RecibosHonorarios;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
@@ -29,8 +28,6 @@ public class frmListaRecibosHonorarios extends javax.swing.JInternalFrame {
 
         modelo = new DefaultTableModel(null, titulos);
         tblHonorarios.setModel(modelo);
-
-        // 👉 Se delega la consulta a la clase DatosRecibosHonorarios
         DatosRecibosHonorarios.Mostrar(modelo);
     }
     

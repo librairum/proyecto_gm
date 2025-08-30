@@ -1,20 +1,16 @@
 package proyecto_gm.Instituciones;
 
-import java.awt.Toolkit;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.Exportar;
 import proyecto_gm.Facultades.DatosFacultades;
-import static proyecto_gm.Instituciones.DatosInstituciones.validarNumeros;
 
 public class frmListaInstituciones extends javax.swing.JInternalFrame {
 
     Exportar obj;
-
     DefaultTableModel modelo;
-    boolean esNuevo = false;
 
     public frmListaInstituciones() {
         initComponents();
@@ -26,14 +22,10 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
         modelo.addColumn("SEDE");
         this.tblInstituciones.setModel(modelo);
 
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-
-        DatosFacultades.bloquearCampos(jPanel2);
-
-        DatosInstituciones di = new DatosInstituciones();
-        di.mostrarDatos(modelo);
+        // cargar datos desde la BD
+        DatosInstituciones.mostrarDatos(modelo);
     }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -43,21 +35,9 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
         btnAgregar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
-        btnGuardar = new javax.swing.JButton();
-        btnDeshacer = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        txtDireccion = new javax.swing.JTextField();
-        txtId = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        txtSede = new javax.swing.JTextField();
-        txtRuc = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        txtRazon = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblInstituciones = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        btnExportar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -86,60 +66,6 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
             }
         });
 
-        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
-        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
-            }
-        });
-
-        btnDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
-        btnDeshacer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeshacerActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("Id:");
-
-        jLabel4.setText("Direccion:");
-
-        txtDireccion.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtDireccionKeyTyped(evt);
-            }
-        });
-
-        txtId.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtIdKeyTyped(evt);
-            }
-        });
-
-        jLabel2.setText("Ruc:");
-
-        jLabel5.setText("Sede:");
-
-        txtSede.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtSedeKeyTyped(evt);
-            }
-        });
-
-        txtRuc.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtRucKeyTyped(evt);
-            }
-        });
-
-        jLabel3.setText("Razon Social:");
-
-        txtRazon.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtRazonKeyTyped(evt);
-            }
-        });
-
         tblInstituciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -150,10 +76,10 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tblInstituciones);
 
-        jButton1.setText("Exportar Datos");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnExportar.setText("Exportar Datos");
+        btnExportar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnExportarActionPerformed(evt);
             }
         });
 
@@ -164,51 +90,17 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 849, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addContainerGap())
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnAgregar)
-                                    .addComponent(jLabel1))
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnEditar)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnEliminar)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(btnGuardar)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnDeshacer)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 456, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(txtRuc, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel3)
-                                        .addGap(62, 62, 62)
-                                        .addComponent(txtRazon, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtSede, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(130, 130, 130)
-                                        .addComponent(jButton1))
-                                    .addComponent(jLabel2))
-                                .addGap(0, 76, Short.MAX_VALUE)))
-                        .addGap(48, 48, 48))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnAgregar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEditar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnExportar)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -218,25 +110,9 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
                     .addComponent(btnAgregar)
                     .addComponent(btnEditar)
                     .addComponent(btnEliminar)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnDeshacer))
-                .addGap(21, 21, 21)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtRuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtRazon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnExportar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtSede, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -255,136 +131,34 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-
-        String codigo = DatosInstituciones.GenerarCodigo();
-
-        if (codigo != null && !codigo.isEmpty()) {
-            txtId.setText(codigo);
-            txtId.setEnabled(false);
-        } else {
-            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-
-        btnGuardar.setEnabled(true);
-        btnDeshacer.setEnabled(true);
-        btnEditar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnAgregar.setEnabled(false);
-        DatosFacultades.habilitarCampos(jPanel2);
-        esNuevo = true;
+        frmInstituciones form = new frmInstituciones(true); // nuevo
+        this.getDesktopPane().add(form);
+        form.setVisible(true);
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        int fila = tblInstituciones.getSelectedRow();
+        if (fila >= 0) {
+            String id = tblInstituciones.getValueAt(fila, 0).toString();
+            String ruc = tblInstituciones.getValueAt(fila, 1).toString();
+            String razon = tblInstituciones.getValueAt(fila, 2).toString();
+            String direccion = tblInstituciones.getValueAt(fila, 3).toString();
+            String sede = tblInstituciones.getValueAt(fila, 4).toString();
 
-        btnAgregar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnGuardar.setEnabled(true);
-        btnDeshacer.setEnabled(true);
-        btnEditar.setEnabled(false);
-        // Habilitar campos
-        DatosFacultades.habilitarCampos(jPanel2);
-
-        JTextField[] cajas = {txtId, txtRuc, txtRazon, txtDireccion, txtSede};
-
-        //Editar campos
-        DatosFacultades.editar(tblInstituciones, cajas);
-        esNuevo = false;
+            frmInstituciones form = new frmInstituciones(false); // editar
+            form.cargarDatos(id, ruc, razon, direccion, sede);
+            this.getDesktopPane().add(form);
+            form.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione una fila para editar.");
+        }
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         DatosInstituciones.eliminarDatos(tblInstituciones);
-
-        // Bloquear campos
-        DatosFacultades.bloquearCampos(jPanel2);
-
-        // Deshabilitar los botones Guardar y Deshacer
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        Instituciones f = new Instituciones(txtId.getText(), txtRuc.getText(), txtRazon.getText(), txtDireccion.getText(), txtSede.getText());
-        if (esNuevo) {
-            // Insertar nuevo registro
-            if (validarNumeros(txtRuc.getText().trim())) {
-                if (txtId.getText().isEmpty() || txtRuc.getText().isEmpty() || txtRazon.getText().isEmpty() || txtDireccion.getText().isEmpty() || txtSede.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                    return;
-                } else {
-                    DatosInstituciones.insertarDatos(f, tblInstituciones);
-                    JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-                }
-
-            } else {
-                JOptionPane.showMessageDialog(null, "Validar campo Ruc");
-                return;
-            }
-
-        } else {
-            // Actualizar registro existente
-            if (validarNumeros(txtRuc.getText().trim())) {
-                if (txtId.getText().isEmpty() || txtRuc.getText().isEmpty() || txtRazon.getText().isEmpty() || txtDireccion.getText().isEmpty() || txtSede.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                    return;
-                } else {
-                    DatosInstituciones.actualizarDatos(f, tblInstituciones);
-                    JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-                }
-
-            } else {
-                JOptionPane.showMessageDialog(null, "Validar campo Ruc");
-                return;
-            }
-
-        }
-
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        btnAgregar.setEnabled(true);
-        btnEliminar.setEnabled(true);
-        btnEditar.setEnabled(true);
-
-        DatosFacultades.bloquearCampos(jPanel2);
-
-        DatosFacultades.limpiarCampos(jPanel2);
-
-
-    }//GEN-LAST:event_btnGuardarActionPerformed
-
-    private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
-        DatosFacultades.limpiarCampos(jPanel2);
-        //limpiarCampos(); bloquearCampos();
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        btnEditar.setEnabled(true);
-        btnEliminar.setEnabled(true);
-        btnAgregar.setEnabled(true);
-        DatosFacultades.bloquearCampos(jPanel2);
-
-    }//GEN-LAST:event_btnDeshacerActionPerformed
-
-    private void txtRucKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRucKeyTyped
-        // TODO add your handling code here:
-        if (txtRuc.getText().length() >= 20) {
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-        }
-    }//GEN-LAST:event_txtRucKeyTyped
-
-    private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped
-        // TODO add your handling code here:
-        if (txtId.getText().length() >= 4) {
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-        }
-    }//GEN-LAST:event_txtIdKeyTyped
-
-    private void txtDireccionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDireccionKeyTyped
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_txtDireccionKeyTyped
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
         // TODO add your handling code here:
         try {
             obj = new Exportar(); //mandamos a llamar a la clase
@@ -392,44 +166,22 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
         } catch (IOException ex) {
 
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void txtSedeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSedeKeyTyped
-        // TODO add your handling code here:
-        if (txtSede.getText().length() >= 100) {
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-        }
-    }//GEN-LAST:event_txtSedeKeyTyped
-
-    private void txtRazonKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRazonKeyTyped
-        // TODO add your handling code here:
-        if (txtRazon.getText().length() >= 100) {
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-        }
-    }//GEN-LAST:event_txtRazonKeyTyped
+    }//GEN-LAST:event_btnExportarActionPerformed
+    
+    public void recargarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tblInstituciones.getModel();
+        modelo.setRowCount(0);
+        DatosInstituciones.mostrarDatos(modelo);
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnDeshacer;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JButton btnExportar;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblInstituciones;
-    private javax.swing.JTextField txtDireccion;
-    private javax.swing.JTextField txtId;
-    private javax.swing.JTextField txtRazon;
-    private javax.swing.JTextField txtRuc;
-    private javax.swing.JTextField txtSede;
     // End of variables declaration//GEN-END:variables
 }

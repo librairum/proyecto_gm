@@ -3,7 +3,6 @@ package proyecto_gm.Contactos;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import proyecto_gm.Cargo.Cargo;
 import proyecto_gm.Cargo.DatosCargo;
 import proyecto_gm.Departamentos.Departamentos;
@@ -409,7 +408,7 @@ public class frmContactos extends javax.swing.JInternalFrame {
                 fecha,
                 txtPersonas.getText().trim(),
                 txtEmpresa.getText().trim(),
-                "", "",  // campos que no usas
+                "", "", 
                 cargo,
                 txtCorreo.getText().trim(),
                 txtTelefono.getText().trim(),
