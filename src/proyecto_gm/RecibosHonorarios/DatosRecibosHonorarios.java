@@ -253,7 +253,6 @@ public class DatosRecibosHonorarios {
             } else if (componente instanceof Container) {
                 Limpiar((Container) componente);
             } else {
-                // No hace nada para otros tipos de componentes
             }
         }
     }
@@ -261,7 +260,6 @@ public class DatosRecibosHonorarios {
     public static void Editar(Container contenedor, JTable tabla, JTextField[] camposTexto, JComboBox[] combos) {
         int filaSeleccionada = tabla.getSelectedRow();
         if (filaSeleccionada >= 0) {
-            Habilitar(contenedor, true);
             camposTexto[0].setEnabled(false);
             camposTexto[1].requestFocus();
 
@@ -295,25 +293,6 @@ public class DatosRecibosHonorarios {
             }
         } else {
             JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.");
-        }
-    }
-
-    public static void Habilitar(Container contenedor, boolean bloquear) {
-        for (Component componente : contenedor.getComponents()) {
-            if (componente instanceof JTextField) {
-                ((JTextField) componente).setEnabled(bloquear);
-            } else if (componente instanceof JComboBox) {
-                ((JComboBox) componente).setEnabled(bloquear);
-            } else if (componente instanceof JButton) {
-                String button = ((JButton) componente).getName();
-                if (button.equals("guardar") || button.equals("cancelar")) {
-                    ((JButton) componente).setEnabled(bloquear);
-                } else if (button.equals("nuevo") || button.equals("editar") || button.equals("eliminar")) {
-                    ((JButton) componente).setEnabled(!bloquear); // aplicar logica inversa
-                }
-            } else {
-                // No hace nada para otros tipos de componentes
-            }
         }
     }
 }

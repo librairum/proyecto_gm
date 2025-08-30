@@ -1,67 +1,33 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package proyecto_gm.Contactos;
 
-/**
- *
- * @author USUARIO
- */
 public class Contacto {
 
-    /**
-     * @return the cuenta
-     */
-    public String getCuenta() {
-        return cuenta;
-    }
-
-    /**
-     * @param cuenta the cuenta to set
-     */
-    public void setCuenta(String cuenta) {
-        this.cuenta = cuenta;
-    }
-
-    /**
-     * @return the clave
-     */
-    public String getClave() {
-        return clave;
-    }
-
-    /**
-     * @param clave the clave to set
-     */
-    public void setClave(String clave) {
-        this.clave = clave;
-    }
+    // Variables
     private int Id;
-    protected String  Nombre, FechaNacimiento, PersonasRelacionadas, Empresa, Cargo, Correo, Telefono, Departamento, Direccion, Notas;
     private String cuenta;
     private String clave;
+    protected String Nombre, FechaNacimiento, PersonasRelacionadas, Empresa, Cargo, Correo, Telefono, Departamento, Direccion, Notas;
 
     // Constructor
-    public Contacto(int Id, String Nombre, String FechaNacimiento, String PersonasRelacionadas, String Empresa, String cuenta, String clave,
-                            String Cargo, String Correo, String Telefono, String Departamento, String Direccion, String Notas) {
-        this.Id=Id;
-        this.Nombre=Nombre;
-        this.FechaNacimiento=FechaNacimiento;
-        this.PersonasRelacionadas=PersonasRelacionadas;
-        this.Empresa=Empresa;
+    public Contacto(int Id, String Nombre, String FechaNacimiento, String PersonasRelacionadas, String Empresa, 
+                    String cuenta, String clave, String Cargo, String Correo, String Telefono, 
+                    String Departamento, String Direccion, String Notas) {
+        this.Id = Id;
+        this.Nombre = Nombre;
+        this.FechaNacimiento = FechaNacimiento;
+        this.PersonasRelacionadas = PersonasRelacionadas;
+        this.Empresa = Empresa;
         this.cuenta = cuenta;
         this.clave = clave;
-        this.Cargo=Cargo;
-        this.Correo=Correo;
-        this.Telefono=Telefono;
-        this.Departamento=Departamento;
-        this.Direccion=Direccion;
-        this.Notas=Notas;
-        
+        this.Cargo = Cargo;
+        this.Correo = Correo;
+        this.Telefono = Telefono;
+        this.Departamento = Departamento;
+        this.Direccion = Direccion;
+        this.Notas = Notas;
     }
-    
-    //get y set
+
+    // Getters y Setters
 
     public int getId() {
         return Id;
@@ -70,7 +36,23 @@ public class Contacto {
     public void setId(int Id) {
         this.Id = Id;
     }
-    
+
+    public String getCuenta() {
+        return cuenta;
+    }
+
+    public void setCuenta(String cuenta) {
+        this.cuenta = cuenta;
+    }
+
+    public String getClave() {
+        return clave;
+    }
+
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
+
     public String getNombre() {
         return Nombre;
     }
@@ -150,6 +132,4 @@ public class Contacto {
     public void setNotas(String Notas) {
         this.Notas = Notas;
     }
-    
-    
 }
