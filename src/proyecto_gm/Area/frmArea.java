@@ -3,30 +3,92 @@ package proyecto_gm.Area;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.Toolkit;
+import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 public class frmArea extends javax.swing.JInternalFrame {
 
+    DefaultTableModel modelo;
     boolean esNuevo = false;
 
     public frmArea() {
         initComponents();
-        JTableHeader header = tblArea.getTableHeader();
+        
+        // Configurar modelo de la tabla
+        String[] titulos = {"ID", "DESCRIPCIÓN"};
+        modelo = new DefaultTableModel(null, titulos) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tblArea.setModel(modelo);
+        
+        estilizarEncabezado(tblArea);
+        cargarTabla();
+        configurarEstadoInicial();
+    }
+
+    // Método para cargar y recargar los datos en la tabla
+    private void cargarTabla() {
+        modelo.setRowCount(0);
+        List<Area> lista = DatosArea.listar();
+        
+        for (Area area : lista) {
+            modelo.addRow(new Object[]{area.getIdArea(), area.getDescripcionArea()});
+        }
+    }
+
+    // Método para configurar el estado inicial o de "navegación"
+    private void configurarEstadoInicial() {
+        // Habilitar/deshabilitar campos
+        txtCodigo.setEnabled(false);
+        txtDescripcion.setEnabled(false);
+
+        // Habilitar/deshabilitar botones
+        btnNuevo.setEnabled(true);
+        btnEditar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+        btnGuardar.setEnabled(false);
+        btnCancelar.setEnabled(false);
+        
+        // Limpiar campos
+        limpiarCampos();
+        
+        // Permitir selección en la tabla
+        tblArea.setEnabled(true);
+        tblArea.clearSelection();
+    }
+    
+    // Método para configurar el estado de "edición" o "nuevo"
+    private void configurarEstadoFormulario() {
+        txtCodigo.setEnabled(false);
+        txtDescripcion.setEnabled(true);
+        
+        btnNuevo.setEnabled(false);
+        btnEditar.setEnabled(false);
+        btnEliminar.setEnabled(false);
+        btnGuardar.setEnabled(true);
+        btnCancelar.setEnabled(true);
+        
+        tblArea.setEnabled(false);
+    }
+    
+    private void limpiarCampos() {
+        txtCodigo.setText("");
+        txtDescripcion.setText("");
+    }
+    
+    private void estilizarEncabezado(JTable tabla) {
+        JTableHeader header = tabla.getTableHeader();
         header.setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
-            public Component getTableCellRendererComponent(JTable table,
-                    Object value,
-                    boolean isSelected,
-                    boolean hasFocus,
-                    int row,
-                    int column) {
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 setHorizontalAlignment(JLabel.CENTER);
                 setBackground(Color.DARK_GRAY);
@@ -35,27 +97,19 @@ public class frmArea extends javax.swing.JInternalFrame {
                 return this;
             }
         });
-        DefaultTableModel modelo = (DefaultTableModel) tblArea.getModel();
-
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        DatosArea.HabilitarArea(escritorio, false);
-
-        DatosArea.MostrarArea(modelo);
-        tblArea.setCellSelectionEnabled(false);
-        tblArea.setRowSelectionAllowed(true);
     }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         escritorio = new javax.swing.JPanel();
-        btnAgregar = new javax.swing.JButton();
+        btnNuevo = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
-        btnDeshacer = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -70,11 +124,11 @@ public class frmArea extends javax.swing.JInternalFrame {
         escritorio.setBackground(new java.awt.Color(255, 248, 239));
         escritorio.setEnabled(false);
 
-        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
-        btnAgregar.setName("agregar"); // NOI18N
-        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+        btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
+        btnNuevo.setName("agregar"); // NOI18N
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarActionPerformed(evt);
+                btnNuevoActionPerformed(evt);
             }
         });
 
@@ -102,21 +156,15 @@ public class frmArea extends javax.swing.JInternalFrame {
             }
         });
 
-        btnDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
-        btnDeshacer.setName("deshacer"); // NOI18N
-        btnDeshacer.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
+        btnCancelar.setName("deshacer"); // NOI18N
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeshacerActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
             }
         });
 
         jLabel1.setText("Id:");
-
-        txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtCodigoKeyTyped(evt);
-            }
-        });
 
         jLabel2.setText("Descripción:");
 
@@ -156,7 +204,7 @@ public class frmArea extends javax.swing.JInternalFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(escritorioLayout.createSequentialGroup()
                         .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnAgregar)
+                            .addComponent(btnNuevo)
                             .addGroup(escritorioLayout.createSequentialGroup()
                                 .addGap(2, 2, 2)
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -175,7 +223,7 @@ public class frmArea extends javax.swing.JInternalFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addComponent(btnGuardar)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(btnDeshacer)
+                                    .addComponent(btnCancelar)
                                     .addGap(0, 0, Short.MAX_VALUE)))
                             .addGroup(escritorioLayout.createSequentialGroup()
                                 .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -188,10 +236,10 @@ public class frmArea extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnEditar)
-                    .addComponent(btnAgregar)
+                    .addComponent(btnNuevo)
                     .addComponent(btnEliminar)
                     .addComponent(btnGuardar)
-                    .addComponent(btnDeshacer, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -217,100 +265,88 @@ public class frmArea extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
-        // TODO add your handling code here:
-        DatosArea.LimpiarArea(rootPane);
-        DatosArea.HabilitarArea(escritorio, false);
-        tblArea.clearSelection();
-        // Habilitamos la seleccion de filas de la tabla
-        tblArea.setRowSelectionAllowed(true);
-
-
-    }//GEN-LAST:event_btnDeshacerActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        configurarEstadoInicial();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        Area are = new Area();
-        are.setDescripcionArea(txtDescripcion.getText().trim());
-
-        if (txtDescripcion.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Por favor, complete la descripción del área.");
+// Validar campo
+        if (txtDescripcion.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El campo descripción es obligatorio.", "Validación", JOptionPane.WARNING_MESSAGE);
+            txtDescripcion.requestFocus();
             return;
         }
 
+        Area area = new Area();
+        area.setDescripcionArea(txtDescripcion.getText().trim());
+        boolean exito;
+        
         if (esNuevo) {
-            if (DatosArea.InsertarArea(are, tblArea)) {
-                JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-                DatosArea.LimpiarArea(escritorio);
-                DatosArea.HabilitarArea(escritorio, false);
-                tblArea.clearSelection();
-                tblArea.setRowSelectionAllowed(true);
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            // Insertar
+            exito = DatosArea.insertar(area);
         } else {
-            int filaSeleccionada = tblArea.getSelectedRow();
-            if (filaSeleccionada >= 0) {
-                // Obtener el IdArea directamente desde la tabla
-                int idArea = Integer.parseInt(tblArea.getModel().getValueAt(filaSeleccionada, 0).toString());
-                are.setIdArea(idArea);
+            // Actualizar
+            area.setIdArea(Integer.parseInt(txtCodigo.getText()));
+            exito = DatosArea.actualizar(area);
+        }
 
-                DatosArea.ActualizarArea(are, tblArea);
-                JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
-                DatosArea.LimpiarArea(escritorio);
-                DatosArea.HabilitarArea(escritorio, false);
-                tblArea.clearSelection();
-                tblArea.setRowSelectionAllowed(true);
-            } else {
-                JOptionPane.showMessageDialog(null, "Seleccione un área para actualizar.");
-            }
+        if (exito) {
+            String msg = esNuevo ? "Área guardada correctamente." : "Área actualizada correctamente.";
+            JOptionPane.showMessageDialog(this, msg, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            cargarTabla();
+            configurarEstadoInicial();
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
-        DatosArea.EliminarArea(tblArea);
-        DatosArea.HabilitarArea(escritorio, false);
+        int fila = tblArea.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int idArea = (int) tblArea.getValueAt(fila, 0);
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar esta área?", "Confirmación", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            if (DatosArea.eliminar(idArea)) {
+                JOptionPane.showMessageDialog(this, "Área eliminada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                cargarTabla();
+            } else {
+                 JOptionPane.showMessageDialog(this, "Error al eliminar el área.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
-        JTextField[] cod = new JTextField[2];
-        cod[0] = txtCodigo;
-        cod[1] = txtDescripcion;
-        DatosArea.EditarArea(escritorio, tblArea, cod);
+        int fila = tblArea.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Cargar datos de la tabla al formulario
+        txtCodigo.setText(tblArea.getValueAt(fila, 0).toString());
+        txtDescripcion.setText(tblArea.getValueAt(fila, 1).toString());
 
         esNuevo = false;
+        configurarEstadoFormulario();
     }//GEN-LAST:event_btnEditarActionPerformed
 
-    private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
-        // TODO add your handling code here:
-        if (txtCodigo.getText().length() >= 4) {
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-        }
-    }//GEN-LAST:event_txtCodigoKeyTyped
-
-    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        DatosArea.HabilitarArea(escritorio, true);
-
-        // Ya no se genera código porque se usa AUTO_INCREMENT para IdArea
-        txtDescripcion.setText("");
-        
-        txtCodigo.setEnabled(false); 
-        
-        txtDescripcion.requestFocus();
-
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         esNuevo = true;
-        tblArea.setRowSelectionAllowed(false);
-    }//GEN-LAST:event_btnAgregarActionPerformed
+        configurarEstadoFormulario();
+        limpiarCampos();
+        txtDescripcion.requestFocus();
+    }//GEN-LAST:event_btnNuevoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnDeshacer;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnNuevo;
     private javax.swing.JPanel escritorio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

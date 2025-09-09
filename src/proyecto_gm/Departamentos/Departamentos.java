@@ -1,45 +1,46 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package proyecto_gm.Departamentos;
 
-/**
- *
- * @author EMERSOM APAZA
- */
 public class Departamentos {
+    
+    private int id; 
+    private String descripcion;
 
-    String Id;
-    String Descripcion;
-
-    public Departamentos(String Id, String Descripcion) {
-        this.Id = Id;
-        this.Descripcion = Descripcion;
+    public Departamentos(int id, String descripcion) {
+        this.id = id;
+        this.descripcion = descripcion;
     }
 
+    public Departamentos(String descripcion) {
+        this.descripcion = descripcion;
+    }
+    
     public Departamentos() {
+        
     }
 
-    public String getId() {
-        return Id;
+    public Departamentos(String id, String descripcion) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public void setId(String Id) {
-        this.Id = Id;
+    // Getters y Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDescripcion() {
-        return Descripcion;
+        return descripcion;
     }
 
-    public void setDescripcion(String Descripcion) {
-        this.Descripcion = Descripcion;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     @Override
     public String toString() {
-        return Descripcion;
+        return descripcion;
     }
-
 }

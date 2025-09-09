@@ -1,175 +1,83 @@
 package proyecto_gm.Departamentos;
 
-import java.awt.Component;
-import java.awt.Container;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
-import java.sql.*;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 import proyecto_gm.ConexionBD;
 
-/**
- *
- * @author EMERSOM APAZA
- */
 public class DatosDepartamentos {
-
-    static Connection conn = ConexionBD.getConnection();
-
-    public static String GenerarCodigo() {
-        String codigoGenerado = "";
-        try ( CallableStatement cstmt = conn.prepareCall("{ CALL generar_codigo(?, ?, ?) }")) {
-            cstmt.setString(1, "departamentos");
-            cstmt.setString(2, "IdDepartamento");
-            cstmt.registerOutParameter(3, Types.INTEGER);
-
-            cstmt.execute();
-
-            int idGenerado = cstmt.getInt(3); // Recibe directamente el número
-            codigoGenerado = String.valueOf(idGenerado);
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        return codigoGenerado;
-    }
-
-    // Mostrar datos
-    public static void mostrarDatos(DefaultTableModel modelo) {
-        try {
-            PreparedStatement stmt = conn.prepareStatement("CALL listar_departamentos()");
-            ResultSet rs = stmt.executeQuery();
+    
+    public List<Departamentos> listar() {
+        List<Departamentos> lista = new ArrayList<>();
+        // Usamos try-with-resources para asegurar que la conexión se cierre
+        try (Connection conn = ConexionBD.getConnection();
+             CallableStatement cstmt = conn.prepareCall("{ CALL listar_departamentos() }");
+             ResultSet rs = cstmt.executeQuery()) {
+            
             while (rs.next()) {
-                Object[] row = new Object[]{
-                    rs.getString("IdDepartamento"),
-                    rs.getString("Descripcion")
-                };
-                modelo.addRow(row);
+                int id = rs.getInt("IdDepartamento");
+                String descripcion = rs.getString("Descripcion");
+                Departamentos depto = new Departamentos(id, descripcion);
+                lista.add(depto);
             }
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            System.err.println("Error al listar departamentos: " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al listar datos: " + ex.getMessage(), "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
+        }
+        return lista;
+    }
+
+    public boolean insertar(Departamentos departamento) {
+        // Asumiendo que el SP para insertar solo necesita la descripción
+        String sql = "{ CALL insertar_departamentos(?) }"; 
+        
+        try (Connection conn = ConexionBD.getConnection();
+             CallableStatement cstmt = conn.prepareCall(sql)) {
+            
+            cstmt.setString(1, departamento.getDescripcion());
+            return cstmt.executeUpdate() > 0;
+
+        } catch (SQLException ex) {
+            System.err.println("Error al insertar departamento: " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al insertar: " + ex.getMessage(), "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
     }
 
-    public static void insertarDatos(Departamentos departamento, JTable tabla) {
-        try {
-
-            int idDepartamento = Integer.parseInt(departamento.getId());
-
-            CallableStatement cstmt = conn.prepareCall("{ CALL insertar_departamentos(?, ?) }");
-            cstmt.setInt(1, idDepartamento);
+    public boolean actualizar(Departamentos departamento) {
+        String sql = "{ CALL actualizar_departamentos(?, ?) }";
+        
+        try (Connection conn = ConexionBD.getConnection();
+             CallableStatement cstmt = conn.prepareCall(sql)) {
+            
+            cstmt.setInt(1, departamento.getId());
             cstmt.setString(2, departamento.getDescripcion());
-            cstmt.execute();
-            cstmt.close();
-
-            // Usar mostrarDatos para actualizar la tabla
-            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-            modelo.setRowCount(0); // Limpiar la tabla
-            mostrarDatos(modelo);
+            return cstmt.executeUpdate() > 0;
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            System.err.println("Error al actualizar departamento: " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al actualizar: " + ex.getMessage(), "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
     }
 
-    // Actualizar datos
-    public static void actualizarDatos(Departamentos departamento, JTable tabla) {
-        try {
-            int confirm = JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere actualizar la fila seleccionada?", "Confirmar actualización", JOptionPane.YES_NO_OPTION);
+    public boolean eliminar(int idDepartamento) {
+        String sql = "{ CALL eliminar_departamentos(?) }";
+        
+        try (Connection conn = ConexionBD.getConnection();
+             CallableStatement cstmt = conn.prepareCall(sql)) {
+            
+            cstmt.setInt(1, idDepartamento);
+            return cstmt.executeUpdate() > 0;
 
-            if (confirm == JOptionPane.YES_OPTION) {
-
-                CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_departamentos(?, ?) }");
-                cstmt.setString(1, departamento.getId());
-                cstmt.setString(2, departamento.getDescripcion());
-                cstmt.execute();
-
-                // Limpiar y actualizar la tabla
-                DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-                modelo.setRowCount(0);
-                mostrarDatos(modelo);
-
-                // Mensaje de éxito
-                JOptionPane.showMessageDialog(null, "El departamento ha sido actualizado exitosamente.");
-            }
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    public static void eliminarDatos(JTable tabla) {
-        int fila = tabla.getSelectedRow();
-
-        if (fila >= 0) {
-            String id = tabla.getModel().getValueAt(fila, 0).toString();
-            int confirm = JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
-
-            if (confirm == JOptionPane.YES_OPTION) {
-                try ( CallableStatement stmt = conn.prepareCall("{ CALL eliminar_departamentos(?) }")) {
-                    stmt.setString(1, id);
-                    stmt.execute();
-
-                    // Eliminar la fila de la tabla
-                    ((DefaultTableModel) tabla.getModel()).removeRow(fila);
-                    JOptionPane.showMessageDialog(null, "La fila ha sido eliminada exitosamente.");
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para eliminar.");
-        }
-    }
-
-    public static void editar(JTable tabla, JTextField[] cajas) {
-        // Obtener el indice de la fila seleccionada
-        int fila = tabla.getSelectedRow();
-
-        if (fila >= 0) {
-            for (int i = 0; i < cajas.length; i++) {
-                String dato = tabla.getModel().getValueAt(fila, i).toString();
-                cajas[i].setText(dato);
-            }
-
-            cajas[0].setEditable(false);
-            cajas[1].requestFocus();
-        } else {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.");
-        }
-
-    }
-
-    // Limpiar campos
-    public static void limpiarCampos(Container contenedor) {
-        for (Component componente : contenedor.getComponents()) {
-            if (componente instanceof JTextField) {
-                ((JTextField) componente).setText("");
-            } else if (componente instanceof Container) {
-                limpiarCampos((Container) componente);
-            }
-        }
-    }
-
-    // Bloquear campos
-    public static void bloquearCampos(Container contenedor) {
-        for (Component componente : contenedor.getComponents()) {
-            if (componente instanceof JTextField) {
-                ((JTextField) componente).setEditable(false);
-            } else if (componente instanceof Container) {
-                bloquearCampos((Container) componente);
-            }
-        }
-    }
-
-    // Habilitar campos
-    public static void habilitarCampos(Container contenedor) {
-        for (Component componente : contenedor.getComponents()) {
-            if (componente instanceof JTextField) {
-                ((JTextField) componente).setEditable(true);
-            } else if (componente instanceof Container) {
-                habilitarCampos((Container) componente);
-            }
+            System.err.println("Error al eliminar departamento: " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al eliminar: " + ex.getMessage(), "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
     }
 }

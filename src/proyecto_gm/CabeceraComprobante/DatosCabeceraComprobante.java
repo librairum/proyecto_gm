@@ -21,41 +21,6 @@ public class DatosCabeceraComprobante {
 
     static Connection conn = ConexionBD.getConnection();
 
-// Limpiar campos
-    public static void Limpiar(Container contenedor) {
-        Component[] components = contenedor.getComponents();
-        for (Component component : components) {
-            if (component instanceof JTextField ) {
-                ((JTextField)component).setText("");
-            } else if (component instanceof JComboBox ) {
-                
-                ((JComboBox)component).setSelectedIndex(0);
-            } else {
-                // No hace nada para otros tipos de componentes
-            }
-        }
-    }
-
-    // Habilitar campos
-    public static void Habilitar(Container contenedor, boolean bloquear) {
-        Component[] components = contenedor.getComponents();
-        for (Component component : components) {
-            if (component instanceof JTextField ) {
-                ((JTextField)component).setEnabled(bloquear);
-            } else if (component instanceof JComboBox ) {
-                ((JComboBox)component).setEnabled(bloquear);
-            } else if (component instanceof JButton ) {
-                String button = ((JButton)component).getName();
-                if (button.equals("guardar") || button.equals("deshacer") ) {
-                    ((JButton)component).setEnabled(bloquear);
-                } else if (button.equals("agregar") || button.equals("editar") || button.equals("eliminar")) {
-                    ((JButton)component).setEnabled(!bloquear); // aplicar logica inversa
-                }
-            } else {
-                // No hace nada para otros tipos de componentes
-            }
-        }
-    }
 
     // Cargar opciones para los combo boxes
     public static void CargarCombo(JComboBox cboProveedores, JComboBox cboTipoDocumento) {
@@ -85,7 +50,7 @@ public class DatosCabeceraComprobante {
     }
 
     // Mostrar datos
-    public static void Mostrar(DefaultTableModel modelo) {
+    public static void Listar(DefaultTableModel modelo) {
         try {
             PreparedStatement pstmt = conn.prepareStatement("CALL listar_cabeceracomprobante()");
             ResultSet rs = pstmt.executeQuery();
@@ -98,40 +63,6 @@ public class DatosCabeceraComprobante {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
-    // Capturar las opciones de los combo boxes
-
-    public static String[] Capturar(JComboBox cboProveedores, JComboBox cboTipoDocumento) {
-        String[] ids = new String[2];
-        String idProveedores = "", idTiposDocumentos = "";
-        try {
-            // Capturar las opciones seleccionadas en los combo boxes
-            String selectproveedores = cboProveedores.getSelectedItem().toString();
-            String selectiposdocumentos = cboTipoDocumento.getSelectedItem().toString();
-
-            // Obtener los id de las elecciones en area, cargo y tipo de empleado
-            String consulta = "SELECT P.Id AS IdProveedores, T.Id AS IdTipoDocumento "
-                    + "FROM proveedores P, tiposdocumentos T "
-                    + "WHERE P.Nombres = ? AND T.Descripcion = ? ";
-            PreparedStatement pstmt = conn.prepareStatement(consulta);
-
-            pstmt.setString(1, selectproveedores);
-            pstmt.setString(2, selectiposdocumentos);
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                idProveedores = rs.getString("IdProveedores");
-                idTiposDocumentos = rs.getString("IdTipoDocumento");
-            }
-
-            ids[0] = idProveedores;
-            ids[1] = idTiposDocumentos;
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error en Capturar Opciones", JOptionPane.ERROR_MESSAGE);
-        }
-
-        return ids;
     }
 
     public static void Insertar(CabeceraComprobante cab, JTable tabla) {
@@ -152,47 +83,10 @@ public class DatosCabeceraComprobante {
             // Actualizamos la tabla
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
-            DatosCabeceraComprobante.Mostrar(modelo);
+            DatosCabeceraComprobante.Listar(modelo);
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    // Boton editar
-    public static void Editar(Container contenedor, JTable tabla, JTextField[] camposTexto, JComboBox[] combos) {
-
-        // Obtener la fila seleccionadas
-        int filaSeleccionada = tabla.getSelectedRow();
-        if (filaSeleccionada >= 0) {
-            // Obtener los valores de la fila seleccionada
-            DatosCabeceraComprobante.Habilitar(contenedor, true);
-            tabla.clearSelection();
-            // Deshabilitamos la seleccion de filas de la tabla
-            tabla.setRowSelectionAllowed(false);
-            // Llenar los campos de texto con los valores de la fila
-            for (int i = 0; i < camposTexto.length; i++) {
-                if (tabla.getValueAt(filaSeleccionada, i) != null) {
-                    String dato = tabla.getModel().getValueAt(filaSeleccionada, i).toString();
-                    camposTexto[i].setText(dato);
-                } else {
-                    camposTexto[i].setText("");
-                }
-            }
-
-            camposTexto[0].setEnabled(false);
-            camposTexto[1].requestFocus();
-
-            // Llenar los combos con los valores de la fila
-            for (int i = 0; i < combos.length; i++) {
-                combos[i].setSelectedItem(tabla.getModel().getValueAt(filaSeleccionada, camposTexto.length + i).toString());
-
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.");
-
-            // Habilitamos la seleccion de fila(s) en la tabla
-            tabla.setRowSelectionAllowed(true);
         }
     }
 
@@ -214,7 +108,7 @@ public class DatosCabeceraComprobante {
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             modelo.setRowCount(0);
 
-            DatosCabeceraComprobante.Mostrar(modelo);
+            DatosCabeceraComprobante.Listar(modelo);
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -251,70 +145,8 @@ public class DatosCabeceraComprobante {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-
     }
-
-    // Validar campos
-    public static boolean ValidarCampos(CabeceraComprobante emp) {
-        boolean validar = true;
-        String[] campos = {emp.getNumeroComprobante(), emp.getFechaEmision(), emp.getFechaVencimiento()
-        };
-
-        // Validamos si los campos estan vacios
-        for (String campo : campos) {
-            if (campo.equals("")) {
-                validar = false;
-            }
-        }
-
-        if (!validar) {
-            JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos.");
-        }
-
-        
-        // Validamos fecha vencimiento
-        // Verificar que el string tenga longitud 10
-        if (emp.getFechaEmision().length() == 10) {
-            // Definir el formato de fecha
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            sdf.setLenient(false); // no permitir fechas inválidas
-
-            try {
-                // Intentar parsear el string como una fecha
-                sdf.parse(emp.getFechaEmision());
-                validar = true;
-            } catch (ParseException e) {
-                validar = false;
-                JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd/mm/aaaa. Inténtelo de nuevo.");
-            }
-
-        } else {
-            validar = false;
-            JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd/mm/aaaa. Inténtelo de nuevo.");
-        }
-
-        // Validamos fecha vencimiento
-        // Verificar que el string tenga longitud 10
-        if (emp.getFechaVencimiento().length() == 10) {
-            // Definir el formato de fecha
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            sdf.setLenient(false); // no permitir fechas inválidas
-
-            try {
-                // Intentar parsear el string como una fecha
-                sdf.parse(emp.getFechaVencimiento());
-
-            } catch (ParseException e) {
-
-                JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd/mm/aaaa. Inténtelo de nuevo.");
-            }
-
-        } else {
-
-            JOptionPane.showMessageDialog(null, "El formato de la fecha es el siguiente: dd-mm-aaaa. Inténtelo de nuevo.");
-        }
-
-        return validar;
-    }
-
 }
+        
+
+    

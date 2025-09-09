@@ -1,199 +1,132 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package proyecto_gm.Transferencias;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.event.KeyEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
+import javax.swing.JOptionPane;
 import proyecto_gm.Cuentas.Cuentas;
 import proyecto_gm.Periodos.Periodos;
 
-/**
- *
- * @author jeanv
- */
 public class frmTransferencias extends javax.swing.JInternalFrame {
+    
+    boolean esNuevo;
+    Transferencia transferenciaActual;
+    frmListaTransferencias frmLista;
 
-    boolean esNuevo = false;
-
-    /**
-     * Creates new form frmTransferencias
-     */
-    public frmTransferencias() {
+    public frmTransferencias(frmListaTransferencias parent, Transferencia transf) {
         initComponents();
-        // Personalizar header
-        JTableHeader header = tblTransferencias.getTableHeader();
-        header.setDefaultRenderer(new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table,
-                    Object value,
-                    boolean isSelected,
-                    boolean hasFocus,
-                    int row,
-                    int column) {
-                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                setHorizontalAlignment(JLabel.CENTER);
-                setBackground(Color.DARK_GRAY);
-                setForeground(Color.WHITE);
-                setFont(getFont().deriveFont(Font.BOLD, 13));
-                return this;
+        this.frmLista = parent;
+        this.transferenciaActual = transf;
+
+        cargarCombos();
+
+        if (transferenciaActual == null) {
+            setTitle("Nueva Transferencia");
+            esNuevo = true;
+        } else {
+            setTitle("Editar Transferencia");
+            esNuevo = false;
+            cargarDatos();
+        }
+    }
+    
+    private void cargarCombos() {
+        // Cargar Periodos
+        List<Periodos> listaPeriodos = DatosTransferencias.getPeriodos();
+        cboPeriodo.setModel(new DefaultComboBoxModel<>(new Vector<>(listaPeriodos)));
+
+        // Cargar Cuentas
+        List<Cuentas> listaCuentas = DatosTransferencias.getCuentas();
+        cboOrigen.setModel(new DefaultComboBoxModel<>(new Vector<>(listaCuentas)));
+        cboDestino.setModel(new DefaultComboBoxModel<>(new Vector<>(listaCuentas)));
+    }
+    
+    private void cargarDatos() {
+        txtId.setText(String.valueOf(transferenciaActual.getId()));
+        txtNroOperacion.setText(transferenciaActual.getNroOperacion());
+
+        try {
+            String fechaOriginal = transferenciaActual.getFecha();
+            SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyy-MM-dd");
+            Date fecha = formatoEntrada.parse(fechaOriginal);
+            txtFecha.setDate(fecha);
+        } catch (ParseException e) {
+            txtFecha.setDate(null);
+            System.err.println("Error al parsear fecha: " + e.getMessage());
+        }
+
+        seleccionarItemComboPeriodo(cboPeriodo, transferenciaActual.getPeriodo());
+        seleccionarItemComboCuenta(cboOrigen, transferenciaActual.getCuentaOrigen());
+        seleccionarItemComboCuenta(cboDestino, transferenciaActual.getCuentaDestino());
+    }
+    
+    // Métodos para seleccionar el item correcto en los combos
+    private void seleccionarItemComboPeriodo(JComboBox<Periodos> combo, String id) {
+        for (int i = 0; i < combo.getItemCount(); i++) {
+            if (combo.getItemAt(i).getId().equals(id)) {
+                combo.setSelectedIndex(i);
+                return;
             }
-        });
-
-        DefaultTableModel modelo = (DefaultTableModel) tblTransferencias.getModel();
-
-        DatosTransferencias.Listar(modelo);
-        DatosTransferencias.Habilitar(panel, false);
-        DatosTransferencias.CargarCuentas(cboOrigen, cboDestino);
-        DatosTransferencias.CargarPeriodos(cboPeriodo);
-
-        // Dejamos los combo boxes sin seleccion
-        cboOrigen.setSelectedIndex(-1);
-        cboDestino.setSelectedIndex(-1);
-
-        // Quitar la edicion de las celdas
-        tblTransferencias.setCellSelectionEnabled(false);
-        // Poder seleccionar fila(s) de la tabla
-        tblTransferencias.setRowSelectionAllowed(true);
+        }
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
+    private void seleccionarItemComboCuenta(JComboBox<Cuentas> combo, String id) {
+        for (int i = 0; i < combo.getItemCount(); i++) {
+            if (String.valueOf(combo.getItemAt(i).getIdCuenta()).equals(id)) {
+                combo.setSelectedIndex(i);
+                return;
+            }
+        }
+    }
+    
+    private boolean validarCampos() {
+        if (txtNroOperacion.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El campo N° Operación es obligatorio.", "Validación", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (txtFecha.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "El campo Fecha es obligatorio.", "Validación", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (cboPeriodo.getSelectedIndex() == -1 || cboOrigen.getSelectedIndex() == -1 || cboDestino.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un item en todos los combos.", "Validación", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (cboOrigen.getSelectedItem().equals(cboDestino.getSelectedItem())) {
+            JOptionPane.showMessageDialog(this, "La cuenta de origen no puede ser igual a la de destino.", "Validación", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panel = new javax.swing.JPanel();
-        btnNuevo = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
-        btnGuardar = new javax.swing.JButton();
-        btnCancelar = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblTransferencias = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         txtNroOperacion = new javax.swing.JTextField();
         txtId = new javax.swing.JTextField();
         cboDestino = new javax.swing.JComboBox<>();
         cboOrigen = new javax.swing.JComboBox<>();
-        txtFecha = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
         cboPeriodo = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        btnGuardar = new javax.swing.JButton();
+        btnRegresar = new javax.swing.JButton();
+        txtFecha = new com.toedter.calendar.JDateChooser();
 
-        setClosable(true);
-        setIconifiable(true);
         setTitle("TRANSFERENCIAS");
-        setToolTipText(null);
-
-        panel.setBackground(new java.awt.Color(255, 248, 239));
-
-        btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
-        btnNuevo.setName("nuevo"); // NOI18N
-        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNuevoActionPerformed(evt);
-            }
-        });
-
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
-        btnEditar.setName("editar"); // NOI18N
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
-            }
-        });
-
-        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/eliminar.png"))); // NOI18N
-        btnEliminar.setName("eliminar"); // NOI18N
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
-
-        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
-        btnGuardar.setName("guardar"); // NOI18N
-        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
-            }
-        });
-
-        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
-        btnCancelar.setName("cancelar"); // NOI18N
-        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
-            }
-        });
-
-        tblTransferencias.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID", "PERIODO", "NRO. OPERACIÓN", "C. ORIGEN", "C. DESTINO", "FECHA"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, true, false, false, false, true
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tblTransferencias.setFocusable(false);
-        tblTransferencias.setRowHeight(25);
-        tblTransferencias.setSelectionBackground(new java.awt.Color(153, 153, 153));
-        tblTransferencias.setShowGrid(true);
-        tblTransferencias.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(tblTransferencias);
-        if (tblTransferencias.getColumnModel().getColumnCount() > 0) {
-            tblTransferencias.getColumnModel().getColumn(0).setResizable(false);
-            tblTransferencias.getColumnModel().getColumn(0).setPreferredWidth(30);
-            tblTransferencias.getColumnModel().getColumn(1).setResizable(false);
-            tblTransferencias.getColumnModel().getColumn(1).setPreferredWidth(40);
-            tblTransferencias.getColumnModel().getColumn(2).setResizable(false);
-            tblTransferencias.getColumnModel().getColumn(2).setPreferredWidth(40);
-            tblTransferencias.getColumnModel().getColumn(3).setResizable(false);
-            tblTransferencias.getColumnModel().getColumn(3).setPreferredWidth(150);
-            tblTransferencias.getColumnModel().getColumn(4).setResizable(false);
-            tblTransferencias.getColumnModel().getColumn(4).setPreferredWidth(150);
-            tblTransferencias.getColumnModel().getColumn(5).setResizable(false);
-            tblTransferencias.getColumnModel().getColumn(5).setPreferredWidth(40);
-        }
-
-        jLabel1.setText("ID:");
-
-        jLabel2.setText("Nro. Operación:");
-
-        jLabel3.setText("Periodo:");
-
-        jLabel4.setText("C. Origen:");
-
-        jLabel5.setText("C. Destino:");
 
         jLabel6.setText("Fecha:");
 
-        txtNroOperacion.setNextFocusableComponent(cboOrigen);
         txtNroOperacion.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtNroOperacionFocusLost(evt);
@@ -205,203 +138,107 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
             }
         });
 
-        cboDestino.setNextFocusableComponent(txtFecha);
+        jLabel1.setText("ID:");
 
-        cboOrigen.setNextFocusableComponent(cboDestino);
-        cboOrigen.addActionListener(new java.awt.event.ActionListener() {
+        jLabel2.setText("Nro. Operación:");
+
+        jLabel3.setText("Periodo:");
+
+        jLabel4.setText("C. Origen:");
+
+        jLabel5.setText("C. Destino:");
+
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
+        btnGuardar.setName("guardar"); // NOI18N
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboOrigenActionPerformed(evt);
+                btnGuardarActionPerformed(evt);
             }
         });
 
-        txtFecha.setNextFocusableComponent(btnGuardar);
-        txtFecha.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtFechaFocusLost(evt);
+        btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
+        btnRegresar.setName("cancelar"); // NOI18N
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
             }
         });
-        txtFecha.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtFechaKeyTyped(evt);
-            }
-        });
-
-        cboPeriodo.setNextFocusableComponent(cboDestino);
-
-        javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
-        panel.setLayout(panelLayout);
-        panelLayout.setHorizontalGroup(
-            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelLayout.createSequentialGroup()
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
-                            .addGroup(panelLayout.createSequentialGroup()
-                                .addComponent(btnNuevo)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnEditar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnEliminar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnGuardar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnCancelar)
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(panelLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtNroOperacion, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                            .addComponent(cboPeriodo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(150, 150, 150)
-                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelLayout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(17, 17, 17)
-                                .addComponent(cboOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelLayout.createSequentialGroup()
-                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cboDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 61, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        panelLayout.setVerticalGroup(
-            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnNuevo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnCancelar))
-                .addGap(24, 24, 24)
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel4)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cboOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel5)
-                    .addComponent(cboDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cboPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel6)
-                    .addComponent(txtNroOperacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnGuardar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRegresar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNroOperacion)
+                            .addComponent(cboPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(150, 150, 150)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(17, 17, 17)
+                                .addComponent(cboOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel6))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cboDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(7, 7, 7))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnRegresar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel4)
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel5)
+                    .addComponent(cboDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(jLabel6)
+                        .addComponent(txtNroOperacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        tblTransferencias.clearSelection();
-        tblTransferencias.setRowSelectionAllowed(false);
-        DatosTransferencias.Habilitar(panel, true);
-        txtId.setEnabled(false);
-        cboPeriodo.requestFocus();
-
-        esNuevo = true; // Indicamos que sera un nuevo registro
-    }//GEN-LAST:event_btnNuevoActionPerformed
-
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        DatosTransferencias.Habilitar(panel, true);
-
-        // Agrupar las cajas de texto
-        JTextField[] campos = {txtId, txtNroOperacion, txtFecha};
-
-        DatosTransferencias.Editar(panel, tblTransferencias, campos, cboPeriodo, cboOrigen, cboDestino);
-        esNuevo = false; // Indicamos que no sera un nuevo registro
-    }//GEN-LAST:event_btnEditarActionPerformed
-
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        DatosTransferencias.Eliminar(tblTransferencias);
-    }//GEN-LAST:event_btnEliminarActionPerformed
-
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // Seleccionamos todas las cajas y combos
-        JTextField[] campos = {txtNroOperacion, txtFecha};
-        JComboBox[] combos = {cboPeriodo, cboOrigen, cboDestino};
-
-        // Validamos que todos los campos estén llenos
-        if (!DatosTransferencias.Validar(campos, combos)) {
-            return; // se corta la ejecucion del boton
-        }
-
-        // Obtenemos el id de las cuentas
-        // Obtenemos los objetos seleccionados
-        Periodos periodo = (Periodos) cboPeriodo.getSelectedItem();
-        Cuentas cuentaOrigen = (Cuentas) cboOrigen.getSelectedItem();
-        Cuentas cuentaDestino = (Cuentas) cboDestino.getSelectedItem();
-
-        // Creamos el objeto Transferencia y asignamos valores
-        Transferencia transferencia = new Transferencia();
-        transferencia.setPeriodo(periodo != null ? periodo.getId() : "");
-        transferencia.setNroOperacion(txtNroOperacion.getText());
-        transferencia.setCuentaOrigen(String.valueOf(cuentaOrigen.getIdCuenta()));
-        transferencia.setCuentaDestino(String.valueOf(cuentaDestino.getIdCuenta()));
-        // Convertir fecha de dd/MM/yyyy a yyyy-MM-dd
-        String fechaIngresada = txtFecha.getText();
-        String[] partes = fechaIngresada.split("/");
-
-        if (partes.length == 3) {
-            String fechaSQL = partes[2] + "-" + partes[1] + "-" + partes[0]; // yyyy-MM-dd
-            transferencia.setFecha(fechaSQL);
-        } else {
-            transferencia.setFecha(""); // O lanza un mensaje de error si es inválida
-        }
-
-        // Insertamos o actualizamos el recibo en la base de datos
-        if (esNuevo) {
-            DatosTransferencias.Insertar(transferencia, tblTransferencias);
-        } else {
-            transferencia.setId(Integer.parseInt(txtId.getText()));
-            DatosTransferencias.Actualizar(transferencia, tblTransferencias);
-        }
-
-        // Limpiamos y deshabilitamos los campos del formulario
-        DatosTransferencias.Limpiar(panel);
-        DatosTransferencias.Habilitar(panel, false);
-        tblTransferencias.clearSelection();
-        tblTransferencias.setRowSelectionAllowed(true);
-    }//GEN-LAST:event_btnGuardarActionPerformed
-
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        DatosTransferencias.Limpiar(panel);
-        DatosTransferencias.Habilitar(panel, false);
-        tblTransferencias.clearSelection();
-        tblTransferencias.setRowSelectionAllowed(true);
-    }//GEN-LAST:event_btnCancelarActionPerformed
+    private void txtNroOperacionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNroOperacionFocusLost
+        String texto = txtNroOperacion.getText().trim();
+        txtNroOperacion.setText(texto);
+    }//GEN-LAST:event_txtNroOperacionFocusLost
 
     private void txtNroOperacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNroOperacionKeyTyped
         char c = evt.getKeyChar();
@@ -413,53 +250,43 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txtNroOperacionKeyTyped
 
-    private void txtFechaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFechaKeyTyped
-        char c = evt.getKeyChar();
-        if (c == KeyEvent.VK_BACK_SPACE) {
-            // permitir eliminar el carácter anterior incluso si es una diagonal
-            String fecha = txtFecha.getText();
-            if (!fecha.isEmpty()) {
-                // eliminar el último carácter de la cadena
-                fecha = fecha.substring(0, fecha.length() - 1);
-                txtFecha.setText(fecha);
-            }
-        } else if (!Character.isDigit(c)) {
-            evt.consume(); // Si no es un número, se ignora el evento de tecla
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        if (!validarCampos()) {
+            return;
         }
 
-        String fecha = txtFecha.getText();
-        int length = fecha.length();
-        if (length == 2 || length == 5) { // Si se ha ingresado un día o un mes completo, se agrega el guión correspondiente
-            fecha += "/";
-            txtFecha.setText(fecha);
+        Periodos periodo = (Periodos) cboPeriodo.getSelectedItem();
+        Cuentas cuentaOrigen = (Cuentas) cboOrigen.getSelectedItem();
+        Cuentas cuentaDestino = (Cuentas) cboDestino.getSelectedItem();
+
+        Transferencia transferencia = new Transferencia();
+        transferencia.setPeriodo(periodo.getId());
+        transferencia.setNroOperacion(txtNroOperacion.getText().trim());
+        transferencia.setCuentaOrigen(String.valueOf(cuentaOrigen.getIdCuenta()));
+        transferencia.setCuentaDestino(String.valueOf(cuentaDestino.getIdCuenta()));
+        SimpleDateFormat formatoSalida = new SimpleDateFormat("yyyy-MM-dd");
+        Date fechaSeleccionada = txtFecha.getDate();
+        transferencia.setFecha(formatoSalida.format(fechaSeleccionada));
+
+        if (esNuevo) {
+            DatosTransferencias.insertar(transferencia);
+        } else {
+            transferencia.setId(Integer.parseInt(txtId.getText()));
+            DatosTransferencias.actualizar(transferencia);
         }
 
-        if (length >= 10) {
-            evt.consume(); // Si ya se ha ingresado la fecha completa, se ignora el evento de tecla
-        }
-    }//GEN-LAST:event_txtFechaKeyTyped
+        frmLista.cargarDatos();
+        this.dispose();     // Cierra este formulario                                        
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
-    private void txtNroOperacionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNroOperacionFocusLost
-        String texto = txtNroOperacion.getText().trim();
-        txtNroOperacion.setText(texto);
-    }//GEN-LAST:event_txtNroOperacionFocusLost
-
-    private void txtFechaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtFechaFocusLost
-        String texto = txtFecha.getText().trim();
-        txtFecha.setText(texto);
-    }//GEN-LAST:event_txtFechaFocusLost
-
-    private void cboOrigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboOrigenActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboOrigenActionPerformed
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnRegresarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public static javax.swing.JButton btnCancelar;
-    public static javax.swing.JButton btnEditar;
-    public static javax.swing.JButton btnEliminar;
     public static javax.swing.JButton btnGuardar;
-    public static javax.swing.JButton btnNuevo;
+    public static javax.swing.JButton btnRegresar;
     private javax.swing.JComboBox<Cuentas> cboDestino;
     private javax.swing.JComboBox<Cuentas> cboOrigen;
     private javax.swing.JComboBox<Periodos> cboPeriodo;
@@ -469,10 +296,7 @@ public class frmTransferencias extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JPanel panel;
-    private javax.swing.JTable tblTransferencias;
-    private javax.swing.JTextField txtFecha;
+    private com.toedter.calendar.JDateChooser txtFecha;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtNroOperacion;
     // End of variables declaration//GEN-END:variables

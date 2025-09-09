@@ -2,10 +2,8 @@ package proyecto_gm.Instituciones;
 
 import java.io.IOException;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.Exportar;
-import proyecto_gm.Facultades.DatosFacultades;
 
 public class frmListaInstituciones extends javax.swing.JInternalFrame {
 

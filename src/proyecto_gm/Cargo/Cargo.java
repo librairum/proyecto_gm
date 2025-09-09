@@ -1,11 +1,12 @@
 package proyecto_gm.Cargo;
 
 public class Cargo {
-   
-    private int idCargo;  
+
+    private int idCargo;
     private String descripcion;
 
-    public Cargo() {}
+    public Cargo() {
+    }
 
     // Constructor con parámetros
     public Cargo(int idCargo, String descripcion) {
@@ -29,7 +30,7 @@ public class Cargo {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    
+
     @Override
     public String toString() {
         return descripcion;

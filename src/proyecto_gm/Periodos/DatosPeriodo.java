@@ -12,6 +12,8 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -273,5 +275,24 @@ public class DatosPeriodo {
             }
         }
     }
+    
+    public static List<Periodos> listar() {
+        List<Periodos> lista = new ArrayList<>();
+        try (CallableStatement cstmt = conn.prepareCall("{ CALL listar_periodos() }");
+             ResultSet rs = cstmt.executeQuery()) {
+
+            while (rs.next()) {
+                Periodos p = new Periodos();
+                p.setId(rs.getString("IdPeriodo"));
+                p.setDescripcion(rs.getString("descripcion"));
+                lista.add(p);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error al listar periodos", JOptionPane.ERROR_MESSAGE);
+        }
+        return lista;
+    }
+
 
 }

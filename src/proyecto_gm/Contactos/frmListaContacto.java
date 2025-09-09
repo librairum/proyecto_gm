@@ -134,7 +134,7 @@ public class frmListaContacto extends javax.swing.JInternalFrame {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         frmContactos form = new frmContactos();
         form.setEsNuevo(true);
-        form.setListaRef(this);  // 🔹 pasar referencia
+        form.setListaRef(this);  
 
         this.getDesktopPane().add(form);
         form.setVisible(true);
@@ -164,7 +164,7 @@ public class frmListaContacto extends javax.swing.JInternalFrame {
             frmContactos form = new frmContactos();
             form.setEsNuevo(false);
             form.cargarContacto(contacto);
-            form.setListaRef(this); // 🔹 pasar referencia
+            form.setListaRef(this);
 
             this.getDesktopPane().add(form);
             form.setVisible(true);

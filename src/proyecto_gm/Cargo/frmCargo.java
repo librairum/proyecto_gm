@@ -1,58 +1,81 @@
 package proyecto_gm.Cargo;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.Toolkit;
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
+import java.sql.SQLException;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import proyecto_gm.InterfazBase.OperacionesBasicas;
 import proyecto_gm.Utilitario;
 
-public class frmCargo extends javax.swing.JInternalFrame implements OperacionesBasicas {
 
-    boolean esNuevo = false;
+public class frmCargo extends javax.swing.JInternalFrame {
+
+    private final DatosCargo datosCargo = new DatosCargo();
+    private boolean esNuevo = false;
 
     public frmCargo() {
         initComponents();
-        JTableHeader header = tblCargo.getTableHeader();
-        header.setDefaultRenderer(new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table,
-                    Object value,
-                    boolean isSelected,
-                    boolean hasFocus,
-                    int row,
-                    int column) {
-                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                setHorizontalAlignment(JLabel.CENTER);
-                setBackground(Color.DARK_GRAY);
-                setForeground(Color.WHITE);
-                setFont(getFont().deriveFont(Font.BOLD, 13));
-                return this;
-            }
-        });
-        
-
+        cargarTabla();
+        habilitarControles(false);
         habilitarBotonesMantenimiento(true);
-
-        Cargar();
-        tblCargo.setCellSelectionEnabled(false);
-        tblCargo.setRowSelectionAllowed(true);
-
-    }
-    private void Cargar(){
-        DefaultTableModel modelo = (DefaultTableModel) tblCargo.getModel();
-        DatosCargo.Mostrar(modelo);
-        
     }
     
+    // Carga los datos de la base de datos en la tabla
+     private void cargarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tblCargo.getModel();
+        modelo.setRowCount(0);
+
+        try {
+            List<Cargo> listaCargos = datosCargo.listarCargo();
+            for (Cargo cargo : listaCargos) {
+                Object[] fila = {
+                    cargo.getIdCargo(),
+                    cargo.getDescripcion()
+                };
+                modelo.addRow(fila);
+            }
+        } catch (SQLException ex) {
+            Utilitario.mostrarMensaje("Error al cargar los datos: " + ex.getMessage(), Utilitario.TipoMensaje.error);
+        }
+    }
+
+    // Limpia los campos del formulario
     private void limpiarCampos() {
         txtCodigo.setText("");
         txtDescripcion.setText("");
+    }
+    
+    // Habilita o deshabilita los controles del formulario
+    private void habilitarControles(boolean estado) {
+        txtCodigo.setEnabled(false);
+        txtDescripcion.setEnabled(estado);
+    }
+    
+    // Habilita o deshabilita los botones de mantenimiento y de acción
+    private void habilitarBotonesMantenimiento(boolean estado) {
+        btnAgregar.setEnabled(estado);
+        btnEditar.setEnabled(estado);
+        btnEliminar.setEnabled(estado);
+        btnGuardar.setEnabled(!estado);
+        btnDeshacer.setEnabled(!estado);
+        tblCargo.setEnabled(estado); 
+    }
+    
+    // Valida que los campos obligatorios no estén vacíos
+    private boolean validarCampos() {
+        if (txtDescripcion.getText().trim().isEmpty()) {
+            Utilitario.mostrarMensaje("El campo descripción es obligatorio.", Utilitario.TipoMensaje.alerta);
+            txtDescripcion.requestFocus();
+            return false;
+        }
+        return true;
+    }
+    
+    // Restaura la vista a su estado inicial después de una operación
+    private void finalizarOperacion() {
+        limpiarCampos();
+        habilitarControles(false);
+        habilitarBotonesMantenimiento(true);
+        cargarTabla();
+        esNuevo = false;
     }
 
     @SuppressWarnings("unchecked")
@@ -85,19 +108,7 @@ public class frmCargo extends javax.swing.JInternalFrame implements OperacionesB
 
         jLabel1.setText("Id:");
 
-        txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtCodigoKeyTyped(evt);
-            }
-        });
-
         jLabel2.setText("Descripción:");
-
-        txtDescripcion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDescripcionActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -259,34 +270,46 @@ public class frmCargo extends javax.swing.JInternalFrame implements OperacionesB
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        //selecionar id de la fila y columna seleccionad
-        boolean respuesta =  Utilitario.MostrarMensajePregunta("¿Dese eliminar el registro?", Utilitario.TipoMensaje.pregunta);
-        if(respuesta){
-            String id = tblCargo.getValueAt(tblCargo.getSelectedRow(), 0).toString();
-            if(DatosCargo.Eliminar(id)){
-                Utilitario.MostrarMensaje("Elminacion exitosa", Utilitario.TipoMensaje.informativo);
+        int filaSeleccionada = tblCargo.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            Utilitario.mostrarMensaje("Seleccione un registro para eliminar.", Utilitario.TipoMensaje.alerta);
+            return;
+        }
 
-                tblCargo.clearSelection();
-                tblCargo.setRowSelectionAllowed(true);
-                Cargar();
+        if (Utilitario.mostrarMensajePregunta("¿Está seguro de que desea eliminar este cargo?")) {
+            try {
+                int idCargo = Integer.parseInt(tblCargo.getValueAt(filaSeleccionada, 0).toString());
+                if (datosCargo.eliminar(idCargo)) {
+                    Utilitario.mostrarMensaje("Cargo eliminado correctamente.", Utilitario.TipoMensaje.informativo);
+                    cargarTabla();
+                }
+            } catch (NumberFormatException e) {
+                 Utilitario.mostrarMensaje("El ID del cargo no es válido.", Utilitario.TipoMensaje.error);
+            } catch (SQLException ex) {
+                 Utilitario.mostrarMensaje("Error al eliminar el cargo: " + ex.getMessage(), Utilitario.TipoMensaje.error);
             }
-        }    
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        int fila = tblCargo.getSelectedRow();
-        if (fila == -1) {
-            Utilitario.MostrarMensaje("Seleccione un registro para editar", Utilitario.TipoMensaje.alerta);
+        int filaSeleccionada = tblCargo.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            Utilitario.mostrarMensaje("Seleccione un registro para editar.", Utilitario.TipoMensaje.alerta);
             return;
         }
-        txtCodigo.setText(tblCargo.getValueAt(fila, 0).toString());
-        txtDescripcion.setText(tblCargo.getValueAt(fila, 1).toString());
 
-        txtCodigo.setEnabled(false);
-        txtDescripcion.setEnabled(true);
-
-        habilitarBotonesMantenimiento(false);
         esNuevo = false;
+        
+        // Obtener datos de la tabla y cargarlos en los campos
+        String id = tblCargo.getValueAt(filaSeleccionada, 0).toString();
+        String descripcion = tblCargo.getValueAt(filaSeleccionada, 1).toString();
+        
+        txtCodigo.setText(id);
+        txtDescripcion.setText(descripcion);
+        
+        habilitarControles(true);
+        habilitarBotonesMantenimiento(false);
+        txtDescripcion.requestFocus();
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
@@ -300,80 +323,42 @@ public class frmCargo extends javax.swing.JInternalFrame implements OperacionesB
         tblCargo.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-    private void txtDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionActionPerformed
-
-    }//GEN-LAST:event_txtDescripcionActionPerformed
-
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
-        limpiarCampos();
-        txtCodigo.setText("");
-        txtDescripcion.setText("");
-        txtDescripcion.setEnabled(false);
-
-        tblCargo.clearSelection();
-        tblCargo.setRowSelectionAllowed(true);
-
-        habilitarBotonesMantenimiento(true);
-        esNuevo = false;
+        finalizarOperacion();
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-          try {
-                Cargo car = new Cargo();
-                int codigo = txtCodigo.getText().isEmpty() ? 0 : Integer.parseInt(txtCodigo.getText());
-                car.setIdCargo(codigo);
-
-                
-                 String descripcion = txtDescripcion.getText().trim();
-                if (descripcion.isEmpty()) {
-                    //JOptionPane.showMessageDialog(null, "La descripción es obligatoria.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                    Utilitario.MostrarMensaje("La descripción es obligatoria.", Utilitario.TipoMensaje.alerta);
-                    txtDescripcion.requestFocus();
-                    return;
-                }
-                car.setDescripcion(descripcion);
-                
-                //operacion insertar o actualizaqr
-                if (esNuevo) {
-                        if (DatosCargo.Insertar(car)) {
-                            //JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-                            Utilitario.MostrarMensaje("Datos guardados correctamente", Utilitario.TipoMensaje.informativo);
-                            habilitarBotonesMantenimiento(true);
-                            //                DatosCargo.Limpiar(escritorio);
-                            //                DatosCargo.Habilitar(escritorio, false);
-                            tblCargo.clearSelection();
-                            tblCargo.setRowSelectionAllowed(true);
-                            Cargar();
-                            limpiarCampos();
-                        } else {
-                        //JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
-                            Utilitario.MostrarMensaje("Error al guardar los datos", Utilitario.TipoMensaje.error);
-                        }
-                }else{
-                    if(DatosCargo.Actualizar(car)) {
-                        Utilitario.MostrarMensaje("Datos actualizados correctamente", Utilitario.TipoMensaje.informativo);
-                        Cargar();
-                        habilitarBotonesMantenimiento(true);
-
-                        tblCargo.clearSelection();
-                        tblCargo.setRowSelectionAllowed(true);
-                        Cargar();
-                        limpiarCampos();
-                    }
-                }
-            } catch (NumberFormatException e) {
-                Utilitario.MostrarMensaje("El codigo debe ser un numero", Utilitario.TipoMensaje.error);            
-            }
-    }//GEN-LAST:event_btnGuardarActionPerformed
-
-    private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
-        // TODO add your handling code here:
-        if (txtCodigo.getText().length() >= 4) {
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
+        if (!validarCampos()) {
+            return;
         }
-    }//GEN-LAST:event_txtCodigoKeyTyped
 
+        try {
+            Cargo cargo = new Cargo();
+            cargo.setDescripcion(txtDescripcion.getText().trim());
+
+            boolean resultado;
+            String mensaje;
+
+            if (esNuevo) {
+                resultado = datosCargo.insertar(cargo);
+                mensaje = "Cargo registrado correctamente.";
+            } else {
+                cargo.setIdCargo(Integer.parseInt(txtCodigo.getText()));
+                resultado = datosCargo.actualizar(cargo);
+                mensaje = "Cargo actualizado correctamente.";
+            }
+
+            if (resultado) {
+                Utilitario.mostrarMensaje(mensaje, Utilitario.TipoMensaje.informativo);
+                finalizarOperacion();
+            }
+
+        } catch (NumberFormatException e) {
+            Utilitario.mostrarMensaje("Error: el código del cargo no es un número válido.", Utilitario.TipoMensaje.error);
+        } catch (SQLException ex) {
+            Utilitario.mostrarMensaje("Error al guardar los datos: " + ex.getMessage(), Utilitario.TipoMensaje.error);
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
@@ -391,19 +376,4 @@ public class frmCargo extends javax.swing.JInternalFrame implements OperacionesB
     public static javax.swing.JTextField txtCodigo;
     public static javax.swing.JTextField txtDescripcion;
     // End of variables declaration//GEN-END:variables
-
-    @Override
-    public void habilitarControles(boolean estado) {
-        txtCodigo.setEnabled(false);
-        txtDescripcion.setEnabled(estado);
-    }
-
-    @Override
-    public void habilitarBotonesMantenimiento(boolean estado) {
-        btnAgregar.setEnabled(estado);
-        btnEditar.setEnabled(estado);
-        btnEliminar.setEnabled(estado);
-        btnGuardar.setEnabled(!estado);
-        btnDeshacer.setEnabled(!estado);
-    }
 }

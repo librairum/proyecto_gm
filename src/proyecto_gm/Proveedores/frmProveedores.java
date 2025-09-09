@@ -3,68 +3,71 @@ package proyecto_gm.Proveedores;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 import proyecto_gm.Departamentos.Departamentos;
 
 public class frmProveedores extends javax.swing.JInternalFrame {
 
-    boolean esNuevo = false;
-    
-    public frmProveedores() {
-        initComponents();
-        //llenarComboBoxDepartamentos(cboModulo2); // Llenar el JComboBox al abrir la ventana
-        
-        //DatosProveedores.llenarComboBoxDepartamentos(cboModulo2);
-        inicializaComboDepartamentos(); 
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        DatosProveedores.Habilitar(escritorio, false);
+    private DatosProveedores datos = new DatosProveedores();
+    private boolean esNuevo = false;
+    private Proveedores proveedorActual;
+    private frmListaProveedores frmLista; 
 
-        
-        
-    }
-    public frmProveedores(boolean parEsNuevo, int idProveedor){
-        
+    // Constructor para un NUEVO proveedor
+    public frmProveedores(frmListaProveedores frmLista) {
         initComponents();
-         this.limpiar();
-        this.esNuevo = parEsNuevo;
-        System.out.println("id seleccionado desde frmProveedor: " + idProveedor);
-        habilitarMantenimiento(false);
-        //llenarComboBoxDepartamentos(cboModulo2); // Llenar el JComboBox al abrir la ventana
-        inicializaComboDepartamentos(); 
-       if(esNuevo ){
-           this.txtId.setText("");
-                 txtId.setText(DatosProveedores.GenerarCodigo());  
-       }else{
-           txtId.setEditable(false);
-           System.out.println("id seleccionado desde frmProveedor_validado: " + idProveedor);
-           this.txtId.setText(String.valueOf(idProveedor)); 
-           //DefaultTableModel modelo = (DefaultTableModel) tblProveedores.getModel();
-           Proveedores reg =  DatosProveedores.ObtenerProveedor(idProveedor);
-            txtId.setText(String.valueOf(reg.getIdProveedor())); 
-           txtCorreo.setText(reg.getCorreo());
-           txtDireccion.setText(reg.getDireccion());
-           txtNombres.setText(reg.getNombres());
-           txtRuc.setText(reg.getRuc());
-           
-           cmbDepartamentos.setSelectedIndex(reg.getDepartamentoId()-1);
-           //cmbDepartamentos.setSelectedItem(reg.getDepartamentoNombre());
-           //System.out.println("Item recuperado Departamento:" +reg.getDepartamentoId());
-           txtTelefono.setText(reg.getTelefono()); 
-       
-       }                       
+        this.frmLista = frmLista;
+        this.esNuevo = true;
+        this.proveedorActual = new Proveedores();
+        setTitle("Nuevo Proveedor");
+        cargarDepartamentos();
+        txtId.setEnabled(false);
     }
-     private void inicializaComboDepartamentos() {
-        List<Departamentos> listaDepartamentos = DatosProveedores.listaDepartamentos(); 
 
-        DefaultComboBoxModel<Departamentos> modelo = new DefaultComboBoxModel<>();
-        for (Departamentos c : listaDepartamentos) {
-            modelo.addElement(c);
+    // Constructor para EDITAR un proveedor
+    public frmProveedores(frmListaProveedores frmLista, int idProveedor) {
+        initComponents();
+        this.frmLista = frmLista;
+        this.esNuevo = false;
+        setTitle("Editar Proveedor");
+        cargarDepartamentos();
+        
+        // Obtener y cargar los datos del proveedor
+        this.proveedorActual = datos.obtenerPorId(idProveedor);
+        if (proveedorActual != null) {
+            cargarDatosEnFormulario();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontraron los datos del proveedor.", "Error", JOptionPane.ERROR_MESSAGE);
+            this.dispose();
         }
-        cmbDepartamentos.setModel(modelo);
+        txtId.setEnabled(false); 
+    }
+
+    private void cargarDepartamentos() {
+        List<Departamentos> lista = datos.listarDepartamentos();
+        DefaultComboBoxModel<Departamentos> modeloCombo = new DefaultComboBoxModel<>();
+        for (Departamentos depto : lista) {
+            modeloCombo.addElement(depto);
+        }
+        cmbDepartamentos.setModel(modeloCombo);
+    }
+    
+    private void cargarDatosEnFormulario() {
+        txtId.setText(String.valueOf(proveedorActual.getIdProveedor()));
+        txtNombres.setText(proveedorActual.getNombres());
+        txtDireccion.setText(proveedorActual.getDireccion());
+        txtCorreo.setText(proveedorActual.getCorreo());
+        txtTelefono.setText(proveedorActual.getTelefono());
+        txtRuc.setText(proveedorActual.getRuc());
+
+        // Seleccionar el departamento en el ComboBox
+        for (int i = 0; i < cmbDepartamentos.getItemCount(); i++) {
+            Departamentos depto = (Departamentos) cmbDepartamentos.getItemAt(i);
+            if (depto.getId() == proveedorActual.getIdDepartamento()) {
+                cmbDepartamentos.setSelectedIndex(i);
+                break;
+            }
+        }
     }
      
     @SuppressWarnings("unchecked")
@@ -72,9 +75,6 @@ public class frmProveedores extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         escritorio = new javax.swing.JPanel();
-        btnAgregar = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         btnDeshacer = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -97,30 +97,6 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         setTitle("PROVEEDORES");
 
         escritorio.setBackground(new java.awt.Color(255, 248, 239));
-
-        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
-        btnAgregar.setName("agregar"); // NOI18N
-        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarActionPerformed(evt);
-            }
-        });
-
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
-        btnEditar.setName("editar"); // NOI18N
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
-            }
-        });
-
-        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/eliminar.png"))); // NOI18N
-        btnEliminar.setName("eliminar"); // NOI18N
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
 
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
         btnGuardar.setName("guardar"); // NOI18N
@@ -150,20 +126,10 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         jLabel2.setText("Nombres:");
 
         txtNombres.setNextFocusableComponent(txtDireccion);
-        txtNombres.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtNombresKeyTyped(evt);
-            }
-        });
 
         jLabel3.setText("Dirección:");
 
         txtDireccion.setNextFocusableComponent(txtCorreo);
-        txtDireccion.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtDireccionKeyTyped(evt);
-            }
-        });
 
         jLabel4.setText("Correo:");
 
@@ -188,30 +154,14 @@ public class frmProveedores extends javax.swing.JInternalFrame {
 
         jLabel7.setText("Departamento:");
 
-        cmbDepartamentos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbDepartamentosActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
         escritorio.setLayout(escritorioLayout);
         escritorioLayout.setHorizontalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(escritorioLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(escritorioLayout.createSequentialGroup()
-                        .addComponent(btnAgregar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnEditar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnEliminar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnGuardar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnDeshacer))
-                    .addGroup(escritorioLayout.createSequentialGroup()
+                        .addGap(27, 27, 27)
                         .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(escritorioLayout.createSequentialGroup()
                                 .addComponent(jLabel6)
@@ -246,7 +196,12 @@ public class frmProveedores extends javax.swing.JInternalFrame {
                             .addGroup(escritorioLayout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                                .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(escritorioLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnGuardar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDeshacer)))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
         escritorioLayout.setVerticalGroup(
@@ -254,9 +209,6 @@ public class frmProveedores extends javax.swing.JInternalFrame {
             .addGroup(escritorioLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnEliminar)
-                    .addComponent(btnEditar)
-                    .addComponent(btnAgregar)
                     .addComponent(btnGuardar)
                     .addComponent(btnDeshacer))
                 .addGap(18, 18, 18)
@@ -300,158 +252,53 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void iniciarFormulario(boolean estado){
-        limpiar();
-        if(estado){
-        
-        }else{
-            
-        }
-    }
-    private void limpiar(){
-        this.txtCorreo.setText("");
-        this.txtDireccion.setText("");
-        this.txtId.setText("");
-        this.txtNombres.setText("");
-        this.txtRuc.setText("");
-        this.txtTelefono.setText("");
-        this.cmbDepartamentos.setSelectedIndex(-1);
-    }
-    private void habilitarControles(boolean estado)
-    {
-        this.txtCorreo.setEnabled(estado);
-        this.txtDireccion.setEnabled(estado);
-        this.txtId.setEnabled(false);
-        this.txtNombres.setEnabled(estado);
-        this.txtRuc.setEnabled(estado);
-        this.txtTelefono.setEnabled(estado);
-    }
-
-    private void habilitarMantenimiento(boolean estado){
-        btnGuardar.setEnabled(!estado);
-        btnDeshacer.setEnabled(!estado);
-        btnAgregar.setEnabled(estado);
-        btnEditar.setEnabled(estado);
-        btnEliminar.setEnabled(estado);
-    }
-    private void guardar(boolean estadoNuevo){
-        String opcion = DatosProveedores.Capturar(cmbDepartamentos);
-        
-//         Proveedores pro = new Proveedores(
-//                txtId.getText(), // IdProveedor
-//                txtNombres.getText(), // Nombres
-//                txtDireccion.getText(), // Direccion
-//                txtCorreo.getText(), // Correo
-//                txtTelefono.getText(), // Telefono
-//                txtRuc.getText(), // Ruc
-//                opcion // departamentoId
-//        );
-        int idDepartamento = Integer.parseInt(DatosProveedores.Capturar(cmbDepartamentos));
-        
-        Proveedores pro = new Proveedores();
-        pro.setIdProveedor(Integer.parseInt(txtId.getText()));        
-        pro.setDepartamentoId(idDepartamento);
-        pro.setDireccion(txtDireccion.getText());
-        pro.setCorreo(txtCorreo.getText());
-        pro.setNombres(txtNombres.getText());
-        pro.setRuc(txtRuc.getText());
-        pro.setTelefono(txtTelefono.getText());
-        
-        //pro.setDepartamentoId(PROPERTIES);
-        if(estadoNuevo){
-        System.out.println("Intentando insertar proveedor...");
-            if (DatosProveedores.InsertarDatos(pro)) {
-                JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-                System.out.println("ID Departamento capturado: " + opcion);
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        }else{
-            
-            //pro.setIdProveedor(Integer.parseInt(txtId.getText()));
-            if (DatosProveedores.Actualizar(pro,  cmbDepartamentos)) {
-                JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al actualizar los datos", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        }
-        habilitarControles(false);
-        habilitarMantenimiento(false);
-        limpiar();
-
-        
-        this.setVisible(false);
-        
-    }
+   
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
-        // TODO add your handling code here:
-        //DatosProveedores.Limpiar(escritorio);
-        //DatosProveedores.Habilitar(escritorio, false);
-        limpiar();
-        habilitarControles(false);
-        habilitarMantenimiento(false);
-        
+        this.dispose();
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-
-        guardar(this.esNuevo);
-        frmListaProveedores.cargarLista();
-        
-    }//GEN-LAST:event_btnGuardarActionPerformed
-
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
-        DatosProveedores.Eliminar(Integer.parseInt(txtId.getText()));
-        //DatosProveedores.Habilitar(escritorio, false);
-        esNuevo = false;
-    }//GEN-LAST:event_btnEliminarActionPerformed
-
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // Crear el arreglo con los campos de texto
-        JTextField[] cod = new JTextField[6];
-        cod[0] = txtId;
-        cod[1] = txtDireccion;
-        cod[2] = txtTelefono;
-        cod[3] = txtNombres;
-        cod[4] = txtCorreo;
-        cod[5] = txtRuc;
-
-        // Crear el arreglo con el ComboBox de departamento
-        JComboBox[] combos = {cmbDepartamentos}; // Pasamos solo el ComboBox
-
-        // Llamar al método Editar pasándole el ComboBox junto con los campos de texto
-        Proveedores registro = new Proveedores();
-        registro.setIdProveedor(Integer.parseInt(txtId.getText()));
-        registro.setDireccion(txtDireccion.getText());
-        registro.setTelefono(txtTelefono.getText());
-        registro.setNombres(txtNombres.getText());
-        registro.setCorreo(txtCorreo.getText());
-        registro.setRuc(txtRuc.getText());
-                                
-        
-        
-        esNuevo = false;
-    }//GEN-LAST:event_btnEditarActionPerformed
-
-    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        
-        String codigo = DatosProveedores.GenerarCodigo(); 
-
-        if (codigo != null && !codigo.isEmpty()) {
-            txtId.setText(codigo);
-            txtId.setEnabled(false);
-            txtId.setEditable(false);
-        } else {
-            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
+        // 1. Validar campos
+        if (txtNombres.getText().trim().isEmpty() || txtRuc.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Los campos Nombres y RUC son obligatorios.", "Validación", JOptionPane.WARNING_MESSAGE);
+            return;
         }
-        
-        
-        DatosProveedores.Habilitar(escritorio, true);
-        esNuevo = true;
-    }//GEN-LAST:event_btnAgregarActionPerformed
+        if (txtRuc.getText().trim().length() != 11) {
+            JOptionPane.showMessageDialog(this, "El RUC debe tener 11 dígitos.", "Validación", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (cmbDepartamentos.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un departamento.", "Validación", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // 2. Poblar el objeto
+        Departamentos deptoSeleccionado = (Departamentos) cmbDepartamentos.getSelectedItem();
+        proveedorActual.setIdDepartamento(deptoSeleccionado.getId());
+        proveedorActual.setNombres(txtNombres.getText());
+        proveedorActual.setDireccion(txtDireccion.getText());
+        proveedorActual.setCorreo(txtCorreo.getText());
+        proveedorActual.setTelefono(txtTelefono.getText());
+        proveedorActual.setRuc(txtRuc.getText());
+
+        // 3. Guardar (Insertar o Actualizar)
+        boolean resultado;
+        if (esNuevo) {
+            resultado = datos.insertar(proveedorActual);
+        } else {
+            resultado = datos.actualizar(proveedorActual);
+        }
+
+        // 4. Mostrar resultado y cerrar
+        if (resultado) {
+            String mensaje = esNuevo ? "Proveedor guardado exitosamente." : "Proveedor actualizado exitosamente.";
+            JOptionPane.showMessageDialog(this, mensaje, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            frmLista.cargarTabla(); // ¡Refresca la tabla del formulario padre!
+            this.dispose(); // Cierra este formulario
+        } else {
+            JOptionPane.showMessageDialog(this, "Ocurrió un error al guardar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        }   
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped
         // TODO add your handling code here:
@@ -481,26 +328,9 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txtRucKeyTyped
 
-    private void txtNombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombresKeyTyped
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_txtNombresKeyTyped
-
-    private void txtDireccionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDireccionKeyTyped
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_txtDireccionKeyTyped
-
-    private void cmbDepartamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbDepartamentosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbDepartamentosActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnDeshacer;
-    private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JComboBox<Departamentos> cmbDepartamentos;
     private javax.swing.JPanel escritorio;

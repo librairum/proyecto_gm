@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package proyecto_gm.Asistencias;
 
 import java.text.SimpleDateFormat;
@@ -13,8 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -22,16 +16,12 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.ConexionBD;
 
-/**
- *
- * @author jeanv
- */
 public class DatosAsistencia {
 
     static final Connection conn = ConexionBD.getConnection();
 
     public static void RellenarTabla(JTable tabla, JComboBox mes, 
-            JComboBox empleado, JTextField totalHoras, JTextField totalAsistencias) {
+        JComboBox empleado, JTextField totalHoras, JTextField totalAsistencias) {
         // Obtener el dni del empleado
         String dni = ObtenerDNI(empleado);
         String periodo = mes.getSelectedItem().toString();

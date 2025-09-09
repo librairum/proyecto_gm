@@ -2,40 +2,30 @@ package proyecto_gm.Categoria;
 
 public class Categoria {
 
-    int idCat;
-    String descripcionCat;
+    private int id;
+    private String descripcion;
 
     public Categoria() {
     }
 
-    public Categoria(int idCat, String descripcionCat) {
-        this.idCat = idCat;
-        this.descripcionCat = descripcionCat;
+    public int getId() {
+        return id;
     }
 
-    public int getIdCat() {
-        return idCat;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setIdCat(int idCat) {
-        this.idCat = idCat;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public String getDescripcionCat() {
-        return descripcionCat;
-    }
-
-    public void setDescripcionCat(String descripcionCat) {
-        this.descripcionCat = descripcionCat;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
     
     @Override
     public String toString() {
-        return descripcionCat;
+        return this.descripcion;
     }
-
-    public Object getDescripcion() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
 }

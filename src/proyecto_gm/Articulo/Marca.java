@@ -1,5 +1,7 @@
 package proyecto_gm.Articulo;
 
+import java.util.Objects;
+
 public class Marca {
     private int idMarca;
     private String descripcion;
@@ -12,39 +14,28 @@ public class Marca {
     }
     
     // Getters y Setters
-    public int getIdMarca() { 
-        return idMarca; 
-    }
-    
-    public void setIdMarca(int idMarca) { 
-        this.idMarca = idMarca; 
-    }
-    
-    public String getDescripcion() { 
-        return descripcion; 
-    }
-    
-    public void setDescripcion(String descripcion) { 
-        this.descripcion = descripcion; 
-    }
+    public int getIdMarca() { return idMarca; }
+    public void setIdMarca(int idMarca) { this.idMarca = idMarca; }
+    public String getDescripcion() { return descripcion; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
     
     // Para que se muestre correctamente en el JComboBox
     @Override
     public String toString() {
-        return descripcion != null ? descripcion : "";
+        return descripcion;
     }
     
-    // Métodos equals y hashCode para comparaciones correctas
+    // Esenciales para que la selección en el ComboBox funcione correctamente
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Marca marca = (Marca) obj;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Marca marca = (Marca) o;
         return idMarca == marca.idMarca;
     }
-    
+
     @Override
     public int hashCode() {
-        return Integer.hashCode(idMarca);
+        return Objects.hash(idMarca);
     }
 }

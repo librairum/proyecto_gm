@@ -51,12 +51,12 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="txtNota" alignment="0" min="-2" pref="156" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="txtEmpresa" min="-2" pref="100" max="-2" attributes="0"/>
-                                  <Component id="txtCorreo" pref="130" max="32767" attributes="0"/>
-                                  <Component id="cboCargo" alignment="0" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="cboCargo" pref="156" max="32767" attributes="0"/>
+                                  <Component id="txtCorreo" max="32767" attributes="0"/>
+                                  <Component id="txtEmpresa" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>

@@ -3,7 +3,6 @@ package proyecto_gm;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -11,34 +10,31 @@ import proyecto_gm.Instituciones.frmListaInstituciones;
 import proyecto_gm.Tipo.frmTipo;
 import proyecto_gm.Facultades.frmFacultades;
 import proyecto_gm.Carreras.frmCarreras;
-import proyecto_gm.Empleado.frmEmpleado;
 import proyecto_gm.Cargo.frmCargo;
 import proyecto_gm.Area.frmArea;
 import proyecto_gm.Articulo.frmListaArticulo;
 import proyecto_gm.Asistencias.frmAsistencias;
-import proyecto_gm.CabeceraComprobante.frmCabeceraComprobante;
+import proyecto_gm.CabeceraComprobante.frmListarCabecera;
 import proyecto_gm.Categoria.frmCategoria;
 import proyecto_gm.Comunicacion.frmListaComunicacion;
 import proyecto_gm.Contactos.frmListaContacto;
-import proyecto_gm.Cuentas.frmCuentas;
+import proyecto_gm.Cuentas.frmListaCuentas;
 import proyecto_gm.Modulo.frmModulo;
 import proyecto_gm.Periodos.frmPeriodos;
-import proyecto_gm.Proveedores.frmProveedores;
 import proyecto_gm.RecibosHonorarios.frmListaRecibosHonorarios;
 import proyecto_gm.TipoDocumento.frmTipoDocumento;
 import proyecto_gm.Transferencias.frmTransferencias;
 import proyecto_gm.Viaticos.frmViaticos;
-import proyecto_gm.CajaChica.frmCajaChica;
+import proyecto_gm.CajaChica.fmrListarCajaChica;
 import proyecto_gm.Departamentos.frmDepartamentos;
 import proyecto_gm.credencial.frmCredencial;
 import java.sql.CallableStatement;
-import java.util.ArrayList;
 import java.sql.ResultSet;
-import javax.swing.JLabel;
-import org.apache.poi.hssf.record.TextObjectRecord;
 import proyecto_gm.Asistencias.frmAsistenciaImagen;
 import proyecto_gm.Empleado.frmListaEmpleado;
 import proyecto_gm.Proveedores.frmListaProveedores;
+import proyecto_gm.Transferencias.frmListaTransferencias;
+import proyecto_gm.Viaticos.frmListaViaticos;
 import proyecto_gm.seguridad.frmPermisosxPerfil;
 import proyecto_gm.seguridad.frmUsuario;
 
@@ -282,8 +278,8 @@ public class menu extends javax.swing.JFrame {
                 throw new AssertionError();
         }
     }
-
-
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -680,7 +676,7 @@ public class menu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-        private void Abrirareas(){
+            private void Abrirareas(){
              frmArea verventana = new frmArea();
         escritorio.add(verventana);
         verventana.show();
@@ -703,14 +699,14 @@ public class menu extends javax.swing.JFrame {
         }
         
         private void Abrircabeceracomprobante(){
-            frmCabeceraComprobante verventana = new frmCabeceraComprobante();
+            frmListarCabecera verventana = new frmListarCabecera();
         escritorio.add(verventana);
         
         verventana.show();
         }
         
         private void Abrircajachica(){
-             frmCajaChica verventana = new frmCajaChica();
+             fmrListarCajaChica verventana = new fmrListarCajaChica();
             escritorio.add((verventana));
             verventana.show();
         }
@@ -756,7 +752,7 @@ public class menu extends javax.swing.JFrame {
         }
         
         private void Abrircuentasbancarias(){
-        frmCuentas verventana = new frmCuentas();
+        frmListaCuentas verventana = new frmListaCuentas();
         escritorio.add(verventana);
         verventana.show();
         }
@@ -840,9 +836,9 @@ public class menu extends javax.swing.JFrame {
         }
         
         private void Abrirtransferenciasbancarias(){
-         frmTransferencias verventana = new frmTransferencias();
-        escritorio.add(verventana);
-        verventana.show();
+            frmListaTransferencias verventana = new frmListaTransferencias(); // <-- CORRECCIÓN
+            escritorio.add(verventana);
+            verventana.show();
         }
         
         private void Abrirusuarios(){
@@ -850,10 +846,11 @@ public class menu extends javax.swing.JFrame {
         }
         
         private void Abrirviaticos(){
-            frmViaticos verventana = new frmViaticos();
-        escritorio.add(verventana);
-        verventana.show();
+            frmListaViaticos verventana = new frmListaViaticos(); // <-- CORRECCIÓN
+            escritorio.add(verventana);
+            verventana.show();
         }
+        
         private void Abrircredencial(){
             proyecto_gm.credencial.frmCredencial verventana = new frmCredencial();
             escritorio.add(verventana);

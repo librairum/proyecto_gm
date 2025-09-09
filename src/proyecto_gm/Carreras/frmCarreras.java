@@ -2,57 +2,53 @@ package proyecto_gm.Carreras;
 
 import java.awt.Toolkit;
 import java.io.IOException;
+import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.Exportar;
-import proyecto_gm.Facultades.DatosFacultades;
-import proyecto_gm.Instituciones.DatosInstituciones;
+
 
 public class frmCarreras extends javax.swing.JInternalFrame {
 
-    Exportar obj;
     DefaultTableModel modelo;
     boolean esNuevo = false;
+    List<Carreras> listaCarreras; 
 
     public frmCarreras() {
         initComponents();
-        setTitle("Carreras");
-        bloquear();
-        desbloquear();
-
+        
         modelo = new DefaultTableModel();
         modelo.addColumn("ID");
-        modelo.addColumn("DESCRIPCION");
-        this.tblCarreras.setModel(modelo);
-
-        DatosCarrera dc = new DatosCarrera();
-        dc.mostrarDatos(modelo);
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-
-        DatosFacultades.bloquearCampos(escritorio);
+        modelo.addColumn("DESCRIPCIÓN");
+        tblCarreras.setModel(modelo);
+        
+        cargarDatos();
+        gestionarEstadoCampos(false); 
     }
-
-    void Limpiar() {
+    
+    private void cargarDatos() {
+        modelo.setRowCount(0);
+        listaCarreras = DatosCarrera.listar();
+        for (Carreras carrera : listaCarreras) {
+            modelo.addRow(new Object[]{carrera.getId(), carrera.getDescripcion()});
+        }
+    }
+    
+    private void gestionarEstadoCampos(boolean activo) {
+        txtId.setEnabled(false);
+        txtDescripcion.setEnabled(activo);
+        
+        btnGuardar.setEnabled(activo);
+        btnDeshacer.setEnabled(activo);
+        
+        btnAgregar.setEnabled(!activo);
+        btnEditar.setEnabled(!activo);
+        btnEliminar.setEnabled(!activo);
+    }
+    
+    private void limpiarCampos() {
         txtId.setText("");
         txtDescripcion.setText("");
-
-    }
-
-    void bloquear() {
-        txtId.setEditable(false);
-        txtDescripcion.setEditable(false);
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        btnAgregar.setEnabled(true);
-        btnEditar.setEnabled(true);
-        btnEliminar.setEnabled(true);
-    }
-
-    void desbloquear() {
-        txtId.setEditable(true);
-        txtDescripcion.setEditable(true);
     }
 
     @SuppressWarnings("unchecked")
@@ -71,7 +67,7 @@ public class frmCarreras extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCarreras = new javax.swing.JTable();
         btnDeshacer = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnExportar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -109,11 +105,7 @@ public class frmCarreras extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Id:");
 
-        txtId.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtIdKeyTyped(evt);
-            }
-        });
+        txtId.setEnabled(false);
 
         jLabel2.setText("Descripcion:");
 
@@ -139,16 +131,11 @@ public class frmCarreras extends javax.swing.JInternalFrame {
                 btnDeshacerActionPerformed(evt);
             }
         });
-        btnDeshacer.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                btnDeshacerKeyTyped(evt);
-            }
-        });
 
-        jButton1.setText("Exportar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnExportar.setText("Exportar");
+        btnExportar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnExportarActionPerformed(evt);
             }
         });
 
@@ -180,7 +167,7 @@ public class frmCarreras extends javax.swing.JInternalFrame {
                         .addGap(29, 29, 29)
                         .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addComponent(btnExportar)))
                 .addContainerGap())
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
         );
@@ -199,7 +186,7 @@ public class frmCarreras extends javax.swing.JInternalFrame {
                     .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btnExportar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -222,121 +209,83 @@ public class frmCarreras extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        desbloquear();
-        btnEditar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnGuardar.setEnabled(true);
-        btnDeshacer.setEnabled(true);
-        btnAgregar.setEnabled(false);
         esNuevo = true;
-
-        String codigo = DatosCarrera.GenerarCodigo();
-
-        if (codigo != null && !codigo.isEmpty()) {
-            txtId.setText(codigo);
-            txtId.setEnabled(false);
-            txtId.requestFocus();
-        } else {
-            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        limpiarCampos();
+        gestionarEstadoCampos(true);
+        setTitle("Nueva Carrera");
+        txtDescripcion.requestFocus();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
-        btnAgregar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnGuardar.setEnabled(true);
-        btnDeshacer.setEnabled(true);
-        btnEditar.setEnabled(false);
-        // Habilitar campos
-        DatosFacultades.habilitarCampos(escritorio);
-
-        JTextField[] cajas = {txtId, txtDescripcion};
-
-        //Editar campos
-        DatosCarrera.editar(tblCarreras, cajas);
-        esNuevo = false;
+        int fila = tblCarreras.getSelectedRow();
+        if (fila >= 0) {
+            esNuevo = false;
+            // Obtener el objeto Carrera de la lista
+            Carreras carreraSeleccionada = listaCarreras.get(fila);
+            txtId.setText(String.valueOf(carreraSeleccionada.getId()));
+            txtDescripcion.setText(carreraSeleccionada.getDescripcion());
+            
+            gestionarEstadoCampos(true);
+            setTitle("Editar Carrera");
+            txtDescripcion.requestFocus();
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
-        DatosCarrera.eliminarDatos(tblCarreras);
-
-        // Bloquear campos
-        DatosFacultades.bloquearCampos(escritorio);
-
-        // Deshabilitar los botones Guardar y Deshacer
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
+        int fila = tblCarreras.getSelectedRow();
+        if (fila >= 0) {
+            int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar esta carrera?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+            
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                int idCarrera = (int) tblCarreras.getValueAt(fila, 0);
+                DatosCarrera.eliminar(idCarrera);
+                cargarDatos();
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        Carreras f = new Carreras(txtId.getText(), txtDescripcion.getText());
+        if (txtDescripcion.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El campo descripción no puede estar vacío.", "Validación", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        Carreras carrera = new Carreras();
+        carrera.setDescripcion(txtDescripcion.getText().trim());
+        
         if (esNuevo) {
-            // Insertar nuevo registro
-            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            } else {
-                DatosCarrera.insertarDatos(f, tblCarreras);
-                JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-            }
+            DatosCarrera.insertar(carrera);
         } else {
-            // Actualizar registro existente
-            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            } else {
-                DatosCarrera.actualizarDatos(f, tblCarreras);
-                //JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-            }
+            carrera.setId(Integer.parseInt(txtId.getText()));
+            DatosCarrera.actualizar(carrera);
+        }
+        
+        cargarDatos();
+        limpiarCampos();
+        gestionarEstadoCampos(false);
+        setTitle("Carreras");
     }//GEN-LAST:event_btnGuardarActionPerformed
-        DatosFacultades.limpiarCampos(escritorio);
-        DatosFacultades.bloquearCampos(escritorio);
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        btnEditar.setEnabled(true);
-        btnEliminar.setEnabled(true);
-        btnAgregar.setEnabled(true);
-    }
-    private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped
-        // TODO add your handling code here:
-        if (txtId.getText().length() >= 4) {
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-        }
-    }//GEN-LAST:event_txtIdKeyTyped
-
-    private void btnDeshacerKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnDeshacerKeyTyped
-        // TODO add your handling code here:
-        // Limpiar datos
-
-    }//GEN-LAST:event_btnDeshacerKeyTyped
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+    
+    private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
         try {
-            obj = new Exportar(); //mandamos a llamar a la clase
-            obj.exportarExcel(tblCarreras); //llamamos el metodo desde la clase DatosEmpleados
+            Exportar obj = new Exportar();
+            obj.exportarExcel(tblCarreras);
         } catch (IOException ex) {
-
+            JOptionPane.showMessageDialog(this, "Error al exportar el archivo: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnExportarActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
-        // TODO add your handling code here:
-        DatosFacultades.limpiarCampos(escritorio);
-        // Deshabilitar los botones Guardar y Deshacer
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        btnEditar.setEnabled(true);
-        btnEliminar.setEnabled(true);
-        btnAgregar.setEnabled(true);
-        DatosFacultades.bloquearCampos(escritorio);
+        limpiarCampos();
+        gestionarEstadoCampos(false);
+        setTitle("Carreras");
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void txtDescripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyTyped
-        // TODO add your handling code here:
         if (txtDescripcion.getText().length() >= 100) {
             evt.consume();
             Toolkit.getDefaultToolkit().beep();
@@ -349,9 +298,9 @@ public class frmCarreras extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnDeshacer;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnExportar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JPanel escritorio;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

@@ -350,4 +350,24 @@ public class DatosEmpleados {
         }
         return codigo_generado;
     }
+    
+    public static List<Empleados> listar() {
+        List<Empleados> lista = new ArrayList<>();
+        try (CallableStatement cstmt = conn.prepareCall("{ CALL listar_emple('T') }");
+             ResultSet rs = cstmt.executeQuery()) {
+
+            while (rs.next()) {
+                Empleados emp = new Empleados();
+                emp.setId(rs.getString("Id"));
+                emp.setNombres(rs.getString("Nombres"));
+                emp.setApellidos(rs.getString("Apellidos"));
+                lista.add(emp);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error al listar empleados", JOptionPane.ERROR_MESSAGE);
+        }
+        return lista;
+    }
+
 }
