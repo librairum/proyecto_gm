@@ -16,7 +16,7 @@ import proyecto_gm.Cargo.frmCargo;
 import proyecto_gm.Area.frmArea;
 import proyecto_gm.Articulo.frmListaArticulo;
 import proyecto_gm.Asistencias.frmAsistencias;
-import proyecto_gm.CabeceraComprobante.frmCabeceraComprobante;
+import proyecto_gm.CabeceraComprobante.frmListarCabecera;
 import proyecto_gm.Categoria.frmCategoria;
 import proyecto_gm.Comunicacion.frmListaComunicacion;
 import proyecto_gm.Contactos.frmListaContacto;
@@ -28,7 +28,7 @@ import proyecto_gm.RecibosHonorarios.frmListaRecibosHonorarios;
 import proyecto_gm.TipoDocumento.frmTipoDocumento;
 import proyecto_gm.Transferencias.frmTransferencias;
 import proyecto_gm.Viaticos.frmViaticos;
-import proyecto_gm.CajaChica.frmCajaChica;
+import proyecto_gm.CajaChica.fmrListarCajaChica;
 import proyecto_gm.Departamentos.frmDepartamentos;
 import proyecto_gm.credencial.frmCredencial;
 import java.sql.CallableStatement;
@@ -703,14 +703,14 @@ public class menu extends javax.swing.JFrame {
         }
         
         private void Abrircabeceracomprobante(){
-            frmCabeceraComprobante verventana = new frmCabeceraComprobante();
+            frmListarCabecera verventana = new frmListarCabecera();
         escritorio.add(verventana);
         
         verventana.show();
         }
         
         private void Abrircajachica(){
-             frmCajaChica verventana = new frmCajaChica();
+             fmrListarCajaChica verventana = new fmrListarCajaChica();
             escritorio.add((verventana));
             verventana.show();
         }

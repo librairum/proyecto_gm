@@ -1,4 +1,3 @@
-
 package proyecto_gm.CajaChica;
 
 public class CajaChica {
