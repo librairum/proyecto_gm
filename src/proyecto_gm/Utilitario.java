@@ -16,6 +16,14 @@ import javax.swing.table.DefaultTableModel;
  * @author pc_sistemas2022
  */
 public class Utilitario {
+
+    public static void mostrarMensaje(String seleccione_un_registro_para_editar, TipoMensaje tipoMensaje) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public static boolean mostrarMensajePregunta(String está_seguro_de_que_desea_eliminar_este_ca) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     public static enum EstadoProceso{
         NUEVO,
         EDITAR,

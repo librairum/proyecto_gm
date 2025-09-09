@@ -1,89 +1,105 @@
 package proyecto_gm.Proveedores;
 
 public class Proveedores {
-    //Atributos
 
-    int IdProveedor;
-            String Nombres; 
-            String Direccion, Correo, Telefono, Ruc;
-                    int departamentoId;
-                    String nombreDepartamento;
-    public Proveedores(int IdProveedor, String Nombres, String Direccion, 
-            String Correo, String Telefono, String Ruc, int departamentoId) {
-        this.IdProveedor = IdProveedor;
-        this.Nombres = Nombres;
-        this.Direccion = Direccion;
-        this.Correo = Correo;
-        this.Telefono = Telefono;
-        this.Ruc = Ruc;
-        this.departamentoId = departamentoId;
-    }
+    private int idProveedor;
+    private int idDepartamento;
+    private String nombres;
+    private String direccion;
+    private String correo;
+    private String telefono;
+    private String ruc;
+    
+    // Campo adicional para mostrar el nombre del departamento en la tabla
+    private String nombreDepartamento;
 
+    // Constructor vacío
     public Proveedores() {
     }
 
-    public int getIdProveedor() {
-        return IdProveedor;
+    // Constructor para crear un nuevo proveedor (sin ID, la BD lo genera)
+    public Proveedores(int idDepartamento, String nombres, String direccion, String correo, String telefono, String ruc) {
+        this.idDepartamento = idDepartamento;
+        this.nombres = nombres;
+        this.direccion = direccion;
+        this.correo = correo;
+        this.telefono = telefono;
+        this.ruc = ruc;
     }
 
-    public void setIdProveedor(int IdProveedor) {
-        this.IdProveedor = IdProveedor;
+    // Constructor completo para leer datos de la BD
+    public Proveedores(int idProveedor, int idDepartamento, String nombres, String direccion, String correo, String telefono, String ruc) {
+        this.idProveedor = idProveedor;
+        this.idDepartamento = idDepartamento;
+        this.nombres = nombres;
+        this.direccion = direccion;
+        this.correo = correo;
+        this.telefono = telefono;
+        this.ruc = ruc;
+    }
+
+    // Getters y Setters
+    public int getIdProveedor() {
+        return idProveedor;
+    }
+
+    public void setIdProveedor(int idProveedor) {
+        this.idProveedor = idProveedor;
+    }
+
+    public int getIdDepartamento() {
+        return idDepartamento;
+    }
+
+    public void setIdDepartamento(int idDepartamento) {
+        this.idDepartamento = idDepartamento;
     }
 
     public String getNombres() {
-        return Nombres;
+        return nombres;
     }
 
-    public void setNombres(String Nombres) {
-        this.Nombres = Nombres;
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
     }
 
     public String getDireccion() {
-        return Direccion;
+        return direccion;
     }
 
-    public void setDireccion(String Direccion) {
-        this.Direccion = Direccion;
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
     public String getCorreo() {
-        return Correo;
+        return correo;
     }
 
-    public void setCorreo(String Correo) {
-        this.Correo = Correo;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
     public String getTelefono() {
-        return Telefono;
+        return telefono;
     }
 
-    public void setTelefono(String Telefono) {
-        this.Telefono = Telefono;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public String getRuc() {
-        return Ruc;
+        return ruc;
     }
 
-    public void setRuc(String Ruc) {
-        this.Ruc = Ruc;
+    public void setRuc(String ruc) {
+        this.ruc = ruc;
     }
 
-    public int getDepartamentoId() {
-        return departamentoId;
-    }
-
-    public void setDepartamentoId(int departamentoId) {
-        this.departamentoId = departamentoId;
-    }
-    
-    public String getDepartamentoNombre(){
+    public String getNombreDepartamento() {
         return nombreDepartamento;
     }
-    public void setDepartamentoNombre(String depaNombre){
-        this.nombreDepartamento = depaNombre;
+
+    public void setNombreDepartamento(String nombreDepartamento) {
+        this.nombreDepartamento = nombreDepartamento;
     }
-    
-    
 }

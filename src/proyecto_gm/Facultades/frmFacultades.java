@@ -1,40 +1,56 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package proyecto_gm.Facultades;
 
 import java.awt.Toolkit;
 import java.io.IOException;
+import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import proyecto_gm.Carreras.DatosCarrera;
 import proyecto_gm.Exportar;
 
 public class frmFacultades extends javax.swing.JInternalFrame {
-    Exportar obj;
 
     DefaultTableModel modelo;
     boolean esNuevo = false;
+    List<Facultades> listaFacultades; 
 
     public frmFacultades() {
         initComponents();
-
-        // Modelo de la tabla
+        
+        // Configuración inicial de la tabla
         modelo = new DefaultTableModel();
         modelo.addColumn("ID");
-        modelo.addColumn("DESCRIPCION");
-        this.tblFacultades.setModel(modelo);
-
-        // Deshabilitar los botones Guardar y Deshacer
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-
-        DatosFacultades.bloquearCampos(jPanel1);
-        DatosFacultades.mostrarDatos(modelo);
-
+        modelo.addColumn("DESCRIPCIÓN");
+        tblFacultades.setModel(modelo);
+        
+        cargarDatos();
+        gestionarControles(false); 
     }
+    
+    private void cargarDatos() {
+        modelo.setRowCount(0);
+        listaFacultades = DatosFacultades.listar();
+        for (Facultades facultad : listaFacultades) {
+            modelo.addRow(new Object[]{facultad.getId(), facultad.getDescripcion()});
+        }
+    }
+    
+    private void gestionarControles(boolean activo) {
+        txtId.setEnabled(false);
+        txtDescripcion.setEnabled(activo);
+        
+        btnGuardar.setEnabled(activo);
+        btnDeshacer.setEnabled(activo);
+        
+        btnNuevo.setEnabled(!activo);
+        btnEditar.setEnabled(!activo);
+        btnEliminar.setEnabled(!activo);
+    }
+    
+    private void limpiarCampos() {
+        txtId.setText("");
+        txtDescripcion.setText("");
+    }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -53,7 +69,7 @@ public class frmFacultades extends javax.swing.JInternalFrame {
         txtDescripcion = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblFacultades = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        btnExportar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -109,12 +125,6 @@ public class frmFacultades extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Id:");
 
-        txtId.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtIdKeyTyped(evt);
-            }
-        });
-
         jLabel2.setText("Descripcion:");
 
         txtDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -133,10 +143,10 @@ public class frmFacultades extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tblFacultades);
 
-        jButton1.setText("Exportar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnExportar.setText("Exportar");
+        btnExportar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnExportarActionPerformed(evt);
             }
         });
 
@@ -167,7 +177,7 @@ public class frmFacultades extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1))))
+                        .addComponent(btnExportar))))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 561, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         jPanel1Layout.setVerticalGroup(
@@ -185,7 +195,7 @@ public class frmFacultades extends javax.swing.JInternalFrame {
                     .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btnExportar))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
         );
@@ -209,133 +219,83 @@ public class frmFacultades extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        
-        String codigo = DatosFacultades.GenerarCodigo(); 
-
-        if (codigo != null && !codigo.isEmpty()) {
-            txtId.setText(codigo);
-            txtId.setEnabled(false);
-        } else {
-            JOptionPane.showMessageDialog(null, "Error al generar el código.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        
-        DatosFacultades.habilitarCampos(jPanel1);
-        btnEditar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnGuardar.setEnabled(true);
-        btnDeshacer.setEnabled(true);
-        btnNuevo.setEnabled(false); 
-        txtId.requestFocus();
         esNuevo = true;
+        limpiarCampos();
+        gestionarControles(true);
+        setTitle("Nueva Facultad");
+        txtDescripcion.requestFocus();
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
-        btnNuevo.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnGuardar.setEnabled(true);
-        btnDeshacer.setEnabled(true);
-        btnEditar.setEnabled(false);
-        // Habilitar camposS
-        DatosFacultades.habilitarCampos(jPanel1);
-
-        JTextField[] cajas = {txtId, txtDescripcion};
-
-        //Editar campos
-        DatosCarrera.editar(tblFacultades, cajas);
-        esNuevo = false;
+        int fila = tblFacultades.getSelectedRow();
+        if (fila >= 0) {
+            esNuevo = false;
+            Facultades facultadSeleccionada = listaFacultades.get(fila);
+            
+            txtId.setText(String.valueOf(facultadSeleccionada.getId()));
+            txtDescripcion.setText(facultadSeleccionada.getDescripcion());
+            
+            gestionarControles(true);
+            setTitle("Editar Facultad");
+            txtDescripcion.requestFocus();
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
-        // Eliminar datos
-        DatosFacultades.eliminarDatos(tblFacultades);
-
-        // Bloquear campos
-        DatosFacultades.bloquearCampos(jPanel1);
-
-        // Deshabilitar los botones Guardar y Deshacer
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
+        int fila = tblFacultades.getSelectedRow();
+        if (fila >= 0) {
+            int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar esta facultad?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+            
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                int idFacultad = (int) tblFacultades.getValueAt(fila, 0);
+                DatosFacultades.eliminar(idFacultad);
+                cargarDatos(); 
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // Crear un objeto tipo Facultades
-        Facultades f = new Facultades(txtId.getText(), txtDescripcion.getText());
-        if (esNuevo) {
-            // Insertar nuevo registro
-            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            } else {
-                DatosFacultades.insertarDatos(f, tblFacultades);
-                JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-                DatosFacultades.limpiarCampos(jPanel1);
-                DatosFacultades.bloquearCampos(jPanel1);
-                btnGuardar.setEnabled(false);
-                btnDeshacer.setEnabled(false);
-                btnEditar.setEnabled(true);
-                btnEliminar.setEnabled(true);
-                btnNuevo.setEnabled(true);
-            }
-        } else {
-            // Actualizar registro existente
-            if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Completar bien los campos");
-                return;
-            } else {
-                DatosFacultades.actualizarDatos(f, tblFacultades);
-                JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
-            }
-            DatosFacultades.limpiarCampos(jPanel1);
-            DatosFacultades.bloquearCampos(jPanel1);
-            btnGuardar.setEnabled(false);
-            btnDeshacer.setEnabled(false);
-            btnEditar.setEnabled(true);
-            btnEliminar.setEnabled(true);
-            btnNuevo.setEnabled(true);
+        if (txtDescripcion.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El campo descripción es obligatorio.", "Validación", JOptionPane.WARNING_MESSAGE);
+            return;
         }
 
-
+        Facultades facultad = new Facultades();
+        facultad.setDescripcion(txtDescripcion.getText().trim());
+        
+        if (esNuevo) {
+            DatosFacultades.insertar(facultad);
+        } else {
+            facultad.setId(Integer.parseInt(txtId.getText()));
+            DatosFacultades.actualizar(facultad);
+        }
+        
+        cargarDatos();
+        limpiarCampos();
+        gestionarControles(false);
+        setTitle("Facultades");
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
-        // TODO add your handling code here:
-        // Limpiar datos
-        DatosFacultades.limpiarCampos(jPanel1);
-        // Bloquear campos
-        //DatosFacultades.bloquearCampos(jPanel1);
-
-        // Deshabilitar los botones Guardar y Deshacer
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        btnEditar.setEnabled(true);
-        btnEliminar.setEnabled(true);
-        btnNuevo.setEnabled(true);
-        DatosFacultades.bloquearCampos(jPanel1);
-
+        limpiarCampos();
+        gestionarControles(false);
+        setTitle("Facultades");
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
-    private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped
-        // TODO add your handling code here:
-        if (txtId.getText().length() >= 4) {
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
+    private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
+        try {
+            Exportar obj = new Exportar();
+            obj.exportarExcel(tblFacultades);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error al exportar el archivo: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_txtIdKeyTyped
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        try{
-            obj = new Exportar(); //mandamos a llamar a la clase
-            obj.exportarExcel(tblFacultades); //llamamos el metodo desde la clase DatosEmpleados
-        } catch (IOException ex){
-            
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnExportarActionPerformed
 
     private void txtDescripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyTyped
-        // TODO add your handling code here:
         if (txtDescripcion.getText().length() >= 100) {
             evt.consume();
             Toolkit.getDefaultToolkit().beep();
@@ -347,9 +307,9 @@ public class frmFacultades extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnDeshacer;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnExportar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnNuevo;
-    private javax.swing.JButton jButton1;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

@@ -1,7 +1,5 @@
 package proyecto_gm.Contactos;
 
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.HeadlessException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -10,10 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.ConexionBD;
 import proyecto_gm.Departamentos.Departamentos;
@@ -21,19 +17,6 @@ import proyecto_gm.Departamentos.Departamentos;
 public class DatosContacto {
 
     static Connection conn = ConexionBD.getConnection();
-
-
-    public static void LimpiarCampos(Container contenedor) {
-        Component[] components = contenedor.getComponents();
-        for (Component component : components) {
-            if (component instanceof JTextField) {
-                ((JTextField) component).setText("");
-            } else if (component instanceof JComboBox) {
-                ((JComboBox) component).setSelectedIndex(0);
-            } else {
-            }
-        }
-    }
 
     public static List<Departamentos> listaDepartamentos() {
         List<Departamentos> lista = new ArrayList<>();
@@ -126,7 +109,7 @@ public class DatosContacto {
             cstmt.setString(12, contacto.getDireccion());
             cstmt.setString(13, contacto.getNotas());
 
-            cstmt.execute(); // se actualiza los datos en la BD
+            cstmt.execute(); 
 
             // Solo actualizar la tabla si NO es null
             if(tabla != null){
@@ -139,8 +122,7 @@ public class DatosContacto {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-    // Eliminar datos
+
     public static void eliminarDatos(JTable tabla) {
         try {
             // Obtener el indice de la fila seleccionada
@@ -150,8 +132,6 @@ public class DatosContacto {
                 String[] options = {"Sí", "No", "Cancelar"};
                 int opcion = JOptionPane.showOptionDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
                 if (opcion == JOptionPane.YES_OPTION) {
-                    // Obtener los datos de fila seleccionada
-                    //String id = ;  //Se asume que el ID se encuentra en la primera columna
                     int id = Integer.parseInt(tabla.getModel().getValueAt(fila, 0).toString());
                     // Ejecutar el procedimiento almacenado
                     PreparedStatement stmt = conn.prepareCall("{ CALL eliminar_contacto(?) }");
@@ -161,7 +141,7 @@ public class DatosContacto {
                     // Actualizar el JTable
                     DefaultTableModel model = (DefaultTableModel) tabla.getModel();
                     model.removeRow(fila);
-                    // JOptionPane.showMessageDialog(null, "La fila ha sido eliminada exitosamente");                
+                    JOptionPane.showMessageDialog(null, "La fila ha sido eliminada exitosamente");                
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para eliminar.");

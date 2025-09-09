@@ -1,31 +1,27 @@
 package proyecto_gm.Facultades;
 
 public class Facultades {
-    String Id;
-    String Descripcion;
+    private int id;
+    private String descripcion;
 
-    public Facultades(String Id, String Descripcion) {
-        this.Id = Id;
-        this.Descripcion = Descripcion;
-    }
-
+    // Constructor vacío, útil para crear objetos nuevos
     public Facultades() {
-
     }
 
-    public String getId() {
-        return Id;
+    // Getters y Setters
+    public int getId() {
+        return id;
     }
 
-    public void setId(String Id) {
-        this.Id = Id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDescripcion() {
-        return Descripcion;
+        return descripcion;
     }
 
-    public void setDescripcion(String Descripcion) {
-        this.Descripcion = Descripcion;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 }

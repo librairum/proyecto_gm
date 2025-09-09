@@ -1,21 +1,19 @@
 package proyecto_gm.Carreras;
 
 public class Carreras {
+    private int id; 
+    private String descripcion;
 
-    protected String id, descripcion;
-
-    // Constructor
-    public Carreras(String id, String descripcion) {
-        this.id = id;
-        this.descripcion = descripcion;
+    // Constructor vacío
+    public Carreras() {
     }
 
-    // Getters & Setters
-    public String getId() {
+    // Getters y Setters
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -26,5 +24,4 @@ public class Carreras {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
 }

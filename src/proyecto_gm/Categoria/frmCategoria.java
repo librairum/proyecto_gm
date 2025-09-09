@@ -1,86 +1,54 @@
 package proyecto_gm.Categoria;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
 import java.awt.Toolkit;
 import java.io.IOException;
-import javax.swing.JLabel;
+import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import proyecto_gm.Exportar;
-import proyecto_gm.Facultades.DatosFacultades;
 
 public class frmCategoria extends javax.swing.JInternalFrame {
 
-    Exportar obj;
     boolean esNuevo = false;
     DefaultTableModel modelo;
+    List<Categoria> listaCategorias; 
 
     public frmCategoria() {
         initComponents();
-        setTitle("Categorias");
-        bloquear();
-        desbloquear();
+        setTitle("Categorías");
         modelo = new DefaultTableModel();
         modelo.addColumn("ID");
-        modelo.addColumn("DESCRIPCION");
-        this.tblCategoria.setModel(modelo);
-        DatosCategoria dc = new DatosCategoria();
-        dc.MostrarCat(modelo);
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-
-        DatosFacultades.bloquearCampos(escritorio);
+        modelo.addColumn("DESCRIPCIÓN");
+        tblCategoria.setModel(modelo);
         
+        cargarDatos();
+        gestionarControles(false); 
+    }
+    
+    private void cargarDatos() {
+        modelo.setRowCount(0);
+        listaCategorias = DatosCategoria.listar();
+        for (Categoria cat : listaCategorias) {
+            modelo.addRow(new Object[]{cat.getId(), cat.getDescripcion()});
+        }
+    }
+    
+    private void gestionarControles(boolean activo) {
+        txtCodigo.setEnabled(false);
+        txtDescripcion.setEnabled(activo);
         
-        //JTableHeader header = tblCategoria.getTableHeader();
-        //Jheader.setDefaultRenderer(new DefaultTableCellRenderer() {
-         //  @Override
-          //  public Component getTableCellRendererComponent(JTable table,
-           //         Object value,
-             //       boolean isSelected,
-             //       boolean hasFocus,
-             //       int row,
-             //       int column) {
-             //   super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-             //   setHorizontalAlignment(JLabel.CENTER);
-             //   setBackground(Color.DARK_GRAY);
-             //   setForeground(Color.WHITE);
-        //        setFont(getFont().deriveFont(Font.BOLD, 13));
-      //          return this;
-      //      }
-      //  }); 
-      //  DefaultTableModel modelo = (DefaultTableModel) tblCategoria.getModel();
-      //  DatosCategoria.HabilitarCat(escritorio, false);
-      //  DatosCategoria.MostrarCat(modelo);
-      //  tblCategoria.setCellSelectionEnabled(false);
-      //  tblCategoria.setRowSelectionAllowed(true);
-    }    
-    void Limpiar() {
+        btnGuardar.setEnabled(activo);
+        btnDeshacer.setEnabled(activo);
+        
+        btnAgregar.setEnabled(!activo);
+        btnEditar.setEnabled(!activo);
+        btnEliminar.setEnabled(!activo);
+    }
+    
+    private void limpiarCampos() {
         txtCodigo.setText("");
         txtDescripcion.setText("");
     }
-
-    void bloquear() {
-        txtCodigo.setEditable(false);
-        txtDescripcion.setEditable(false);
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        btnAgregar.setEnabled(true);
-        btnEditar.setEnabled(true);
-        btnEliminar.setEnabled(true);
-    }
-
-    void desbloquear() {
-        txtCodigo.setEditable(true);
-        txtDescripcion.setEditable(true);
-    }
-    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -93,7 +61,7 @@ public class frmCategoria extends javax.swing.JInternalFrame {
         btnGuardar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         txtDescripcion = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnExportar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -143,20 +111,14 @@ public class frmCategoria extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton1.setText("Exportar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnExportar.setText("Exportar");
+        btnExportar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnExportarActionPerformed(evt);
             }
         });
 
         jLabel1.setText("Id:");
-
-        txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtCodigoKeyTyped(evt);
-            }
-        });
 
         tblCategoria.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -207,11 +169,12 @@ public class frmCategoria extends javax.swing.JInternalFrame {
                         .addGap(27, 27, 27)
                         .addComponent(jLabel2)
                         .addGap(29, 29, 29)
-                        .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addComponent(jButton1))
+                        .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnExportar)))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(32, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19))
         );
@@ -231,7 +194,7 @@ public class frmCategoria extends javax.swing.JInternalFrame {
                     .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btnExportar))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -254,149 +217,97 @@ public class frmCategoria extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        
-        DatosCategoria.HabilitarCat(escritorio, true);
-        desbloquear();
-        btnEditar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnGuardar.setEnabled(true);
-        btnDeshacer.setEnabled(true);
-        btnAgregar.setEnabled(false);
         esNuevo = true;
-
-        // Limpiar los campos
-        txtCodigo.setText("");               // Se deja vacío ya que se generará automáticamente
-        txtCodigo.setEnabled(false);        // No editable, el ID lo asigna la base de datos
-        txtDescripcion.setText("");         // Limpiar descripción
-
+        limpiarCampos();
+        gestionarControles(true);
+        setTitle("Nueva Categoría");
         txtDescripcion.requestFocus();
-        esNuevo = true;
-        tblCategoria.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
-        btnAgregar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnGuardar.setEnabled(true);
-        btnDeshacer.setEnabled(true);
-        btnEditar.setEnabled(false);
-        // Habilitar campos
-        
-        JTextField[] cod = new JTextField[2];
-        cod[0] = txtCodigo;
-        cod[1] = txtDescripcion;
-        DatosCategoria.EditarCat(escritorio, tblCategoria, cod);
-        esNuevo = false;
+        int fila = tblCategoria.getSelectedRow();
+        if (fila >= 0) {
+            esNuevo = false;
+            Categoria catSeleccionada = listaCategorias.get(fila);
+            
+            txtCodigo.setText(String.valueOf(catSeleccionada.getId()));
+            txtDescripcion.setText(catSeleccionada.getDescripcion());
+            
+            gestionarControles(true);
+            setTitle("Editar Categoría");
+            txtDescripcion.requestFocus();
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        DatosCategoria.EliminarCat(tblCategoria);
-        DatosCategoria.HabilitarCat(escritorio, false);
-        // Deshabilitar los botones Guardar y Deshacer
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
+        int fila = tblCategoria.getSelectedRow();
+        if (fila >= 0) {
+            int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar esta categoría?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+            
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                int idCategoria = (int) tblCategoria.getValueAt(fila, 0);
+                DatosCategoria.eliminar(idCategoria);
+                cargarDatos();
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        Categoria cat = new Categoria();
-
-        cat.setDescripcionCat(txtDescripcion.getText().trim());
-
         if (txtDescripcion.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Ingrese la descripción de la categoría.");
-            txtDescripcion.requestFocus();
+            JOptionPane.showMessageDialog(this, "El campo descripción es obligatorio.", "Validación", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
+        Categoria categoria = new Categoria();
+        categoria.setDescripcion(txtDescripcion.getText().trim());
+        
         if (esNuevo) {
-            if (DatosCategoria.InsertarCat(cat, tblCategoria)) {
-                JOptionPane.showMessageDialog(null, "Datos guardados correctamente.");
-
-                // Mostrar el ID generado en el campo txtCodigo
-                txtCodigo.setText(String.valueOf(cat.getIdCat()));
-                txtCodigo.setEnabled(false); // solo lectura
-
-                DatosCategoria.LimpiarCat(escritorio);
-                DatosCategoria.HabilitarCat(escritorio, false);
-                tblCategoria.clearSelection();
-                tblCategoria.setRowSelectionAllowed(true);
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al guardar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            DatosCategoria.insertar(categoria);
         } else {
-            try {
-                int id = Integer.parseInt(txtCodigo.getText());
-                cat.setIdCat(id);
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "ID de categoría no válido.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            DatosCategoria.ActualizarCat(cat, tblCategoria);
-            JOptionPane.showMessageDialog(null, "Datos actualizados correctamente.");
-            DatosCategoria.LimpiarCat(escritorio);
-            DatosCategoria.HabilitarCat(escritorio, false);
-            
-            tblCategoria.clearSelection();
-            tblCategoria.setRowSelectionAllowed(true);
+            categoria.setId(Integer.parseInt(txtCodigo.getText()));
+            DatosCategoria.actualizar(categoria);
         }
-            btnGuardar.setEnabled(false);
-            btnDeshacer.setEnabled(false);
-            btnEditar.setEnabled(true);
-            btnEliminar.setEnabled(true);
-            btnAgregar.setEnabled(true);
+        
+        cargarDatos();
+        limpiarCampos();
+        gestionarControles(false);
+        setTitle("Categorías");
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
-        // TODO add your handling code here:
-        if (txtCodigo.getText().length() >= 4) {
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-        }
-    }//GEN-LAST:event_txtCodigoKeyTyped
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+    private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
         try {
-            obj = new Exportar(); //mandamos a llamar a la clase
-            obj.exportarExcel(tblCategoria); //llamamos el metodo desde la clase DatosEmpleados
+            Exportar obj = new Exportar();
+            obj.exportarExcel(tblCategoria);
         } catch (IOException ex) {
-
+            JOptionPane.showMessageDialog(this, "Error al exportar el archivo: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnExportarActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
-        DatosCategoria.LimpiarCat(rootPane);
-        DatosCategoria.HabilitarCat(escritorio, false);
-        tblCategoria.clearSelection();
-        // Habilitamos la seleccion de filas de la tabla
-        tblCategoria.setRowSelectionAllowed(true);
-        // Deshabilitar los botones Guardar y Deshacer
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        btnEditar.setEnabled(true);
-        btnEliminar.setEnabled(true);
-        btnAgregar.setEnabled(true);
+        limpiarCampos();
+        gestionarControles(false);
+        setTitle("Categorías");
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void txtDescripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyTyped
-        // TODO add your handling code here:
         if (txtDescripcion.getText().length() >= 100) {
             evt.consume();
             Toolkit.getDefaultToolkit().beep();
         }
     }//GEN-LAST:event_txtDescripcionKeyTyped
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnDeshacer;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnExportar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JPanel escritorio;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

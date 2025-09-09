@@ -1,19 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package proyecto_gm.Asistencias;
 
-/**
- *
- * @author jeanv
- */
 public class Asistencia {
 
     private String dni, fecha, hora;
 
     public Asistencia() {
-        // constructor vacio
+        
     }
 
     // Getters & Setters

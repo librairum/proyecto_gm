@@ -84,9 +84,8 @@ public class CajaChica {
         this.Saldo = Saldo;
     }
 
-  @Override
-   public String toString() {
-    return String.valueOf(IdTransferenciasBancarias);
-}
-    
+    @Override
+     public String toString() {
+      return String.valueOf(IdTransferenciasBancarias);
+    }
 }

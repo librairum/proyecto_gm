@@ -10,10 +10,11 @@ import proyecto_gm.Departamentos.Departamentos;
 
 public class frmContactos extends javax.swing.JInternalFrame {
     
+    private final DatosCargo datosCargo = new DatosCargo();
+    
     private boolean esNuevo;
     private boolean guardado = false;
     private frmListaContacto listaRef;
-
 
     public frmContactos() {
         initComponents();
@@ -35,19 +36,23 @@ public class frmContactos extends javax.swing.JInternalFrame {
     
     private void cargarCargos() {
         cboCargo.removeAllItems();
+        cboCargo.addItem(null); 
 
-        for (Cargo c : DatosCargo.listarCargos()) {
-            cboCargo.addItem(c);
+        try {
+            for (Cargo c : datosCargo.listarCargo()) {
+                cboCargo.addItem(c);
+            }
+        } catch (java.sql.SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error al cargar los cargos: " + ex.getMessage(), "Error de Conexión", JOptionPane.ERROR_MESSAGE);
+        }
     }
-}
-
     
     // En frmContactos, al inicializar el formulario:
     private void cargarDepartamentos() {
         List<Departamentos> lista = DatosContacto.listaDepartamentos();
         cboDepartamento.removeAllItems();
         for (Departamentos d : lista) {
-            cboDepartamento.addItem(d); // agrega el objeto completo
+            cboDepartamento.addItem(d); 
         }
     }
     
@@ -236,11 +241,11 @@ public class frmContactos extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtNota, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                                    .addComponent(cboCargo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(44, 44, 44)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(cboCargo, 0, 156, Short.MAX_VALUE)
+                                    .addComponent(txtCorreo)
+                                    .addComponent(txtEmpresa))
+                                .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel7)
                                     .addComponent(jLabel8)
@@ -370,8 +375,7 @@ public class frmContactos extends javax.swing.JInternalFrame {
 
     // Validación de formato de correo antes de guardar
     private boolean CorreoValido(String correo) {
-        if (correo.trim().isEmpty()) return true; // vacío permitido
-        // Validación básica: tiene @ y .
+        if (correo.trim().isEmpty()) return true;
         return correo.contains("@") && correo.contains(".");
     }
     
@@ -395,15 +399,13 @@ public class frmContactos extends javax.swing.JInternalFrame {
                 fecha = sdf.format(date);
             }
 
-        // 📌 Cargo seleccionado (puede estar vacío)
         Cargo cargoSeleccionado = (Cargo) cboCargo.getSelectedItem();
         String cargo = (cargoSeleccionado != null) ? cargoSeleccionado.getDescripcion() : "";
 
-        // 📌 Construir objeto contacto
         Contacto f;
         if (esNuevo) {
             f = new Contacto(
-                0, // id = 0 para indicar nuevo registro
+                0,
                 txtNombre.getText().trim(),
                 fecha,
                 txtPersonas.getText().trim(),
@@ -418,7 +420,6 @@ public class frmContactos extends javax.swing.JInternalFrame {
             );
             DatosContacto.insertarDatos(f, null);
         } else {
-            // En actualización sí usamos el id que viene del txtId
             int id = Integer.parseInt(txtId.getText().trim());
             f = new Contacto(
                 id,
@@ -448,7 +449,6 @@ public class frmContactos extends javax.swing.JInternalFrame {
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;

@@ -1,31 +1,43 @@
 package proyecto_gm.Articulo;
 
+import java.util.List;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import proyecto_gm.Utilitario;
 
 public class frmListaArticulo extends javax.swing.JInternalFrame {
     
-    private JDesktopPane panelPadre;
+    DefaultTableModel modelo;
+    List<Articulo> listaArticulos;
 
-    public frmListaArticulo(JDesktopPane panelPadre) {
-        initComponents();
-        this.panelPadre = panelPadre;
-        Cargar();
-    }
-    
     public frmListaArticulo() {
         initComponents();
-        System.out.println("ADVERTENCIA: Usando constructor sin parámetros. Puede causar NullPointerException.");
-        Cargar();
+        
+        modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
+        modelo.addColumn("Descripción");
+        modelo.addColumn("Características");
+        modelo.addColumn("Categoría");
+        modelo.addColumn("Marca");
+        modelo.addColumn("Cantidad");
+        tblarticulo.setModel(modelo);
+        
+        cargarDatos();
     }
     
-    void Cargar() {
-        String[] columnas = {"ID", "Categoría", "Marca", "Características", "Descripción", "Cantidad"};
-        DefaultTableModel modelo = new DefaultTableModel(null, columnas);
-        DatosArticulo.Mostrar(modelo);
-        tblarticulo.setModel(modelo);
+    public void cargarDatos() {
+        modelo.setRowCount(0);
+        listaArticulos = DatosArticulos.listar();
+        for (Articulo art : listaArticulos) {
+            modelo.addRow(new Object[]{
+                art.getId(),
+                art.getDescripcion(),
+                art.getCaracteristicas(),
+                art.getCategoria().getDescripcion(),
+                art.getMarca().getDescripcion(),
+                art.getCantidad()
+            });
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -124,80 +136,39 @@ public class frmListaArticulo extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        try {
-            Articulo nuevo = new Articulo(); 
-            frmArticulo frm = new frmArticulo(nuevo, Utilitario.EstadoProceso.NUEVO);
-            this.getParent().add(frm); 
-            frm.setVisible(true);
-            frm.toFront();
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error al abrir formulario: " + e.getMessage());
-        }
+        frmArticulo frm = new frmArticulo(this, null);
+        JDesktopPane desktopPane = getDesktopPane();
+        desktopPane.add(frm);
+        frm.setVisible(true);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        try {
-            int fila = tblarticulo.getSelectedRow();
-            if (fila < 0) {
-                Utilitario.MostrarMensaje("Debe seleccionar un artículo", Utilitario.TipoMensaje.alerta);
-                return;
-            }
-
-            DefaultTableModel modelo = (DefaultTableModel) tblarticulo.getModel();
-            int filaModelo = tblarticulo.convertRowIndexToModel(fila);
-
-            int idArticulo = Integer.parseInt(modelo.getValueAt(filaModelo, 0).toString());
-            Articulo registro = DatosArticulo.obtenerArticuloPorId(idArticulo);
-
-            if (registro == null) {
-                Utilitario.MostrarMensaje("No se pudo cargar los datos del artículo seleccionado.", Utilitario.TipoMensaje.error);
-                return;
-            }
-
-            frmArticulo frm = new frmArticulo(registro, Utilitario.EstadoProceso.EDITAR);
-
-            this.getParent().add(frm);  
+        int fila = tblarticulo.getSelectedRow();
+        if (fila >= 0) {
+            // Obtenemos el objeto completo de la lista
+            Articulo artSeleccionado = listaArticulos.get(fila);
+            
+            frmArticulo frm = new frmArticulo(this, artSeleccionado);
+            JDesktopPane desktopPane = getDesktopPane();
+            desktopPane.add(frm);
             frm.setVisible(true);
-            frm.toFront();
-            frm.setSelected(true);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error al editar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un artículo para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        if (tblarticulo.getSelectedRowCount() == 0) {
-            Utilitario.MostrarMensaje("Debe seleccionar un registro a eliminar", Utilitario.TipoMensaje.alerta);
-            return;
-        }
-
-        int indice = tblarticulo.getSelectedRow();
-        Object idObj = tblarticulo.getValueAt(indice, 0);
-        
-        if (idObj == null) {
-            Utilitario.MostrarMensaje("Error: ID del artículo no válido", Utilitario.TipoMensaje.error);
-            return;
-        }
-        
-        int id = Integer.parseInt(idObj.toString());
-
-        int opcion = JOptionPane.showConfirmDialog(this, 
-            "¿Está seguro de eliminar este artículo?", 
-            "Confirmación", 
-            JOptionPane.YES_NO_OPTION, 
-            JOptionPane.WARNING_MESSAGE);
-
-        if (opcion == JOptionPane.YES_OPTION) {
-            boolean estado = DatosArticulo.Eliminar(id);
-            if (estado) {
-                Cargar();
-                Utilitario.MostrarMensaje("Registro eliminado correctamente", Utilitario.TipoMensaje.informativo);
-            } else {
-                Utilitario.MostrarMensaje("Error al eliminar el registro", Utilitario.TipoMensaje.error);
+        int fila = tblarticulo.getSelectedRow();
+        if (fila >= 0) {
+            int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar este artículo?", "Confirmación", JOptionPane.YES_NO_OPTION);
+            
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                int idArticulo = (int) tblarticulo.getValueAt(fila, 0);
+                DatosArticulos.eliminar(idArticulo);
+                cargarDatos(); // Recargar la tabla
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un artículo para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
     

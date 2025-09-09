@@ -1,28 +1,26 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package proyecto_gm.Cuentas;
 
-/**
- *
- * @author jeanv
- */
 public class Cuentas {
-    private int IdCuenta;
-    private String  tipoPropietario, nombres, nroCuenta, nroCuentaInterbancaria, tipoMoneda;
+    private int idCuenta;
+    private String tipoPropietario;
+    private String nombres;
+    private String nroCuenta;
+    private String nroCuentaInterbancaria;
+    private String tipoMoneda;
     private int idBanco;
-    
+    private String nombreBanco; // Campo adicional para mostrar en la tabla
+
     public Cuentas() {
-        // Constructo vacio
+        // Constructor vacío
     }
 
+    // Getters y Setters
     public int getIdCuenta() {
-        return IdCuenta;
+        return idCuenta;
     }
 
-    public void setIdCuenta(int id) {
-        this.IdCuenta = id;
+    public void setIdCuenta(int idCuenta) {
+        this.idCuenta = idCuenta;
     }
 
     public String getTipoPropietario() {
@@ -73,9 +71,16 @@ public class Cuentas {
         this.idBanco = idBanco;
     }
     
+    public String getNombreBanco() {
+        return nombreBanco;
+    }
+
+    public void setNombreBanco(String nombreBanco) {
+        this.nombreBanco = nombreBanco;
+    }
+    
     @Override
     public String toString() {
         return nombres;
     }
-    
 }
