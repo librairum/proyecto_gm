@@ -1,4 +1,4 @@
-
+    
 package proyecto_gm.CajaChica;
 
 import java.text.ParseException;

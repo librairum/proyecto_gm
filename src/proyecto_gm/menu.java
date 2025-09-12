@@ -79,6 +79,7 @@ public class menu extends javax.swing.JFrame {
         this.subMenuReciboHonorario.setVisible(false);
         this.subMenuComprobante.setVisible(false);
         this.subMenuTransferencia.setVisible(false);
+        /*this.subMenuCajaChica.setVisible(false);*/
 
         this.subMenuCategoria.setVisible(false);
         this.subMenuArticulos.setVisible(false);
@@ -95,10 +96,10 @@ public class menu extends javax.swing.JFrame {
         this.subMenuProveedores.setVisible(false);
         this.subMenuEmpleados.setVisible(false);
 
-        this.subMenuBancos.setVisible(false);
+        /*this.subMenuBancos.setVisible(false);
         this.subMenuFlujoCaja.setVisible(false);
         this.subMenuCuentasBancarias.setVisible(false);
-        this.subMenuViaticos.setVisible(false);
+        this.subMenuViaticos.setVisible(false);*/
 
         this.subMenuPeriodos.setVisible(false);
         this.subMenuModulos.setVisible(false);
@@ -187,6 +188,10 @@ public class menu extends javax.swing.JFrame {
             case "subMenuComprobante":
                 this.subMenuComprobante.setVisible(true);
                 break;
+            case "subMenuCajaChica": 
+                this.subMenuCajaChica.setVisible(true);
+                break;
+                
             case "subMenuTransferencia": 
                 this.subMenuTransferencia.setVisible(true);
                 break;
@@ -309,6 +314,7 @@ public class menu extends javax.swing.JFrame {
         subMenuReciboHonorario = new javax.swing.JMenuItem();
         subMenuComprobante = new javax.swing.JMenuItem();
         subMenuTransferencia = new javax.swing.JMenuItem();
+        subMenuCajaChica = new javax.swing.JMenuItem();
         menuLogistica = new javax.swing.JMenu();
         subMenuCategoria = new javax.swing.JMenuItem();
         subMenuArticulos = new javax.swing.JMenuItem();
@@ -468,6 +474,14 @@ public class menu extends javax.swing.JFrame {
             }
         });
         menuFacturacion.add(subMenuTransferencia);
+
+        subMenuCajaChica.setText("Caja chica");
+        subMenuCajaChica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuCajaChicaActionPerformed(evt);
+            }
+        });
+        menuFacturacion.add(subMenuCajaChica);
 
         jMenuBar1.add(menuFacturacion);
 
@@ -873,9 +887,11 @@ public class menu extends javax.swing.JFrame {
             escritorio.add(verventana);
             verventana.show();
         }
-    private void menuCajaChicaActionPerformed (java.awt.event.ActionEvent evt){
-       
-    }
+        private void AbrirCajaChica (){
+            proyecto_gm.CajaChica.fmrListarCajaChica verventana = new fmrListarCajaChica();
+            escritorio.add(verventana);
+            verventana.show();
+        }
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         /*    
         try ( 
@@ -1020,6 +1036,10 @@ public class menu extends javax.swing.JFrame {
         AbrirMenuxperfil();
     }//GEN-LAST:event_subMenuPermisosxPerfilActionPerformed
 
+    private void subMenuCajaChicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuCajaChicaActionPerformed
+        AbrirCajaChica();
+    }//GEN-LAST:event_subMenuCajaChicaActionPerformed
+
    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1070,6 +1090,7 @@ public class menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem subMenuAreas;
     private javax.swing.JMenuItem subMenuArticulos;
     private javax.swing.JMenuItem subMenuBancos;
+    private javax.swing.JMenuItem subMenuCajaChica;
     private javax.swing.JMenuItem subMenuCargos;
     private javax.swing.JMenuItem subMenuCarreras;
     private javax.swing.JMenuItem subMenuCategoria;
