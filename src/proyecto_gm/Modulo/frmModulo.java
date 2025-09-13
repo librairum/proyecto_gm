@@ -1,28 +1,60 @@
 package proyecto_gm.Modulo;
 
-import java.awt.Toolkit;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class frmModulo extends javax.swing.JInternalFrame {
 
-    boolean esNuevo = false;
+    private boolean esNuevo = false;
+    private DefaultTableModel modeloTabla;
 
     public frmModulo() {
         initComponents();
-
-        DefaultTableModel modelo = (DefaultTableModel) tblModulo.getModel();
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        DatosModulo.Habilitar(escritorio, false);
-
-        DatosModulo.Mostrar(modelo);
-        // Quitar la edicion de las celdas
-        tblModulo.setCellSelectionEnabled(false);
-        // Poder seleccionar fila(s) de la tabla
-        tblModulo.setRowSelectionAllowed(true);
+        
+        // Configurar el modelo de la tabla una sola vez
+        modeloTabla = new DefaultTableModel() {
+            // Hacemos que las celdas de la tabla no sean editables
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tblModulo.setModel(modeloTabla);
+        
+        cargarTabla();
+        gestionarControles(false); // Estado inicial
     }
+    
+    // Método para cargar y recargar los datos en la tabla
+    private void cargarTabla() {
+        DatosModulo.listar(modeloTabla);
+    }
+
+    // Centraliza la gestión de la habilitación de controles
+    private void gestionarControles(boolean editando) {
+        // Campos de texto
+        txtDescripcion.setEnabled(editando);
+        txtId.setEnabled(false); // El ID nunca es editable
+
+        // Botones de acción principal
+        btnAgregar.setEnabled(!editando);
+        btnEditar.setEnabled(!editando);
+        btnEliminar.setEnabled(!editando);
+
+        // Botones de formulario
+        btnGuardar.setEnabled(editando);
+        btnDeshacer.setEnabled(editando);
+
+        // Tabla
+        tblModulo.setEnabled(!editando);
+    }
+    
+    // Limpia los campos del formulario
+    private void limpiarCampos() {
+        txtId.setText("");
+        txtDescripcion.setText("");
+    }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -90,19 +122,7 @@ public class frmModulo extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Id:");
 
-        txtId.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtIdKeyTyped(evt);
-            }
-        });
-
         jLabel2.setText("Descripción:");
-
-        txtDescripcion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDescripcionActionPerformed(evt);
-            }
-        });
 
         tblModulo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -197,78 +217,92 @@ public class frmModulo extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
-        // TODO add your handling code here:
-        DatosModulo.Limpiar(escritorio);
-        DatosModulo.Habilitar(escritorio, false);
+        limpiarCampos();
+        gestionarControles(false);
         tblModulo.clearSelection();
-        // Habilitamos la seleccion de filas de la tabla
-        tblModulo.setRowSelectionAllowed(true);
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        Modulo are = new Modulo();
-
-        // Validación común
-        if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Completar bien los campos");
+        // Validar campos
+        if (txtDescripcion.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El campo descripción no puede estar vacío.", "Validación", JOptionPane.WARNING_MESSAGE);
+            txtDescripcion.requestFocus();
             return;
         }
 
-        // Convertir el código 'MO0005' a entero 5
-        String codigo = txtId.getText(); // Ej: MO0005
-        int idNumerico = Integer.parseInt(codigo.replaceAll("\\D+", "")); // Extrae solo números
-        are.setId(idNumerico); // CAMBIADO: ahora setId recibe un int
-        are.setDescripcion(txtDescripcion.getText());
+        // Crear objeto Modulo con datos del formulario
+        Modulo modulo = new Modulo();
+        modulo.setDescripcion(txtDescripcion.getText().trim());
 
+        boolean resultado;
         if (esNuevo) {
-            DatosModulo.Insertar(are, tblModulo);
-            JOptionPane.showMessageDialog(null, "Datos guardados correctamente");
+            // Insertar nuevo módulo
+            resultado = DatosModulo.insertar(modulo);
+            if (resultado) {
+                JOptionPane.showMessageDialog(this, "Módulo registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            }
         } else {
-            DatosModulo.Actualizar(are, tblModulo);
-            JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
+            // Actualizar módulo existente
+            modulo.setId(Integer.parseInt(txtId.getText()));
+            resultado = DatosModulo.actualizar(modulo);
+            if (resultado) {
+                JOptionPane.showMessageDialog(this, "Módulo actualizado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
-
-        DatosModulo.Limpiar(escritorio);
-        DatosModulo.Habilitar(escritorio, false);
-        tblModulo.clearSelection();
-        tblModulo.setRowSelectionAllowed(true);
+        
+        if (resultado) {
+            cargarTabla();
+            limpiarCampos();
+            gestionarControles(false);
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
-        DatosModulo.Eliminar(tblModulo);
-        DatosModulo.Habilitar(escritorio, false);
+        int filaSeleccionada = tblModulo.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una fila para eliminar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar el módulo seleccionado?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            int id = (int) modeloTabla.getValueAt(filaSeleccionada, 0);
+            if (DatosModulo.eliminar(id)) {
+                JOptionPane.showMessageDialog(this, "Módulo eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                cargarTabla();
+                limpiarCampos();
+                gestionarControles(false);
+            }
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        JTextField[] cod = new JTextField[2];
-        cod[0] = txtId;
-        cod[1] = txtDescripcion;
-        DatosModulo.Editar(escritorio, tblModulo, cod);
+        int filaSeleccionada = tblModulo.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una fila para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Obtener datos de la tabla
+        int id = (int) modeloTabla.getValueAt(filaSeleccionada, 0);
+        String descripcion = (String) modeloTabla.getValueAt(filaSeleccionada, 1);
+
+        // Cargar datos en el formulario
+        txtId.setText(String.valueOf(id));
+        txtDescripcion.setText(descripcion);
+
         esNuevo = false;
+        gestionarControles(true);
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        DatosModulo.Habilitar(escritorio, true);
-        String codigo = DatosModulo.GenerarCodigo();
-        txtId.setText(codigo);
-        txtId.setEnabled(false);
-        txtDescripcion.requestFocus();
         esNuevo = true;
-        tblModulo.setRowSelectionAllowed(false);
+        gestionarControles(true);
+        limpiarCampos();
+        txtId.setText("(Automático)");
+        txtDescripcion.requestFocus();
     }//GEN-LAST:event_btnAgregarActionPerformed
-
-    private void txtIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyTyped
-        // TODO add your handling code here:
-        if (txtId.getText().length() >= 4) {
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-        }
-    }//GEN-LAST:event_txtIdKeyTyped
-
-    private void txtDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDescripcionActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
