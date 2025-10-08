@@ -104,7 +104,11 @@ public class menu extends javax.swing.JFrame {
         this.subMenuModulos.setVisible(false);
         this.subMenuDepartamentos.setVisible(false);
         this.subMenuCredencial.setVisible(false);
-
+        this.menuSeguridad.setVisible(false);
+        this.subMenuUsuario.setVisible(false);
+        this.subMenuPermisosxPerfil.setVisible(false);
+         
+                
         
     }
     void TraerMenu(String codperfil){
@@ -158,7 +162,7 @@ public class menu extends javax.swing.JFrame {
             case "menuConfiguracion":
                 this.menuConfiguracion.setVisible(true);
                 break;                                                                                    
-            case "menuSeguridad": 
+            case "menuSeguridad":                 
                 this.menuSeguridad.setVisible(true);
                 break;
             case "subMenuCargos":
@@ -273,6 +277,12 @@ public class menu extends javax.swing.JFrame {
                 break;
             case "subMenuRelojActividad":
                 this.subMenuRelojActividad.setVisible(true);
+                break;
+            case "subMenuUsuario":
+                this.subMenuUsuario.setVisible(true);
+                break;
+            case "subMenuPermisosxPerfil":
+                this.subMenuPermisosxPerfil.setVisible(true);
                 break;
             default:
                 throw new AssertionError();
