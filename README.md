@@ -1,39 +1,52 @@
-# Gm1.0
+🧩 Actualizaciones y Estandarización — Versión GM 1.5
+✅ Módulos Actualizados y Estandarizados
 
-1. Administración<br>
-  Cargos - Percy              (correciones y funcionalidad correcta)<br>
-  áreas - Percy               (correciones y funcionalidad correcta)<br>
-  Tipos de empleados - Percy  (correciones y funcionalidad correcta)<br>
-  Asistencia - Percy          (correciones y funcionalidad correcta)<br>
-  Tipos de documentos - Percy (correciones y funcionalidad correcta)<br>
+Se realizaron cambios y estandarización en los siguientes módulos del sistema:
 
-2. Facturación<br>
-  Recibo por honorarios - (avanzando) Percy<br>
-  Transferencias (faltante)<br>
+Área
 
-3. logística<br>
-  Categorías (faltante)<br>
-  Artículos (faltante)<br>
+Artículo
 
-4. Proyecto<br>
-  Comunicaciones (faltante)<br>
-  Contactos (faltante)<br>
+Cabecera Comprobante
 
-5. Recursos humanos<br>
-  Carreras (faltante)<br>
-  Instituciones (faltante)<br>
-  Facultades (faltante)<br>
-  Proveedores (faltante)<br>
-  Empleados - Percy (correciones y funcionalidad correcta)<br>
+Caja Chica
 
-6. Tesorería<br>
-  Flujo de caja (faltante)<br>
-  Cuentas bancarias (avanzando) emerson<br>
-  Viáticos - emerson (correciones y funcionalidad correcta)<br>
+Cargo
 
-7. Configuración<br>
-  Periodos - emerson      (correciones y funcionalidad correcta)<br>
-  Módulos - emerson       (correciones y funcionalidad correcta)<br>
-  Departamentos - emerson (correciones y funcionalidad correcta)<br>
-  Credencial - emerson    (correciones y funcionalidad correcta)<br>
+Carreras
 
+Categoría
+
+Departamentos
+
+Facultades
+
+Instituciones
+
+Módulo
+
+Periodo
+
+⚙️ Módulos Pendientes o Sin Cambios
+
+Los siguientes módulos aún no presentan cambios o se encuentran en proceso de estandarización:
+
+Asistencias
+
+Comunicación
+
+Cuentas (pendiente de finalizar)
+
+Empleados
+
+Viáticos
+
+Proveedores (pendiente de finalizar)
+
+Recibos por Honorarios (falta estandarización)
+
+Tipo
+
+Tipo Documento
+
+Credenciales
