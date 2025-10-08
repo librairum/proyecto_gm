@@ -281,7 +281,7 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         }
 
         // Llenar combo de periodos
-        for (Periodos per : datosPeriodo.listar()) {
+        for (Periodos per : DatosPeriodo.obtenerLista()) {
             cboPeriodo.addItem(per);
         }
     }
