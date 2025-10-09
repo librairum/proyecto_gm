@@ -136,7 +136,7 @@ public class inicio extends javax.swing.JFrame {
         contraseña.setFont(new java.awt.Font("Serif", 1, 12)); // NOI18N
         contraseña.setText("contraseña:");
         getContentPane().add(contraseña);
-        contraseña.setBounds(20, 50, 61, 17);
+        contraseña.setBounds(20, 50, 60, 17);
 
         btningresar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btningresar.setText("INGRESAR");

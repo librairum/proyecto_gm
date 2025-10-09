@@ -4,8 +4,11 @@
  */
 package proyecto_gm.credencial;
 
-import javax.swing.JOptionPane;
+
 import javax.swing.table.DefaultTableModel;
+import java.awt.Toolkit;
+import java.util.List;
+import proyecto_gm.Utilitario;
 
 /**
  *
@@ -14,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
 public class frmCredencial extends javax.swing.JInternalFrame {
 
     private boolean esNuevo = false;
-    private String idSeleccionado = "";
+    private List<Credencial> listaCredenciales;
     
 
     /**
@@ -22,17 +25,14 @@ public class frmCredencial extends javax.swing.JInternalFrame {
      */
     public frmCredencial() {
         initComponents();
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        btnEditar.setEnabled(true);
-        btnEliminar.setEnabled(true);
-        btnAgregar.setEnabled(true);
+        
+        // Configuración inicial de la tabla
         DefaultTableModel modelo = (DefaultTableModel) tblContacto.getModel();
-        DatosCredencial.Listar(modelo);
-        Habilitar(false);
-        Limpiar();
-        tblContacto.setCellSelectionEnabled(false);
-        tblContacto.setRowSelectionAllowed(true);
+        modelo.setRowCount(0);
+        tblContacto.setModel(modelo);
+        
+        cargarDatos();
+        gestionarControles(false);
     }
     
     @SuppressWarnings("unchecked")
@@ -65,6 +65,17 @@ public class frmCredencial extends javax.swing.JInternalFrame {
         jLabel3.setText("Alias");
 
         jLabel4.setText("Descripcion");
+
+        txtDescripcion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDescripcionActionPerformed(evt);
+            }
+        });
+        txtDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDescripcionKeyTyped(evt);
+            }
+        });
 
         btnDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
         btnDeshacer.addActionListener(new java.awt.event.ActionListener() {
@@ -189,123 +200,118 @@ public class frmCredencial extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-private void Limpiar(){
-    txtCorreo.setText("");
-    txtClave.setText("");
-    txtAlias.setText("");
-    txtDescripcion.setText("");
-    
-}
+private void cargarDatos() {
+        DefaultTableModel modelo = (DefaultTableModel) tblContacto.getModel();
+        modelo.setRowCount(0);
+        listaCredenciales = DatosCredencial.listar();
+        for (Credencial c : listaCredenciales) {
+            modelo.addRow(new Object[]{
+                c.getIdCredencial(),
+                c.getCorreo(),
+                c.getClave(),
+                c.getAlias(),
+                c.getDescripcion()
+            });
+        }
+    }
 
-private void Habilitar(boolean estado){
-    txtCorreo.setEnabled(estado);
-    txtClave.setEnabled(estado);
-    txtAlias.setEnabled(estado);
-    txtDescripcion.setEnabled(estado);
-}
-    private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
-       txtCorreo.setText("");
+  private void gestionarControles(boolean activo) {
+        txtCorreo.setEnabled(activo);
+        txtClave.setEnabled(activo);
+        txtAlias.setEnabled(activo);
+        txtDescripcion.setEnabled(activo);
+
+        btnGuardar.setEnabled(activo);
+        btnDeshacer.setEnabled(activo);
+
+        btnAgregar.setEnabled(!activo);
+        btnEditar.setEnabled(!activo);
+        btnEliminar.setEnabled(!activo);
+    }
+  
+  private void limpiarCampos() {
+        txtCorreo.setText("");
         txtClave.setText("");
         txtAlias.setText("");
         txtDescripcion.setText("");
-
-        //DatosCredencial.Bloquear(escritorio);
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        btnEditar.setEnabled(true);
-        btnEliminar.setEnabled(true);
-        btnAgregar.setEnabled(true);
+    }
+  
+  
+    private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
+       limpiarCampos();
+        gestionarControles(false);
         esNuevo = false;
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        try {
-            Credencial c = new Credencial();
-            
-            c.setCorreo(txtCorreo.getText());
-            c.setClave(txtClave.getText());
-            c.setAlias(txtAlias.getText());
-            c.setDescripcion(txtDescripcion.getText());
-            if (esNuevo) {
-                DatosCredencial.Insertar(c, tblContacto);
-            } else {
-                c.setIdCredencial(String.valueOf(idSeleccionado)); // importante para actualizar correctamente
-                DatosCredencial.actualizar(c, tblContacto);
-            }
-
-            Limpiar();
-            Habilitar(false);
-            btnGuardar.setEnabled(false);
-            btnDeshacer.setEnabled(false);
-            btnEditar.setEnabled(true);
-            btnEliminar.setEnabled(true);
-            btnAgregar.setEnabled(true);
-            esNuevo = false;
-        } catch (Exception ex) {
-
+         if (txtCorreo.getText().trim().isEmpty() || txtClave.getText().trim().isEmpty()) {
+        Utilitario.MostrarMensaje("Correo y Clave son obligatorios.", Utilitario.TipoMensaje.alerta);
+        return;
         }
+
+
+        Credencial c = new Credencial();
+        c.setCorreo(txtCorreo.getText().trim());
+        c.setClave(txtClave.getText().trim());
+        c.setAlias(txtAlias.getText().trim());
+        c.setDescripcion(txtDescripcion.getText().trim());
+
+        if (esNuevo) {
+            DatosCredencial.insertar(c);
+        } else {
+            int fila = tblContacto.getSelectedRow();
+            if (fila >= 0) {
+                c.setIdCredencial(listaCredenciales.get(fila).getIdCredencial());
+                DatosCredencial.actualizar(c);
+            }
+        }
+
+        cargarDatos();
+        limpiarCampos();
+        gestionarControles(false);
+        esNuevo = false;
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // Llamada al método para eliminar la fila seleccionada
-        DatosCredencial.eliminarDatos(tblContacto);
-
-        // Opcional: Desactivar campos de entrada después de eliminar la fila
-        txtCorreo.setEnabled(false);
-        txtClave.setEnabled(false);
-        txtAlias.setEnabled(false);
-        txtDescripcion.setEnabled(false);
-
-        // Desactivar botones después de la eliminación
-        btnGuardar.setEnabled(false);
-        btnDeshacer.setEnabled(false);
-        btnEditar.setEnabled(true);  // Puedes mantener habilitado el botón Editar si deseas
-
-        // Activar el botón de Agregar nuevamente, si es necesario
-        btnAgregar.setEnabled(true);
+        int fila = tblContacto.getSelectedRow();
+        if (fila >= 0) {
+        Credencial c = listaCredenciales.get(fila);
+        boolean confirmar = Utilitario.MostrarMensajePregunta("¿Está seguro de eliminar esta credencial?", Utilitario.TipoMensaje.pregunta);
+        if (confirmar) {
+        DatosCredencial.eliminar(c.getIdCredencial());
+        cargarDatos();
+    }
+}       else {
+        Utilitario.MostrarMensaje("Debe seleccionar una fila para eliminar.", Utilitario.TipoMensaje.alerta);
+}
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         int fila = tblContacto.getSelectedRow();
         if (fila >= 0) {
-            // Obtener y guardar el ID
-            idSeleccionado = tblContacto.getValueAt(fila, 0).toString();  
+        esNuevo = false;
+        Credencial c = listaCredenciales.get(fila);
 
-            // Llenar los campos de texto
-            txtCorreo.setText(tblContacto.getValueAt(fila, 1).toString());
-            txtClave.setText(tblContacto.getValueAt(fila, 2).toString());
-            txtAlias.setText(tblContacto.getValueAt(fila, 3).toString());
-            txtDescripcion.setText(tblContacto.getValueAt(fila, 4).toString());        
+        txtCorreo.setText(c.getCorreo());
+        txtClave.setText(c.getClave());
+        txtAlias.setText(c.getAlias());
+        txtDescripcion.setText(c.getDescripcion());
 
-            // Desactivar botones innecesarios
-            btnAgregar.setEnabled(false);
-            btnEditar.setEnabled(false);
+        gestionarControles(true);
+        txtCorreo.requestFocus();
+        }       
+        else {
+        Utilitario.MostrarMensaje("Debe seleccionar una fila para editar.", Utilitario.TipoMensaje.alerta);
+}
 
-            // Activar botones útiles
-            btnGuardar.setEnabled(true);
-            btnDeshacer.setEnabled(true);
-
-            // Hacer los campos editables
-            Habilitar(true);
-            txtCorreo.requestFocus();
-
-            esNuevo = false;
-        } else {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.");
-        }
     
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-       esNuevo = true;
-       Limpiar();
-        Habilitar(true);
+        esNuevo = true;
+        limpiarCampos();
+        gestionarControles(true);
         txtCorreo.requestFocus();
-          btnGuardar.setEnabled(true);
-        btnDeshacer.setEnabled(true);
-        btnEditar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnAgregar.setEnabled(false);
         /*
         DatosContacto.habilitarCampos(escritorio);
         //String codigo = DatosContacto.GenerarCodigo("contactos", "CO", 4);
@@ -331,6 +337,17 @@ private void Habilitar(boolean estado){
 */
        
     }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void txtDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionActionPerformed
+    
+    }//GEN-LAST:event_txtDescripcionActionPerformed
+
+    private void txtDescripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyTyped
+     if (txtDescripcion.getText().length() >= 100) {
+        evt.consume();
+        Toolkit.getDefaultToolkit().beep();
+    }
+    }//GEN-LAST:event_txtDescripcionKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

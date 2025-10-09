@@ -33,7 +33,7 @@ public class frmCargo extends javax.swing.JInternalFrame {
                 modelo.addRow(fila);
             }
         } catch (SQLException ex) {
-            Utilitario.mostrarMensaje("Error al cargar los datos: " + ex.getMessage(), Utilitario.TipoMensaje.error);
+            Utilitario.MostrarMensaje("Error al cargar los datos: " + ex.getMessage(), Utilitario.TipoMensaje.error);
         }
     }
 
@@ -62,7 +62,7 @@ public class frmCargo extends javax.swing.JInternalFrame {
     // Valida que los campos obligatorios no estén vacíos
     private boolean validarCampos() {
         if (txtDescripcion.getText().trim().isEmpty()) {
-            Utilitario.mostrarMensaje("El campo descripción es obligatorio.", Utilitario.TipoMensaje.alerta);
+            Utilitario.MostrarMensaje("El campo descripción es obligatorio.", Utilitario.TipoMensaje.alerta);
             txtDescripcion.requestFocus();
             return false;
         }
@@ -109,6 +109,12 @@ public class frmCargo extends javax.swing.JInternalFrame {
         jLabel1.setText("Id:");
 
         jLabel2.setText("Descripción:");
+
+        txtDescripcion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDescripcionActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -270,31 +276,38 @@ public class frmCargo extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        int filaSeleccionada = tblCargo.getSelectedRow();
-        if (filaSeleccionada == -1) {
-            Utilitario.mostrarMensaje("Seleccione un registro para eliminar.", Utilitario.TipoMensaje.alerta);
-            return;
-        }
-
-        if (Utilitario.mostrarMensajePregunta("¿Está seguro de que desea eliminar este cargo?")) {
+        int fila = tblCargo.getSelectedRow();
+    if (fila >= 0) {
+        int confirmacion = javax.swing.JOptionPane.showConfirmDialog(this,"¿Está seguro de eliminar este cargo?","Confirmar Eliminación",javax.swing.JOptionPane.YES_NO_OPTION
+        );
+        if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
             try {
-                int idCargo = Integer.parseInt(tblCargo.getValueAt(filaSeleccionada, 0).toString());
-                if (datosCargo.eliminar(idCargo)) {
-                    Utilitario.mostrarMensaje("Cargo eliminado correctamente.", Utilitario.TipoMensaje.informativo);
-                    cargarTabla();
+                int idCargo = Integer.parseInt(tblCargo.getValueAt(fila, 0).toString());
+                boolean eliminado = datosCargo.eliminar(idCargo);
+                if (eliminado) {
+                    javax.swing.JOptionPane.showMessageDialog(this,"Cargo eliminado correctamente.","Información",javax.swing.JOptionPane.INFORMATION_MESSAGE
+                    );
+                    cargarTabla(); 
                 }
             } catch (NumberFormatException e) {
-                 Utilitario.mostrarMensaje("El ID del cargo no es válido.", Utilitario.TipoMensaje.error);
+                javax.swing.JOptionPane.showMessageDialog(this,"El ID del cargo no es válido.","Error",javax.swing.JOptionPane.ERROR_MESSAGE
+                );
             } catch (SQLException ex) {
-                 Utilitario.mostrarMensaje("Error al eliminar el cargo: " + ex.getMessage(), Utilitario.TipoMensaje.error);
+                javax.swing.JOptionPane.showMessageDialog(this,"Error al eliminar el cargo: " + ex.getMessage(),"Error",javax.swing.JOptionPane.ERROR_MESSAGE
+                );
             }
         }
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,"Debe seleccionar una fila para eliminar.","Advertencia",javax.swing.JOptionPane.WARNING_MESSAGE
+        );
+    }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         int filaSeleccionada = tblCargo.getSelectedRow();
         if (filaSeleccionada == -1) {
-            Utilitario.mostrarMensaje("Seleccione un registro para editar.", Utilitario.TipoMensaje.alerta);
+            Utilitario.MostrarMensaje("Seleccione un registro para editar.", Utilitario.TipoMensaje.alerta);
             return;
         }
 
@@ -316,7 +329,7 @@ public class frmCargo extends javax.swing.JInternalFrame {
         // Genera codigo automaticos IdCargo es auto_increment
         txtCodigo.setText("");
         txtCodigo.setEnabled(false);
-
+        habilitarControles(true);
         txtDescripcion.requestFocus();
         habilitarBotonesMantenimiento(false);
         esNuevo = true;
@@ -349,16 +362,20 @@ public class frmCargo extends javax.swing.JInternalFrame {
             }
 
             if (resultado) {
-                Utilitario.mostrarMensaje(mensaje, Utilitario.TipoMensaje.informativo);
+                Utilitario.MostrarMensaje(mensaje, Utilitario.TipoMensaje.informativo);
                 finalizarOperacion();
             }
 
         } catch (NumberFormatException e) {
-            Utilitario.mostrarMensaje("Error: el código del cargo no es un número válido.", Utilitario.TipoMensaje.error);
+            Utilitario.MostrarMensaje("Error: el código del cargo no es un número válido.", Utilitario.TipoMensaje.error);
         } catch (SQLException ex) {
-            Utilitario.mostrarMensaje("Error al guardar los datos: " + ex.getMessage(), Utilitario.TipoMensaje.error);
+            Utilitario.MostrarMensaje("Error al guardar los datos: " + ex.getMessage(), Utilitario.TipoMensaje.error);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void txtDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDescripcionActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
