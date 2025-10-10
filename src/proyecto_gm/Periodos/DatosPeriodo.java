@@ -14,7 +14,7 @@ public class DatosPeriodo {
 
     public static void listar(DefaultTableModel modelo) {
         modelo.setRowCount(0); // Limpiar la tabla antes de cargar
-        String sql = "{CALL sp_listar_periodos()}";
+        String sql = "{CALL listar_periodos()}";
 
         try (Connection conn = ConexionBD.getConnection();
              CallableStatement cstmt = conn.prepareCall(sql);
@@ -38,7 +38,7 @@ public class DatosPeriodo {
     }
 
     public static boolean insertar(Periodos periodo) {
-        String sql = "{CALL sp_insertar_periodo(?)}";
+        String sql = "{CALL insertar_periodo(?)}";
 
         try (Connection conn = ConexionBD.getConnection();
              CallableStatement cstmt = conn.prepareCall(sql)) {
@@ -54,7 +54,7 @@ public class DatosPeriodo {
     }
 
     public static boolean actualizar(Periodos periodo) {
-        String sql = "{CALL sp_actualizar_periodo(?, ?)}";
+        String sql = "{CALL actualizar_periodo(?, ?)}";
 
         try (Connection conn = ConexionBD.getConnection();
              CallableStatement cstmt = conn.prepareCall(sql)) {
@@ -72,7 +72,7 @@ public class DatosPeriodo {
     }
 
     public static boolean eliminar(int id) {
-        String sql = "{CALL sp_eliminar_periodo(?)}";
+        String sql = "{CALL eliminar_periodo(?)}";
 
         try (Connection conn = ConexionBD.getConnection();
              CallableStatement cstmt = conn.prepareCall(sql)) {
@@ -89,7 +89,7 @@ public class DatosPeriodo {
 
     public static List<Periodos> obtenerLista() {
         List<Periodos> listaPeriodos = new ArrayList<>();
-        String sql = "{CALL sp_listar_periodos()}";
+        String sql = "{CALL listar_periodos()}";
         
         try (Connection conn = ConexionBD.getConnection();
              CallableStatement cstmt = conn.prepareCall(sql);

@@ -141,7 +141,7 @@ public class DatosTipoDocumento {
         int fila = tabla.getSelectedRow();
         if (fila >= 0) {
             String codigoTipo = tabla.getModel().getValueAt(fila, 0).toString();
-            int confirm = JOptionPane.showConfirmDialog(null, "¿Eliminar tipo de empleado?", "Confirmar", JOptionPane.YES_NO_OPTION);
+            int confirm = JOptionPane.showConfirmDialog(null, "¿Eliminar tipo de documento?", "Confirmar", JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
                 try ( CallableStatement stmt = conn.prepareCall("{ CALL eliminar_tipodocumento(?) }")) {
                     stmt.setString(1, codigoTipo);

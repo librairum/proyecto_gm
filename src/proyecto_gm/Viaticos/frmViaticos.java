@@ -16,6 +16,7 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         initComponents();
         this.viatico = v;
         this.frmLista = frmLista;
+        txtId.setEditable(false);
 
         llenarCombos();
 
@@ -27,7 +28,30 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         }
     }
 
-
+    private boolean validarCampos() {
+    
+    java.awt.Component[] componentes = getContentPane().getComponents();
+    for (java.awt.Component c : componentes) {
+        if (c instanceof javax.swing.JTextField) {
+            JTextField txt = (JTextField) c;
+            if (txt == txtId) {
+                continue;}
+            if (txt.getText().trim().isEmpty()) {
+                String nombreCampo = txt.getName() != null ? txt.getName() : "campo";
+                JOptionPane.showMessageDialog(this, "El campo " + nombreCampo + " no puede estar vacío.", "Validación", JOptionPane.WARNING_MESSAGE);
+                txt.requestFocus();
+                return false;
+            }}}
+    if (cboEmpleado.getSelectedIndex() == -1) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar un empleado.", "Validación", JOptionPane.WARNING_MESSAGE);
+        cboEmpleado.requestFocus();
+        return false;}
+    if (cboPeriodo.getSelectedIndex() == -1) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar un periodo.", "Validación", JOptionPane.WARNING_MESSAGE);
+        cboPeriodo.requestFocus();
+        return false;}
+    return true; 
+}
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -54,6 +78,12 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         txtMenu.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtMenuKeyTyped(evt);
+            }
+        });
+
+        txtId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIdActionPerformed(evt);
             }
         });
 
@@ -221,28 +251,33 @@ public class frmViaticos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtPasajeKeyTyped
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        if (viatico == null) viatico = new Viaticos();
+       if (!validarCampos()) return;
 
-        viatico.setDescripcion(txtDescripcion.getText());
-        viatico.setPasaje(Float.parseFloat(txtPasaje.getText()));
-        viatico.setMenu(Float.parseFloat(txtMenu.getText()));
-        viatico.setIdEmpleado(((Empleados) cboEmpleado.getSelectedItem()).getId());
-        viatico.setIdPeriodo(((Periodos) cboPeriodo.getSelectedItem()).getId());
+    if (viatico == null) viatico = new Viaticos();
 
-        if (txtId.getText().isEmpty()) {
-            if (DatosViaticos.insertar(viatico)) {
-                JOptionPane.showMessageDialog(this, "Registrado correctamente");
-            }
-        } else {
-            viatico.setId(Integer.parseInt(txtId.getText()));
-            if (DatosViaticos.actualizar(viatico)) {
-                JOptionPane.showMessageDialog(this, "Actualizado correctamente");
-            }
-        }
+    viatico.setDescripcion(txtDescripcion.getText());
+    viatico.setPasaje(Float.parseFloat(txtPasaje.getText()));
+    viatico.setMenu(Float.parseFloat(txtMenu.getText()));
+    viatico.setIdEmpleado(((Empleados) cboEmpleado.getSelectedItem()).getId());
+    viatico.setIdPeriodo(((Periodos) cboPeriodo.getSelectedItem()).getId());
 
-        frmLista.cargarDatos(); // refrescar tabla principal
+    boolean exito;
+    if (txtId.getText().isEmpty()) {
+        exito = DatosViaticos.insertar(viatico);
+        if (exito) JOptionPane.showMessageDialog(this, "Registrado correctamente");
+    } else {
+        viatico.setId(Integer.parseInt(txtId.getText()));
+        exito = DatosViaticos.actualizar(viatico);
+        if (exito) JOptionPane.showMessageDialog(this, "Actualizado correctamente");
+    }
+
+    if (exito) {
+        frmLista.cargarDatos();
         limpiarCampos();
         dispose();
+    } else {
+        JOptionPane.showMessageDialog(this, "Error al guardar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
@@ -251,13 +286,16 @@ public class frmViaticos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        txtId.setText("");
         txtDescripcion.setText("");
         txtPasaje.setText("");
         txtMenu.setText("");
         cboEmpleado.setSelectedIndex(-1);
         cboPeriodo.setSelectedIndex(-1);
     }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIdActionPerformed
     
     private void limpiarCampos() {
         txtId.setText("");

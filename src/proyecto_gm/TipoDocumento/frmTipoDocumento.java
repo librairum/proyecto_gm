@@ -4,7 +4,8 @@ import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
+
+import proyecto_gm.Utilitario;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.Modulo.Modulo;
@@ -238,13 +239,14 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         if (txtId.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Completar bien los campos");
+            Utilitario.MostrarMensaje("Completar bien los campos", Utilitario.TipoMensaje.error);
             return;
         }
 
         Modulo modSeleccionado = (Modulo) cboModulo.getSelectedItem();
         if (modSeleccionado == null) {
-            JOptionPane.showMessageDialog(null, "Seleccione un módulo válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            Utilitario.MostrarMensaje("Seleccione un módulo válido.", Utilitario.TipoMensaje.error);
+
             return;
         }
 
@@ -254,7 +256,7 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
         try {
             idTipoDocumento = Integer.parseInt(txtId.getText());
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "El ID debe ser un número entero.", "Error", JOptionPane.ERROR_MESSAGE);
+            Utilitario.MostrarMensaje("El ID debe ser un número entero.", Utilitario.TipoMensaje.error);
             txtId.requestFocus();
             return;
         }
@@ -264,9 +266,9 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
 
         if (esNuevo) {
             if (DatosTipoDocumento.Insertar(tip, tblTipoDocumento)) {
-                JOptionPane.showMessageDialog(null, "Registro exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                Utilitario.MostrarMensaje("Registro exitoso", Utilitario.TipoMensaje.informativo);
             } else {
-                JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
+               Utilitario.MostrarMensaje("Error al guardar los datos", Utilitario.TipoMensaje.error);
                 return;
             }
         } else {
