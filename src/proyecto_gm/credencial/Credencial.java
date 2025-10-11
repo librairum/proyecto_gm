@@ -1,9 +1,6 @@
 package proyecto_gm.credencial;
 
-/**
- *
- * @author pc_sistemas2022
- */
+
 public class Credencial {
      
     private String idCredencial;
@@ -53,7 +50,7 @@ public class Credencial {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
+    }   
 
     public String getAlias() {
         return alias;

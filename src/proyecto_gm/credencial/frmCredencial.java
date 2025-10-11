@@ -1,37 +1,29 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
-package proyecto_gm.credencial;
 
+package proyecto_gm.credencial;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.Toolkit;
 import java.util.List;
 import proyecto_gm.Utilitario;
-
-/**
- *
- * @author pc_sistemas2022
- */
-public class frmCredencial extends javax.swing.JInternalFrame {
-
-    private boolean esNuevo = false;
-    private List<Credencial> listaCredenciales;
     
 
-    /**
-     * Creates new form frmCredencial
-     */
+public class frmCredencial extends javax.swing.JInternalFrame {
+
+    // --- VARIABLES DE INSTANCIA ---
+    private boolean esNuevo = false;
+    private List<Credencial> listaCredenciales;
+
+    private DefaultTableModel modeloTabla; 
+
+   
     public frmCredencial() {
         initComponents();
         
-        // Configuración inicial de la tabla
-        DefaultTableModel modelo = (DefaultTableModel) tblContacto.getModel();
-        modelo.setRowCount(0);
-        tblContacto.setModel(modelo);
+        // Inicializar el modelo de la tabla una sola vez
+        modeloTabla = (DefaultTableModel) tblCredenciales.getModel();
         
-        cargarDatos();
+        // Cargar datos y configurar estado inicial de la UI
+        cargarDatosEnTabla();
         gestionarControles(false);
     }
     
@@ -53,7 +45,7 @@ public class frmCredencial extends javax.swing.JInternalFrame {
         btnEditar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblContacto = new javax.swing.JTable();
+        tblCredenciales = new javax.swing.JTable();
 
         setClosable(true);
         setTitle("Credencial");
@@ -112,7 +104,7 @@ public class frmCredencial extends javax.swing.JInternalFrame {
             }
         });
 
-        tblContacto.setModel(new javax.swing.table.DefaultTableModel(
+        tblCredenciales.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -128,7 +120,7 @@ public class frmCredencial extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tblContacto);
+        jScrollPane1.setViewportView(tblCredenciales);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -200,30 +192,35 @@ public class frmCredencial extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-private void cargarDatos() {
-        DefaultTableModel modelo = (DefaultTableModel) tblContacto.getModel();
-        modelo.setRowCount(0);
+private void cargarDatosEnTabla() {
+        modeloTabla.setRowCount(0); // Limpia la tabla antes de cargar nuevos datos
         listaCredenciales = DatosCredencial.listar();
-        for (Credencial c : listaCredenciales) {
-            modelo.addRow(new Object[]{
-                c.getIdCredencial(),
-                c.getCorreo(),
-                c.getClave(),
-                c.getAlias(),
-                c.getDescripcion()
-            });
+        
+        // Uso de for-each loop para mayor legibilidad
+        for (Credencial credencial : listaCredenciales) {
+            Object[] fila = {
+                credencial.getIdCredencial(),
+                credencial.getCorreo(),
+                credencial.getClave(),
+                credencial.getAlias(),
+                credencial.getDescripcion()
+            };
+            modeloTabla.addRow(fila);
         }
     }
 
   private void gestionarControles(boolean activo) {
+        // Habilitar/Deshabilitar campos de texto
         txtCorreo.setEnabled(activo);
         txtClave.setEnabled(activo);
         txtAlias.setEnabled(activo);
         txtDescripcion.setEnabled(activo);
 
+        // Habilitar/Deshabilitar botones de acción
         btnGuardar.setEnabled(activo);
         btnDeshacer.setEnabled(activo);
 
+        // Habilitar/Deshabilitar botones de gestión
         btnAgregar.setEnabled(!activo);
         btnEditar.setEnabled(!activo);
         btnEliminar.setEnabled(!activo);
@@ -240,68 +237,72 @@ private void cargarDatos() {
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
        limpiarCampos();
         gestionarControles(false);
-        esNuevo = false;
+        esNuevo = false; // Restablecer el estado
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-         if (txtCorreo.getText().trim().isEmpty() || txtClave.getText().trim().isEmpty()) {
-        Utilitario.MostrarMensaje("Correo y Clave son obligatorios.", Utilitario.TipoMensaje.alerta);
-        return;
+        // Validación de campos obligatorios
+        if (txtCorreo.getText().trim().isEmpty() || txtClave.getText().trim().isEmpty()) {
+            Utilitario.MostrarMensaje("Los campos 'Correo' y 'Clave' son obligatorios.", Utilitario.TipoMensaje.alerta);
+            return; // Detiene la ejecución si la validación falla
         }
 
-
-        Credencial c = new Credencial();
-        c.setCorreo(txtCorreo.getText().trim());
-        c.setClave(txtClave.getText().trim());
-        c.setAlias(txtAlias.getText().trim());
-        c.setDescripcion(txtDescripcion.getText().trim());
+        Credencial credencial = new Credencial();
+        credencial.setCorreo(txtCorreo.getText().trim());
+        credencial.setClave(txtClave.getText().trim());
+        credencial.setAlias(txtAlias.getText().trim());
+        credencial.setDescripcion(txtDescripcion.getText().trim());
 
         if (esNuevo) {
-            DatosCredencial.insertar(c);
+            // Lógica para insertar un nuevo registro
+            DatosCredencial.insertar(credencial);
         } else {
-            int fila = tblContacto.getSelectedRow();
-            if (fila >= 0) {
-                c.setIdCredencial(listaCredenciales.get(fila).getIdCredencial());
-                DatosCredencial.actualizar(c);
+            // Lógica para actualizar un registro existente
+            int filaSeleccionada = tblCredenciales.getSelectedRow();
+            if (filaSeleccionada >= 0) {
+                credencial.setIdCredencial(listaCredenciales.get(filaSeleccionada).getIdCredencial());
+                DatosCredencial.actualizar(credencial);
             }
         }
 
-        cargarDatos();
-        limpiarCampos();
+        cargarDatosEnTabla();
         gestionarControles(false);
-        esNuevo = false;
+        limpiarCampos();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        int fila = tblContacto.getSelectedRow();
-        if (fila >= 0) {
-        Credencial c = listaCredenciales.get(fila);
-        boolean confirmar = Utilitario.MostrarMensajePregunta("¿Está seguro de eliminar esta credencial?", Utilitario.TipoMensaje.pregunta);
-        if (confirmar) {
-        DatosCredencial.eliminar(c.getIdCredencial());
-        cargarDatos();
-    }
-}       else {
-        Utilitario.MostrarMensaje("Debe seleccionar una fila para eliminar.", Utilitario.TipoMensaje.alerta);
-}
+        int filaSeleccionada = tblCredenciales.getSelectedRow();
+        
+        if (filaSeleccionada >= 0) {
+            boolean confirmacion = Utilitario.MostrarMensajePregunta("¿Está seguro de eliminar esta credencial?", Utilitario.TipoMensaje.pregunta);
+            
+            if (confirmacion) {
+                String idCredencial = listaCredenciales.get(filaSeleccionada).getIdCredencial();
+                DatosCredencial.eliminar(idCredencial);
+                cargarDatosEnTabla(); // Refrescar la tabla
+            }
+        } else {
+            Utilitario.MostrarMensaje("Debe seleccionar una credencial para eliminar.", Utilitario.TipoMensaje.alerta);
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        int fila = tblContacto.getSelectedRow();
-        if (fila >= 0) {
-        esNuevo = false;
-        Credencial c = listaCredenciales.get(fila);
+        int filaSeleccionada = tblCredenciales.getSelectedRow();
+        
+        if (filaSeleccionada >= 0) {
+            esNuevo = false;
+            Credencial credencial = listaCredenciales.get(filaSeleccionada);
 
-        txtCorreo.setText(c.getCorreo());
-        txtClave.setText(c.getClave());
-        txtAlias.setText(c.getAlias());
-        txtDescripcion.setText(c.getDescripcion());
-
-        gestionarControles(true);
-        txtCorreo.requestFocus();
-        }       
-        else {
-        Utilitario.MostrarMensaje("Debe seleccionar una fila para editar.", Utilitario.TipoMensaje.alerta);
+            // Cargar datos de la fila seleccionada en los campos de texto
+            txtCorreo.setText(credencial.getCorreo());
+            txtClave.setText(credencial.getClave());
+            txtAlias.setText(credencial.getAlias());
+            txtDescripcion.setText(credencial.getDescripcion());
+            
+            gestionarControles(true);
+            txtCorreo.requestFocus();
+        } else {
+            Utilitario.MostrarMensaje("Debe seleccionar una credencial para editar.", Utilitario.TipoMensaje.alerta);
 }
 
     
@@ -309,32 +310,10 @@ private void cargarDatos() {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         esNuevo = true;
-        limpiarCampos();
         gestionarControles(true);
-        txtCorreo.requestFocus();
-        /*
-        DatosContacto.habilitarCampos(escritorio);
-        //String codigo = DatosContacto.GenerarCodigo("contactos", "CO", 4);
-        String codigo = DatosContacto.GenerarCodigoEntero("contactos");
-        txtId.setText(codigo);
-        txtNombre.setEnabled(true);
-        txtFecha.setEnabled(true);
-        txtPersonas.setEnabled(true);
-        txtEmpresa.setEnabled(true);
-        txtCargo.setEnabled(true);
-        txtCorreo.setEnabled(true);
-        txtTelefono.setEnabled(true);
-        txtDireccion.setEnabled(true);
-        txtNota.setEnabled(true);
-        cboDepartamento.setEnabled(true);
-        btnEditar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnGuardar.setEnabled(true);
-        btnDeshacer.setEnabled(true);
-        btnAgregar.setEnabled(false);
-        txtNombre.requestFocus();
-        esNuevo = true;
-*/
+        limpiarCampos();
+        txtCorreo.requestFocus(); // Pone el foco en el primer campo
+        
        
     }//GEN-LAST:event_btnAgregarActionPerformed
 
@@ -343,10 +322,11 @@ private void cargarDatos() {
     }//GEN-LAST:event_txtDescripcionActionPerformed
 
     private void txtDescripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyTyped
-     if (txtDescripcion.getText().length() >= 100) {
-        evt.consume();
-        Toolkit.getDefaultToolkit().beep();
-    }
+     // Limita la longitud del campo de texto
+        if (txtDescripcion.getText().trim().length() >= 100) {
+            evt.consume(); // Ignora la tecla presionada
+            Toolkit.getDefaultToolkit().beep(); // Emite un sonido de alerta
+        }
     }//GEN-LAST:event_txtDescripcionKeyTyped
 
 
@@ -361,7 +341,7 @@ private void cargarDatos() {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblContacto;
+    private javax.swing.JTable tblCredenciales;
     private javax.swing.JTextField txtAlias;
     private javax.swing.JTextField txtClave;
     private javax.swing.JTextField txtCorreo;

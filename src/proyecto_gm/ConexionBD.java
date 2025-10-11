@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class ConexionBD {
 
    private static final String USERNAME = "avnadmin";
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = "AVNS_5be8o3RIpMZgj26OakP";
     private static final String CONN_STRING = "jdbc:mysql://mysql-a21bb78-sistemasnet26-321c.k.aivencloud.com:10658/gmingenieros?useSSL=true&requireSSL=true";
    
     public static String codPerfil = "";
