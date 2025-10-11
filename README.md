@@ -27,6 +27,10 @@ Módulo
 
 Periodo
 
+Tipo Documento
+
+Viáticos
+
 ⚙️ Módulos Pendientes o Sin Cambios
 
 Los siguientes módulos aún no presentan cambios o se encuentran en proceso de estandarización:
@@ -39,14 +43,10 @@ Cuentas (pendiente de finalizar)
 
 Empleados
 
-Viáticos
-
 Proveedores (pendiente de finalizar)
 
 Recibos por Honorarios (falta estandarización)
 
 Tipo
-
-Tipo Documento
 
 Credenciales
