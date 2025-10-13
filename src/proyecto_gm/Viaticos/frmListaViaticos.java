@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Font;
 import javax.swing.*;
 import javax.swing.table.*;
+import proyecto_gm.Utilitario;
 
 public class frmListaViaticos extends javax.swing.JInternalFrame {
 
@@ -167,15 +168,16 @@ public class frmListaViaticos extends javax.swing.JInternalFrame {
             int id = Integer.parseInt(tblViatico.getValueAt(fila, 0).toString());
             if (DatosViaticos.eliminar(id)) {
                 cargarDatos();
-                JOptionPane.showMessageDialog(this, "Eliminado correctamente");
+                Utilitario.MostrarMensaje("Eliminado correctamente", Utilitario.TipoMensaje.informativo);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Seleccione un registro para eliminar");
+            Utilitario.MostrarMensaje("Seleccione un registro para eliminar", Utilitario.TipoMensaje.alerta);
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        int fila = tblViatico.getSelectedRow();
+      
+          int fila = tblViatico.getSelectedRow();
         if (fila >= 0) {
             Viaticos v = new Viaticos();
             v.setId(Integer.parseInt(tblViatico.getValueAt(fila, 0).toString()));
@@ -189,7 +191,7 @@ public class frmListaViaticos extends javax.swing.JInternalFrame {
             frm.setVisible(true);
             frm.toFront();
         } else {
-            JOptionPane.showMessageDialog(this, "Seleccione un registro para editar");
+            Utilitario.MostrarMensaje("Seleccione un registro para editar", Utilitario.TipoMensaje.alerta);
         }
     }//GEN-LAST:event_btnEditarActionPerformed
 

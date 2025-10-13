@@ -5,8 +5,7 @@ import proyecto_gm.Empleado.Empleados;
 import proyecto_gm.Periodos.Periodos;
 import proyecto_gm.Empleado.DatosEmpleados;
 import proyecto_gm.Periodos.DatosPeriodo;
-
-
+import proyecto_gm.Utilitario;
 public class frmViaticos extends javax.swing.JInternalFrame {
 
     private Viaticos viatico;
@@ -38,16 +37,16 @@ public class frmViaticos extends javax.swing.JInternalFrame {
                 continue;}
             if (txt.getText().trim().isEmpty()) {
                 String nombreCampo = txt.getName() != null ? txt.getName() : "campo";
-                JOptionPane.showMessageDialog(this, "El campo " + nombreCampo + " no puede estar vacío.", "Validación", JOptionPane.WARNING_MESSAGE);
+                Utilitario.MostrarMensaje("El campo " + nombreCampo + " no puede estar vacío.", Utilitario.TipoMensaje.alerta);
                 txt.requestFocus();
                 return false;
             }}}
     if (cboEmpleado.getSelectedIndex() == -1) {
-        JOptionPane.showMessageDialog(this, "Debe seleccionar un empleado.", "Validación", JOptionPane.WARNING_MESSAGE);
+        Utilitario.MostrarMensaje("Debe seleccionar un empleado.", Utilitario.TipoMensaje.alerta);
         cboEmpleado.requestFocus();
         return false;}
     if (cboPeriodo.getSelectedIndex() == -1) {
-        JOptionPane.showMessageDialog(this, "Debe seleccionar un periodo.", "Validación", JOptionPane.WARNING_MESSAGE);
+        Utilitario.MostrarMensaje("Debe seleccionar un periodo.", Utilitario.TipoMensaje.alerta);
         cboPeriodo.requestFocus();
         return false;}
     return true; 
@@ -264,11 +263,11 @@ public class frmViaticos extends javax.swing.JInternalFrame {
     boolean exito;
     if (txtId.getText().isEmpty()) {
         exito = DatosViaticos.insertar(viatico);
-        if (exito) JOptionPane.showMessageDialog(this, "Registrado correctamente");
+        if (exito) Utilitario.MostrarMensaje("Registrado correctamente", Utilitario.TipoMensaje.informativo);
     } else {
         viatico.setId(Integer.parseInt(txtId.getText()));
         exito = DatosViaticos.actualizar(viatico);
-        if (exito) JOptionPane.showMessageDialog(this, "Actualizado correctamente");
+        if (exito) Utilitario.MostrarMensaje("Actualizado correctamente", Utilitario.TipoMensaje.informativo);
     }
 
     if (exito) {
@@ -276,7 +275,7 @@ public class frmViaticos extends javax.swing.JInternalFrame {
         limpiarCampos();
         dispose();
     } else {
-        JOptionPane.showMessageDialog(this, "Error al guardar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        Utilitario.MostrarMensaje("Error al guardar los datos.", Utilitario.TipoMensaje.error);
     }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
