@@ -1,65 +1,69 @@
 package proyecto_gm.Cuentas;
 
+import java.sql.SQLException;
+import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
 
 public class frmCuentas extends javax.swing.JInternalFrame {
-//
-//    private Cuentas cuentaActual;
-//    private frmListaCuentas frmListaCuentas; // Referencia al formulario de lista
-//    private boolean esNuevo;
-//
-//    // Constructor para nuevo o editar
-//    public frmCuentas(Cuentas cuenta, frmListaCuentas frmLista) {
-//        initComponents();
-//        this.cuentaActual = cuenta;
-//        this.frmListaCuentas = frmLista;
-//
-//        // Cargar los combobox
-//        DatosCuentas.cargarBancos(cboBanco);
-//        DatosCuentas.cargarTipoPropietario(cboTipoPropietario);
-//
-//        if (cuentaActual == null) {
-//            this.setTitle("Nueva Cuenta");
-//            esNuevo = true;
-//            txtId.setVisible(false); // Ocultar el ID si es nuevo
-//        } else {
-//            this.setTitle("Editar Cuenta");
-//            esNuevo = false;
-//            cargarDatos();
-//        }
-//    }
-//    
-//    // Carga los datos de la cuenta en los campos del formulario
-//    private void cargarDatos() {
-//        txtId.setText(String.valueOf(cuentaActual.getIdCuenta()));
-//        txtNombres.setText(cuentaActual.getNombres());
-//        txtCCC.setText(cuentaActual.getNroCuenta());
-//        txtCCI.setText(cuentaActual.getNroCuentaInterbancaria());
-//
-//        // Seleccionar Tipo de Propietario
-//        if ("P".equals(cuentaActual.getTipoPropietario())) {
-//            cboTipoPropietario.setSelectedItem("Persona Natural");
-//        } else {
-//            cboTipoPropietario.setSelectedItem("Empresa");
-//        }
-//        
-//        // Seleccionar el Banco correcto en el ComboBox
-//        for (int i = 0; i < cboBanco.getItemCount(); i++) {
-//            if (cboBanco.getItemAt(i).getId() == cuentaActual.getIdBanco()) {
-//                cboBanco.setSelectedIndex(i);
-//                break;
-//            }
-//        }
-//
-//        // Seleccionar el Tipo de Moneda
-//        if ("S".equals(cuentaActual.getTipoMoneda())) {
-//            rbSoles.setSelected(true);
-//        } else {
-//            rbDolares.setSelected(true);
-//        }
-//    }
-//    
-//    @SuppressWarnings("unchecked")
+    private Cuentas cuentaActual;
+    private final frmListaCuentas frmLista; // Referencia al formulario de lista para poder refrescarlo
+    private boolean esNuevo;
+
+    public frmCuentas(Cuentas cuenta, frmListaCuentas frmLista) {
+        initComponents();
+        this.cuentaActual = cuenta;
+        this.frmLista = frmLista;
+
+        
+        // Cargar combos
+        DatosCuentas.cargarBancos(cboBanco);
+        
+        if (cuentaActual == null) {
+            this.setTitle("Nueva Cuenta");
+            esNuevo = true;
+            try {
+                // Generar y mostrar el nuevo ID
+                txtId.setText(String.valueOf(DatosCuentas.generarNuevoId()));
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Error al generar ID: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                txtId.setText("Error");
+            }
+            txtId.setEnabled(false);
+        } else {
+            this.setTitle("Editar Cuenta");
+            esNuevo = false;
+            cargarDatos();
+        }
+    }
+
+    private void cargarDatos() {
+        txtId.setText(String.valueOf(cuentaActual.getIdCuenta()));
+        txtId.setEnabled(false);
+        txtNombres.setText(cuentaActual.getNombres());
+        txtCCC.setText(cuentaActual.getNroCuenta());
+        txtCCI.setText(cuentaActual.getNroCuentaInterbancaria());
+
+        // Seleccionar Tipo Propietario
+        String tipoPropietario = "P".equals(cuentaActual.getTipoPropietario()) ? "Persona Natural" : "Empresa";
+        cboTipoPropietario.setSelectedItem(tipoPropietario);
+
+        // Seleccionar Banco (Requiere que el objeto Banco tenga un `equals` bien implementado)
+        for (int i = 0; i < cboBanco.getItemCount(); i++) {
+            if (cboBanco.getItemAt(i).getId() == cuentaActual.getIdBanco()) {
+                cboBanco.setSelectedIndex(i);
+                break;
+            }
+        }
+
+        // Seleccionar Moneda
+        if ("S".equals(cuentaActual.getTipoMoneda())) {
+            rbSoles.setSelected(true);
+        } else {
+            rbDolares.setSelected(true);
+        }
+    }
+   
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -262,43 +266,54 @@ public class frmCuentas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCCIKeyTyped
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-//        // 1. Validar campos
-//        if (txtNombres.getText().trim().isEmpty() || 
-//            txtCCC.getText().trim().isEmpty() || 
-//            txtCCI.getText().trim().isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.", "Validación", JOptionPane.WARNING_MESSAGE);
-//            return;
-//        }
-//
-//        // 2. Recolectar datos del formulario
-//        Cuentas cuentaParaGuardar = new Cuentas();
-//        cuentaParaGuardar.setNombres(txtNombres.getText().trim());
-//        cuentaParaGuardar.setNroCuenta(txtCCC.getText().trim());
-//        cuentaParaGuardar.setNroCuentaInterbancaria(txtCCI.getText().trim());
-//        
-//        // Obtener ID del banco seleccionado
-//        Banco bancoSeleccionado = (Banco) cboBanco.getSelectedItem();
-//        cuentaParaGuardar.setIdBanco(bancoSeleccionado.getId());
-//        
-//        // Obtener valor para TipoPropietario
-//        String tipoPropietario = cboTipoPropietario.getSelectedItem().toString().equals("Persona Natural") ? "P" : "E";
-//        cuentaParaGuardar.setTipoPropietario(tipoPropietario);
-//        
-//        // Obtener valor para TipoMoneda
-//        String tipoMoneda = rbSoles.isSelected() ? "S" : "D";
-//        cuentaParaGuardar.setTipoMoneda(tipoMoneda);
-//
-//        // 3. Decidir si insertar o actualizar
-//        if (esNuevo) {
-//            DatosCuentas.insertar(cuentaParaGuardar);
-//        } else {
-//            cuentaParaGuardar.setIdCuenta(cuentaActual.getIdCuenta()); // No olvidar el ID para actualizar
-//            DatosCuentas.actualizar(cuentaParaGuardar);
-//        }
-//
-//        // 4. Actualizar la tabla del formulario de lista y cerrar
-//        frmListaCuentas.cargarDatosTabla();
-//        this.dispose();
+        // 1. Validar campos
+        if (txtNombres.getText().trim().isEmpty() || txtCCC.getText().trim().isEmpty() || txtCCI.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.", "Validación", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (txtCCC.getText().trim().length() != 14) {
+             JOptionPane.showMessageDialog(this, "El número de cuenta debe tener 14 dígitos.", "Validación", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (txtCCI.getText().trim().length() != 20) {
+             JOptionPane.showMessageDialog(this, "El CCI debe tener 20 dígitos.", "Validación", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+
+        // 2. Recolectar datos del formulario
+        Cuentas cuentaParaGuardar = new Cuentas();
+        cuentaParaGuardar.setIdCuenta(Integer.parseInt(txtId.getText()));
+        cuentaParaGuardar.setNombres(txtNombres.getText().trim());
+        cuentaParaGuardar.setNroCuenta(txtCCC.getText().trim());
+        cuentaParaGuardar.setNroCuentaInterbancaria(txtCCI.getText().trim());
+
+        Banco bancoSeleccionado = (Banco) cboBanco.getSelectedItem();
+        cuentaParaGuardar.setIdBanco(bancoSeleccionado.getId());
+
+        String tipoPropietario = "Persona Natural".equals(cboTipoPropietario.getSelectedItem().toString()) ? "P" : "E";
+        cuentaParaGuardar.setTipoPropietario(tipoPropietario);
+
+        String tipoMoneda = rbSoles.isSelected() ? "S" : "D";
+        cuentaParaGuardar.setTipoMoneda(tipoMoneda);
+
+        // 3. Decidir si insertar o actualizar
+        try {
+            if (esNuevo) {
+                DatosCuentas.insertar(cuentaParaGuardar);
+                JOptionPane.showMessageDialog(this, "Cuenta registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                DatosCuentas.actualizar(cuentaParaGuardar);
+                JOptionPane.showMessageDialog(this, "Cuenta actualizada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+            // 4. Actualizar la tabla del formulario de lista y cerrar este formulario
+            frmLista.cargarDatosTabla();
+            this.dispose();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error al guardar los datos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } 
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed

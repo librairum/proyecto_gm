@@ -1,64 +1,50 @@
 package proyecto_gm.Cuentas;
 
-//import java.awt.Color;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
-import javax.swing.AbstractButton;
-
-//import java.awt.Component;
-//import java.awt.Font;
-//import javax.swing.JComboBox;
-//import javax.swing.JLabel;
-//import javax.swing.JTable;
-//import javax.swing.JTextField;
-//import javax.swing.table.DefaultTableCellRenderer;
-//import javax.swing.table.DefaultTableModel;
-//import javax.swing.table.JTableHeader;
-//import proyecto_gm.Cuentas.Banco;
 
 public class frmListaCuentas extends javax.swing.JInternalFrame {
 
-    private AbstractButton rbSoles;
-    private AbstractButton rbDolares;
+    public frmListaCuentas() {
+        initComponents();
+        cargarDatosTabla();
+    }
 
-//    boolean esNuevo = false;
-//
-//    public frmListaCuentas() {
-//        initComponents();
-//
-//        // Personalizar header de la tabla
-//        JTableHeader header = tblCuentas.getTableHeader();
-//        header.setDefaultRenderer(new DefaultTableCellRenderer() {
-//            @Override
-//            public Component getTableCellRendererComponent(JTable table,
-//                    Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-//                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-//                setHorizontalAlignment(JLabel.CENTER);
-//                setBackground(Color.DARK_GRAY);
-//                setForeground(Color.WHITE);
-//                setFont(getFont().deriveFont(Font.BOLD, 13));
-//                return this;
-//            }
-//        });
-//
-//        DefaultTableModel modelo = (DefaultTableModel) tblCuentas.getModel();
-//        DatosCuentas.Listar(modelo);
-//        DatosCuentas.Habilitar(panel, monedas, false);
-//
-//        // Cargar datos en ComboBoxes
-//        DatosCuentas.CargarTipoPropietario(cboTipoPropietario); // datos locales
-//        DatosCuentas.CargarBancos(cboBanco); // datos desde BD
-//
-//        rbSoles.setSelected(true);
-//
-//        tblCuentas.setCellSelectionEnabled(false);
-//        tblCuentas.setRowSelectionAllowed(true);
-//    }
+    // Método público para que otros formularios puedan refrescar la tabla
+    public void cargarDatosTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tblCuentas.getModel();
+        modelo.setRowCount(0); // Limpiar la tabla
+
+        try {
+            List<Cuentas> lista = DatosCuentas.listar();
+            for (Cuentas cuenta : lista) {
+                String tipoPropietarioTexto = "P".equalsIgnoreCase(cuenta.getTipoPropietario()) ? "Persona Natural" : "Empresa";
+                String tipoMonedaTexto = "S".equalsIgnoreCase(cuenta.getTipoMoneda()) ? "Soles" : "Dólares";
+
+                modelo.addRow(new Object[]{
+                    cuenta.getIdCuenta(),
+                    tipoPropietarioTexto,
+                    cuenta.getNombres(),
+                    cuenta.getNombreBanco(),
+                    cuenta.getNroCuenta(),
+                    cuenta.getNroCuentaInterbancaria(),
+                    tipoMonedaTexto
+                });
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error al cargar los datos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        monedas = new javax.swing.ButtonGroup();
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         panel = new javax.swing.JPanel();
         btnNuevo = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
@@ -66,8 +52,8 @@ public class frmListaCuentas extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCuentas = new javax.swing.JTable();
 
-        monedas.add(rbSoles);
-        monedas.add(rbDolares);
+        jCheckBoxMenuItem1.setSelected(true);
+        jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
 
         setClosable(true);
         setIconifiable(true);
@@ -141,15 +127,14 @@ public class frmListaCuentas extends javax.swing.JInternalFrame {
             .addGroup(panelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 856, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(panelLayout.createSequentialGroup()
                         .addComponent(btnNuevo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnEditar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnEliminar)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addContainerGap(720, Short.MAX_VALUE))))
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -182,33 +167,64 @@ public class frmListaCuentas extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-//        tblCuentas.clearSelection();
-//        tblCuentas.setRowSelectionAllowed(false);
-//        DatosCuentas.Habilitar(panel, monedas, true);
-//        String codigo = DatosCuentas.GenerarCodigo();
-//        txtId.setText(codigo);
-//        txtId.setEnabled(false);
-//        cboTipoPropietario.requestFocus();
-//        esNuevo = true; // Indicamos que sera un nuevo registro
+        frmCuentas frm = new frmCuentas(null, this); 
+        
+        getParent().add(frm);
+        frm.setLocation(
+           (this.getParent().getWidth() - frm.getWidth()) / 2,
+           (this.getParent().getHeight() - frm.getHeight()) / 2
+        );
+        frm.setVisible(true);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-//        JTextField[] cajas = {txtId, txtNombres, txtCCC, txtCCI};
-//        JComboBox[] combos = {cboTipoPropietario, cboBanco};
-//        DatosCuentas.Editar(panel, tblCuentas, cajas, combos, monedas);
-//        esNuevo = false; // Indicamos que no sera un nuevo registro
+    int filaSeleccionada = tblCuentas.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+    
+        Cuentas cuenta = new Cuentas();
+        DefaultTableModel modelo = (DefaultTableModel) tblCuentas.getModel();
+        
+        cuenta.setIdCuenta((Integer) modelo.getValueAt(filaSeleccionada, 0));
+
+        frmCuentas frm = new frmCuentas(cuenta, this);
+        getParent().add(frm);
+         frm.setLocation(
+           (this.getParent().getWidth() - frm.getWidth()) / 2,
+           (this.getParent().getHeight() - frm.getHeight()) / 2
+        );
+        frm.setVisible(true);
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        DatosCuentas.Eliminar(tblCuentas);
-    }//GEN-LAST:event_btnEliminarActionPerformed
 
+        int filaSeleccionada = tblCuentas.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar esta cuenta?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            try {
+                int idCuenta = (int) tblCuentas.getValueAt(filaSeleccionada, 0);
+                DatosCuentas.eliminar(idCuenta);
+                JOptionPane.showMessageDialog(this, "Cuenta eliminada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                cargarDatosTabla(); // Recargar la tabla
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Error al eliminar la cuenta: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btnEditar;
     public static javax.swing.JButton btnEliminar;
     public static javax.swing.JButton btnNuevo;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.ButtonGroup monedas;
     private javax.swing.JPanel panel;
     private javax.swing.JTable tblCuentas;
     // End of variables declaration//GEN-END:variables
