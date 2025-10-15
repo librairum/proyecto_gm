@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.ConexionBD;
 import proyecto_gm.Modulo.Modulo;
+import proyecto_gm.Utilitario;
 
 public class DatosTipoDocumento {
 
@@ -34,19 +35,17 @@ public class DatosTipoDocumento {
             }
         }
     }
-
-    public static void Habilitar(Container contenedor, boolean bloquear) {
-        Component[] components = contenedor.getComponents();
-        for (Component component : components) {
-            if (component instanceof JTextField || component instanceof JComboBox) {
-                component.setEnabled(bloquear);
-            } else if (component instanceof JButton) {
-                String button = ((JButton) component).getName();
-                ((JButton) component).setEnabled(button.equals("guardar") || button.equals("deshacer") ? bloquear : !bloquear);
-            }
-        }
-    }
-
+    
+    public static void Habilitar(Container contenedor, boolean habilitar) {
+    for (Component component : contenedor.getComponents()) {
+        if (component instanceof JTextField || component instanceof JComboBox) {
+            component.setEnabled(habilitar);
+        } else if (component instanceof JButton) {
+            String button = ((JButton) component).getName();
+            boolean esEditable = "guardar".equals(button) || "deshacer".equals(button);
+            component.setEnabled(esEditable == habilitar);
+        }} 
+}
     public static List<Modulo> obtenerModulos() {
         List<Modulo> lista = new ArrayList<>();
         try ( CallableStatement cstmt = conn.prepareCall("{ CALL listar_modulo() }")) {
@@ -57,7 +56,7 @@ public class DatosTipoDocumento {
                 lista.add(new Modulo(Id, descripcion));
             }
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            Utilitario.MostrarMensaje(ex.getMessage(), Utilitario.TipoMensaje.error);
         }
         return lista;
     }
@@ -72,7 +71,7 @@ public class DatosTipoDocumento {
                     rs.getString("Modulo")});
             }
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            Utilitario.MostrarMensaje(ex.getMessage(), Utilitario.TipoMensaje.error);
         }
     }
 
@@ -89,7 +88,7 @@ public class DatosTipoDocumento {
 
             return true;
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            Utilitario.MostrarMensaje(ex.getMessage(), Utilitario.TipoMensaje.error);
             return false;
         }
     }
@@ -101,21 +100,23 @@ public class DatosTipoDocumento {
             camposTexto[0].setEnabled(false);
             camposTexto[1].requestFocus();
             for (int i = 0; i < camposTexto.length; i++) {
-                camposTexto[i].setText(tabla.getValueAt(filaSeleccionada, i).toString());
+                Object valor = tabla.getValueAt(filaSeleccionada, i);
+                camposTexto[i].setText(valor != null ? valor.toString() : "");
             }
-            String moduloDescripcion = tabla.getValueAt(filaSeleccionada, 2).toString(); // Columna "Modulo"
-                for (int i = 0; i < combos[0].getItemCount(); i++) {
-                    Modulo mod = (Modulo) combos[0].getItemAt(i);
+            Object valorCelda = tabla.getValueAt(filaSeleccionada, 2);
+            String moduloDescripcion = valorCelda != null ? valorCelda.toString() : "";
+
+            for (int i = 0; i < combos[0].getItemCount(); i++) {
+                Object item = combos[0].getItemAt(i);
+                if (item instanceof Modulo) {
+                    Modulo mod = (Modulo) item;
                     if (mod.getDescripcion().equals(moduloDescripcion)) {
                         combos[0].setSelectedIndex(i);
                         break;
-                    }
-                }
-        } else {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para editar.");
-        }
-    }
-
+                    }}}
+        } else {Utilitario.MostrarMensaje("Debes seleccionar una fila para editar.", Utilitario.TipoMensaje.alerta);
+        }}
+    
     public static void Actualizar(TipoDocumento tip, JTable tabla, JComboBox<Modulo> cboModulo) {
         try (CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_tipodocumento(?, ?, ?) }")) {
             String idModulo = tip.getIdModulo();
@@ -130,19 +131,18 @@ public class DatosTipoDocumento {
             modelo.setRowCount(0);
             Mostrar(modelo);
 
-            JOptionPane.showMessageDialog(null, "Datos actualizados correctamente.");
+            Utilitario.MostrarMensaje("Datos actualizados correctamente.", Utilitario.TipoMensaje.informativo);
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            Utilitario.MostrarMensaje(ex.getMessage(), Utilitario.TipoMensaje.error);
         }
     }
-
 
     public static void Eliminar(JTable tabla) {
         int fila = tabla.getSelectedRow();
         if (fila >= 0) {
             String codigoTipo = tabla.getModel().getValueAt(fila, 0).toString();
-            int confirm = JOptionPane.showConfirmDialog(null, "¿Eliminar tipo de documento?", "Confirmar", JOptionPane.YES_NO_OPTION);
-            if (confirm == JOptionPane.YES_OPTION) {
+            boolean confirmar = Utilitario.MostrarMensajePregunta("¿Eliminar tipo de documento?", Utilitario.TipoMensaje.pregunta);
+            if (confirmar) {
                 try ( CallableStatement stmt = conn.prepareCall("{ CALL eliminar_tipodocumento(?) }")) {
                     stmt.setString(1, codigoTipo);
                     stmt.execute();
@@ -153,14 +153,14 @@ public class DatosTipoDocumento {
                     Mostrar(modelo);       
 
                     // Confirmación
-                    JOptionPane.showMessageDialog(null, "Registro eliminado correctamente.", "Eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);
+                    Utilitario.MostrarMensaje("Registro eliminado correctamente.", Utilitario.TipoMensaje.informativo);
+
                 } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    Utilitario.MostrarMensaje(ex.getMessage(), Utilitario.TipoMensaje.error);
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Seleccione un área para eliminar.");
+            Utilitario.MostrarMensaje("Debes seleccionar una fila para eliminar.", Utilitario.TipoMensaje.alerta);
         }
     }
-
 }
