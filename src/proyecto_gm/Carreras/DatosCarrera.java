@@ -31,7 +31,7 @@ public class DatosCarrera {
 
     public static void insertar(Carreras carrera) {
         Connection conn = ConexionBD.getConnection();
-        try (CallableStatement cstmt = conn.prepareCall("{ CALL insertar_carrera(?) }")) { 
+        try (CallableStatement cstmt = conn.prepareCall("{ CALL insertar_carreras(?) }")) { 
             cstmt.setString(1, carrera.getDescripcion());
             cstmt.execute();
             JOptionPane.showMessageDialog(null, "Carrera registrada exitosamente.", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
@@ -43,7 +43,7 @@ public class DatosCarrera {
     public static void actualizar(Carreras carrera) {
         Connection conn = ConexionBD.getConnection();
         
-        try (CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_carrera(?, ?) }")) {
+        try (CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_carreras(?, ?) }")) {
             cstmt.setInt(1, carrera.getId());
             cstmt.setString(2, carrera.getDescripcion());
             cstmt.execute();
@@ -56,7 +56,7 @@ public class DatosCarrera {
     public static void eliminar(int id) {
         Connection conn = ConexionBD.getConnection();
         
-        try (CallableStatement cstmt = conn.prepareCall("{ CALL eliminar_carrera(?) }")) {
+        try (CallableStatement cstmt = conn.prepareCall("{ CALL eliminar_carreras(?) }")) {
             cstmt.setInt(1, id);
             cstmt.execute();
             JOptionPane.showMessageDialog(null, "Carrera eliminada exitosamente.", "Eliminación Exitosa", JOptionPane.INFORMATION_MESSAGE);
