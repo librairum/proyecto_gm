@@ -3,6 +3,8 @@ package proyecto_gm.Carreras;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.util.List;
+import proyecto_gm.Utilitario;
+
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.Exportar;
@@ -212,71 +214,70 @@ public class frmCarreras extends javax.swing.JInternalFrame {
         esNuevo = true;
         limpiarCampos();
         gestionarEstadoCampos(true);
+        txtId.setEnabled(false); 
         setTitle("Nueva Carrera");
         txtDescripcion.requestFocus();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        int fila = tblCarreras.getSelectedRow();
+          int fila = tblCarreras.getSelectedRow();
         if (fila >= 0) {
-            esNuevo = false;
+        esNuevo = false;
             // Obtener el objeto Carrera de la lista
-            Carreras carreraSeleccionada = listaCarreras.get(fila);
-            txtId.setText(String.valueOf(carreraSeleccionada.getId()));
-            txtDescripcion.setText(carreraSeleccionada.getDescripcion());
+        Carreras carreraSeleccionada = listaCarreras.get(fila);
+        txtId.setText(String.valueOf(carreraSeleccionada.getId()));
+        txtDescripcion.setText(carreraSeleccionada.getDescripcion());
             
             gestionarEstadoCampos(true);
             setTitle("Editar Carrera");
-            txtDescripcion.requestFocus();
+        txtDescripcion.requestFocus();
         } else {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            
+        Utilitario.MostrarMensaje("Debes seleccionar una fila para editar.", Utilitario.TipoMensaje.alerta);
         }
+
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         int fila = tblCarreras.getSelectedRow();
-        if (fila >= 0) {
-            int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar esta carrera?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
-            
-            if (confirmacion == JOptionPane.YES_OPTION) {
-                int idCarrera = (int) tblCarreras.getValueAt(fila, 0);
-                DatosCarrera.eliminar(idCarrera);
-                cargarDatos();
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
+    if (fila >= 0) {
+        boolean confirmar = Utilitario.MostrarMensajePregunta(
+                "¿Está seguro de eliminar esta carrera?",Utilitario.TipoMensaje.pregunta);
+        
+        if (confirmar) {
+            int idCarrera = (int) tblCarreras.getValueAt(fila, 0);DatosCarrera.eliminar(idCarrera);
+            cargarDatos();}
+    } else {
+        Utilitario.MostrarMensaje("Debes seleccionar una fila para eliminar.", Utilitario.TipoMensaje.alerta);}
+
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        if (txtDescripcion.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "El campo descripción no puede estar vacío.", "Validación", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        Carreras carrera = new Carreras();
-        carrera.setDescripcion(txtDescripcion.getText().trim());
-        
-        if (esNuevo) {
-            DatosCarrera.insertar(carrera);
-        } else {
-            carrera.setId(Integer.parseInt(txtId.getText()));
-            DatosCarrera.actualizar(carrera);
-        }
-        
-        cargarDatos();
-        limpiarCampos();
-        gestionarEstadoCampos(false);
-        setTitle("Carreras");
+         if (txtDescripcion.getText().trim().isEmpty()) {
+        Utilitario.MostrarMensaje("El campo descripción no puede estar vacío.", Utilitario.TipoMensaje.alerta);
+        return;
+    }
+    Carreras carrera = new Carreras();
+    carrera.setDescripcion(txtDescripcion.getText().trim());
+
+    if (esNuevo) {
+        DatosCarrera.insertar(carrera);
+    } else {
+        carrera.setId(Integer.parseInt(txtId.getText()));
+        DatosCarrera.actualizar(carrera);}
+    
+    cargarDatos();
+    limpiarCampos();
+    gestionarEstadoCampos(false);
+    setTitle("Carreras");
     }//GEN-LAST:event_btnGuardarActionPerformed
     
     private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
-        try {
+         try {
             Exportar obj = new Exportar();
             obj.exportarExcel(tblCarreras);
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Error al exportar el archivo: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+             Utilitario.MostrarMensaje("Error al exportar el archivo: " + ex.getMessage(), Utilitario.TipoMensaje.error);}
     }//GEN-LAST:event_btnExportarActionPerformed
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed

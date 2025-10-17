@@ -3,18 +3,17 @@ package proyecto_gm.Carreras;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
+import proyecto_gm.Utilitario;
 import proyecto_gm.ConexionBD;
 
 public class DatosCarrera {
 
     static Connection conn = ConexionBD.getConnection();
 
-
     public static List<Carreras> listar() {
-        List<Carreras> lista = new ArrayList<>();   
+        List<Carreras> lista = new ArrayList<>();
         Connection conn = ConexionBD.getConnection();
-        
+
         try (CallableStatement cstmt = conn.prepareCall("{ CALL listar_carreras() }")) {
             ResultSet rs = cstmt.executeQuery();
             while (rs.next()) {
@@ -24,7 +23,7 @@ public class DatosCarrera {
                 lista.add(carrera);
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al cargar datos: " + e.getMessage(), "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
+            Utilitario.MostrarMensaje("Error al cargar datos: " + e.getMessage(), Utilitario.TipoMensaje.error);
         }
         return lista;
     }
@@ -34,34 +33,34 @@ public class DatosCarrera {
         try (CallableStatement cstmt = conn.prepareCall("{ CALL insertar_carreras(?) }")) { 
             cstmt.setString(1, carrera.getDescripcion());
             cstmt.execute();
-            JOptionPane.showMessageDialog(null, "Carrera registrada exitosamente.", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
+            Utilitario.MostrarMensaje("Carrera registrada exitosamente.", Utilitario.TipoMensaje.informativo);
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al insertar carrera: " + ex.getMessage(), "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
+            Utilitario.MostrarMensaje("Error al insertar carrera: " + ex.getMessage(), Utilitario.TipoMensaje.error);
         }
     }
 
     public static void actualizar(Carreras carrera) {
         Connection conn = ConexionBD.getConnection();
-        
+
         try (CallableStatement cstmt = conn.prepareCall("{ CALL actualizar_carreras(?, ?) }")) {
             cstmt.setInt(1, carrera.getId());
             cstmt.setString(2, carrera.getDescripcion());
             cstmt.execute();
-            JOptionPane.showMessageDialog(null, "Carrera actualizada exitosamente.", "Actualización Exitosa", JOptionPane.INFORMATION_MESSAGE);
+            Utilitario.MostrarMensaje("Carrera actualizada exitosamente.", Utilitario.TipoMensaje.informativo);
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al actualizar carrera: " + ex.getMessage(), "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
+            Utilitario.MostrarMensaje("Error al actualizar carrera: " + ex.getMessage(), Utilitario.TipoMensaje.error);
         }
     }
 
     public static void eliminar(int id) {
         Connection conn = ConexionBD.getConnection();
-        
+
         try (CallableStatement cstmt = conn.prepareCall("{ CALL eliminar_carreras(?) }")) {
             cstmt.setInt(1, id);
             cstmt.execute();
-            JOptionPane.showMessageDialog(null, "Carrera eliminada exitosamente.", "Eliminación Exitosa", JOptionPane.INFORMATION_MESSAGE);
+            Utilitario.MostrarMensaje("Carrera eliminada exitosamente.", Utilitario.TipoMensaje.informativo);
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al eliminar carrera: " + ex.getMessage(), "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
+            Utilitario.MostrarMensaje("Error al eliminar carrera: " + ex.getMessage(), Utilitario.TipoMensaje.error);
         }
     }
 }
