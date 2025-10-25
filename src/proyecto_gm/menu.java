@@ -35,7 +35,7 @@ import proyecto_gm.Empleado.frmListaEmpleado;
 import proyecto_gm.Proveedores.frmListaProveedores;
 import proyecto_gm.Transferencias.frmListaTransferencias;
 import proyecto_gm.Viaticos.frmListaViaticos;
-import proyecto_gm.seguridad.frmPermisosxPerfil;
+import proyecto_gm.Permisoxperfil.frmPermisosxPerfil;
 import proyecto_gm.seguridad.frmUsuario;
 
 public class menu extends javax.swing.JFrame {
@@ -893,7 +893,7 @@ public class menu extends javax.swing.JFrame {
         }
         private void AbrirMenuxperfil()
         {
-            proyecto_gm.seguridad.frmPermisosxPerfil verventana = new frmPermisosxPerfil();
+            proyecto_gm.Permisoxperfil.frmPermisosxPerfil verventana = new frmPermisosxPerfil();
             escritorio.add(verventana);
             verventana.show();
         }

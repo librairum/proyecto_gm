@@ -104,6 +104,12 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Modulo:");
 
+        cboModulo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboModuloActionPerformed(evt);
+            }
+        });
+
         jLabel2.setText("Descripción:");
 
         tblTipoDocumento.setModel(new javax.swing.table.DefaultTableModel(
@@ -310,6 +316,10 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
         esNuevo = true;
         tblTipoDocumento.setRowSelectionAllowed(false);
     }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void cboModuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboModuloActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboModuloActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
