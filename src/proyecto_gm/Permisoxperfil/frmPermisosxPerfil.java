@@ -1,29 +1,21 @@
 package proyecto_gm.Permisoxperfil;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+import java.util.List;
+import proyecto_gm.Utilitario; 
 
-import proyecto_gm.ConexionBD;
-import proyecto_gm.Permisoxperfil.MenuArbol;
-import proyecto_gm.Permisoxperfil.DatosPermisoxPerfil;
-import proyecto_gm.Permisoxperfil.Perfil;
 
 public class frmPermisosxPerfil extends javax.swing.JInternalFrame {
 
-public frmPermisosxPerfil() {
+    private List<Perfil> listaPerfiles;
+
+    public frmPermisosxPerfil() {
         initComponents();
     }
 
 
-    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -177,39 +169,68 @@ public frmPermisosxPerfil() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
-    limpiar();
-    CargarPerfiles();  
-    CargarMenuTodo(); 
-      
-    
+        limpiar();
+        cargarPerfiles();  
+        cargarMenuTodo();  
     }//GEN-LAST:event_formInternalFrameOpened
 
     private void cboPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboPerfilActionPerformed
-  int indice = cboPerfil.getSelectedIndex();
-    if (indice < 0) return; 
+      int indice = cboPerfil.getSelectedIndex();
+        if (indice < 0) return;
 
-    Perfil perfil = listaPerfiles.get(indice); // obtenemos el objeto real
-    String codPerfil = perfil.getCodigo();
+        Perfil perfil = listaPerfiles.get(indice); 
+        String codPerfil = perfil.getCodigo();
 
-    DatosPermisoxPerfil datos = new DatosPermisoxPerfil();
+   
+        DefaultTreeModel modelo = (DefaultTreeModel) trvMenuSeleccionado.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) modelo.getRoot();
+        root.removeAllChildren();
 
-    DefaultTreeModel modelo = (DefaultTreeModel) trvMenuSeleccionado.getModel();
-    DefaultMutableTreeNode root = (DefaultMutableTreeNode) modelo.getRoot();
-    root.removeAllChildren();
+        cargarMenuPorPerfil(codPerfil, root);
 
-    List<MenuArbol> lista = datos.listarMenusPorPerfil(codPerfil);
-    for (MenuArbol menu : lista) {
-        root.add(new DefaultMutableTreeNode(menu));
-    }
-
-    modelo.reload(root);
+        modelo.reload(root);
     }//GEN-LAST:event_cboPerfilActionPerformed
+ private void cargarMenuPorPerfil(String codPerfil, DefaultMutableTreeNode root) {
+        DatosPermisoxPerfil datos = new DatosPermisoxPerfil();
+        List<MenuArbol> lista = datos.listarMenusPorPerfil(codPerfil);
 
+        // Crear árbol por niveles
+        for (MenuArbol item1 : lista) {
+            if (item1.getNivel2().equals("00") && item1.getNivel3().equals("00")) {
+                DefaultMutableTreeNode nodo1 = new DefaultMutableTreeNode(item1);
+
+                // Nivel 2
+                for (MenuArbol item2 : lista) {
+                    if (item2.getNivel1().equals(item1.getNivel1()) && 
+                        !item2.getNivel2().equals("00") && 
+                        item2.getNivel3().equals("00")) {
+
+                        DefaultMutableTreeNode nodo2 = new DefaultMutableTreeNode(item2);
+
+                        // Nivel 3
+                        for (MenuArbol item3 : lista) {
+                            if (item3.getNivel1().equals(item1.getNivel1()) &&
+                                item3.getNivel2().equals(item2.getNivel2()) &&
+                                !item3.getNivel3().equals("00")) {
+                                nodo2.add(new DefaultMutableTreeNode(item3));
+                            }
+                        }
+
+                        nodo1.add(nodo2);
+                    }
+                }
+
+                root.add(nodo1);
+            }
+        }
+    }
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-   // --- Validar selección en árbol de menús disponibles ---
+    agregarMenu();
+    }//GEN-LAST:event_btnAgregarActionPerformed
+private void agregarMenu() {
     TreePath path = trvMenusTodo.getSelectionPath();
     if (path == null) {
-        JOptionPane.showMessageDialog(this, "Seleccione un menú para agregar.");
+        Utilitario.MostrarMensaje("Seleccione un menú para agregar.", Utilitario.TipoMensaje.alerta);  
         return;
     }
 
@@ -218,119 +239,116 @@ public frmPermisosxPerfil() {
 
     MenuArbol menu = (MenuArbol) nodoSeleccionado.getUserObject();
 
-    // --- Obtener perfil seleccionado desde la lista auxiliar ---
     int indice = cboPerfil.getSelectedIndex();
     if (indice < 0) return;
     Perfil perfil = listaPerfiles.get(indice);
 
-    // --- Insertar el permiso ---
+  
     DatosPermisoxPerfil datos = new DatosPermisoxPerfil();
+
+    
     boolean exito = datos.insertarMenuPerfil(perfil.getCodigo(), menu.getCodigo());
 
     if (exito) {
-        JOptionPane.showMessageDialog(this, "Menú agregado correctamente.");
-        cboPerfilActionPerformed(null); // recarga los menús del perfil
+        Utilitario.MostrarMensaje("Menú agregado correctamente.", Utilitario.TipoMensaje.informativo);  
+        cboPerfilActionPerformed(null); 
     } else {
-        JOptionPane.showMessageDialog(this, "No se pudo agregar el menú.");
+        Utilitario.MostrarMensaje("No se pudo agregar el menú.", Utilitario.TipoMensaje.error);  
     }
-    }//GEN-LAST:event_btnAgregarActionPerformed
+}
 
     private void btnRetirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetirarActionPerformed
-    // --- Validar selección en árbol de menús asignados ---
-    TreePath path = trvMenuSeleccionado.getSelectionPath();
-    if (path == null) {
-        JOptionPane.showMessageDialog(this, "Seleccione un menú para retirar.");
-        return;
-    }
-
-    DefaultMutableTreeNode nodoSeleccionado = (DefaultMutableTreeNode) path.getLastPathComponent();
-    if (!(nodoSeleccionado.getUserObject() instanceof MenuArbol)) return;
-
-    MenuArbol menu = (MenuArbol) nodoSeleccionado.getUserObject();
-
-    // --- Obtener perfil seleccionado desde la lista auxiliar ---
-    int indice = cboPerfil.getSelectedIndex();
-    if (indice < 0) return;
-    Perfil perfil = listaPerfiles.get(indice);
-
-    // --- Eliminar el permiso ---
-    DatosPermisoxPerfil datos = new DatosPermisoxPerfil();
-    boolean exito = datos.eliminarMenuPerfil(perfil.getCodigo(), menu.getCodigo());
-
-
-    if (exito) {
-        JOptionPane.showMessageDialog(this, "Menú retirado correctamente.");
-        cboPerfilActionPerformed(null); // recarga los menús
-    } else {
-        JOptionPane.showMessageDialog(this, "No se pudo retirar el menú.");
-    }
+      retirarMenu();
     }//GEN-LAST:event_btnRetirarActionPerformed
-    private void limpiar() {
-    DefaultTreeModel modelo = (DefaultTreeModel) this.trvMenusTodo.getModel();
-    DefaultMutableTreeNode root = (DefaultMutableTreeNode) modelo.getRoot();
-    root.removeAllChildren();
+    private void retirarMenu() {
+        TreePath path = trvMenuSeleccionado.getSelectionPath();
+        if (path == null) {
+            Utilitario.MostrarMensaje("Seleccione un menú para retirar.", Utilitario.TipoMensaje.alerta);  
+            return;
+        }
 
-    DefaultTreeModel modeloSeleccionado = (DefaultTreeModel) this.trvMenuSeleccionado.getModel();
-    DefaultMutableTreeNode raizSeleccionado = (DefaultMutableTreeNode) modeloSeleccionado.getRoot();
-    raizSeleccionado.removeAllChildren();
+        DefaultMutableTreeNode nodoSeleccionado = (DefaultMutableTreeNode) path.getLastPathComponent();
+        if (!(nodoSeleccionado.getUserObject() instanceof MenuArbol)) return;
 
-    modelo.reload(root);
-    modeloSeleccionado.reload(raizSeleccionado);
-}
+        MenuArbol menu = (MenuArbol) nodoSeleccionado.getUserObject();
 
-    private void CargarPerfiles() {
-    DatosPermisoxPerfil datos = new DatosPermisoxPerfil();
-    listaPerfiles = datos.listarPerfiles(); // Guarda todos los perfiles
+        int indice = cboPerfil.getSelectedIndex();
+        if (indice < 0) return;
+        Perfil perfil = listaPerfiles.get(indice);
 
-    cboPerfil.removeAllItems();
-    for (Perfil perfil : listaPerfiles) {
-        cboPerfil.addItem(perfil.getNombre()); //  muestra el nombre
-    }
-}
+        // Eliminar el permiso
+        DatosPermisoxPerfil datos = new DatosPermisoxPerfil();
+        boolean exito = datos.eliminarMenuPerfil(perfil.getCodigo(), menu.getCodigo());
 
-
-
-    private void CargarMenuTodo() {
-    DefaultTreeModel modelo = (DefaultTreeModel) trvMenusTodo.getModel();
-    DefaultMutableTreeNode root = (DefaultMutableTreeNode) modelo.getRoot();
-    root.removeAllChildren();
-
-    DatosPermisoxPerfil datos = new DatosPermisoxPerfil();
-    List<MenuArbol> lista = datos.listarMenus();
-
-    // Crear árbol por niveles
-    for (MenuArbol item1 : lista) {
-        if (item1.getNivel2().equals("00") && item1.getNivel3().equals("00")) {
-            DefaultMutableTreeNode nodo1 = new DefaultMutableTreeNode(item1);
-
-            // Nivel 2
-            for (MenuArbol item2 : lista) {
-                if (item2.getNivel1().equals(item1.getNivel1()) && 
-                    !item2.getNivel2().equals("00") && 
-                    item2.getNivel3().equals("00")) {
-
-                    DefaultMutableTreeNode nodo2 = new DefaultMutableTreeNode(item2);
-
-                    // Nivel 3
-                    for (MenuArbol item3 : lista) {
-                        if (item3.getNivel1().equals(item1.getNivel1()) &&
-                            item3.getNivel2().equals(item2.getNivel2()) &&
-                            !item3.getNivel3().equals("00")) {
-                            nodo2.add(new DefaultMutableTreeNode(item3));
-                        }
-                    }
-
-                    nodo1.add(nodo2);
-                }
-            }
-
-            root.add(nodo1);
+        if (exito) {
+            Utilitario.MostrarMensaje("Menú retirado correctamente.", Utilitario.TipoMensaje.informativo);  
+            cboPerfilActionPerformed(null); 
+        } else {
+            Utilitario.MostrarMensaje("No se pudo retirar el menú.", Utilitario.TipoMensaje.error);  
         }
     }
 
-    modelo.reload(root);
-}
-private List<Perfil> listaPerfiles = new ArrayList<>();
+    private void limpiar() {
+        DefaultTreeModel modelo = (DefaultTreeModel) this.trvMenusTodo.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) modelo.getRoot();
+        root.removeAllChildren();
+
+        DefaultTreeModel modeloSeleccionado = (DefaultTreeModel) this.trvMenuSeleccionado.getModel();
+        DefaultMutableTreeNode raizSeleccionado = (DefaultMutableTreeNode) modeloSeleccionado.getRoot();
+        raizSeleccionado.removeAllChildren();
+
+        modelo.reload(root);
+    }
+
+    private void cargarPerfiles() {
+        DatosPermisoxPerfil datos = new DatosPermisoxPerfil();
+        listaPerfiles = datos.listarPerfiles(); 
+
+        cboPerfil.removeAllItems();
+        for (Perfil perfil : listaPerfiles) {
+            cboPerfil.addItem(perfil.getNombre()); 
+        }
+    }
+
+    private void cargarMenuTodo() {
+        DatosPermisoxPerfil datos = new DatosPermisoxPerfil();
+        List<MenuArbol> lista = datos.listarMenus(); 
+
+        DefaultTreeModel modelo = (DefaultTreeModel) trvMenusTodo.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) modelo.getRoot();
+        root.removeAllChildren();
+
+        for (MenuArbol item1 : lista) {
+            if (item1.getNivel2().equals("00") && item1.getNivel3().equals("00")) {
+                DefaultMutableTreeNode nodo1 = new DefaultMutableTreeNode(item1);
+
+                // Nivel 2
+                for (MenuArbol item2 : lista) {
+                    if (item2.getNivel1().equals(item1.getNivel1()) && 
+                        !item2.getNivel2().equals("00") && 
+                        item2.getNivel3().equals("00")) {
+
+                        DefaultMutableTreeNode nodo2 = new DefaultMutableTreeNode(item2);
+
+                        // Nivel 3
+                        for (MenuArbol item3 : lista) {
+                            if (item3.getNivel1().equals(item1.getNivel1()) &&
+                                item3.getNivel2().equals(item2.getNivel2()) &&
+                                !item3.getNivel3().equals("00")) {
+                                nodo2.add(new DefaultMutableTreeNode(item3));
+                            }
+                        }
+
+                        nodo1.add(nodo2);
+                    }
+                }
+
+                root.add(nodo1);
+            }
+        }
+
+        modelo.reload(root);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
