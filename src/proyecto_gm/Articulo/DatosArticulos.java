@@ -30,7 +30,7 @@ public class DatosArticulos {
     public static List<Marca> listarMarcas() {
         List<Marca> lista = new ArrayList<>();
         try (Connection conn = ConexionBD.getConnection();
-             CallableStatement cstmt = conn.prepareCall("{ CALL listar_marcas() }")) { // Asumiendo que existe
+             CallableStatement cstmt = conn.prepareCall("{ CALL listar_marcas() }")) {
             ResultSet rs = cstmt.executeQuery();
             while (rs.next()) {
                 Marca marca = new Marca();

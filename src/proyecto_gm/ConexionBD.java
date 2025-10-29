@@ -16,7 +16,7 @@ public class ConexionBD {
     //conexion a base de datoa Reloj de actividad GMADMINISTRACIOn MYSQL
     private static final String connReloj = "jdbc:mysql://mysql-a21bb78-sistemasnet26-321c.k.aivencloud.com:10658/gmadministracion?useSSL=true&requireSSL=true";
     
-    private ConexionBD() {
+    public ConexionBD() {
         // Evitar instanciación 
     }
     
