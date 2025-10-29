@@ -15,6 +15,7 @@ public class frmArea extends javax.swing.JInternalFrame {
 
     DefaultTableModel modelo;
     boolean esNuevo = false;
+    private javax.swing.table.TableRowSorter<DefaultTableModel> sorter;
 
     public frmArea() {
         initComponents();
@@ -28,6 +29,12 @@ public class frmArea extends javax.swing.JInternalFrame {
             }
         };
         tblArea.setModel(modelo);
+        
+        sorter = new javax.swing.table.TableRowSorter<>(modelo);
+        tblArea.setRowSorter(sorter);
+
+        // Buscar al presionar Enter
+        txtBusqueda.addActionListener(e -> filtrarArea(txtBusqueda.getText().trim()));
         
         estilizarEncabezado(tblArea);
         cargarTabla();
@@ -49,6 +56,7 @@ public class frmArea extends javax.swing.JInternalFrame {
         // Habilitar/deshabilitar campos
         txtCodigo.setEnabled(false);
         txtDescripcion.setEnabled(false);
+        txtBusqueda.setEnabled(true);
 
         // Habilitar/deshabilitar botones
         btnNuevo.setEnabled(true);
@@ -69,6 +77,7 @@ public class frmArea extends javax.swing.JInternalFrame {
     private void configurarEstadoFormulario() {
         txtCodigo.setEnabled(false);
         txtDescripcion.setEnabled(true);
+        txtBusqueda.setEnabled(false);
         
         btnNuevo.setEnabled(false);
         btnEditar.setEnabled(false);
@@ -98,6 +107,20 @@ public class frmArea extends javax.swing.JInternalFrame {
             }
         });
     }
+    
+        private void filtrarArea(String texto) {
+        try {
+            if (texto.isEmpty()) {
+                sorter.setRowFilter(null);
+            } else {
+                // Busca en la columna 1 (Descripción)
+                sorter.setRowFilter(javax.swing.RowFilter.regexFilter("(?i).*" + java.util.regex.Pattern.quote(texto) + ".*", 1));
+            }
+        } catch (java.util.regex.PatternSyntaxException ex) {
+            System.err.println("Error en el filtro: " + ex.getMessage());
+        }
+    }
+
 
 
     @SuppressWarnings("unchecked")
@@ -116,12 +139,15 @@ public class frmArea extends javax.swing.JInternalFrame {
         txtDescripcion = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblArea = new javax.swing.JTable();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        txtBusqueda = new javax.swing.JTextField();
+        btnBuscar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
         setTitle("AREA");
 
-        escritorio.setBackground(new java.awt.Color(255, 248, 239));
         escritorio.setEnabled(false);
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
@@ -194,41 +220,78 @@ public class frmArea extends javax.swing.JInternalFrame {
             tblArea.getColumnModel().getColumn(1).setResizable(false);
         }
 
+        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel3.setText("Buscar");
+
+        txtBusqueda.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtBusquedaKeyTyped(evt);
+            }
+        });
+
+        btnBuscar.setText("Aceptar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnBuscar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel3)
+                .addComponent(btnBuscar))
+        );
+
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
         escritorio.setLayout(escritorioLayout);
         escritorioLayout.setHorizontalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(escritorioLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(escritorioLayout.createSequentialGroup()
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnNuevo)
-                            .addGroup(escritorioLayout.createSequentialGroup()
-                                .addGap(2, 2, 2)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(escritorioLayout.createSequentialGroup()
+                            .addContainerGap()
                             .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(escritorioLayout.createSequentialGroup()
-                                    .addGap(0, 0, Short.MAX_VALUE)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addComponent(jLabel2)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(escritorioLayout.createSequentialGroup()
-                                    .addComponent(btnEditar)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(btnEliminar)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(btnGuardar)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(btnCancelar)
-                                    .addGap(0, 0, Short.MAX_VALUE)))
-                            .addGroup(escritorioLayout.createSequentialGroup()
-                                .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(180, 180, 180)))))
-                .addContainerGap(20, Short.MAX_VALUE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(escritorioLayout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                    .addGroup(escritorioLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnNuevo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEditar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnEliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnGuardar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnCancelar)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -240,15 +303,17 @@ public class frmArea extends javax.swing.JInternalFrame {
                     .addComponent(btnEliminar)
                     .addComponent(btnGuardar)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -270,7 +335,7 @@ public class frmArea extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-// Validar campo
+        // Validar campo
         if (txtDescripcion.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "El campo descripción es obligatorio.", "Validación", JOptionPane.WARNING_MESSAGE);
             txtDescripcion.requestFocus();
@@ -280,7 +345,7 @@ public class frmArea extends javax.swing.JInternalFrame {
         Area area = new Area();
         area.setDescripcionArea(txtDescripcion.getText().trim());
         boolean exito;
-        
+
         if (esNuevo) {
             // Insertar
             exito = DatosArea.insertar(area);
@@ -313,7 +378,7 @@ public class frmArea extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(this, "Área eliminada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 cargarTabla();
             } else {
-                 JOptionPane.showMessageDialog(this, "Error al eliminar el área.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error al eliminar el área.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
@@ -340,8 +405,25 @@ public class frmArea extends javax.swing.JInternalFrame {
         txtDescripcion.requestFocus();
     }//GEN-LAST:event_btnNuevoActionPerformed
 
+    private void txtBusquedaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaKeyTyped
+        if (evt.getKeyChar() == java.awt.event.KeyEvent.VK_ENTER) {
+            if (!txtBusqueda.getText().trim().equals("")) {
+                filtrarArea(txtBusqueda.getText());
+            } else {
+                filtrarArea("");
+            }
+        }
+    }//GEN-LAST:event_txtBusquedaKeyTyped
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        filtrarArea(txtBusqueda.getText().trim());
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnBuscar1;
+    private javax.swing.JButton btnBuscar2;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
@@ -350,9 +432,18 @@ public class frmArea extends javax.swing.JInternalFrame {
     private javax.swing.JPanel escritorio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTable tblArea;
-    public static javax.swing.JTextField txtCodigo;
-    public static javax.swing.JTextField txtDescripcion;
+    private javax.swing.JTextField txtBusqueda;
+    private javax.swing.JTextField txtBusqueda1;
+    private javax.swing.JTextField txtBusqueda2;
+    private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtDescripcion;
     // End of variables declaration//GEN-END:variables
 }

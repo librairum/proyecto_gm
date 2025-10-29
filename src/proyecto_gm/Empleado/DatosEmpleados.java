@@ -1,32 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package proyecto_gm.Empleado;
 
-import java.awt.Component;
-import java.awt.Container;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JRadioButton;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import proyecto_gm.Area.Area;
 import proyecto_gm.Cargo.Cargo;
