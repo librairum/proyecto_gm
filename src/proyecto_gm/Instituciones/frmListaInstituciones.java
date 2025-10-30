@@ -22,6 +22,23 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
 
         // cargar datos desde la BD
         DatosInstituciones.mostrarDatos(modelo);
+
+        final javax.swing.table.TableRowSorter<DefaultTableModel> sorter = new javax.swing.table.TableRowSorter<>(modelo);
+        tblInstituciones.setRowSorter(sorter);
+
+        txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                String texto = txtBuscar.getText();
+                if (texto.trim().length() == 0) {
+
+                    sorter.setRowFilter(null);
+                } else {
+
+                    sorter.setRowFilter(javax.swing.RowFilter.regexFilter("(?i)" + texto, 0, 1, 2));
+                }
+            }
+        });
     }
 
 
@@ -36,6 +53,8 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblInstituciones = new javax.swing.JTable();
         btnExportar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        txtBuscar = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -81,6 +100,14 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel1.setText("BUSCAR");
+
+        txtBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBuscarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -96,7 +123,11 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
                         .addComponent(btnEditar)
                         .addGap(18, 18, 18)
                         .addComponent(btnEliminar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
                         .addComponent(btnExportar)))
                 .addContainerGap())
         );
@@ -108,7 +139,11 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
                     .addComponent(btnAgregar)
                     .addComponent(btnEditar)
                     .addComponent(btnEliminar)
-                    .addComponent(btnExportar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnExportar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
                 .addContainerGap())
@@ -136,12 +171,15 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         int fila = tblInstituciones.getSelectedRow();
+        
         if (fila >= 0) {
-            String id = tblInstituciones.getValueAt(fila, 0).toString();
-            String ruc = tblInstituciones.getValueAt(fila, 1).toString();
-            String razon = tblInstituciones.getValueAt(fila, 2).toString();
-            String direccion = tblInstituciones.getValueAt(fila, 3).toString();
-            String sede = tblInstituciones.getValueAt(fila, 4).toString();
+            int modelRow = tblInstituciones.convertRowIndexToModel(fila);
+            
+            String id = tblInstituciones.getModel().getValueAt(modelRow, 0).toString();
+            String ruc = tblInstituciones.getModel().getValueAt(modelRow, 1).toString();
+            String razon = tblInstituciones.getModel().getValueAt(modelRow, 2).toString();
+            String direccion = tblInstituciones.getModel().getValueAt(modelRow, 3).toString();
+            String sede = tblInstituciones.getModel().getValueAt(modelRow, 4).toString();
 
             frmInstituciones form = new frmInstituciones(false); // editar
             form.cargarDatos(id, ruc, razon, direccion, sede);
@@ -153,7 +191,15 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        DatosInstituciones.eliminarDatos(tblInstituciones);
+        int filaVista = tblInstituciones.getSelectedRow();
+        if (filaVista >= 0) {
+            int filaModelo = tblInstituciones.convertRowIndexToModel(filaVista);
+            
+            DatosInstituciones.eliminarDatos(tblInstituciones, filaModelo); 
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para eliminar.");
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
@@ -165,6 +211,10 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
 
         }
     }//GEN-LAST:event_btnExportarActionPerformed
+
+    private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarActionPerformed
     
     public void recargarTabla() {
         DefaultTableModel modelo = (DefaultTableModel) tblInstituciones.getModel();
@@ -178,8 +228,10 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnExportar;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblInstituciones;
+    private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 }
