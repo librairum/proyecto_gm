@@ -37,7 +37,7 @@ import proyecto_gm.Transferencias.frmListaTransferencias;
 import proyecto_gm.Viaticos.frmListaViaticos;
 import proyecto_gm.Permisoxperfil.frmPermisosxPerfil;
 import proyecto_gm.seguridad.frmUsuario;
-
+import proyecto_gm.Perfil.frmPerfil;
 public class menu extends javax.swing.JFrame {
 
     static Connection conn = ConexionBD.getConnection();
@@ -108,7 +108,7 @@ public class menu extends javax.swing.JFrame {
         this.menuSeguridad.setVisible(false);
         this.subMenuUsuario.setVisible(false);
         this.subMenuPermisosxPerfil.setVisible(false);
-         
+        this.subMenuPerfil.setVisible(false); 
                 
         
     }
@@ -289,6 +289,9 @@ public class menu extends javax.swing.JFrame {
             case "subMenuPermisosxPerfil":
                 this.subMenuPermisosxPerfil.setVisible(true);
                 break;
+            case "subMenuPerfil":
+                this.subMenuPerfil.setVisible(true);
+                break;
             default:
                 throw new AssertionError();
         }
@@ -353,6 +356,7 @@ public class menu extends javax.swing.JFrame {
         menuSeguridad = new javax.swing.JMenu();
         subMenuUsuario = new javax.swing.JMenuItem();
         subMenuPermisosxPerfil = new javax.swing.JMenuItem();
+        subMenuPerfil = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -693,6 +697,14 @@ public class menu extends javax.swing.JFrame {
         });
         menuSeguridad.add(subMenuPermisosxPerfil);
 
+        subMenuPerfil.setText("Perfil");
+        subMenuPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuPerfilActionPerformed(evt);
+            }
+        });
+        menuSeguridad.add(subMenuPerfil);
+
         jMenuBar1.add(menuSeguridad);
 
         setJMenuBar(jMenuBar1);
@@ -902,6 +914,11 @@ public class menu extends javax.swing.JFrame {
             escritorio.add(verventana);
             verventana.show();
         }
+        private void AbrirPerfil(){
+            proyecto_gm.Perfil.frmPerfil verventana = new frmPerfil();
+            escritorio.add(verventana);
+            verventana.show();
+        }
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         /*    
         try ( 
@@ -1050,6 +1067,10 @@ public class menu extends javax.swing.JFrame {
         AbrirCajaChica();
     }//GEN-LAST:event_subMenuCajaChicaActionPerformed
 
+    private void subMenuPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuPerfilActionPerformed
+        AbrirPerfil();
+    }//GEN-LAST:event_subMenuPerfilActionPerformed
+
    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1117,6 +1138,7 @@ public class menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem subMenuFlujoCaja;
     private javax.swing.JMenuItem subMenuInstituciones;
     private javax.swing.JMenuItem subMenuModulos;
+    private javax.swing.JMenuItem subMenuPerfil;
     private javax.swing.JMenuItem subMenuPeriodos;
     private javax.swing.JMenuItem subMenuPermisosxPerfil;
     private javax.swing.JMenuItem subMenuProveedores;
