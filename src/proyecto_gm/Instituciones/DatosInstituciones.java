@@ -60,28 +60,24 @@ public class DatosInstituciones {
         }
     }
 
-    public static void eliminarDatos(JTable tabla) {
-        int fila = tabla.getSelectedRow();
 
-        if (fila >= 0) {
-            String id = tabla.getModel().getValueAt(fila, 0).toString(); 
-            int confirm = JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+    public static void eliminarDatos(JTable tabla, int filaModelo) { 
 
-            if (confirm == JOptionPane.YES_OPTION) {
-                try (CallableStatement stmt = conn.prepareCall("{ CALL eliminar_instituciones(?) }")) {
-                    stmt.setString(1, id);
-                    stmt.execute();
+    String id = tabla.getModel().getValueAt(filaModelo, 0).toString(); 
+    int confirm = JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere eliminar la fila seleccionada?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
 
-                    ((DefaultTableModel) tabla.getModel()).removeRow(fila);
-                    JOptionPane.showMessageDialog(null, "La fila ha sido eliminada exitosamente.");
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, "Error al eliminar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar una fila para eliminar.");
+    if (confirm == JOptionPane.YES_OPTION) {
+        try (CallableStatement stmt = conn.prepareCall("{ CALL eliminar_instituciones(?) }")) {
+            stmt.setString(1, id);
+            stmt.execute();
+
+            ((DefaultTableModel) tabla.getModel()).removeRow(filaModelo); 
+            JOptionPane.showMessageDialog(null, "La fila ha sido eliminada exitosamente.");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
+      }
+   }
 
     public static boolean validarNumeros(String datos) {
         return datos.matches("[0-9]*");
