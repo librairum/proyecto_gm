@@ -6,6 +6,7 @@ import javax.swing.tree.TreePath;
 import java.util.List;
 import proyecto_gm.Utilitario; 
 
+import proyecto_gm.Perfil.*;
 
 public class frmPermisosxPerfil extends javax.swing.JInternalFrame {
 

@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.*;
 import proyecto_gm.ConexionBD;
 import proyecto_gm.Utilitario; 
-
+import proyecto_gm.Perfil.*;
 public class DatosPermisoxPerfil {
 
     private static final Connection conn = ConexionBD.getConnection();
