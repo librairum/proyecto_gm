@@ -36,7 +36,7 @@ import proyecto_gm.Proveedores.frmListaProveedores;
 import proyecto_gm.Transferencias.frmListaTransferencias;
 import proyecto_gm.Viaticos.frmListaViaticos;
 import proyecto_gm.Permisoxperfil.frmPermisosxPerfil;
-import proyecto_gm.seguridad.frmUsuario;
+import proyecto_gm.Usuario.frmUsuario;
 import proyecto_gm.Perfil.frmPerfil;
 public class menu extends javax.swing.JFrame {
 
@@ -899,7 +899,7 @@ public class menu extends javax.swing.JFrame {
         }
         
         private void AbrirUsuario(){
-            proyecto_gm.seguridad.frmUsuario verventana = new frmUsuario();
+            proyecto_gm.Usuario.frmUsuario verventana = new frmUsuario();
             escritorio.add(verventana);
             verventana.show();
         }
