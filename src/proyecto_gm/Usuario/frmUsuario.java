@@ -1,12 +1,9 @@
-
 package proyecto_gm.Usuario;
-
 
 import java.sql.CallableStatement;
 import proyecto_gm.InterfazBase.frmMantenimientoBasico;
 
 import javax.swing.*;
-
 
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
@@ -27,11 +24,14 @@ public class frmUsuario extends frmMantenimientoBasico {
         inicializaComboPerfil();
 
         DefaultTableModel modelo = (DefaultTableModel) tblUsuario.getModel();
-        modelo.setRowCount(0); 
+        modelo.setRowCount(0);
 
         DatosUsuario.Mostrar(modelo);
+        Limpiar();
+        bloquearCampos(false);
+        btnNuevo.setEnabled(true);
+        btnGuardar.setEnabled(false);
     }
-
 
     private void inicializaComboPerfil() {
 
@@ -39,11 +39,12 @@ public class frmUsuario extends frmMantenimientoBasico {
 
         DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
         for (String nombrePerfil : listaNombresPerfiles) {
-            modelo.addElement(nombrePerfil);  
+            modelo.addElement(nombrePerfil);
         }
 
         cboPerfil.setModel(modelo);
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -168,35 +169,33 @@ public class frmUsuario extends frmMantenimientoBasico {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
+                                .addGap(12, 12, 12)
                                 .addComponent(jLabel1)
+                                .addGap(12, 12, 12)
+                                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel8)
-                                        .addGap(19, 19, 19)))
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(27, 27, 27)
-                                        .addComponent(cboPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(25, 25, 25)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtPass)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(cboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 20, Short.MAX_VALUE))))
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cboPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(31, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(btnNuevo)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -206,12 +205,9 @@ public class frmUsuario extends frmMantenimientoBasico {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnGuardar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnCancelar)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2)
-                        .addGap(17, 17, 17))))
+                                .addComponent(btnCancelar))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,38 +220,35 @@ public class frmUsuario extends frmMantenimientoBasico {
                     .addComponent(btnCancelar, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel8))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel3)
-                                .addComponent(jLabel2)
-                                .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel2)
+                            .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4)
-                            .addComponent(cboPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(24, 24, 24)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE))
+                            .addComponent(cboPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addComponent(jLabel6))
-            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -263,45 +256,67 @@ public class frmUsuario extends frmMantenimientoBasico {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-
         Limpiar();
-        Habilitar(false);
+        bloquearCampos(false);
+        btnGuardar.setEnabled(false);
+        btnNuevo.setEnabled(true);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-  
         String username = txtUsername.getText();
         String password = new String(txtPass.getPassword());
         String estado = cboEstado.getSelectedItem().toString();
-
-
-        String estadoDB = estado.equals("Activo") ? "A" : "I";  
-
-        String nombrePerfil = (String) cboPerfil.getSelectedItem(); 
-
- 
+        String estadoDB = estado.equals("Activo") ? "A" : "I";
+        String nombrePerfil = (String) cboPerfil.getSelectedItem();
         String codPerfil = DatosUsuario.getCodigoPerfilPorNombre(nombrePerfil);
         String id = txtId.getText();
 
- 
-        if (id.isEmpty()) {  
-            try (CallableStatement cstmt = ConexionBD.getConnection().prepareCall("{ CALL insertar_usuario(?, ?, ?, ?) }")) {
+        if (id.isEmpty()) {
+            try ( CallableStatement cstmt = ConexionBD.getConnection().prepareCall("{ CALL insertar_usuario(?, ?, ?, ?) }")) {
                 cstmt.setString(1, username);
                 cstmt.setString(2, password);
                 cstmt.setString(3, estadoDB);
-                cstmt.setString(4, codPerfil); 
+                cstmt.setString(4, codPerfil);
                 cstmt.execute();
                 Utilitario.MostrarMensaje("Usuario guardado correctamente", Utilitario.TipoMensaje.informativo);
+
                 DefaultTableModel modelo = (DefaultTableModel) tblUsuario.getModel();
-                modelo.setRowCount(0);  
-                DatosUsuario.Mostrar(modelo);  
+                modelo.setRowCount(0);
+                DatosUsuario.Mostrar(modelo);
+
+                Limpiar();
+                bloquearCampos(false);
+                btnGuardar.setEnabled(false);
+                btnNuevo.setEnabled(true);
+            } catch (SQLException ex) {
+                Utilitario.MostrarMensaje(ex.getMessage(), Utilitario.TipoMensaje.error);
+            }
+        } else {
+            try ( CallableStatement cstmt = ConexionBD.getConnection().prepareCall("{ CALL actualizar_usuario(?, ?, ?, ?, ?) }")) {
+                cstmt.setInt(1, Integer.parseInt(id));
+                cstmt.setString(2, username);
+                cstmt.setString(3, password);
+                cstmt.setString(4, estadoDB);
+                cstmt.setString(5, codPerfil);
+                cstmt.execute();
+
+                Utilitario.MostrarMensaje("Datos actualizados correctamente", Utilitario.TipoMensaje.informativo);
+
+                DefaultTableModel modelo = (DefaultTableModel) tblUsuario.getModel();
+                modelo.setRowCount(0);
+                DatosUsuario.Mostrar(modelo);
+
+                Limpiar();
+                bloquearCampos(false);
+                btnGuardar.setEnabled(false);
+                btnNuevo.setEnabled(true);
             } catch (SQLException ex) {
                 Utilitario.MostrarMensaje(ex.getMessage(), Utilitario.TipoMensaje.error);
             }
@@ -309,44 +324,49 @@ public class frmUsuario extends frmMantenimientoBasico {
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-    int fila = tblUsuario.getSelectedRow();
-    if (fila >= 0) {
-        String idUsuario = tblUsuario.getValueAt(fila, 0).toString();
-        // Directamente llamar a la eliminación sin preguntar de nuevo
-        DatosUsuario.Eliminar(tblUsuario);  // Este método ya tiene la confirmación incorporada
-    } else {
-        Utilitario.MostrarMensaje("Debe seleccionar un usuario para eliminar", Utilitario.TipoMensaje.alerta);
-    }
+        int fila = tblUsuario.getSelectedRow();
+        if (fila >= 0) {
+            String idUsuario = tblUsuario.getValueAt(fila, 0).toString();
+            DatosUsuario.Eliminar(tblUsuario);
+        } else {
+            Utilitario.MostrarMensaje("Debe seleccionar un usuario para eliminar", Utilitario.TipoMensaje.alerta);
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
- int fila = tblUsuario.getSelectedRow();  
-        if (fila >= 0) {  
-            
-            txtId.setText(tblUsuario.getValueAt(fila, 0).toString());  
-            txtUsername.setText(tblUsuario.getValueAt(fila, 1).toString()); 
-            txtPass.setText(tblUsuario.getValueAt(fila, 2).toString()); 
-            cboEstado.setSelectedItem(tblUsuario.getValueAt(fila, 3).toString());  
+        int fila = tblUsuario.getSelectedRow();
+        if (fila >= 0) {
 
-            String nombrePerfil = tblUsuario.getValueAt(fila, 4).toString();  
+            txtId.setText(tblUsuario.getValueAt(fila, 0).toString());
+            txtUsername.setText(tblUsuario.getValueAt(fila, 1).toString());
+            txtPass.setText(tblUsuario.getValueAt(fila, 2).toString());
+            cboEstado.setSelectedItem(tblUsuario.getValueAt(fila, 3).toString());
+            String nombrePerfil = tblUsuario.getValueAt(fila, 4).toString();
+            cboPerfil.setSelectedItem(nombrePerfil);
 
-            cboPerfil.setSelectedItem(nombrePerfil);  
+            txtUsername.setEnabled(false);
 
-            bloquearCampos(true);  
+            bloquearCampos(true);
+            btnGuardar.setEnabled(true);
+            btnNuevo.setEnabled(false);
         } else {
-            Utilitario.MostrarMensaje("Debe seleccionar un usuario para editar", Utilitario.TipoMensaje.alerta); 
+            Utilitario.MostrarMensaje("Debe seleccionar un usuario para editar", Utilitario.TipoMensaje.alerta);
         }
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         Limpiar();
-        bloquearCampos(true); 
+        bloquearCampos(true);
+        txtId.setEnabled(false);
+        txtUsername.setEnabled(true);
+        btnGuardar.setEnabled(true);
+        btnNuevo.setEnabled(false);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void cboEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEstadoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cboEstadoActionPerformed
-     private void Limpiar() {
+    private void Limpiar() {
         txtId.setText("");
         txtUsername.setText("");
         txtPass.setText("");
@@ -360,9 +380,10 @@ public class frmUsuario extends frmMantenimientoBasico {
         cboEstado.setEnabled(habilitar);
         cboPerfil.setEnabled(habilitar);
     }
-  private void bloquearCampos(boolean habilitar) {
-        txtId.setEnabled(false);  
-        txtUsername.setEnabled(habilitar);
+
+    private void bloquearCampos(boolean habilitar) {
+        txtId.setEnabled(false);
+        txtUsername.setEnabled(false);
         txtPass.setEnabled(habilitar);
         cboEstado.setEnabled(habilitar);
         cboPerfil.setEnabled(habilitar);
