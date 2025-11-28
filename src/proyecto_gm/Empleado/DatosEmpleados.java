@@ -353,5 +353,29 @@ public class DatosEmpleados {
         }
         return lista;
     }
+    
+    public static Empleados buscarPorDni(String dni) {
+        Empleados emp = null;
+        Connection cn = ConexionBD.getConnection(); // usa tu conexión actual
 
+        try (CallableStatement cstmt = cn.prepareCall("{ CALL buscar_empleado_por_dni(?) }")) {
+            cstmt.setString(1, dni);
+            ResultSet rs = cstmt.executeQuery();
+
+            if (rs.next()) {
+                emp = new Empleados();
+                emp.setId(rs.getString("Id"));              // según tu estructura
+                emp.setDni(rs.getString("Dni"));
+                emp.setNombres(rs.getString("Nombres"));
+                emp.setApellidos(rs.getString("Apellidos"));
+                emp.setCelular(rs.getString("Celular"));
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, 
+                "Error al buscar empleado por DNI: " + e.getMessage(), 
+                "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
+        }
+        return emp;
+    }
 }
