@@ -4,14 +4,68 @@
  */
 package proyecto_gm.Perfil;
 import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author Cristian
  */
 public class frmPerfil extends javax.swing.JInternalFrame {
-
-    public frmPerfil() {
+ DefaultTableModel modelo;
+    boolean esNuevo = false;
+   public frmPerfil() {
         initComponents();
+        // Configurar modelo de la tabla
+        String[] titulos = {"Código", "Nombre de Perfil"};
+        modelo = new DefaultTableModel(null, titulos) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tblPerfil.setModel(modelo);
+        cargarTabla();
+        configurarEstadoInicial();
+    }
+private void cargarTabla() {
+    modelo.setRowCount(0); 
+    List<Perfil> lista = DatosPerfil.listar(); 
+
+    for (Perfil perfil : lista) {
+        modelo.addRow(new Object[]{perfil.getCodigo(), perfil.getNombre()}); 
+    }
+    tblPerfil.setEnabled(true); 
+}
+private void configurarEstadoInicial() {
+        txtCodigo.setEnabled(false);
+        txtPerfil.setEnabled(false);
+        btnNuevo.setEnabled(true);
+        btnEditar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+        btnGuardar.setEnabled(false);
+        btnCancelar.setEnabled(false);
+        limpiarCampos();
+    }
+    private void configurarEstadoFormulario() {
+   // Si es nuevo (agregar), habilitamos todos los campos
+    if (esNuevo) {
+        txtCodigo.setEnabled(true);  // Habilitar el campo de código para agregar
+    } else {
+        txtCodigo.setEnabled(false); // Deshabilitar el campo de código para editar
+    }
+    
+    txtPerfil.setEnabled(true);  // Habilitar el campo de nombre
+    btnNuevo.setEnabled(false);
+    btnEditar.setEnabled(false);
+    btnEliminar.setEnabled(false);
+    btnGuardar.setEnabled(true);
+    btnCancelar.setEnabled(true);
+    tblPerfil.setEnabled(false);
+    }
+
+    private void limpiarCampos() {
+        txtCodigo.setText("");
+        txtPerfil.setText("");
     }
 
     /**
@@ -25,8 +79,19 @@ public class frmPerfil extends javax.swing.JInternalFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
+        tblPerfil = new javax.swing.JTable();
+        txtCodigo = new javax.swing.JTextField();
+        txtPerfil = new javax.swing.JTextField();
+        btnCancelar = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnNuevo = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -35,34 +100,209 @@ public class frmPerfil extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(jList1);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jLabel1.setText("Id:");
 
-        jList2.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        jLabel2.setText("Descripción:");
+
+        setBackground(new java.awt.Color(255, 255, 255));
+        setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setForeground(java.awt.Color.white);
+        setTitle("PERFIL");
+        setName(""); // NOI18N
+
+        tblPerfil.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Codigo", "Nombre de Pefil"
+            }
+        ));
+        jScrollPane2.setViewportView(tblPerfil);
+
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/regresar.png"))); // NOI18N
+        btnCancelar.setName("deshacer"); // NOI18N
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
         });
-        jScrollPane2.setViewportView(jList2);
+
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
+        btnGuardar.setName("guardar"); // NOI18N
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/eliminar.png"))); // NOI18N
+        btnEliminar.setName("eliminar"); // NOI18N
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
+        btnEditar.setName("editar"); // NOI18N
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
+        btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
+        btnNuevo.setName("agregar"); // NOI18N
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Codigo:");
+
+        jLabel4.setText("Perfil:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(180, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(174, 174, 174))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnNuevo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEditar)
+                        .addGap(13, 13, 13)
+                        .addComponent(btnEliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnGuardar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnCancelar)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(12, 12, 12)
+                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtPerfil, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
+                        .addGap(16, 16, 16))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(55, 55, 55)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(99, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnEditar)
+                    .addComponent(btnNuevo)
+                    .addComponent(btnEliminar)
+                    .addComponent(btnGuardar)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4))
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        configurarEstadoInicial();
+
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+      // Validación de campo
+    if (txtPerfil.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "El campo perfil es obligatorio.", "Validación", JOptionPane.WARNING_MESSAGE);
+        txtPerfil.requestFocus();
+        return;
+    }
+    
+    if (txtCodigo.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "El campo código es obligatorio.", "Validación", JOptionPane.WARNING_MESSAGE);
+        txtCodigo.requestFocus();
+        return;
+    }
+
+    // Crear perfil con los datos
+    Perfil perfil = new Perfil(txtCodigo.getText().trim(), txtPerfil.getText().trim());
+
+    boolean exito;
+
+    if (esNuevo) {
+        // Insertar
+        exito = DatosPerfil.insertar(perfil);
+    } else {
+        // Actualizar
+        perfil.setCodigo(txtCodigo.getText());
+        exito = DatosPerfil.actualizar(perfil);
+    }
+
+    if (exito) {
+        String msg = esNuevo ? "Perfil guardado correctamente." : "Perfil actualizado correctamente.";
+        JOptionPane.showMessageDialog(this, msg, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        cargarTabla();
+        configurarEstadoInicial();
+    }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+   int fila = tblPerfil.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String codigoPerfil = (String) tblPerfil.getValueAt(fila, 0);
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar este perfil?", "Confirmación", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            if (DatosPerfil.eliminar(codigoPerfil)) {
+                JOptionPane.showMessageDialog(this, "Perfil eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                cargarTabla();
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al eliminar el perfil.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+    int fila = tblPerfil.getSelectedRow();
+    if (fila == -1) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    // Cargar datos de la tabla al formulario
+    txtCodigo.setText(tblPerfil.getValueAt(fila, 0).toString());  // Código del perfil
+    txtPerfil.setText(tblPerfil.getValueAt(fila, 1).toString());    // Nombre del perfil
+
+    esNuevo = false; // Cambiar a modo de edición
+    configurarEstadoFormulario();  
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+    esNuevo = true;
+    configurarEstadoFormulario(); // Cambiar a estado de formulario para agregar
+    limpiarCampos();
+    txtCodigo.requestFocus();   
+    }//GEN-LAST:event_btnNuevoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -100,9 +340,20 @@ public class frmPerfil extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnNuevo;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tblPerfil;
+    public static javax.swing.JTextField txtCodigo;
+    public static javax.swing.JTextField txtPerfil;
     // End of variables declaration//GEN-END:variables
 }
