@@ -38,6 +38,7 @@ import proyecto_gm.Viaticos.frmListaViaticos;
 import proyecto_gm.Permisoxperfil.frmPermisosxPerfil;
 import proyecto_gm.Usuario.frmUsuario;
 import proyecto_gm.Perfil.frmPerfil;
+import proyecto_gm.Horarios.frmListaHorarios;
 public class menu extends javax.swing.JFrame {
 
     static Connection conn = ConexionBD.getConnection();
@@ -95,6 +96,7 @@ public class menu extends javax.swing.JFrame {
         this.subMenuFacultades.setVisible(false);
         this.subMenuProveedores.setVisible(false);
         this.subMenuEmpleados.setVisible(false);
+        this.subMenuHorarios.setVisible(false);
 
         /*this.subMenuBancos.setVisible(false);
         this.subMenuFlujoCaja.setVisible(false);
@@ -237,6 +239,10 @@ public class menu extends javax.swing.JFrame {
             case "subMenuFacultades":
                 this.subMenuFacultades.setVisible(true);
                 break;
+                
+            case "subMenuHorarios":
+                this.subMenuHorarios.setVisible(true);
+                break;
 
             case "subMenuProveedores":
                 this.subMenuProveedores.setVisible(true);
@@ -323,6 +329,7 @@ public class menu extends javax.swing.JFrame {
         subMenuTipoDocumento = new javax.swing.JMenuItem();
         submenuContratosPersonal = new javax.swing.JMenuItem();
         subMenuRelojActividad = new javax.swing.JMenuItem();
+        subMenuHorarios = new javax.swing.JMenuItem();
         menuFacturacion = new javax.swing.JMenu();
         subMenuReciboHonorario = new javax.swing.JMenuItem();
         subMenuComprobante = new javax.swing.JMenuItem();
@@ -460,6 +467,14 @@ public class menu extends javax.swing.JFrame {
             }
         });
         menuAdministracion.add(subMenuRelojActividad);
+
+        subMenuHorarios.setText("Horarios");
+        subMenuHorarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuHorariosActionPerformed(evt);
+            }
+        });
+        menuAdministracion.add(subMenuHorarios);
 
         jMenuBar1.add(menuAdministracion);
 
@@ -824,6 +839,12 @@ public class menu extends javax.swing.JFrame {
         verventana.show();
         }
         
+        private void AbrirHorarios(){
+         frmListaHorarios verventana = new frmListaHorarios();
+        escritorio.add(verventana);
+        verventana.show();
+        }
+        
         
         private void Abririnstitucioneseducativas(){
          frmListaInstituciones verventana = new frmListaInstituciones();
@@ -1071,6 +1092,10 @@ public class menu extends javax.swing.JFrame {
         AbrirPerfil();
     }//GEN-LAST:event_subMenuPerfilActionPerformed
 
+    private void subMenuHorariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuHorariosActionPerformed
+        AbrirHorarios();
+    }//GEN-LAST:event_subMenuHorariosActionPerformed
+
    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1136,6 +1161,7 @@ public class menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem subMenuExpLaboral;
     private javax.swing.JMenuItem subMenuFacultades;
     private javax.swing.JMenuItem subMenuFlujoCaja;
+    private javax.swing.JMenuItem subMenuHorarios;
     private javax.swing.JMenuItem subMenuInstituciones;
     private javax.swing.JMenuItem subMenuModulos;
     private javax.swing.JMenuItem subMenuPerfil;
