@@ -8,34 +8,52 @@ public class Proveedores {
     private String direccion;
     private String correo;
     private String telefono;
+    private String celular;       
     private String ruc;
-    
-    // Campo adicional para mostrar el nombre del departamento en la tabla
+    private String provincia;     
+    private String distrito;      
+    private String rubro;        
+    private String estado;        
+
     private String nombreDepartamento;
 
-    // Constructor vacío
+
     public Proveedores() {
     }
 
     // Constructor para crear un nuevo proveedor (sin ID, la BD lo genera)
-    public Proveedores(int idDepartamento, String nombres, String direccion, String correo, String telefono, String ruc) {
+    public Proveedores(int idDepartamento, String nombres, String direccion, String correo,
+                       String telefono, String celular, String ruc, String provincia,
+                       String distrito, String rubro, String estado) {
         this.idDepartamento = idDepartamento;
         this.nombres = nombres;
         this.direccion = direccion;
         this.correo = correo;
         this.telefono = telefono;
+        this.celular = celular;
         this.ruc = ruc;
+        this.provincia = provincia;
+        this.distrito = distrito;
+        this.rubro = rubro;
+        this.estado = estado;
     }
 
-    // Constructor completo para leer datos de la BD
-    public Proveedores(int idProveedor, int idDepartamento, String nombres, String direccion, String correo, String telefono, String ruc) {
+    public Proveedores(int idProveedor, int idDepartamento, String nombres, String direccion, String correo,
+                       String telefono, String celular, String ruc, String provincia,
+                       String distrito, String rubro, String estado, String nombreDepartamento) {
         this.idProveedor = idProveedor;
         this.idDepartamento = idDepartamento;
         this.nombres = nombres;
         this.direccion = direccion;
         this.correo = correo;
         this.telefono = telefono;
+        this.celular = celular;
         this.ruc = ruc;
+        this.provincia = provincia;
+        this.distrito = distrito;
+        this.rubro = rubro;
+        this.estado = estado;
+        this.nombreDepartamento = nombreDepartamento;
     }
 
     // Getters y Setters
@@ -87,12 +105,52 @@ public class Proveedores {
         this.telefono = telefono;
     }
 
+    public String getCelular() {
+        return celular;
+    }
+
+    public void setCelular(String celular) {
+        this.celular = celular;
+    }
+
     public String getRuc() {
         return ruc;
     }
 
     public void setRuc(String ruc) {
         this.ruc = ruc;
+    }
+
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
+    }
+
+    public String getDistrito() {
+        return distrito;
+    }
+
+    public void setDistrito(String distrito) {
+        this.distrito = distrito;
+    }
+
+    public String getRubro() {
+        return rubro;
+    }
+
+    public void setRubro(String rubro) {
+        this.rubro = rubro;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public String getNombreDepartamento() {

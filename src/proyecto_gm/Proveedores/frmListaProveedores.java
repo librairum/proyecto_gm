@@ -14,27 +14,32 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
     public frmListaProveedores(JDesktopPane panel) {
         initComponents();
         this.panelPadre = panel;
-        
-        // Configurar el modelo de la tabla
+
         modelo = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Hacer que las celdas no sean editables
+                return false; 
             }
         };
-        modelo.addColumn("ID");
+        modelo.addColumn("ID");            
         modelo.addColumn("Nombres");
-        modelo.addColumn("Departamento");
+        modelo.addColumn("Departamento"); 
         modelo.addColumn("Dirección");
+        modelo.addColumn("Correo");
         modelo.addColumn("Teléfono");
+        modelo.addColumn("Celular");
         modelo.addColumn("RUC");
+        modelo.addColumn("Provincia");
+        modelo.addColumn("Distrito");
+        modelo.addColumn("Rubro");
+        modelo.addColumn("Estado");
         tblProveedor.setModel(modelo);
-        
+
         cargarTabla();
     }
 
     public void cargarTabla() {
-        modelo.setRowCount(0); // Limpiar la tabla
+        modelo.setRowCount(0);
         List<Proveedores> lista = datos.listar();
         for (Proveedores prov : lista) {
             modelo.addRow(new Object[]{
@@ -42,12 +47,19 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
                 prov.getNombres(),
                 prov.getNombreDepartamento(),
                 prov.getDireccion(),
+                prov.getCorreo(),
                 prov.getTelefono(),
-                prov.getRuc()
+                prov.getCelular(),
+                prov.getRuc(),
+                prov.getProvincia(),
+                prov.getDistrito(),
+                prov.getRubro(),
+                prov.getEstado()
             });
         }
+
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -166,14 +178,16 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
 
         tblProveedor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Departamento", "Nombres", "Direccion", "Correo", "Telefono", "Ruc"
+                "Id", "Departamento", "Nombres", "Direccion", "Correo", "Telefono", "Celular", "Ruc", "Provincia", "Distrito", "Rubro", "Estado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true, true
+                false, true, true, true, true, true, true, true, true, true, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -181,6 +195,10 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane1.setViewportView(tblProveedor);
+        if (tblProveedor.getColumnModel().getColumnCount() > 0) {
+            tblProveedor.getColumnModel().getColumn(10).setHeaderValue("Rubro");
+            tblProveedor.getColumnModel().getColumn(11).setHeaderValue("Estado");
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -203,7 +221,7 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-  
+
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         frmProveedores frm = new frmProveedores(this);
         panelPadre.add(frm);
@@ -216,7 +234,7 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Debe seleccionar un proveedor para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         int idProveedor = (int) tblProveedor.getValueAt(fila, 0);
         frmProveedores frm = new frmProveedores(this, idProveedor);
         panelPadre.add(frm);
@@ -229,7 +247,7 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Debe seleccionar un proveedor para eliminar.", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar este proveedor?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             int idProveedor = (int) tblProveedor.getValueAt(fila, 0);
@@ -243,7 +261,7 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        
+
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
