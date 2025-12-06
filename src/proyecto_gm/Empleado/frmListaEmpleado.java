@@ -159,6 +159,11 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Buscar");
 
+        txtBusqueda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBusquedaActionPerformed(evt);
+            }
+        });
         txtBusqueda.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtBusquedaKeyTyped(evt);
@@ -498,6 +503,10 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
                     break;
             }         
     }//GEN-LAST:event_cboEstadoActionPerformed
+
+    private void txtBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBusquedaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBusquedaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
