@@ -14,26 +14,30 @@ public class frmListaHorarios extends javax.swing.JInternalFrame {
     List<Horarios> listaHorarios;
     TableRowSorter<DefaultTableModel> sorter;
 
-    public frmListaHorarios() {
+public frmListaHorarios() {
         initComponents();
 
         modelo = new DefaultTableModel();
         modelo.addColumn("ID");
         modelo.addColumn("DNI");
         modelo.addColumn("Celular");
-        modelo.addColumn("Lunes (HE-HS)");
-        modelo.addColumn("Martes (HE-HS)");
-        modelo.addColumn("Miércoles (HE-HS)");
-        modelo.addColumn("Jueves (HE-HS)");
-        modelo.addColumn("Viernes (HE-HS)");
-        modelo.addColumn("Sábado (HE-HS)");
-        modelo.addColumn("Domingo (HE-HS)");
+        modelo.addColumn("Lunes");
+        modelo.addColumn("Martes");
+        modelo.addColumn("Miércoles");
+        modelo.addColumn("Jueves");
+        modelo.addColumn("Viernes");
+        modelo.addColumn("Sábado");
+        modelo.addColumn("Domingo");
         tblHorario.setModel(modelo);
-
+ 
         sorter = new TableRowSorter<>(modelo);
         tblHorario.setRowSorter(sorter);
-
-        cargarDatos();
+        
+        cargarDatos(); 
+        
+        this.setSize(1100, 600);
+        this.setLocation(0, 0);
+        this.setVisible(true);
     }
 
     public void cargarDatos() {
@@ -55,7 +59,7 @@ public class frmListaHorarios extends javax.swing.JInternalFrame {
             });
         }
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -174,59 +178,118 @@ public class frmListaHorarios extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        List<Empleados> empleados = DatosEmpleados.listar();
 
-        if (empleados.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No hay empleados registrados.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+
+        List<Empleados> todosLosEmpleados = proyecto_gm.Empleado.DatosEmpleados.listar();
+        List<Horarios> horariosOcupados = DatosHorarios.listar();
+        
+        java.util.ArrayList<Empleados> empleadosDisponibles = new java.util.ArrayList<>();
+
+        for (Empleados emp : todosLosEmpleados) {
+            boolean estaOcupado = false;
+            
+            for (Horarios h : horariosOcupados) {
+                if (h.getDni() != null && h.getDni().equals(emp.getDni())) {
+                    estaOcupado = true;
+                    break; 
+                }
+            }
+            
+            if (!estaOcupado) {
+                empleadosDisponibles.add(emp);
+            }
+        }
+
+        if (empleadosDisponibles.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                "¡No hay empleados pendientes!\nTodos tienen un horario asignado.", 
+                "Información", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
-        String[] opciones = empleados.stream()
-                .map(e -> e.getDni() + " - " + e.getNombres() + " " + e.getApellidos())
-                .toArray(String[]::new);
+        String[] opciones = new String[empleadosDisponibles.size()];
+        for (int i = 0; i < empleadosDisponibles.size(); i++) {
+            Empleados e = empleadosDisponibles.get(i);
+            String texto = e.getDni() + " - " + e.getNombres() + " " + e.getApellidos();
+            opciones[i] = texto;
+        }
 
         String seleccion = (String) JOptionPane.showInputDialog(
-                this,
-                "Selecciona un empleado:",
-                "Asignar Horario",
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                opciones,
+                this, 
+                "Seleccione un empleado para crear su horario:", 
+                "Empleados Sin Horario",
+                JOptionPane.PLAIN_MESSAGE, 
+                null, 
+                opciones, 
                 opciones[0]
         );
 
         if (seleccion != null) {
-            String dniSeleccionado = seleccion.split(" - ")[0];
-            Empleados empSeleccionado = empleados.stream()
-                    .filter(e -> e.getDni().equals(dniSeleccionado))
-                    .findFirst().orElse(null);
 
-            if (empSeleccionado != null) {
-                frmHorarios frm = new frmHorarios(this, empSeleccionado, null);
-                JDesktopPane desktopPane = getDesktopPane();
-                desktopPane.add(frm);
-                frm.setVisible(true);
+            int indice = -1;
+            for (int i = 0; i < opciones.length; i++) {
+                if (opciones[i].equals(seleccion)) {
+                    indice = i;
+                    break;
+                }
             }
-        }                       
+            
+            if (indice != -1) {
+
+                Empleados empSeleccionado = empleadosDisponibles.get(indice);
+
+                frmHorarios frm = new frmHorarios(this, empSeleccionado, null);
+                
+                javax.swing.JDesktopPane desktop = this.getDesktopPane();
+                if (desktop != null) {
+                    desktop.add(frm);
+                    frm.setVisible(true);
+                    frm.toFront();
+                } else {
+                    this.getParent().add(frm);
+                    frm.setVisible(true);
+                    frm.toFront();
+                }
+            }
+        }           
+    }   
+
+    private void abrirFormularioHorario(Empleados emp, Horarios hor) {
+        frmHorarios frm = new frmHorarios(this, emp, hor);
+        javax.swing.JDesktopPane desktop = this.getDesktopPane();
+        if (desktop != null) {
+            desktop.add(frm);
+            frm.setVisible(true);
+            frm.toFront();
+        } else {
+            this.getParent().add(frm);
+            frm.setVisible(true);
+            frm.toFront();
+        }      
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        int fila = tblHorario.getSelectedRow();
-        if (fila >= 0) {
-            Horarios seleccionado = listaHorarios.get(tblHorario.convertRowIndexToModel(fila));
-
-            Empleados emp = DatosEmpleados.buscarPorDni(seleccionado.getDni());
-            if (emp == null) {
-                JOptionPane.showMessageDialog(this, "No se encontró el empleado vinculado a este horario.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
+        int fila = tblHorario.getSelectedRow();     
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un horario para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        Horarios seleccionado = listaHorarios.get(tblHorario.convertRowIndexToModel(fila));
+        Empleados emp = proyecto_gm.Empleado.DatosEmpleados.buscarEmpleadoLocal(seleccionado.getDni());
+        if (emp != null) {
             frmHorarios frm = new frmHorarios(this, emp, seleccionado);
-            JDesktopPane desktopPane = getDesktopPane();
-            desktopPane.add(frm);
-            frm.setVisible(true);
+            javax.swing.JDesktopPane desktop = this.getDesktopPane();
+            if (desktop != null) {
+                desktop.add(frm);
+                frm.setVisible(true);
+                frm.toFront();
+            } else {
+                this.getParent().add(frm);
+                frm.setVisible(true);
+                frm.toFront();
+            }
         } else {
-            JOptionPane.showMessageDialog(this, "Seleccione un horario para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No se encontraron datos del empleado (DNI: " + seleccionado.getDni() + ")", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnEditarActionPerformed
 

@@ -336,7 +336,7 @@ public class DatosEmpleados {
     }
     
     public static List<Empleados> listar() {
-        List<Empleados> lista = new ArrayList<>();
+        List<Empleados> lista = new ArrayList<>();    
         try (CallableStatement cstmt = conn.prepareCall("{ CALL listar_emple('T') }");
              ResultSet rs = cstmt.executeQuery()) {
 
@@ -345,6 +345,8 @@ public class DatosEmpleados {
                 emp.setId(rs.getString("Id"));
                 emp.setNombres(rs.getString("Nombres"));
                 emp.setApellidos(rs.getString("Apellidos"));
+                emp.setDni(rs.getString("Dni")); 
+                emp.setCelular(rs.getString("Celular")); 
                 lista.add(emp);
             }
 
@@ -364,7 +366,7 @@ public class DatosEmpleados {
 
             if (rs.next()) {
                 emp = new Empleados();
-                emp.setId(rs.getString("Id"));              // según tu estructura
+                emp.setId(rs.getString("Id"));
                 emp.setDni(rs.getString("Dni"));
                 emp.setNombres(rs.getString("Nombres"));
                 emp.setApellidos(rs.getString("Apellidos"));
@@ -378,4 +380,16 @@ public class DatosEmpleados {
         }
         return emp;
     }
+    
+    public static Empleados buscarEmpleadoLocal(String dni) {
+    // Usamos el método listar() que YA EXISTE en esta clase DatosEmpleados
+    java.util.List<Empleados> lista = listar(); 
+    
+    for (Empleados e : lista) {
+        if (e.getDni() != null && e.getDni().equals(dni)) {
+            return e; // ¡Encontrado!
+        }
+    }
+    return null; 
+}
 }

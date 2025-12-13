@@ -110,4 +110,16 @@ public class DatosHorarios {
             JOptionPane.showMessageDialog(null, "Error al eliminar horario: " + ex.getMessage(), "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
+    // ESTE SÍ VA AQUÍ: Busca si ya existe un horario
+    public static Horarios buscarPorDni(String dni) {
+        List<Horarios> lista = listar(); 
+        for (Horarios h : lista) {
+            if (h.getDni() != null && h.getDni().equals(dni)) {
+                return h; // Encontrado
+            }
+        }
+        return null; // No existe
+    }
+
 }

@@ -22,6 +22,18 @@ import proyecto_gm.Area.Area;
 import proyecto_gm.Cargo.Cargo;
 import proyecto_gm.Utilitario;
 
+import java.io.InputStream;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
+import proyecto_gm.ConexionBD; // Asegúrate de importar tu conexión
+
 
 public class frmListaEmpleado extends javax.swing.JInternalFrame {
 
@@ -43,6 +55,7 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
         btnEditar = new javax.swing.JButton();
         btnNuevo = new javax.swing.JButton();
         btnRefrescar = new javax.swing.JButton();
+        btnReporte = new javax.swing.JToggleButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtBusqueda = new javax.swing.JTextField();
@@ -132,6 +145,13 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
             }
         });
 
+        btnReporte.setText("Reporte");
+        btnReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReporteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -145,6 +165,8 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
                 .addComponent(btnEliminar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRefrescar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnReporte)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -153,6 +175,7 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
             .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnRefrescar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnReporte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -220,10 +243,10 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -499,6 +522,32 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
             }         
     }//GEN-LAST:event_cboEstadoActionPerformed
 
+    private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
+        try {
+            Connection conn = ConexionBD.getConnection();
+            
+            String rutaReporte = "/reportes/RPTEmpleado.jasper";
+            InputStream is = getClass().getResourceAsStream(rutaReporte);
+            
+            if (is == null) {
+                JOptionPane.showMessageDialog(this, "No se encontró el archivo del reporte en: " + rutaReporte);
+                return;
+            }
+
+            Map<String, Object> parametros = new HashMap<>();
+            JasperPrint print = JasperFillManager.fillReport(is, parametros, conn);
+            JasperViewer view = new JasperViewer(print, false); 
+            view.setTitle("Reporte de Empleados");
+            view.setVisible(true);
+            
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al generar reporte: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+        
+        btnReporte.setSelected(false);
+    }//GEN-LAST:event_btnReporteActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
@@ -506,6 +555,7 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
     public static javax.swing.JButton btnEliminar;
     public static javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnRefrescar;
+    private javax.swing.JToggleButton btnReporte;
     private javax.swing.JComboBox<String> cboEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
