@@ -91,9 +91,6 @@ public void cargarTabla() {
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnReporte = new javax.swing.JButton();
-        rbTodos = new javax.swing.JRadioButton();
-        rbEmpresa = new javax.swing.JRadioButton();
-        rbNatural = new javax.swing.JRadioButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtBusqueda = new javax.swing.JTextField();
@@ -155,17 +152,6 @@ public void cargarTabla() {
             }
         });
 
-        rbTodos.setText("Todos");
-
-        rbEmpresa.setText("Proveedores Empresa");
-
-        rbNatural.setText("Proveedores Naturales");
-        rbNatural.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbNaturalActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -176,13 +162,7 @@ public void cargarTabla() {
                 .addComponent(btnEditar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnEliminar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(rbTodos)
-                .addGap(20, 20, 20)
-                .addComponent(rbEmpresa)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(rbNatural)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(btnReporte)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -190,17 +170,11 @@ public void cargarTabla() {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnReporte)
                     .addComponent(btnEliminar)
                     .addComponent(btnEditar)
                     .addComponent(btnAgregar))
                 .addGap(0, 3, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rbTodos)
-                    .addComponent(btnReporte)
-                    .addComponent(rbEmpresa)
-                    .addComponent(rbNatural)))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -340,10 +314,6 @@ public void cargarTabla() {
    ReporteProveedores reporte = new ReporteProveedores();
     reporte.mostrar();    }//GEN-LAST:event_btnReporteActionPerformed
 
-    private void rbNaturalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNaturalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbNaturalActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
@@ -354,9 +324,6 @@ public void cargarTabla() {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JRadioButton rbEmpresa;
-    private javax.swing.JRadioButton rbNatural;
-    private javax.swing.JRadioButton rbTodos;
     protected static javax.swing.JTable tblProveedor;
     private javax.swing.JTextField txtBusqueda;
     // End of variables declaration//GEN-END:variables
