@@ -10,7 +10,7 @@ public class frmHorarios extends javax.swing.JInternalFrame {
     private Empleados empleadoActual;
     private boolean esNuevo;
 
-    // Constructor corregido
+
     public frmHorarios(frmListaHorarios parent, Empleados empleado, Horarios horario) {
         initComponents();
         this.frmLista = parent;
@@ -20,8 +20,8 @@ public class frmHorarios extends javax.swing.JInternalFrame {
         if (horarioActual == null) {
             setTitle("Nuevo Horario");
             esNuevo = true;
-            lblDNI.setText("DNI: " + empleado.getDni());
-            lblDatos.setText("Celular: " + empleado.getCelular());
+            lblDNI.setText(empleado.getDni());
+            lblDatos.setText(empleado.getNombres() + " " + empleado.getApellidos());
         } else {
             setTitle("Editar Horario");
             esNuevo = false;
@@ -30,6 +30,8 @@ public class frmHorarios extends javax.swing.JInternalFrame {
 
         lblDNI.setEnabled(false);
         lblDatos.setEnabled(false);
+
+        this.setVisible(true);  
     }
 
     private void cargarDatos() {
@@ -57,9 +59,33 @@ public class frmHorarios extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Debe completar al menos el horario del lunes.", "Validación", JOptionPane.WARNING_MESSAGE);
             return false;
         }
+        
+        javax.swing.JTextField[] camposHora = {
+            txtLunesE, txtLunesS,
+            txtMartesE, txtMartesS,
+            txtMiercolesE, txtMiercolesS,
+            txtJuevesE, txtJuevesS,
+            txtViernesE, txtViernesS,
+            txtSabadoE, txtSabadoS,
+            txtDomingoE, txtDomingoS
+        };
+
+        String formatoHora = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$";
+        for (javax.swing.JTextField campo : camposHora) {
+            String hora = campo.getText().trim();
+            if (!hora.isEmpty()) {
+                if (!hora.matches(formatoHora)) {
+                    JOptionPane.showMessageDialog(this, 
+                        "Error de formato en: \"" + hora + "\"\n" +
+                        "Por favor use el formato HH:mm (Ejemplo: 08:00, 13:30)", 
+                        "Formato Incorrecto", JOptionPane.ERROR_MESSAGE);
+                    campo.requestFocus();
+                    return false;
+                }
+            }
+        }
         return true;
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -94,6 +120,8 @@ public class frmHorarios extends javax.swing.JInternalFrame {
         txtSabadoS = new javax.swing.JTextField();
         txtDomingoS = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -127,73 +155,89 @@ public class frmHorarios extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel1.setText("DNI:");
+
+        jLabel13.setText("Empleado:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel8)
-                                .addComponent(jLabel6)
-                                .addComponent(jLabel7)
-                                .addComponent(jLabel9)
-                                .addComponent(jLabel10)
-                                .addComponent(jLabel11)
-                                .addComponent(jLabel12))
-                            .addGap(27, 27, 27)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(txtLunesE, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(37, 37, 37)
-                                    .addComponent(txtLunesS, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtMartesE, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtMiercolesE, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtJuevesE, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtViernesE, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtSabadoE, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtDomingoE, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(37, 37, 37)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtMartesS, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtMiercolesS, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtJuevesS, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtViernesS, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtSabadoS, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtDomingoS, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addComponent(btnGuardar, javax.swing.GroupLayout.Alignment.TRAILING)))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGap(11, 11, 11)
-                            .addComponent(jLabel3)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4)
-                            .addGap(62, 62, 62)
-                            .addComponent(jLabel5)
-                            .addGap(17, 17, 17)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(lblDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(43, 43, 43)))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel12))
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtLunesE, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(37, 37, 37)
+                                .addComponent(txtLunesS, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtMartesE, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtMiercolesE, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtJuevesE, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtViernesE, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtSabadoE, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtDomingoE, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(37, 37, 37)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtMartesS, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtMiercolesS, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtJuevesS, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtViernesS, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtSabadoS, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtDomingoS, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnGuardar, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(74, 74, 74)
+                                .addComponent(jLabel4)
+                                .addGap(77, 77, 77)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(lblDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel13)
+                                    .addComponent(lblDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 14, Short.MAX_VALUE)))))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel13)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(1, 1, 1)))
+                .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4)
@@ -233,56 +277,75 @@ public class frmHorarios extends javax.swing.JInternalFrame {
                     .addComponent(txtDomingoS, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtDomingoE, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+       // 1. VALIDACIÓN (La misma para Nuevo y Editar)
+        // Si las horas están mal escritas, se detiene aquí y no guarda nada.
         if (!validarCampos()) return;
 
-        Horarios h = esNuevo ? new Horarios() : horarioActual;
-
-        // Asignar datos base (DNI y celular)
-        h.setDni(esNuevo ? empleadoActual.getDni() : horarioActual.getDni());
-        h.setCelular(esNuevo ? empleadoActual.getCelular() : horarioActual.getCelular());
-
-        // Asignar horas
-        h.setLunes_he(txtLunesE.getText());
-        h.setLunes_hs(txtLunesS.getText());
-        h.setMartes_he(txtMartesE.getText());
-        h.setMartes_hs(txtMartesS.getText());
-        h.setMiercoles_he(txtMiercolesE.getText());
-        h.setMiercoles_hs(txtMiercolesS.getText());
-        h.setJueves_he(txtJuevesE.getText());
-        h.setJueves_hs(txtJuevesS.getText());
-        h.setViernes_he(txtViernesE.getText());
-        h.setViernes_hs(txtViernesS.getText());
-        h.setSabado_he(txtSabadoE.getText());
-        h.setSabado_hs(txtSabadoS.getText());
-        h.setDomingo_he(txtDomingoE.getText());
-        h.setDomingo_hs(txtDomingoS.getText());
-
-        // Guardar o actualizar
+        // 2. PREPARAR EL OBJETO
+        Horarios h;
+        
         if (esNuevo) {
-            DatosHorarios.insertar(h);
+            h = new Horarios(); // Si es nuevo, creamos uno de cero
+            h.setDni(empleadoActual.getDni()); // Le ponemos el DNI del empleado seleccionado
+            h.setCelular(empleadoActual.getCelular());
         } else {
-            DatosHorarios.actualizar(h);
+            h = horarioActual; // Si es editar, usamos el que ya existía (para conservar el ID)
+            // No cambiamos DNI ni Nombre porque eso no se edita
         }
 
-        frmLista.cargarDatos();
-        this.dispose();
+        // 3. LLENAR LAS HORAS (Esto es igual para ambos)
+        h.setLunes_he(txtLunesE.getText().trim());
+        h.setLunes_hs(txtLunesS.getText().trim());
+        
+        h.setMartes_he(txtMartesE.getText().trim());
+        h.setMartes_hs(txtMartesS.getText().trim());
+        
+        h.setMiercoles_he(txtMiercolesE.getText().trim());
+        h.setMiercoles_hs(txtMiercolesS.getText().trim());
+        
+        h.setJueves_he(txtJuevesE.getText().trim());
+        h.setJueves_hs(txtJuevesS.getText().trim());
+        
+        h.setViernes_he(txtViernesE.getText().trim());
+        h.setViernes_hs(txtViernesS.getText().trim());
+        
+        h.setSabado_he(txtSabadoE.getText().trim());
+        h.setSabado_hs(txtSabadoS.getText().trim());
+        
+        h.setDomingo_he(txtDomingoE.getText().trim());
+        h.setDomingo_hs(txtDomingoS.getText().trim());
+
+        // 4. GUARDAR EN BASE DE DATOS
+        if (esNuevo) {
+            DatosHorarios.insertar(h); // Llama al INSERT
+        } else {
+            DatosHorarios.actualizar(h); // Llama al UPDATE
+        }
+
+        // 5. ACTUALIZAR LA TABLA DE ATRÁS Y CERRAR
+        if (frmLista != null) {
+            frmLista.cargarDatos(); // Refresca la lista grande
+        }
+        this.dispose(); // Cierra la ventanita
     }//GEN-LAST:event_btnGuardarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
