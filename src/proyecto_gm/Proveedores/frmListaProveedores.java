@@ -5,6 +5,8 @@ import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableColumn;
 
 public class frmListaProveedores extends javax.swing.JInternalFrame {
 
@@ -12,57 +14,62 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
     private JDesktopPane panelPadre;
     private DatosProveedores datos = new DatosProveedores();
     private DefaultTableModel modelo;
+public frmListaProveedores(JDesktopPane panel) {
 
-    public frmListaProveedores(JDesktopPane panel) {
+    initComponents();
+    this.panelPadre = panel;
 
-        initComponents();
-        this.panelPadre = panel;
-
-        modelo = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        modelo.addColumn("ID");
-        modelo.addColumn("Nombres");
-
-        modelo.addColumn("Dirección");
-        modelo.addColumn("Correo");
-        modelo.addColumn("Teléfono");
-        modelo.addColumn("Celular");
-        modelo.addColumn("RUC");
-        modelo.addColumn("Departamento");
-        modelo.addColumn("Provincia");
-        modelo.addColumn("Distrito");
-        modelo.addColumn("Rubro");
-        modelo.addColumn("Estado");
-        tblProveedor.setModel(modelo);
-        sorter = new TableRowSorter<>(modelo);
-        tblProveedor.setRowSorter(sorter);
-        txtBusqueda.addActionListener(e -> filtrarProveedores(txtBusqueda.getText().trim()));
-        cargarTabla();
-    }
-    public void cargarTabla() {
-        modelo.setRowCount(0);
-        List<Proveedores> lista = datos.listar();
-        for (Proveedores prov : lista) {
-            modelo.addRow(new Object[]{
-                prov.getIdProveedor(),
-                prov.getNombres(),
-                prov.getDireccion(),
-                prov.getCorreo(),
-                prov.getTelefono(),
-                prov.getCelular(),
-                prov.getRuc(),
-                prov.getNombreDepartamento(),
-                prov.getProvincia(),
-                prov.getDistrito(),
-                prov.getRubro(),
-                prov.getEstado()
-            });
+    modelo = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
         }
+    };
+
+    modelo.addColumn("ID");
+    modelo.addColumn("RUC");
+    modelo.addColumn("Nombres");
+    modelo.addColumn("Dirección");
+    modelo.addColumn("Rubro");
+    modelo.addColumn("Correo");
+    modelo.addColumn("Teléfono");
+    modelo.addColumn("Celular");
+    modelo.addColumn("Departamento");
+    modelo.addColumn("Provincia");
+    modelo.addColumn("Distrito");
+    modelo.addColumn("Estado");
+
+    tblProveedor.setModel(modelo);
+
+    sorter = new TableRowSorter<>(modelo);
+    tblProveedor.setRowSorter(sorter);
+
+    datos.ajustarColumnasProveedores(tblProveedor);
+
+    txtBusqueda.addActionListener(e -> filtrarProveedores(txtBusqueda.getText().trim()));
+    cargarTabla();
+}
+public void cargarTabla() {
+    modelo.setRowCount(0);
+    List<Proveedores> lista = datos.listar();
+
+    for (Proveedores prov : lista) {
+        modelo.addRow(new Object[]{
+            prov.getIdProveedor(),
+            prov.getRuc(),
+            prov.getNombres(),
+            prov.getDireccion(),
+            prov.getRubro(),
+            prov.getCorreo(),
+            prov.getTelefono(),
+            prov.getCelular(),
+            prov.getNombreDepartamento(),
+            prov.getProvincia(),
+            prov.getDistrito(),
+            prov.getEstado()
+        });
     }
+}
     private void filtrarProveedores(String texto) {
         try {
             if (texto.isEmpty()) {
@@ -83,6 +90,10 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
         btnAgregar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
+        btnReporte = new javax.swing.JButton();
+        rbTodos = new javax.swing.JRadioButton();
+        rbEmpresa = new javax.swing.JRadioButton();
+        rbNatural = new javax.swing.JRadioButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtBusqueda = new javax.swing.JTextField();
@@ -137,6 +148,24 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
             }
         });
 
+        btnReporte.setText("Reporte");
+        btnReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReporteActionPerformed(evt);
+            }
+        });
+
+        rbTodos.setText("Todos");
+
+        rbEmpresa.setText("Proveedores Empresa");
+
+        rbNatural.setText("Proveedores Naturales");
+        rbNatural.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbNaturalActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -147,6 +176,14 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
                 .addComponent(btnEditar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnEliminar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(rbTodos)
+                .addGap(20, 20, 20)
+                .addComponent(rbEmpresa)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(rbNatural)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnReporte)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -156,7 +193,14 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
                     .addComponent(btnEliminar)
                     .addComponent(btnEditar)
                     .addComponent(btnAgregar))
-                .addGap(0, 1, Short.MAX_VALUE))
+                .addGap(0, 3, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rbTodos)
+                    .addComponent(btnReporte)
+                    .addComponent(rbEmpresa)
+                    .addComponent(rbNatural)))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -187,7 +231,7 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
                 .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBuscar)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(499, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,6 +260,9 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane1.setViewportView(tblProveedor);
+        if (tblProveedor.getColumnModel().getColumnCount() > 0) {
+            tblProveedor.getColumnModel().getColumn(0).setMaxWidth(20);
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -232,7 +279,7 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -289,15 +336,27 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBusquedaActionPerformed
 
+    private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
+   ReporteProveedores reporte = new ReporteProveedores();
+    reporte.mostrar();    }//GEN-LAST:event_btnReporteActionPerformed
+
+    private void rbNaturalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNaturalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbNaturalActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnReporte;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JRadioButton rbEmpresa;
+    private javax.swing.JRadioButton rbNatural;
+    private javax.swing.JRadioButton rbTodos;
     protected static javax.swing.JTable tblProveedor;
     private javax.swing.JTextField txtBusqueda;
     // End of variables declaration//GEN-END:variables

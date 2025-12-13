@@ -8,9 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.TableColumnModel;
 import proyecto_gm.ConexionBD;
-import proyecto_gm.Departamentos.Departamentos;
-
 public class DatosProveedores {
 
 
@@ -50,8 +50,22 @@ public List<Proveedores> listar() {
 
     return lista;
 }
+    public static void ajustarColumnasProveedores(JTable tabla) {
+        TableColumnModel col = tabla.getColumnModel();
 
-
+        col.getColumn(0).setPreferredWidth(40);   // ID
+        col.getColumn(1).setPreferredWidth(100);  // RUC
+        col.getColumn(2).setPreferredWidth(180);  // Nombres
+        col.getColumn(3).setPreferredWidth(200);  // Dirección
+        col.getColumn(4).setPreferredWidth(120);  // Rubro
+        col.getColumn(5).setPreferredWidth(150);  // Correo
+        col.getColumn(6).setPreferredWidth(80);   // Teléfono
+        col.getColumn(7).setPreferredWidth(80);   // Celular
+        col.getColumn(8).setPreferredWidth(120);  // Departamento
+        col.getColumn(9).setPreferredWidth(120);  // Provincia
+        col.getColumn(10).setPreferredWidth(120); // Distrito
+        col.getColumn(11).setPreferredWidth(80);  // Estado
+    }
 
     public boolean insertar(Proveedores proveedor) {
         String sql = "{ CALL insertar_proveedores(?, ?, ?, ?, ?, ?, ?, ?, ?) }";
