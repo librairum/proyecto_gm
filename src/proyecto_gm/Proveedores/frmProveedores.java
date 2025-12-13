@@ -13,7 +13,6 @@ public class frmProveedores extends javax.swing.JInternalFrame {
     private Proveedores proveedorActual;
     private frmListaProveedores frmLista;
 
-
     public frmProveedores(frmListaProveedores frmLista) {
         initComponents();
         this.frmLista = frmLista;
@@ -21,7 +20,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         this.proveedorActual = new Proveedores();
         setTitle("Nuevo Proveedor");
         cargarDepartamentos();
-        cargarEstados();
+        cargarEstadoProveedor();
         txtId.setEnabled(false);
     }
 
@@ -31,7 +30,7 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         this.esNuevo = false;
         setTitle("Editar Proveedor");
         cargarDepartamentos();
-        cargarEstados();
+        cargarEstadoProveedor();
         cmbDepartamento.setSelectedIndex(-1);
         cmbprovincia.setModel(new DefaultComboBoxModel<>());
         cmbdistrito.setModel(new DefaultComboBoxModel<>());
@@ -62,12 +61,16 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         cmbDepartamento.setSelectedIndex(-1);
     }
 
-    private void cargarEstados() {
-        List<String> estados = datos.listarEstadosPV();
-        cmbEstado.removeAllItems();
-        for (String est : estados) {
-            cmbEstado.addItem(est);
+    private void cargarEstadoProveedor() {
+        List<EstadoProveedor> lista = datos.listarEstadosProveedor();
+        DefaultComboBoxModel<EstadoProveedor> modelo = new DefaultComboBoxModel<>();
+
+        for (EstadoProveedor ep : lista) {
+            modelo.addElement(ep);
         }
+
+        cmbEstado.setModel(modelo);
+        cmbEstado.setSelectedIndex(-1);
     }
 
     private void cargarDatosEnFormulario() {
@@ -76,51 +79,73 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         txtDireccion.setText(proveedorActual.getDireccion());
         txtCorreo.setText(proveedorActual.getCorreo());
         txtTelefono.setText(proveedorActual.getTelefono());
-        txtRuc.setText(proveedorActual.getRuc());
         txtCelular.setText(proveedorActual.getCelular());
+        txtRuc.setText(proveedorActual.getRuc());
         txtRubro.setText(proveedorActual.getRubro());
-        // 1. Seleccionar departamento
+
+        // estado
+        EstadoProveedor epSeleccionado = null;
+        for (int i = 0; i < cmbEstado.getItemCount(); i++) {
+            EstadoProveedor ep = cmbEstado.getItemAt(i);
+            if (ep.getDescripcion().equals(proveedorActual.getEstado())) {
+                epSeleccionado = ep;
+                break;
+            }
+        }
+        cmbEstado.setSelectedItem(epSeleccionado);
+
+        // ubigeo
+        String idUbigeo = proveedorActual.getIdUbigeo();
+        if (idUbigeo == null || idUbigeo.length() != 6) {
+            return;
+        }
+
+        String codDep = idUbigeo.substring(0, 2);
+        String codProv = idUbigeo.substring(2, 4);
+        String codDist = idUbigeo.substring(4, 6);
+
+        // Departamento
         for (int i = 0; i < cmbDepartamento.getItemCount(); i++) {
-            Ubigeo depto = cmbDepartamento.getItemAt(i);
-            if (depto.getCodigo().equals(String.valueOf(proveedorActual.getIdDepartamento()))) {
+            Ubigeo dep = cmbDepartamento.getItemAt(i);
+            if (dep.getCodigo().startsWith(codDep)) {
                 cmbDepartamento.setSelectedIndex(i);
                 break;
             }
         }
-        Ubigeo deptoSeleccionado = (Ubigeo) cmbDepartamento.getSelectedItem();
-        if (deptoSeleccionado != null) {
-            // 2. Cargar provincias
-            List<Ubigeo> listaProv = datos.listarProvinciasUbigeo(deptoSeleccionado.getCodigo());
+
+        Ubigeo depSel = (Ubigeo) cmbDepartamento.getSelectedItem();
+        if (depSel != null) {
+            List<Ubigeo> provincias = datos.listarProvinciasUbigeo(depSel.getCodigo());
             DefaultComboBoxModel<Ubigeo> modeloProv = new DefaultComboBoxModel<>();
-            for (Ubigeo u : listaProv) {
-                modeloProv.addElement(u);
+            for (Ubigeo p : provincias) {
+                modeloProv.addElement(p);
             }
             cmbprovincia.setModel(modeloProv);
 
             for (int i = 0; i < cmbprovincia.getItemCount(); i++) {
-                Ubigeo prov = cmbprovincia.getItemAt(i);
-                if (prov.getNombre().equals(proveedorActual.getProvincia())) {
+                Ubigeo p = cmbprovincia.getItemAt(i);
+                String codigo = p.getCodigo();
+                if (codigo.length() >= 4 && codigo.substring(2, 4).equals(codProv)) {
                     cmbprovincia.setSelectedIndex(i);
                     break;
                 }
             }
-            Ubigeo provSeleccionada = (Ubigeo) cmbprovincia.getSelectedItem();
-            if (provSeleccionada != null) {
-                List<Ubigeo> listaDist = datos.listarDistritosUbigeo(
-                        deptoSeleccionado.getCodigo(), provSeleccionada.getCodigo());
-                DefaultComboBoxModel<Ubigeo> modeloDist = new DefaultComboBoxModel<>();
-                for (Ubigeo u : listaDist) {
-                    modeloDist.addElement(u);
-                }
-                cmbdistrito.setModel(modeloDist);
+        }
 
-                // Seleccionar distrito
-                for (int i = 0; i < cmbdistrito.getItemCount(); i++) {
-                    Ubigeo dist = cmbdistrito.getItemAt(i);
-                    if (dist.getNombre().equals(proveedorActual.getDistrito())) {
-                        cmbdistrito.setSelectedIndex(i);
-                        break;
-                    }
+        Ubigeo provSel = (Ubigeo) cmbprovincia.getSelectedItem();
+        if (provSel != null) {
+            List<Ubigeo> distritos = datos.listarDistritosUbigeo(codDep, codProv);
+            DefaultComboBoxModel<Ubigeo> modeloDist = new DefaultComboBoxModel<>();
+            for (Ubigeo d : distritos) {
+                modeloDist.addElement(d);
+            }
+            cmbdistrito.setModel(modeloDist);
+
+            for (int i = 0; i < cmbdistrito.getItemCount(); i++) {
+                Ubigeo d = cmbdistrito.getItemAt(i);
+                if (d.getCodigo().equals(idUbigeo)) {
+                    cmbdistrito.setSelectedIndex(i);
+                    break;
                 }
             }
         }
@@ -231,6 +256,11 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         txtRubro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtRubroActionPerformed(evt);
+            }
+        });
+        txtRubro.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtRubroKeyTyped(evt);
             }
         });
 
@@ -395,7 +425,6 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnDeshacerActionPerformed
@@ -406,18 +435,10 @@ public class frmProveedores extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Los campos Nombres y RUC son obligatorios.", "Validación", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if (txtRuc.getText().trim().length() != 11) {
-            JOptionPane.showMessageDialog(this, "El RUC debe tener 11 dígitos.", "Validación", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        if (cmbDepartamento.getSelectedIndex() == -1) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un departamento.", "Validación", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
 
-        Ubigeo deptoSeleccionado = (Ubigeo) cmbDepartamento.getSelectedItem();
-        if (deptoSeleccionado != null) {
-            proveedorActual.setIdDepartamento(Integer.parseInt(deptoSeleccionado.getCodigo()));
+        if (cmbdistrito.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un distrito.", "Validación", JOptionPane.WARNING_MESSAGE);
+            return;
         }
 
         proveedorActual.setNombres(txtNombres.getText());
@@ -426,36 +447,49 @@ public class frmProveedores extends javax.swing.JInternalFrame {
         proveedorActual.setTelefono(txtTelefono.getText());
         proveedorActual.setCelular(txtCelular.getText());
         proveedorActual.setRuc(txtRuc.getText());
+        proveedorActual.setRubro(txtRubro.getText());
 
-        Ubigeo provSeleccionado = (Ubigeo) cmbprovincia.getSelectedItem();
-        Ubigeo distSeleccionado = (Ubigeo) cmbdistrito.getSelectedItem();
+        EstadoProveedor ep = (EstadoProveedor) cmbEstado.getSelectedItem();
+        if (ep != null) {
+            proveedorActual.setEstado(ep.getDescripcion());
+            proveedorActual.setEstado(ep.getDescripcion());
 
-        if (provSeleccionado != null) {
-            proveedorActual.setProvincia(provSeleccionado.getNombre());
-        }
-        if (distSeleccionado != null) {
-            proveedorActual.setDistrito(distSeleccionado.getNombre());
         }
 
-        
-        if (cmbEstado.getSelectedItem() != null) {
-            proveedorActual.setEstado(cmbEstado.getSelectedItem().toString());
+        Ubigeo dep = (Ubigeo) cmbDepartamento.getSelectedItem();
+        Ubigeo prov = (Ubigeo) cmbprovincia.getSelectedItem();
+        Ubigeo dist = (Ubigeo) cmbdistrito.getSelectedItem();
+
+        if (dep != null && prov != null && dist != null) {
+
+            String codDep = dep.getCodigo();
+            if (codDep.length() > 2) {
+                codDep = codDep.substring(0, 2);
+            }
+
+            String codProv = prov.getCodigo();
+            if (codProv.length() > 2) {
+                codProv = codProv.substring(codProv.length() - 2);
+            }
+
+            String codDist = dist.getCodigo();
+            if (codDist.length() > 2) {
+                codDist = codDist.substring(codDist.length() - 2);
+            }
+
+            String codigoUbigeoCompleto = codDep + codProv + codDist;
+            proveedorActual.setIdUbigeo(codigoUbigeoCompleto);
+
         }
 
-        boolean resultado;
-        if (esNuevo) {
-            resultado = datos.insertar(proveedorActual);
-        } else {
-            resultado = datos.actualizar(proveedorActual);
-        }
+        boolean ok = esNuevo ? datos.insertar(proveedorActual) : datos.actualizar(proveedorActual);
 
-        if (resultado) {
-            String mensaje = esNuevo ? "Proveedor guardado exitosamente." : "Proveedor actualizado exitosamente.";
-            JOptionPane.showMessageDialog(this, mensaje, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        if (ok) {
+            JOptionPane.showMessageDialog(this, esNuevo ? "Proveedor guardado." : "Proveedor actualizado.");
             frmLista.cargarTabla();
-            this.dispose();
+            dispose();
         } else {
-            JOptionPane.showMessageDialog(this, "Ocurrió un error al guardar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al guardar.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -496,45 +530,69 @@ public class frmProveedores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCelularActionPerformed
 
     private void cmbprovinciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbprovinciaActionPerformed
-        Ubigeo depto = (Ubigeo) cmbDepartamento.getSelectedItem();
+        Ubigeo dep = (Ubigeo) cmbDepartamento.getSelectedItem();
         Ubigeo prov = (Ubigeo) cmbprovincia.getSelectedItem();
-        if (depto != null && prov != null) {
-            List<Ubigeo> listaDist = datos.listarDistritosUbigeo(depto.getCodigo(), prov.getCodigo());
-            DefaultComboBoxModel<Ubigeo> modelo = new DefaultComboBoxModel<>();
-            for (Ubigeo u : listaDist) {
-                modelo.addElement(u);
-            }
-            cmbdistrito.setModel(modelo);
-            cmbdistrito.setSelectedIndex(-1);
+
+        if (dep == null || prov == null) {
+            return;
         }
 
+        String codDep = dep.getCodigo().length() >= 2 ? dep.getCodigo().substring(0, 2) : dep.getCodigo();
+        String codProv = "";
+        if (prov.getCodigo().length() >= 4) {
+            codProv = prov.getCodigo().substring(2, 4);
+        } else if (prov.getCodigo().length() >= 2) {
+            codProv = prov.getCodigo().substring(0, 2);
+        }
+
+        List<Ubigeo> listaDist = datos.listarDistritosUbigeo(codDep, codProv);
+
+        for (Ubigeo d : listaDist) {
+           
+        }
+
+        DefaultComboBoxModel<Ubigeo> modeloDist = new DefaultComboBoxModel<>();
+        for (Ubigeo u : listaDist) {
+            modeloDist.addElement(u);
+        }
+        cmbdistrito.setModel(modeloDist);
+        cmbdistrito.setSelectedIndex(-1);
     }//GEN-LAST:event_cmbprovinciaActionPerformed
 
     private void cmbDepartamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbDepartamentoActionPerformed
-        Ubigeo depto = (Ubigeo) cmbDepartamento.getSelectedItem();
-        if (depto != null) {
-            List<Ubigeo> listaProv = datos.listarProvinciasUbigeo(depto.getCodigo());
-
-            DefaultComboBoxModel<Ubigeo> modelo = new DefaultComboBoxModel<>();
-            for (Ubigeo u : listaProv) {
-                modelo.addElement(u);
-            }
-            cmbprovincia.setModel(modelo);
-            cmbprovincia.setSelectedIndex(-1);
-            cmbdistrito.setModel(new DefaultComboBoxModel<>());
+        Ubigeo dep = (Ubigeo) cmbDepartamento.getSelectedItem();
+        if (dep == null) {
+            return;
         }
+
+        List<Ubigeo> provincias = datos.listarProvinciasUbigeo(dep.getCodigo());
+        DefaultComboBoxModel<Ubigeo> modeloProv = new DefaultComboBoxModel<>();
+        for (Ubigeo u : provincias) {
+            modeloProv.addElement(u);
+        }
+        cmbprovincia.setModel(modeloProv);
+        cmbprovincia.setSelectedIndex(-1);
+
+        cmbdistrito.setModel(new DefaultComboBoxModel<>());
     }//GEN-LAST:event_cmbDepartamentoActionPerformed
 
     private void cmbdistritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbdistritoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbdistritoActionPerformed
 
+    private void txtRubroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRubroKeyTyped
+        if (!Character.isDigit(evt.getKeyChar()) || txtRubro.getText().length() >= 4) {
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }//GEN-LAST:event_txtRubroKeyTyped
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDeshacer;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JComboBox<Ubigeo> cmbDepartamento;
-    private javax.swing.JComboBox<String> cmbEstado;
+    private javax.swing.JComboBox<EstadoProveedor> cmbEstado;
     private javax.swing.JComboBox<Ubigeo> cmbdistrito;
     private javax.swing.JComboBox<Ubigeo> cmbprovincia;
     private javax.swing.JPanel escritorio;

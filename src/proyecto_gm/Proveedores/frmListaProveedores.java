@@ -4,40 +4,45 @@ import java.util.List;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class frmListaProveedores extends javax.swing.JInternalFrame {
 
+    private TableRowSorter<DefaultTableModel> sorter;
     private JDesktopPane panelPadre;
     private DatosProveedores datos = new DatosProveedores();
     private DefaultTableModel modelo;
 
     public frmListaProveedores(JDesktopPane panel) {
+
         initComponents();
         this.panelPadre = panel;
 
         modelo = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; 
+                return false;
             }
         };
-        modelo.addColumn("ID");            
+        modelo.addColumn("ID");
         modelo.addColumn("Nombres");
-        modelo.addColumn("Departamento"); 
+
         modelo.addColumn("Dirección");
         modelo.addColumn("Correo");
         modelo.addColumn("Teléfono");
         modelo.addColumn("Celular");
         modelo.addColumn("RUC");
+        modelo.addColumn("Departamento");
         modelo.addColumn("Provincia");
         modelo.addColumn("Distrito");
         modelo.addColumn("Rubro");
         modelo.addColumn("Estado");
         tblProveedor.setModel(modelo);
-
+        sorter = new TableRowSorter<>(modelo);
+        tblProveedor.setRowSorter(sorter);
+        txtBusqueda.addActionListener(e -> filtrarProveedores(txtBusqueda.getText().trim()));
         cargarTabla();
     }
-
     public void cargarTabla() {
         modelo.setRowCount(0);
         List<Proveedores> lista = datos.listar();
@@ -45,19 +50,29 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
             modelo.addRow(new Object[]{
                 prov.getIdProveedor(),
                 prov.getNombres(),
-                prov.getNombreDepartamento(),
                 prov.getDireccion(),
                 prov.getCorreo(),
                 prov.getTelefono(),
                 prov.getCelular(),
                 prov.getRuc(),
+                prov.getNombreDepartamento(),
                 prov.getProvincia(),
                 prov.getDistrito(),
                 prov.getRubro(),
                 prov.getEstado()
             });
         }
-
+    }
+    private void filtrarProveedores(String texto) {
+        try {
+            if (texto.isEmpty()) {
+                sorter.setRowFilter(null);
+            } else {
+                sorter.setRowFilter(javax.swing.RowFilter.regexFilter("(?i).*" + java.util.regex.Pattern.quote(texto) + ".*", 1));
+            }
+        } catch (java.util.regex.PatternSyntaxException ex) {
+            System.err.println("Error en el filtro: " + ex.getMessage());
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -148,6 +163,12 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Buscar");
 
+        txtBusqueda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBusquedaActionPerformed(evt);
+            }
+        });
+
         btnBuscar.setText("Aceptar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,10 +184,10 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBuscar)
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -183,7 +204,7 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
                 {null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Departamento", "Nombres", "Direccion", "Correo", "Telefono", "Celular", "Ruc", "Provincia", "Distrito", "Rubro", "Estado"
+                "Id", "Nombres", "Direccion", "Correo", "Telefono", "Celular", "Ruc", "Departamento", "Distrito", "Provincia", "Rubro", "Estado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -195,10 +216,6 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane1.setViewportView(tblProveedor);
-        if (tblProveedor.getColumnModel().getColumnCount() > 0) {
-            tblProveedor.getColumnModel().getColumn(10).setHeaderValue("Rubro");
-            tblProveedor.getColumnModel().getColumn(11).setHeaderValue("Estado");
-        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -215,8 +232,8 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -267,6 +284,10 @@ public class frmListaProveedores extends javax.swing.JInternalFrame {
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
 
     }//GEN-LAST:event_formInternalFrameOpened
+
+    private void txtBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBusquedaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBusquedaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
