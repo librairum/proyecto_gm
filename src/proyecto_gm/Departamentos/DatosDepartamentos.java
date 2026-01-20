@@ -32,37 +32,32 @@ public class DatosDepartamentos {
     }
 
     public boolean insertar(Departamentos departamento) {
-        // Asumiendo que el SP para insertar solo necesita la descripción
-        String sql = "{ CALL insertar_departamentos(?) }"; 
-        
-        try (Connection conn = ConexionBD.getConnection();
-             CallableStatement cstmt = conn.prepareCall(sql)) {
-            
-            cstmt.setString(1, departamento.getDescripcion());
-            return cstmt.executeUpdate() > 0;
-
-        } catch (SQLException ex) {
-            System.err.println("Error al insertar departamento: " + ex.getMessage());
-            JOptionPane.showMessageDialog(null, "Error al insertar: " + ex.getMessage(), "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
+      // Asumiendo que el SP para insertar solo necesita la descripción
+      String sql = "{ CALL insertar_departamentos(?, ?) }"; 
+      try (Connection conn = ConexionBD.getConnection();
+           CallableStatement cstmt = conn.prepareCall(sql)) {
+          cstmt.setInt(1, 0);
+          cstmt.setString(2, departamento.getDescripcion());
+          return cstmt.executeUpdate() > 0;
+      } catch (SQLException ex) {
+          System.err.println("Error al insertar departamento: " + ex.getMessage());
+          JOptionPane.showMessageDialog(null, "Error al insertar: " + ex.getMessage(), "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
+          return false;
+      }
     }
 
     public boolean actualizar(Departamentos departamento) {
-        String sql = "{ CALL actualizar_departamentos(?, ?) }";
-        
-        try (Connection conn = ConexionBD.getConnection();
-             CallableStatement cstmt = conn.prepareCall(sql)) {
-            
-            cstmt.setInt(1, departamento.getId());
-            cstmt.setString(2, departamento.getDescripcion());
-            return cstmt.executeUpdate() > 0;
-
-        } catch (SQLException ex) {
-            System.err.println("Error al actualizar departamento: " + ex.getMessage());
-            JOptionPane.showMessageDialog(null, "Error al actualizar: " + ex.getMessage(), "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
+      String sql = "{ CALL actualizar_departamentos(?, ?) }";
+      try (Connection conn = ConexionBD.getConnection();
+           CallableStatement cstmt = conn.prepareCall(sql)) {
+          cstmt.setInt(1, departamento.getId());
+          cstmt.setString(2, departamento.getDescripcion());
+          return cstmt.executeUpdate() > 0;
+      } catch (SQLException ex) {
+          System.err.println("Error al actualizar departamento: " + ex.getMessage());
+          JOptionPane.showMessageDialog(null, "Error al actualizar: " + ex.getMessage(), "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
+          return false;
+      }
     }
 
     public boolean eliminar(int idDepartamento) {

@@ -48,15 +48,9 @@ public class frmGestionBD extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Host");
 
-        jTextField1.setText("jTextField1");
-
         jLabel3.setText("clave");
 
-        jTextField3.setText("jTextField1");
-
         jLabel4.setText("Base de datos");
-
-        cboBasedatos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

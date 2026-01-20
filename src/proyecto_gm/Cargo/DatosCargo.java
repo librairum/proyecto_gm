@@ -38,9 +38,9 @@ public class DatosCargo {
 
             stmt.executeUpdate();
 
-            // Obtener el ID autogenerado del parámetro de salida
+           
             int nuevoId = stmt.getInt(2);
-            cargo.setIdCargo(nuevoId); // Actualizamos el ID en el objeto
+            cargo.setIdCargo(nuevoId); 
 
             return nuevoId > 0;
         }

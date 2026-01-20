@@ -32,10 +32,16 @@ public class DatosCategoria {
 
     public static void insertar(Categoria categoria) {
         try (Connection conn = ConexionBD.getConnection();
-             CallableStatement cstmt = conn.prepareCall("{ CALL insertar_categorias(?) }")) { 
+             CallableStatement cstmt = conn.prepareCall("{ CALL insertar_categorias(?, ?) }")) { 
             
             cstmt.setString(1, categoria.getDescripcion());
+            cstmt.registerOutParameter(2, java.sql.Types.INTEGER);
+            
             cstmt.execute();
+            
+            int idGenerado = cstmt.getInt(2);
+            categoria.setId(idGenerado);
+            
             JOptionPane.showMessageDialog(null, "Categoría registrada exitosamente.", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al insertar categoría: " + ex.getMessage(), "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);

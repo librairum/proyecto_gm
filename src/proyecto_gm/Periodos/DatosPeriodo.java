@@ -37,16 +37,18 @@ public class DatosPeriodo {
         }
     }
 
-    public static boolean insertar(Periodos periodo) {
-        String sql = "{CALL insertar_periodo(?)}";
+   public static boolean insertar(Periodos periodo) {
+        
+        String sql = "{CALL insertar_periodos(?, ?, ?)}";
 
         try (Connection conn = ConexionBD.getConnection();
              CallableStatement cstmt = conn.prepareCall(sql)) {
-
-            cstmt.setString(1, periodo.getDescripcion());
+            cstmt.setInt(1, 0); 
+            int mesActual = java.util.Calendar.getInstance().get(java.util.Calendar.MONTH) + 1;
+            cstmt.setInt(2, mesActual);
+            cstmt.setString(3, periodo.getDescripcion());
             cstmt.executeUpdate();
             return true;
-
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al insertar periodo: " + ex.getMessage(), "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -54,11 +56,12 @@ public class DatosPeriodo {
     }
 
     public static boolean actualizar(Periodos periodo) {
-        String sql = "{CALL actualizar_periodo(?, ?)}";
+        String sql = "{CALL actualizar_periodos(?, ?)}";
 
         try (Connection conn = ConexionBD.getConnection();
              CallableStatement cstmt = conn.prepareCall(sql)) {
-
+            
+            
             // El ID se convierte a entero para enviarlo a la BD
             cstmt.setInt(1, Integer.parseInt(periodo.getId()));
             cstmt.setString(2, periodo.getDescripcion());
@@ -72,7 +75,7 @@ public class DatosPeriodo {
     }
 
     public static boolean eliminar(int id) {
-        String sql = "{CALL eliminar_periodo(?)}";
+        String sql = "{CALL eliminar_periodos(?)}";
 
         try (Connection conn = ConexionBD.getConnection();
              CallableStatement cstmt = conn.prepareCall(sql)) {

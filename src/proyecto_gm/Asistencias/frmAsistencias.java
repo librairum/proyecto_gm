@@ -177,8 +177,6 @@ public class frmAsistencias extends javax.swing.JInternalFrame {
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(255, 248, 239));
-
         lblDni.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblDni.setText("jLabel2");
         lblDni.setHorizontalAlignment(JLabel.CENTER);

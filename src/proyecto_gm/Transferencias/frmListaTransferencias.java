@@ -61,8 +61,6 @@ public class frmListaTransferencias extends javax.swing.JInternalFrame {
         setTitle("LISTA TRANSFERENCIAS");
         setToolTipText(null);
 
-        panel.setBackground(new java.awt.Color(255, 248, 239));
-
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
         btnNuevo.setName("nuevo"); // NOI18N
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {

@@ -67,8 +67,6 @@ public class frmPeriodos extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("PERIODOS");
 
-        escritorio.setBackground(new java.awt.Color(255, 248, 239));
-
         jLabel1.setText("ID:");
 
         txtId.setName("id"); // NOI18N

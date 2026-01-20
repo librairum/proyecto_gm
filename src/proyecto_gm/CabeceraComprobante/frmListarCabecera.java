@@ -44,6 +44,8 @@ public class frmListarCabecera extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCabecera = new javax.swing.JTable();
 
+        escritorio.setBackground(new java.awt.Color(242, 242, 242));
+
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
         btnAgregar.setName("agregar"); // NOI18N
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {

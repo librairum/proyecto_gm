@@ -86,7 +86,6 @@ public class frmAsistenciaImagen extends javax.swing.JInternalFrame {
         jLabel1.setMaximumSize(new java.awt.Dimension(100, 14));
         jLabel1.setMinimumSize(new java.awt.Dimension(50, 14));
 
-        txtNroDoc.setText("jTextField1");
         txtNroDoc.setMaximumSize(new java.awt.Dimension(300, 100));
         txtNroDoc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -98,7 +97,6 @@ public class frmAsistenciaImagen extends javax.swing.JInternalFrame {
         jLabel4.setMaximumSize(new java.awt.Dimension(100, 14));
         jLabel4.setMinimumSize(new java.awt.Dimension(50, 14));
 
-        txtNomApe.setText("jTextField1");
         txtNomApe.setMaximumSize(new java.awt.Dimension(300, 100));
         txtNomApe.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -110,7 +108,6 @@ public class frmAsistenciaImagen extends javax.swing.JInternalFrame {
         jLabel7.setMaximumSize(new java.awt.Dimension(100, 14));
         jLabel7.setMinimumSize(new java.awt.Dimension(50, 14));
 
-        txtPC.setText("jTextField1");
         txtPC.setMaximumSize(new java.awt.Dimension(300, 100));
         txtPC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -122,7 +119,6 @@ public class frmAsistenciaImagen extends javax.swing.JInternalFrame {
         jLabel2.setMaximumSize(new java.awt.Dimension(100, 14));
         jLabel2.setMinimumSize(new java.awt.Dimension(50, 14));
 
-        txtFecha.setText("jTextField1");
         txtFecha.setMaximumSize(new java.awt.Dimension(300, 100));
         txtFecha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -134,7 +130,6 @@ public class frmAsistenciaImagen extends javax.swing.JInternalFrame {
         jLabel3.setMaximumSize(new java.awt.Dimension(100, 14));
         jLabel3.setMinimumSize(new java.awt.Dimension(50, 14));
 
-        txtHora.setText("jTextField1");
         txtHora.setMaximumSize(new java.awt.Dimension(300, 100));
         txtHora.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -214,7 +209,6 @@ public class frmAsistenciaImagen extends javax.swing.JInternalFrame {
         jLabel5.setMaximumSize(new java.awt.Dimension(100, 14));
         jLabel5.setMinimumSize(new java.awt.Dimension(50, 14));
 
-        txtFiltro.setText("jTextField1");
         txtFiltro.setMaximumSize(new java.awt.Dimension(300, 100));
         txtFiltro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -162,9 +162,9 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("EMPLEADOS");
-        setMaximumSize(new java.awt.Dimension(650, 260));
-        setMinimumSize(new java.awt.Dimension(650, 260));
-        setPreferredSize(new java.awt.Dimension(650, 260));
+        setMaximumSize(null);
+        setMinimumSize(new java.awt.Dimension(850, 350));
+        setPreferredSize(new java.awt.Dimension(850, 350));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -229,7 +229,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
             }
         });
 
-        txtId.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txtId.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         txtApe.setFocusCycleRoot(true);
         txtApe.setNextFocusableComponent(txtNom);
@@ -501,7 +501,7 @@ public class frmEmpleado extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(txtDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         pack();

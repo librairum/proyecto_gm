@@ -15,7 +15,7 @@ public class DatosModulo {
         modelo.setRowCount(0);
 
         // Procedimiento almacenado para listar
-        String sql = "{CALL sp_listar_modulo()}";
+        String sql = "{CALL listar_modulo()}";
 
         try (Connection conn = ConexionBD.getConnection();
              CallableStatement cstmt = conn.prepareCall(sql);
@@ -40,12 +40,13 @@ public class DatosModulo {
 
     public static boolean insertar(Modulo modulo) {
         // Procedimiento almacenado para insertar
-        String sql = "{CALL sp_insertar_modulo(?)}";
+        String sql = "{CALL insertar_modulo(?, ?)}";
 
         try (Connection conn = ConexionBD.getConnection();
              CallableStatement cstmt = conn.prepareCall(sql)) {
 
-            cstmt.setString(1, modulo.getDescripcion());
+            cstmt.setInt(1, 0);
+            cstmt.setString(2, modulo.getDescripcion());
             cstmt.executeUpdate();
             return true;
 
@@ -57,7 +58,7 @@ public class DatosModulo {
 
     public static boolean actualizar(Modulo modulo) {
         // Procedimiento almacenado para actualizar
-        String sql = "{CALL sp_actualizar_modulo(?, ?)}";
+        String sql = "{CALL actualizar_modulo(?, ?)}";
 
         try (Connection conn = ConexionBD.getConnection();
              CallableStatement cstmt = conn.prepareCall(sql)) {
@@ -75,7 +76,7 @@ public class DatosModulo {
 
     public static boolean eliminar(int id) {
         // Procedimiento almacenado para eliminar
-        String sql = "{CALL sp_eliminar_modulo(?)}"; 
+        String sql = "{CALL eliminar_modulo(?)}"; 
 
         try (Connection conn = ConexionBD.getConnection();
              CallableStatement cstmt = conn.prepareCall(sql)) {

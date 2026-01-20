@@ -59,7 +59,7 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("TIPO DOCUMENTO");
 
-        escritorio.setBackground(new java.awt.Color(255, 255, 255));
+        escritorio.setBackground(new java.awt.Color(242, 242, 242));
         escritorio.setForeground(new java.awt.Color(255, 255, 255));
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N

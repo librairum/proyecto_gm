@@ -44,19 +44,20 @@ public class menu extends javax.swing.JFrame {
     static Connection conn = ConexionBD.getConnection();
     
     public menu() {
-
         initComponents();        
         setSize(1100, 700);
         this.setLocationRelativeTo(null);
         DeshabilitarMenu();
-        System.out.println("formulario Menu , codigo perfil: " +ConexionBD.codPerfil);
+        System.out.println("formulario Menu, codigo perfil: " + ConexionBD.codPerfil);
         TraerMenu(ConexionBD.codPerfil);
-        this.setTitle("SISTEMAS GM");
-        String datoUsuario= "Usuario:" + ConexionBD.nomUsuario +"\t\t";
-         String datoPerfil = "Perfil:"+ ConexionBD.nomPerfil+"\t\t\t";
-        String datoEmpresa = "20555841095-GM INGENIEROS Y CONSULTORES" ;
-        
-        this.lblEstadoSesion.setText(datoUsuario +"        " + datoPerfil + "       " +datoEmpresa);
+        this.setTitle("SISTEMAS - " + Actualizador.Configurador.getDato("nombre"));
+        String datoUsuario = "Usuario: " + ConexionBD.nomUsuario + "\t\t";
+        String datoPerfil = "Perfil: " + ConexionBD.nomPerfil + "\t\t\t";
+        String rucEmpresa = Actualizador.Configurador.getDato("ruc");
+        String nombreEmpresa = Actualizador.Configurador.getDato("nombre");
+        String datoEmpresa = rucEmpresa + " - " + nombreEmpresa;
+
+        this.lblEstadoSesion.setText(datoUsuario + "        " + datoPerfil + "       " + datoEmpresa);
     }
     
     void DeshabilitarMenu(){

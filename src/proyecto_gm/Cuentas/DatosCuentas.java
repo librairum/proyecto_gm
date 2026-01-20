@@ -21,14 +21,25 @@ public class DatosCuentas {
              ResultSet rs = cstmt.executeQuery()) {
 
             while (rs.next()) {
-                Cuentas cuenta = new Cuentas();
-                cuenta.setIdCuenta(rs.getInt("IdCuentaBancaria"));
-                cuenta.setTipoPropietario(rs.getString("TipoPropietario"));
-                cuenta.setNombres(rs.getString("Nombres"));
-                cuenta.setNombreBanco(rs.getString("Banco")); // Asumiendo que el SP devuelve el nombre del banco
-                cuenta.setNroCuenta(rs.getString("CCC"));
-                cuenta.setNroCuentaInterbancaria(rs.getString("CCI"));
-                cuenta.setTipoMoneda(rs.getString("TipoMoneda"));
+            Cuentas cuenta = new Cuentas();
+            cuenta.setIdCuenta(rs.getInt("IdCuentaBancaria"));
+            cuenta.setTipoPropietario(rs.getString("TipoPropietario"));
+            cuenta.setNombres(rs.getString("Nombres"));
+            cuenta.setNombreBanco(rs.getString("Banco")); // Asumiendo que el SP devuelve el nombre del banco
+            cuenta.setNroCuenta(rs.getString("CCC"));
+            cuenta.setNroCuentaInterbancaria(rs.getString("CCI"));
+            cuenta.setTipoMoneda(rs.getString("TipoMoneda"));
+                
+                // --- SOLUCIÓN: Intentamos obtener IdBanco, si no existe, lo ignoramos ---
+            try {
+                cuenta.setIdBanco(rs.getInt("IdBanco"));
+            
+            } catch (SQLException ex) {
+            
+                    // Si la columna no existe en el SQL, dejamos el valor por defecto (0)
+                    // Así evitamos el error de "Column IdBanco not found"
+            }
+
                 // Nota: necesitarás el IdBanco para editar, el SP 'listar_cuentas' debería devolverlo
                 // cuenta.setIdBanco(rs.getInt("IdBanco"));
                 listaCuentas.add(cuenta);

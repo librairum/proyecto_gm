@@ -1,7 +1,11 @@
 package proyecto_gm.Articulo;
 
+import java.sql.Connection;
 import java.awt.event.KeyEvent;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import javax.swing.JDesktopPane;
@@ -9,6 +13,14 @@ import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
+import proyecto_gm.Categoria.Categoria;
+import proyecto_gm.Categoria.DatosCategoria;
+import proyecto_gm.ConexionBD;
 
 public class frmListaArticulo extends javax.swing.JInternalFrame {
     
@@ -33,6 +45,7 @@ public class frmListaArticulo extends javax.swing.JInternalFrame {
         tblarticulo.setRowSorter(sorter);
  
         cargarDatos();
+        cargarComboCategorias();
     }
     
     public void cargarDatos() {
@@ -49,7 +62,35 @@ public class frmListaArticulo extends javax.swing.JInternalFrame {
             });
         }
     }
+    
+    public void generarReporteJasper(int idCategoria, String nombreCategoria) {
+        try {
+            Connection conn = ConexionBD.getConnection();
+            String path = System.getProperty("user.dir") +"/reportes/RPTArticulo.jasper";
+            JasperReport reporte = JasperCompileManager.compileReport(path);
 
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("p_id_categoria", idCategoria);
+            JasperPrint jprint = JasperFillManager.fillReport(reporte, parametros, conn);
+
+            JasperViewer view = new JasperViewer(jprint, false);
+            view.setTitle("Reporte de: " + nombreCategoria);
+            view.setVisible(true);
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+            ex.printStackTrace(); 
+        }
+    }
+    
+    private void cargarComboCategorias() {
+        cmbCategoria.removeAllItems();
+        List<Categoria> lista = DatosCategoria.listar();
+        System.out.println("Categorías encontradas: " + lista.size());
+        for (Categoria cat : lista) {
+            cmbCategoria.addItem(cat);
+        }
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -66,6 +107,8 @@ public class frmListaArticulo extends javax.swing.JInternalFrame {
         btnBuscar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         cboEstado = new javax.swing.JComboBox<>();
+        btnReporte = new javax.swing.JButton();
+        cmbCategoria = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -157,6 +200,19 @@ public class frmListaArticulo extends javax.swing.JInternalFrame {
                 .addComponent(cboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        btnReporte.setText("Reporte");
+        btnReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReporteActionPerformed(evt);
+            }
+        });
+
+        cmbCategoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbCategoriaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
         escritorio.setLayout(escritorioLayout);
         escritorioLayout.setHorizontalGroup(
@@ -170,6 +226,10 @@ public class frmListaArticulo extends javax.swing.JInternalFrame {
                         .addComponent(btnEditar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnEliminar)
+                        .addGap(58, 58, 58)
+                        .addComponent(btnReporte)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1))
@@ -179,10 +239,14 @@ public class frmListaArticulo extends javax.swing.JInternalFrame {
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(escritorioLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnReporte)
+                        .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -274,6 +338,71 @@ public class frmListaArticulo extends javax.swing.JInternalFrame {
         filtrarArticulos(txtBusqueda.getText());
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    private void cmbCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCategoriaActionPerformed
+          try {
+               
+                Object seleccionado = cmbCategoria.getSelectedItem();
+
+               
+                if (seleccionado instanceof Categoria) {
+                    Categoria cat = (Categoria) seleccionado;
+                    String nombreCategoria = cat.getDescripcion();
+
+                   
+                    filtrarArticulos(nombreCategoria);
+                }
+            } catch (Exception e) {
+                System.out.println("Error al filtrar combo: " + e.getMessage());
+            }
+    }//GEN-LAST:event_cmbCategoriaActionPerformed
+
+    private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
+    
+     Object itemSeleccionado = cmbCategoria.getSelectedItem();
+
+     if (itemSeleccionado == null) {
+         JOptionPane.showMessageDialog(this, "Debe seleccionar una categoría.");
+         return;
+     }
+
+     Categoria categoriaSelect = (Categoria) itemSeleccionado;
+     int idCategoria = categoriaSelect.getId(); 
+     String nombreCategoria = categoriaSelect.getDescripcion(); 
+
+     try {
+         Connection conn = ConexionBD.getConnection();
+
+       
+         InputStream archivoReporte = getClass().getResourceAsStream("/reportes/RPTArticulos.jrxml");
+
+         if (archivoReporte == null) {
+             JOptionPane.showMessageDialog(this, "No se encuentra /reportes/RPTArticulos.jrxml");
+             return;
+         }
+
+      
+         JasperReport reporte = JasperCompileManager.compileReport(archivoReporte);
+
+         
+         Map<String, Object> parametros = new HashMap<>();
+
+         
+         parametros.put("p_id_categoria", idCategoria);
+
+      
+         JasperPrint print = JasperFillManager.fillReport(reporte, parametros, conn);
+
+         JasperViewer view = new JasperViewer(print, false); 
+         view.setTitle("Reporte de Categoría: " + nombreCategoria);
+         view.setVisible(true);
+
+     } catch (Exception ex) {
+         ex.printStackTrace();
+        
+         JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+     }
+    }//GEN-LAST:event_btnReporteActionPerformed
+
     // Método para filtrar por descripción, categoría o marca
     private void filtrarArticulos(String texto) {
         try {
@@ -294,7 +423,9 @@ public class frmListaArticulo extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton btnReporte;
     private javax.swing.JComboBox<String> cboEstado;
+    private javax.swing.JComboBox<Object> cmbCategoria;
     private javax.swing.JPanel escritorio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

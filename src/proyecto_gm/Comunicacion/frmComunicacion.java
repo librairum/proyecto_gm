@@ -166,7 +166,7 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(btnDeshacer);
-        btnDeshacer.setBounds(180, 10, 26, 30);
+        btnDeshacer.setBounds(160, 10, 26, 30);
 
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -309,7 +309,7 @@ public class frmComunicacion extends javax.swing.JInternalFrame {
 
         jLabel14.setText("Tipo");
         getContentPane().add(jLabel14);
-        jLabel14.setBounds(490, 70, 23, 16);
+        jLabel14.setBounds(490, 70, 24, 16);
         getContentPane().add(txtFecha);
         txtFecha.setBounds(280, 70, 110, 22);
 

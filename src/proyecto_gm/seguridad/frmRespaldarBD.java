@@ -39,19 +39,13 @@ public class frmRespaldarBD extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Base de datos");
 
-        cboBasedatos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         btnConectar.setText("Programar");
 
         btnRespaldar.setText("Respaldar");
 
         jLabel6.setText("Frecuencia");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel1.setText("Hora");
-
-        jTextField1.setText("jTextField1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

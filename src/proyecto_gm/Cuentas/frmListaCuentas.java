@@ -59,8 +59,6 @@ public class frmListaCuentas extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("CUENTAS BANCARIAS");
 
-        panel.setBackground(new java.awt.Color(255, 248, 239));
-
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
         btnNuevo.setName("nuevo"); // NOI18N
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -178,23 +176,29 @@ public class frmListaCuentas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-    int filaSeleccionada = tblCuentas.getSelectedRow();
+       int filaSeleccionada = tblCuentas.getSelectedRow();
+    
         if (filaSeleccionada == -1) {
             JOptionPane.showMessageDialog(this, "Debe seleccionar una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
-    
+
         Cuentas cuenta = new Cuentas();
         DefaultTableModel modelo = (DefaultTableModel) tblCuentas.getModel();
-        
+
         cuenta.setIdCuenta((Integer) modelo.getValueAt(filaSeleccionada, 0));
+        cuenta.setTipoPropietario(modelo.getValueAt(filaSeleccionada, 1).toString());
+        cuenta.setNombres(modelo.getValueAt(filaSeleccionada, 2).toString());
+        cuenta.setNombreBanco(modelo.getValueAt(filaSeleccionada, 3).toString());
+        cuenta.setNroCuenta(modelo.getValueAt(filaSeleccionada, 4).toString());
+        cuenta.setNroCuentaInterbancaria(modelo.getValueAt(filaSeleccionada, 5).toString());
+        cuenta.setTipoMoneda(modelo.getValueAt(filaSeleccionada, 6).toString());
 
         frmCuentas frm = new frmCuentas(cuenta, this);
         getParent().add(frm);
-         frm.setLocation(
-           (this.getParent().getWidth() - frm.getWidth()) / 2,
-           (this.getParent().getHeight() - frm.getHeight()) / 2
-        );
+
+        frm.setLocation((this.getParent().getWidth() - frm.getWidth()) / 2,
+                        (this.getParent().getHeight() - frm.getHeight()) / 2);
         frm.setVisible(true);
     }//GEN-LAST:event_btnEditarActionPerformed
 

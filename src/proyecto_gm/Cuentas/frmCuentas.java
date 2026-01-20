@@ -271,11 +271,11 @@ public class frmCuentas extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.", "Validación", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if (txtCCC.getText().trim().length() != 14) {
+        if (txtCCC.getText().trim().length() != 20) {
              JOptionPane.showMessageDialog(this, "El número de cuenta debe tener 14 dígitos.", "Validación", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if (txtCCI.getText().trim().length() != 20) {
+        if (txtCCI.getText().trim().length() != 25) {
              JOptionPane.showMessageDialog(this, "El CCI debe tener 20 dígitos.", "Validación", JOptionPane.WARNING_MESSAGE);
             return;
         }

@@ -1,5 +1,6 @@
 package proyecto_gm;
 
+import Actualizador.Actualizador;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
@@ -10,70 +11,103 @@ import java.sql.SQLException;
 import javax.swing.UIManager;
 import java.sql.CallableStatement;
 import java.util.Locale;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 
-
-/**
- *
- * @author Mariluz
- */
 public class inicio extends javax.swing.JFrame {
 
     int intentos;
+    String nombreEquipo = "";
+    String macAddress = "";
+    static Connection conn = ConexionBD.getConnection();
+    public static String macAddressCalculada = "";
+    public static String nombreEquipoCalculado = "";
 
     public inicio() {
-
         initComponents();
-
+        obtenerDatosEquipo();
     }
-    static Connection conn = ConexionBD.getConnection();
 
-    public void ingresar() {
-        PreparedStatement pst = null;
-        ResultSet rs = null;
-
-        String User = txtusuario.getText();
-        String Pass = txtcontrasena.getText();
-        menu contenedor = new menu();
-
-        if (User.equals("") || Pass.equals("")) {
-            JOptionPane.showMessageDialog(this, "Llenar completamente los campos");
-        } else {
-            try {
-                // Llamada al procedimiento almacenado
-                pst = conn.prepareStatement("CALL validar_usuario(?, ?)");
-                pst.setString(1, User);
-                pst.setString(2, Pass);
-                rs = pst.executeQuery();
-
-                if (rs.next()) {
-                    String resultado = rs.getString("resultado");
-
-                    switch (resultado) {
-                        case "ACCESO PERMITIDO":
-                            this.dispose();
-                            contenedor.setExtendedState(Frame.MAXIMIZED_BOTH);
-                            contenedor.setVisible(true);
-                            break;
-                        case "ACCESO DENEGADO":
-                            JOptionPane.showMessageDialog(this, "Usuario inactivo. Contacte al administrador.");
-                            break;
-                        case "USUARIO NO ENCONTRADO":
-                            JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrecta, vuelva a intentarlo.");
-                            break;
-                        default:
-                            JOptionPane.showMessageDialog(this, "Error desconocido en validación.");
-                    }
-
-                } else {
-                    JOptionPane.showMessageDialog(this, "Error al procesar la respuesta del procedimiento.");
+    private void obtenerDatosEquipo() {
+        try {
+            InetAddress ip = InetAddress.getLocalHost();
+            nombreEquipoCalculado = ip.getHostName(); 
+            
+            NetworkInterface network = NetworkInterface.getByInetAddress(ip);
+            byte[] mac = network.getHardwareAddress();
+            
+            StringBuilder sb = new StringBuilder();
+            if (mac != null) {
+                for (int i = 0; i < mac.length; i++) {
+                    sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
                 }
-
-            } catch (SQLException e) {
-                System.err.println("Error en ingresar(): " + e.toString());
-                JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado");
+                macAddressCalculada = sb.toString();
+            } else {
+                macAddressCalculada = "No encontrada";
             }
+            System.out.println("Datos obtenidos -> PC: " + nombreEquipoCalculado + " | MAC: " + macAddressCalculada);
+        } catch (Exception e) {
+            macAddressCalculada = "Error";
+            System.err.println("Error obteniendo datos: " + e.getMessage());
         }
     }
+    
+    public void ingresar() {
+        menu contenedor = new menu();
+        this.dispose();
+        contenedor.setExtendedState(Frame.MAXIMIZED_BOTH);
+        contenedor.setVisible(true);
+    }
+    
+    private void ejecutarValidacion() {
+        String user = txtusuario.getText();
+        String pass = new String(txtcontrasena.getPassword());
+
+        if (user.isEmpty() || pass.isEmpty()) {
+             javax.swing.JOptionPane.showMessageDialog(this, "Llenar completamente los campos");
+             return;
+        }
+
+        int idUsuarioValidado = 0;
+        try {
+            java.sql.Connection con = proyecto_gm.ConexionBD.getConnection();
+            String sql = "SELECT IdUsuario FROM usuarios WHERE username = ? AND pass = ?";
+            java.sql.PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, user);
+            ps.setString(2, pass); 
+            java.sql.ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                idUsuarioValidado = rs.getInt("IdUsuario");
+            }
+        } catch (Exception e) {
+            System.out.println("Error validando usuario: " + e);
+        }
+        
+        if (idUsuarioValidado > 0) {
+            TraerPerfil(user);
+            proyecto_gm.ConexionBD.nomUsuario = user;
+
+            proyecto_gm.Mac.DatosMac control = new proyecto_gm.Mac.DatosMac(); 
+            String resultado = control.validarAcceso(idUsuarioValidado);
+
+            if (resultado.equals("PERMITIDO") || resultado.equals("PERMITIDO_NUEVO")) {
+                ingresar(); 
+            } else if (resultado.equals("DENEGADO_MANUAL")) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Usted ha sido denegado.");
+            } else if (resultado.equals("DENEGADO_LICENCIA")) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Su licencia ha caducado.");
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Error de verificación: " + resultado);
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.");
+        }
+    }
+
+    
+    
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -136,7 +170,7 @@ public class inicio extends javax.swing.JFrame {
         contraseña.setFont(new java.awt.Font("Serif", 1, 12)); // NOI18N
         contraseña.setText("contraseña:");
         getContentPane().add(contraseña);
-        contraseña.setBounds(20, 50, 60, 17);
+        contraseña.setBounds(20, 50, 61, 17);
 
         btningresar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btningresar.setText("INGRESAR");
@@ -165,30 +199,30 @@ public class inicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtcontrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcontrasenaActionPerformed
-
+      
     }//GEN-LAST:event_txtcontrasenaActionPerformed
     void TraerPerfil(String nombreUsuario){
         try{
-          CallableStatement cstmt =  conn.prepareCall("call listar_perfilxusuario(?,?)");
+            CallableStatement cstmt =  conn.prepareCall("call listar_perfilxusuario(?,?)");
             cstmt.setString(1, "01");
             cstmt.setString(2, nombreUsuario);
-           ResultSet rs = cstmt.executeQuery();
-           while(rs.next()){
-             ConexionBD.codPerfil=  rs.getString("codperfil");
-             ConexionBD.nomPerfil = rs.getString("nomperfil");
-               System.out.println("Menu inicio, Codigo perfil:" + ConexionBD.codPerfil);
-           }
+            ResultSet rs = cstmt.executeQuery();
+            while(rs.next()){
+                ConexionBD.codPerfil=  rs.getString("codperfil");
+                ConexionBD.nomPerfil = rs.getString("nomperfil");
+            }
         }catch(SQLException exSQL){
-             JOptionPane.showMessageDialog(null,exSQL.getMessage(), 
+            JOptionPane.showMessageDialog(null,exSQL.getMessage(), 
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
+ 
 
     private void btningresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btningresarActionPerformed
-        // TODO add your handling code here:
-        TraerPerfil(this.txtusuario.getText());
-        ConexionBD.nomUsuario = txtusuario.getText();
-        ingresar();
+    
+        ejecutarValidacion();
+        
     }//GEN-LAST:event_btningresarActionPerformed
 
     private void btnsalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsalirActionPerformed
@@ -197,18 +231,16 @@ public class inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnsalirActionPerformed
 
     private void txtusuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtusuarioKeyTyped
-        // TODO add your handling code here:
-        if (txtusuario.getText().length() == 20) {
-            evt.consume();
+       if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            txtcontrasena.requestFocus(); 
         }
     }//GEN-LAST:event_txtusuarioKeyTyped
 
     private void txtcontrasenaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcontrasenaKeyTyped
-        // TODO add your handling code here:
-        if (txtcontrasena.getText().length() == 20) {
-            evt.consume();
+       if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           
+            ejecutarValidacion();
         }
-        
     }//GEN-LAST:event_txtcontrasenaKeyTyped
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -216,11 +248,8 @@ public class inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void txtcontrasenaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcontrasenaKeyPressed
-       if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-            
-            TraerPerfil(this.txtusuario.getText());
-        ConexionBD.nomUsuario = txtusuario.getText();
-        ingresar();
+      if(evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER){
+            ejecutarValidacion();
         }
     }//GEN-LAST:event_txtcontrasenaKeyPressed
 
@@ -257,7 +286,8 @@ public class inicio extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        Actualizador actualizar = new Actualizador();
+        actualizar.comprobarNuevaVersion();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
