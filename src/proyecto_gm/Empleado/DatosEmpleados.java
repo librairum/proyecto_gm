@@ -382,14 +382,37 @@ public class DatosEmpleados {
     }
     
     public static Empleados buscarEmpleadoLocal(String dni) {
-    // Usamos el método listar() que YA EXISTE en esta clase DatosEmpleados
-    java.util.List<Empleados> lista = listar(); 
+        // Usamos el método listar() que YA EXISTE en esta clase DatosEmpleados
+        java.util.List<Empleados> lista = listar(); 
+
+        for (Empleados e : lista) {
+            if (e.getDni() != null && e.getDni().equals(dni)) {
+                return e; // ¡Encontrado!
+            }
+        }
+        return null; 
+    }
     
-    for (Empleados e : lista) {
-        if (e.getDni() != null && e.getDni().equals(dni)) {
-            return e; // ¡Encontrado!
+    public static boolean insertarDesdeExcel(int id, String ape, String nom, String fec, String mail, String dni, String cel, String dist, String dir, int area, int cargo, int tipo) {
+        String sql = "{ CALL insertar_datos_empleado(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }";
+        try (CallableStatement cstmt = conn.prepareCall(sql)) {
+            cstmt.setInt(1, id);
+            cstmt.setString(2, ape);
+            cstmt.setString(3, nom);
+            cstmt.setString(4, fec);
+            cstmt.setString(5, mail);
+            cstmt.setString(6, dni);
+            cstmt.setString(7, cel);
+            cstmt.setString(8, dist);
+            cstmt.setString(9, dir);
+            cstmt.setInt(10, area);
+            cstmt.setInt(11, cargo);
+            cstmt.setInt(12, tipo);
+            cstmt.execute();
+            return true;
+        } catch (SQLException e) {
+            System.err.println("Error Excel: " + e.getMessage());
+            return false;
         }
     }
-    return null; 
-}
 }

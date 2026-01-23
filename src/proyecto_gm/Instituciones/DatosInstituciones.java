@@ -82,4 +82,18 @@ public class DatosInstituciones {
     public static boolean validarNumeros(String datos) {
         return datos.matches("[0-9]*");
     }
+    
+    public static boolean insertarDesdeExcel(String ruc, String razon, String direccion, String sede) {
+        try (CallableStatement cstmt = conn.prepareCall("{ CALL insertar_instituciones(?, ?, ?, ?) }")) {
+            cstmt.setString(1, ruc);
+            cstmt.setString(2, razon);
+            cstmt.setString(3, direccion);
+            cstmt.setString(4, sede);
+            cstmt.execute();
+            return true;
+        } catch (SQLException ex) {
+            System.err.println("Error en inserción individual: " + ex.getMessage());
+            return false;
+        }
+    }
 }

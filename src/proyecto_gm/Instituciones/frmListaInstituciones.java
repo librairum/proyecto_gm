@@ -55,6 +55,7 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
         btnExportar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtBuscar = new javax.swing.JTextField();
+        btnImportar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -106,6 +107,13 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
             }
         });
 
+        btnImportar.setText("Importar");
+        btnImportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImportarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -114,7 +122,7 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 849, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnAgregar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -125,8 +133,11 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)
-                        .addComponent(btnExportar)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnImportar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnExportar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(15, 15, 15)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -139,9 +150,11 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
                     .addComponent(btnEliminar)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1))
-                    .addComponent(btnExportar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                        .addComponent(jLabel1)
+                        .addComponent(btnExportar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(5, 5, 5)
+                .addComponent(btnImportar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -212,6 +225,48 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
     private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBuscarActionPerformed
+
+    public void importarDesdeExcel(String ruta) {
+        try (java.io.FileInputStream fis = new java.io.FileInputStream(new java.io.File(ruta))) {
+            org.apache.poi.ss.usermodel.Workbook workbook = new org.apache.poi.xssf.usermodel.XSSFWorkbook(fis);
+            org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
+            org.apache.poi.ss.usermodel.DataFormatter formatter = new org.apache.poi.ss.usermodel.DataFormatter();
+
+            int contador = 0;
+            int totalFilas = sheet.getPhysicalNumberOfRows();
+
+            for (int i = 1; i < totalFilas; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if (row == null) continue;
+
+                String ruc = formatter.formatCellValue(row.getCell(0));
+                String razon = formatter.formatCellValue(row.getCell(1));
+                String direccion = formatter.formatCellValue(row.getCell(2));
+                String sede = formatter.formatCellValue(row.getCell(3));
+
+                if (ruc == null || ruc.trim().isEmpty()) continue;
+
+                if (DatosInstituciones.insertarDesdeExcel(ruc, razon, direccion, sede)) {
+                    contador++;
+                }
+            }
+
+            JOptionPane.showMessageDialog(this, "Se importaron " + contador + " instituciones.");
+            recargarTabla();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error de archivo: " + e.getMessage());
+        }
+    }
+    
+    private void btnImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarActionPerformed
+        javax.swing.JFileChooser fc = new javax.swing.JFileChooser();
+        fc.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Excel", "xlsx", "xls"));
+
+        if (fc.showOpenDialog(this) == javax.swing.JFileChooser.APPROVE_OPTION) {
+            importarDesdeExcel(fc.getSelectedFile().getAbsolutePath());
+        }
+    }//GEN-LAST:event_btnImportarActionPerformed
     
     public void recargarTabla() {
         DefaultTableModel modelo = (DefaultTableModel) tblInstituciones.getModel();
@@ -225,6 +280,7 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnExportar;
+    private javax.swing.JButton btnImportar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

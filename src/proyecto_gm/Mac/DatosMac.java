@@ -8,14 +8,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Date;
+import proyecto_gm.inicio;
 
 public class DatosMac {
 
     public String validarAcceso(int idUsuario) {
+         if (proyecto_gm.inicio.esModoDev) {
+            return "PERMITIDO"; 
+        }
+
         String macActual = obtenerMac();
         System.out.println("Validando acceso para ID: " + idUsuario);
         System.out.println("MAC detectada: " + macActual);
-
         if (macActual.equals("ERROR")) return "ERROR_MAC";
 
         ControlMac datos = buscarMacEspecifica(idUsuario, macActual);
@@ -44,6 +48,8 @@ public class DatosMac {
     }
 
     public boolean insertar(int idUsuario, String mac) {
+        if (inicio.esModoDev) return true;
+
         String nombrePC = obtenerNombrePC();
         String sql = "INSERT INTO control_mac (id_usuario, mac_address, nombre_pc, ultima_sesion, inicio_instalacion, dia_finalizacion, estado) " +
                      "VALUES (?, ?, ?, ?, ?, DATE_ADD(?, INTERVAL 30 DAY), 'PENDIENTE')";
@@ -61,15 +67,15 @@ public class DatosMac {
             ps.setTimestamp(6, horaLocal);
             
             ps.executeUpdate();
-            System.out.println("Registro exitoso en BD.");
             return true;
         } catch (Exception e) {
-            System.out.println("Error al insertar: " + e.getMessage());
             return false;
         }
     }
 
     public ControlMac buscarMacEspecifica(int idUsuario, String mac) {
+        if (inicio.esModoDev) return null;
+
         ControlMac cm = null;
         String sql = "SELECT * FROM control_mac WHERE id_usuario = ? AND mac_address = ?";
         try {
@@ -88,22 +94,25 @@ public class DatosMac {
                 cm.setEstado(rs.getString("estado"));
             }
         } catch (Exception e) {
-            System.out.println("Error al buscar: " + e);
         }
         return cm;
     }
 
     public void actualizarSesion(int idControl) {
+        if (inicio.esModoDev) return;
+
         try {
             Connection con = ConexionBD.getConnection();
             PreparedStatement ps = con.prepareStatement("UPDATE control_mac SET ultima_sesion = ? WHERE id_control = ?");
             ps.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
             ps.setInt(2, idControl);
             ps.executeUpdate();
-        } catch (Exception e) { System.out.println(e); }
+        } catch (Exception e) { }
     }
 
     private String obtenerMac() {
+        if (inicio.esModoDev) return "DEV_MAC";
+
         try {
             InetAddress ip = InetAddress.getLocalHost();
             NetworkInterface network = NetworkInterface.getByInetAddress(ip);
@@ -118,6 +127,8 @@ public class DatosMac {
     }
 
     private String obtenerNombrePC() {
+        if (inicio.esModoDev) return "DEV_PC";
+        
         try { return InetAddress.getLocalHost().getHostName(); } catch (Exception e) { return "Desconocido"; }
     }
 }

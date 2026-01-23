@@ -28,9 +28,7 @@ public class Configurador {
                     return contenido.substring(inicio, fin);
                 }
             }
-            
             return null;
-
         } catch (Exception e) {
             return null;
         }

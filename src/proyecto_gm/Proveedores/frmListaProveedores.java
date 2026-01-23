@@ -95,6 +95,7 @@ public void cargarTabla() {
         jLabel1 = new javax.swing.JLabel();
         txtBusqueda = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
+        btnImportar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProveedor = new javax.swing.JTable();
 
@@ -194,6 +195,13 @@ public void cargarTabla() {
             }
         });
 
+        btnImportar.setText("Importar");
+        btnImportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImportarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -205,14 +213,17 @@ public void cargarTabla() {
                 .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBuscar)
-                .addContainerGap(499, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 417, Short.MAX_VALUE)
+                .addComponent(btnImportar)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(jLabel1)
-                .addComponent(btnBuscar))
+                .addComponent(btnBuscar)
+                .addComponent(btnImportar))
         );
 
         tblProveedor.setModel(new javax.swing.table.DefaultTableModel(
@@ -314,11 +325,63 @@ public void cargarTabla() {
    ReporteProveedores reporte = new ReporteProveedores();
     reporte.mostrar();    }//GEN-LAST:event_btnReporteActionPerformed
 
+    
+    
+    
+    
+    public void importarDesdeExcel(String ruta) {
+        try (java.io.FileInputStream fis = new java.io.FileInputStream(new java.io.File(ruta))) {
+            org.apache.poi.ss.usermodel.Workbook workbook = new org.apache.poi.xssf.usermodel.XSSFWorkbook(fis);
+            org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
+            org.apache.poi.ss.usermodel.DataFormatter formatter = new org.apache.poi.ss.usermodel.DataFormatter();
+
+            int contador = 0;
+            int totalFilas = sheet.getPhysicalNumberOfRows();
+
+            for (int i = 1; i < totalFilas; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if (row == null) continue;
+
+                String ruc = formatter.formatCellValue(row.getCell(0));
+                if (ruc == null || ruc.trim().isEmpty()) continue;
+
+                String nombres = formatter.formatCellValue(row.getCell(1));
+                String direccion = formatter.formatCellValue(row.getCell(2));
+                String rubro = formatter.formatCellValue(row.getCell(3));
+                String correo = formatter.formatCellValue(row.getCell(4));
+                String telefono = formatter.formatCellValue(row.getCell(5));
+                String celular = formatter.formatCellValue(row.getCell(6));
+                String idUbigeo = formatter.formatCellValue(row.getCell(7));
+                String estado = formatter.formatCellValue(row.getCell(8));
+
+                if (datos.insertarDesdeExcel(idUbigeo, nombres, direccion, correo, telefono, celular, ruc, rubro, estado)) {
+                    contador++;
+                }
+            }
+
+            JOptionPane.showMessageDialog(this, "Se importaron " + contador + " proveedores.");
+            cargarTabla();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
+    }
+    
+    
+    private void btnImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarActionPerformed
+        javax.swing.JFileChooser fc = new javax.swing.JFileChooser();
+        fc.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Excel", "xlsx", "xls"));
+        if (fc.showOpenDialog(this) == javax.swing.JFileChooser.APPROVE_OPTION) {
+            importarDesdeExcel(fc.getSelectedFile().getAbsolutePath());
+        }
+    }//GEN-LAST:event_btnImportarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnImportar;
     private javax.swing.JButton btnReporte;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

@@ -1,6 +1,7 @@
 package proyecto_gm;
 
 import Actualizador.Actualizador;
+import Actualizador.Configurador;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
@@ -13,9 +14,13 @@ import java.sql.CallableStatement;
 import java.util.Locale;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class inicio extends javax.swing.JFrame {
 
+    public static boolean esModoDev = false;
     int intentos;
     String nombreEquipo = "";
     String macAddress = "";
@@ -24,31 +29,60 @@ public class inicio extends javax.swing.JFrame {
     public static String nombreEquipoCalculado = "";
 
     public inicio() {
-        initComponents();
-        obtenerDatosEquipo();
+        this(false);
+        
     }
+    
+    public inicio(boolean modoDev) {
+        cargarModoDev();
+        inicio.esModoDev = modoDev || inicio.esModoDev;
+        initComponents();
+        if (!inicio.esModoDev) {
+            obtenerDatosEquipo();
+        }
+    }
+    
+    public static void cargarModoDev() {
+      try {
+          Path path = Paths.get("proyect_gm.config.json");
+          String contenido = Files.readString(path).trim();
+          int idx = contenido.indexOf("\"modo_desarrollador\"");
+          if (idx >= 0) {
+              int idxTrue = contenido.indexOf("true", idx);
+              int idxFalse = contenido.indexOf("false", idx);
+              if (idxTrue >= 0 && (idxFalse < 0 || idxTrue < idxFalse)) {
+                  inicio.esModoDev = true;
+              } else {
+                  inicio.esModoDev = false;
+              }
+          } else {
+              inicio.esModoDev = false;
+          }
+          System.out.println("ModoDev cargado: " + inicio.esModoDev);
+      } catch (Exception e) {
+          inicio.esModoDev = false;
+      }
+  }
 
-    private void obtenerDatosEquipo() {
+
+
+   private void obtenerDatosEquipo() {
+        if (inicio.esModoDev) return; 
         try {
             InetAddress ip = InetAddress.getLocalHost();
             nombreEquipoCalculado = ip.getHostName(); 
-            
             NetworkInterface network = NetworkInterface.getByInetAddress(ip);
             byte[] mac = network.getHardwareAddress();
-            
             StringBuilder sb = new StringBuilder();
             if (mac != null) {
                 for (int i = 0; i < mac.length; i++) {
                     sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
                 }
                 macAddressCalculada = sb.toString();
-            } else {
-                macAddressCalculada = "No encontrada";
             }
+            
             System.out.println("Datos obtenidos -> PC: " + nombreEquipoCalculado + " | MAC: " + macAddressCalculada);
         } catch (Exception e) {
-            macAddressCalculada = "Error";
-            System.err.println("Error obteniendo datos: " + e.getMessage());
         }
     }
     
@@ -59,49 +93,48 @@ public class inicio extends javax.swing.JFrame {
         contenedor.setVisible(true);
     }
     
-    private void ejecutarValidacion() {
+   private void ejecutarValidacion() {
         String user = txtusuario.getText();
         String pass = new String(txtcontrasena.getPassword());
 
         if (user.isEmpty() || pass.isEmpty()) {
-             javax.swing.JOptionPane.showMessageDialog(this, "Llenar completamente los campos");
-             return;
+            JOptionPane.showMessageDialog(this, "Llenar completamente los campos");
+            return;
         }
 
         int idUsuarioValidado = 0;
         try {
-            java.sql.Connection con = proyecto_gm.ConexionBD.getConnection();
+            Connection con = ConexionBD.getConnection();
             String sql = "SELECT IdUsuario FROM usuarios WHERE username = ? AND pass = ?";
-            java.sql.PreparedStatement ps = con.prepareStatement(sql);
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, user);
             ps.setString(2, pass); 
-            java.sql.ResultSet rs = ps.executeQuery();
-            
+            ResultSet rs = ps.executeQuery();
+
             if (rs.next()) {
                 idUsuarioValidado = rs.getInt("IdUsuario");
             }
+
         } catch (Exception e) {
-            System.out.println("Error validando usuario: " + e);
         }
-        
+
         if (idUsuarioValidado > 0) {
             TraerPerfil(user);
-            proyecto_gm.ConexionBD.nomUsuario = user;
+            ConexionBD.nomUsuario = user;
 
-            proyecto_gm.Mac.DatosMac control = new proyecto_gm.Mac.DatosMac(); 
-            String resultado = control.validarAcceso(idUsuarioValidado);
-
-            if (resultado.equals("PERMITIDO") || resultado.equals("PERMITIDO_NUEVO")) {
-                ingresar(); 
-            } else if (resultado.equals("DENEGADO_MANUAL")) {
-                javax.swing.JOptionPane.showMessageDialog(this, "Usted ha sido denegado.");
-            } else if (resultado.equals("DENEGADO_LICENCIA")) {
-                javax.swing.JOptionPane.showMessageDialog(this, "Su licencia ha caducado.");
-            } else {
-                javax.swing.JOptionPane.showMessageDialog(this, "Error de verificación: " + resultado);
+            if (!inicio.esModoDev) {
+                proyecto_gm.Mac.DatosMac control = new proyecto_gm.Mac.DatosMac();
+                String resultado = control.validarAcceso(idUsuarioValidado);
+                if (!resultado.equals("PERMITIDO") && !resultado.equals("PERMITIDO_NUEVO")) {
+                    JOptionPane.showMessageDialog(this, "Acceso denegado: " + resultado);
+                    return;
+                }
             }
+
+            ingresar();
+
         } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.");
+            JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.");
         }
     }
 
@@ -201,19 +234,18 @@ public class inicio extends javax.swing.JFrame {
     private void txtcontrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcontrasenaActionPerformed
       
     }//GEN-LAST:event_txtcontrasenaActionPerformed
-    void TraerPerfil(String nombreUsuario){
+   void TraerPerfil(String nombreUsuario){
         try{
-            CallableStatement cstmt =  conn.prepareCall("call listar_perfilxusuario(?,?)");
+            CallableStatement cstmt = conn.prepareCall("call listar_perfilxusuario(?,?)");
             cstmt.setString(1, "01");
             cstmt.setString(2, nombreUsuario);
             ResultSet rs = cstmt.executeQuery();
             while(rs.next()){
-                ConexionBD.codPerfil=  rs.getString("codperfil");
+                ConexionBD.codPerfil = rs.getString("codperfil");
                 ConexionBD.nomPerfil = rs.getString("nomperfil");
             }
         }catch(SQLException exSQL){
-            JOptionPane.showMessageDialog(null,exSQL.getMessage(), 
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,exSQL.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -263,46 +295,18 @@ public class inicio extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+   
+   public static void main(String args[]) {
+        String modoJSON = Configurador.getDato("modo_desarrollador");
+        inicio.esModoDev = "true".equalsIgnoreCase(modoJSON);
+
+        if (inicio.esModoDev) {
+            java.awt.EventQueue.invokeLater(() -> new inicio(true).setVisible(true));
+        } else {
+            Actualizador actualizar = new Actualizador();
+            actualizar.comprobarNuevaVersion();
+            java.awt.EventQueue.invokeLater(() -> new inicio(false).setVisible(true));
         }
-        //</editor-fold>
-        Actualizador actualizar = new Actualizador();
-        actualizar.comprobarNuevaVersion();
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                //new inicio().setVisible(true);
-                try {
-                    Locale.setDefault(new Locale("es", "ES"));
-                    UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-                    
-                    new inicio().show();
-                } catch (Exception e) {
-
-                }
-
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -5,6 +5,7 @@
 package proyecto_gm;
 
 import Actualizador.Actualizador;
+import Actualizador.Configurador;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 public class SplashInicio extends javax.swing.JFrame {
@@ -12,11 +13,20 @@ public class SplashInicio extends javax.swing.JFrame {
     /**
      * Creates new form SplashInicio
      */
-    public SplashInicio() {
+   public SplashInicio() {
         initComponents();
         this.setLocationRelativeTo(null);
-        new Thread(() -> verificarUpdate()).start();
+
+        String modoJSON = Configurador.getDato("modo_desarrollador");
+        boolean modoDev = "true".equalsIgnoreCase(modoJSON);
+
+        if (modoDev) {
+            irAlLogin();
+        } else {
+            new Thread(() -> verificarUpdate()).start();
+        }
     }
+
 
 
 

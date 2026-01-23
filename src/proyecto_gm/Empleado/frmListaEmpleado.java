@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -21,17 +23,28 @@ import javax.swing.table.TableRowSorter;
 import proyecto_gm.Area.Area;
 import proyecto_gm.Cargo.Cargo;
 import proyecto_gm.Utilitario;
-
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Connection;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import proyecto_gm.ConexionBD; // Asegúrate de importar tu conexión
 
 
@@ -42,6 +55,7 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
     public frmListaEmpleado(JDesktopPane panel) {
         initComponents();
         this.panelPadre = panel;
+        cargarAreas();
     }
     
     @SuppressWarnings("unchecked")
@@ -56,12 +70,14 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
         btnNuevo = new javax.swing.JButton();
         btnRefrescar = new javax.swing.JButton();
         btnReporte = new javax.swing.JToggleButton();
+        cmbArea = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtBusqueda = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         cboEstado = new javax.swing.JComboBox<>();
+        btnImportar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -152,6 +168,12 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
             }
         });
 
+        cmbArea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbAreaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -167,6 +189,8 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
                 .addComponent(btnRefrescar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnReporte)
+                .addGap(18, 18, 18)
+                .addComponent(cmbArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -175,7 +199,9 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
             .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnRefrescar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(btnReporte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(btnReporte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cmbArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -209,6 +235,13 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
             }
         });
 
+        btnImportar.setText("Importar");
+        btnImportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImportarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -224,7 +257,9 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
                 .addComponent(cboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnBuscar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnImportar)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -233,7 +268,8 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
                 .addComponent(jLabel1)
                 .addComponent(btnBuscar)
                 .addComponent(jLabel2)
-                .addComponent(cboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(cboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnImportar))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -422,45 +458,18 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
         }
     //11 cargo Id
     }
-    protected  void Cargar(){
-    JTableHeader header = tblEmpleados.getTableHeader();
-        header.setDefaultRenderer(new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table,
-                    Object value,
-                    boolean isSelected,
-                    boolean hasFocus,
-                    int row,
-                    int column) {
-                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                setHorizontalAlignment(JLabel.CENTER);
-                setBackground(Color.DARK_GRAY);
-                setForeground(Color.WHITE);
-                setFont(getFont().deriveFont(Font.BOLD, 13));
-                return this;
-            }
-        });
-
+    protected void Cargar() {
         DefaultTableModel modelo = (DefaultTableModel) tblEmpleados.getModel();
+        DatosEmpleados.Listar(modelo);
 
-        
-         DatosEmpleados.Listar(modelo);
-
-        TableColumn colIdArea = tblEmpleados.getColumnModel().getColumn(9);
-        TableColumn colIdCargo = tblEmpleados.getColumnModel().getColumn(11);
-        TableColumn colIdTipoEmpleado = tblEmpleados.getColumnModel().getColumn(14);
-        TableColumnModel tcmModelo = tblEmpleados.getColumnModel();
-        tcmModelo.removeColumn(colIdArea);
-        tcmModelo.removeColumn(colIdCargo);
-        tcmModelo.removeColumn(colIdTipoEmpleado);
-       
-         
-        // Quitar la edicion de las celdas
+        if (tblEmpleados.getColumnCount() > 12) {
+            TableColumnModel tcm = tblEmpleados.getColumnModel();
+            tcm.removeColumn(tcm.getColumn(14)); 
+            tcm.removeColumn(tcm.getColumn(11)); 
+            tcm.removeColumn(tcm.getColumn(9));  
+        }
         tblEmpleados.setCellSelectionEnabled(false);
-        // Habilitar la seleccion de filas
         tblEmpleados.setRowSelectionAllowed(true);
-        
-         
     }
     
     static void CargarLista(){
@@ -526,30 +535,47 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
                     break;
             }         
     }//GEN-LAST:event_cboEstadoActionPerformed
-
-    private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
+    
+    public void cargarAreas() {
+        cmbArea.removeAllItems();
         try {
+            Connection con = ConexionBD.getConnection();
+            String sql = "SELECT descripcion FROM areas";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                cmbArea.addItem(rs.getString("descripcion"));
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+    private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
+       try {
             Connection conn = ConexionBD.getConnection();
-            
-            String rutaReporte = "/reportes/RPTEmpleado.jasper";
+            String rutaReporte = "/reportes/RPTEmpleado.jrxml";
             InputStream is = getClass().getResourceAsStream(rutaReporte);
-            
+
             if (is == null) {
-                JOptionPane.showMessageDialog(this, "No se encontró el archivo del reporte en: " + rutaReporte);
+                JOptionPane.showMessageDialog(this, "Archivo no encontrado en: " + rutaReporte);
                 return;
             }
 
+            JasperReport jr = JasperCompileManager.compileReport(is);
+
+            String areaSeleccionada = cmbArea.getSelectedItem().toString();
             Map<String, Object> parametros = new HashMap<>();
-            JasperPrint print = JasperFillManager.fillReport(is, parametros, conn);
-            JasperViewer view = new JasperViewer(print, false); 
-            view.setTitle("Reporte de Empleados");
+            parametros.put("PAR_AREA", areaSeleccionada);
+
+            JasperPrint print = JasperFillManager.fillReport(jr, parametros, conn);
+            JasperViewer view = new JasperViewer(print, false);
+            view.setTitle("Reporte de Empleados - Área: " + areaSeleccionada);
             view.setVisible(true);
-            
+
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error al generar reporte: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
             ex.printStackTrace();
         }
-        
         btnReporte.setSelected(false);
     }//GEN-LAST:event_btnReporteActionPerformed
 
@@ -557,16 +583,68 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBusquedaActionPerformed
 
+    private void cmbAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAreaActionPerformed
+
+    }//GEN-LAST:event_cmbAreaActionPerformed
+    
+    public void importarDesdeExcel(String ruta) {
+        try (FileInputStream fis = new FileInputStream(new File(ruta))) {
+            Workbook wb = new XSSFWorkbook(fis);
+            Sheet s = wb.getSheetAt(0);
+            org.apache.poi.ss.usermodel.DataFormatter fmt = new org.apache.poi.ss.usermodel.DataFormatter();
+            int contador = 0;
+
+            for (int i = 1; i <= s.getLastRowNum(); i++) {
+                Row row = s.getRow(i);
+                if (row == null) continue;
+
+                String idRaw = fmt.formatCellValue(row.getCell(0)).replace("E", "").trim();
+                if (idRaw.isEmpty()) continue;
+
+                int id = Integer.parseInt(idRaw);
+                String apellidos = fmt.formatCellValue(row.getCell(1));
+                String nombres = fmt.formatCellValue(row.getCell(2));
+                String fechaNac = fmt.formatCellValue(row.getCell(3));
+                String correo = fmt.formatCellValue(row.getCell(4));
+                String dni = fmt.formatCellValue(row.getCell(5));
+                String celular = fmt.formatCellValue(row.getCell(6));
+                String distrito = fmt.formatCellValue(row.getCell(7));
+                String direccion = fmt.formatCellValue(row.getCell(8));
+                int idArea = Integer.parseInt(fmt.formatCellValue(row.getCell(9)));
+                int idCargo = Integer.parseInt(fmt.formatCellValue(row.getCell(10)));
+                int idTipo = Integer.parseInt(fmt.formatCellValue(row.getCell(11)));
+
+                if (DatosEmpleados.insertarDesdeExcel(id, apellidos, nombres, fechaNac, correo, dni, celular, distrito, direccion, idArea, idCargo, idTipo)) {
+                    contador++;
+                }
+            }
+            JOptionPane.showMessageDialog(this, "Se registraron " + contador + " empleados.");
+            Cargar();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al importar: " + e.getMessage());
+        }
+    }
+
+    private void btnImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarActionPerformed
+        JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new FileNameExtensionFilter("Archivos Excel", "xlsx"));
+        if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            importarDesdeExcel(fc.getSelectedFile().getAbsolutePath());
+        }
+    }//GEN-LAST:event_btnImportarActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     public static javax.swing.JButton btnEditar;
     public static javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnImportar;
     public static javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnRefrescar;
     private javax.swing.JToggleButton btnReporte;
     private javax.swing.JComboBox<String> cboEstado;
+    private javax.swing.JComboBox<String> cmbArea;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

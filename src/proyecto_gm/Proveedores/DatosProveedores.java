@@ -239,4 +239,30 @@ public List<EstadoProveedor> listarEstadosProveedor() {
 
     } catch (Exception e) {
         System.out.println("Error al obtener proveedor por ID: " + e.getMessage()); }
-    return prov;}}
+    return prov;}
+    
+    public boolean insertarDesdeExcel(String idUbigeo, String nombres, String direccion, String correo, String telefono, String celular, String ruc, String rubro, String estado) {
+        String sql = "{ CALL insertar_proveedores(?, ?, ?, ?, ?, ?, ?, ?, ?) }";
+        try (Connection conn = ConexionBD.getConnection();
+             CallableStatement cstmt = conn.prepareCall(sql)) {
+            cstmt.setString(1, idUbigeo);
+            cstmt.setString(2, nombres);
+            cstmt.setString(3, direccion);
+            cstmt.setString(4, correo);
+            cstmt.setString(5, telefono);
+            cstmt.setString(6, celular);
+            cstmt.setString(7, ruc);
+            cstmt.setString(8, rubro);
+            cstmt.setString(9, estado);
+            return cstmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            System.err.println("Error en inserción Excel: " + ex.getMessage());
+            return false;
+        }
+    }
+
+
+
+}
+
+
