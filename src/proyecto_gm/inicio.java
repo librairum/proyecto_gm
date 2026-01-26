@@ -17,6 +17,8 @@ import java.net.NetworkInterface;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import javax.swing.SwingUtilities;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class inicio extends javax.swing.JFrame {
 
@@ -297,16 +299,33 @@ public class inicio extends javax.swing.JFrame {
      */
    
    public static void main(String args[]) {
-        String modoJSON = Configurador.getDato("modo_desarrollador");
-        inicio.esModoDev = "true".equalsIgnoreCase(modoJSON);
+      
+       
+        // 1. Configurar el Look and Feel antes de iniciar la UI
+            try {
+                javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
+            } catch (Exception e) {
+                System.err.println("No se pudo establecer el estilo visual: " + e.getMessage());
+            }
 
-        if (inicio.esModoDev) {
-            java.awt.EventQueue.invokeLater(() -> new inicio(true).setVisible(true));
-        } else {
-            Actualizador actualizar = new Actualizador();
-            actualizar.comprobarNuevaVersion();
-            java.awt.EventQueue.invokeLater(() -> new inicio(false).setVisible(true));
-        }
+            String modoJSON = Configurador.getDato("modo_desarrollador");
+            inicio.esModoDev = "true".equalsIgnoreCase(modoJSON);
+
+            java.awt.EventQueue.invokeLater(() -> {
+                inicio ventana;
+                if (inicio.esModoDev) {
+                    ventana = new inicio(true);
+                } else {
+                    Actualizador actualizar = new Actualizador();
+                    actualizar.comprobarNuevaVersion();
+                    ventana = new inicio(false);
+                }
+
+                // No es estrictamente necesario updateComponentTreeUI si lo pones al inicio,
+                // pero ayuda si la ventana ya estaba instanciada.
+                javax.swing.SwingUtilities.updateComponentTreeUI(ventana);
+                ventana.setVisible(true);
+            });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
