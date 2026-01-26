@@ -133,6 +133,7 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
         btnNuevo.setToolTipText("Nuevo");
+        btnNuevo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         btnNuevo.setName("nuevo"); // NOI18N
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -143,6 +144,7 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
         btnEditar.setToolTipText("Editar");
+        btnEditar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         btnEditar.setName("editar"); // NOI18N
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -153,6 +155,7 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/eliminar.png"))); // NOI18N
         btnEliminar.setToolTipText("Eliminar");
+        btnEliminar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         btnEliminar.setName("eliminar"); // NOI18N
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,6 +166,7 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
 
         btnRefrescar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/icons8-refrescar-20.png"))); // NOI18N
         btnRefrescar.setToolTipText("Refrescar");
+        btnRefrescar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRefrescarActionPerformed(evt);
@@ -173,6 +177,7 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
 
         btnReporte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/icons8-doc-25.png"))); // NOI18N
         btnReporte.setToolTipText("Generar reporte");
+        btnReporte.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         btnReporte.setFocusable(false);
         btnReporte.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnReporte.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -193,6 +198,7 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
 
         btnImportar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/icons8-importar-25.png"))); // NOI18N
         btnImportar.setToolTipText("Importar datos");
+        btnImportar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         btnImportar.setFocusable(false);
         btnImportar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnImportar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -553,31 +559,13 @@ public class frmListaEmpleado extends javax.swing.JInternalFrame {
         }
     }
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
-       try {
-            Connection conn = ConexionBD.getConnection();
-            String rutaReporte = "/reportes/RPTEmpleado.jrxml";
-            InputStream is = getClass().getResourceAsStream(rutaReporte);
+        String areaSeleccionada = cmbArea.getSelectedItem().toString();
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("PAR_AREA", areaSeleccionada);
 
-            if (is == null) {
-                JOptionPane.showMessageDialog(this, "Archivo no encontrado en: " + rutaReporte);
-                return;
-            }
+        reportes.GeneradorReportes gen = new reportes.GeneradorReportes();
+        gen.mostrarReporte("RPTEmpleado", parametros);
 
-            JasperReport jr = JasperCompileManager.compileReport(is);
-
-            String areaSeleccionada = cmbArea.getSelectedItem().toString();
-            Map<String, Object> parametros = new HashMap<>();
-            parametros.put("PAR_AREA", areaSeleccionada);
-
-            JasperPrint print = JasperFillManager.fillReport(jr, parametros, conn);
-            JasperViewer view = new JasperViewer(print, false);
-            view.setTitle("Reporte de Empleados - Área: " + areaSeleccionada);
-            view.setVisible(true);
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
-            ex.printStackTrace();
-        }
         btnReporte.setSelected(false);
     }//GEN-LAST:event_btnReporteActionPerformed
 

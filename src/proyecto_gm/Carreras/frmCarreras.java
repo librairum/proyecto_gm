@@ -164,7 +164,7 @@ public class frmCarreras extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tblCarreras);
 
-        jToolBar1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jToolBar1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jToolBar1.setRollover(true);
 
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N

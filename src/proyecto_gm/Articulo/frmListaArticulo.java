@@ -106,6 +106,7 @@ public class frmListaArticulo extends javax.swing.JInternalFrame {
         cboEstado = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
         btnNuevo = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
@@ -182,11 +183,13 @@ public class frmListaArticulo extends javax.swing.JInternalFrame {
                 .addComponent(cboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jToolBar1.setRollover(true);
+        jToolBar1.add(jSeparator2);
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
+        btnNuevo.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoActionPerformed(evt);
@@ -195,6 +198,7 @@ public class frmListaArticulo extends javax.swing.JInternalFrame {
         jToolBar1.add(btnNuevo);
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
+        btnEditar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditarActionPerformed(evt);
@@ -203,6 +207,7 @@ public class frmListaArticulo extends javax.swing.JInternalFrame {
         jToolBar1.add(btnEditar);
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/eliminar.png"))); // NOI18N
+        btnEliminar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
@@ -373,7 +378,13 @@ public class frmListaArticulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cmbCategoriaActionPerformed
 
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
-        this.generarReporteJasper(this.cmbCategoria.getSelectedIndex(), this.cmbCategoria.getSelectedItem().toString());
+        int idCategoria = ((Categoria) cmbCategoria.getSelectedItem()).getId(); 
+    
+        java.util.Map<String, Object> parametros = new java.util.HashMap<>();
+        parametros.put("p_id_categoria", idCategoria);
+
+        reportes.GeneradorReportes gen = new reportes.GeneradorReportes();
+        gen.mostrarReporte("RPTArticulos", parametros);
     }//GEN-LAST:event_btnReporteActionPerformed
 
     // Método para filtrar por descripción, categoría o marca
@@ -406,6 +417,7 @@ public class frmListaArticulo extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTable tblarticulo;
     private javax.swing.JTextField txtBusqueda;
