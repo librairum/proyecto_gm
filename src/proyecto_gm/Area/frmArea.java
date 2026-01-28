@@ -13,6 +13,8 @@ import javax.swing.table.JTableHeader;
 
 public class frmArea extends javax.swing.JInternalFrame {
 
+    private static frmArea instancia;
+    
     DefaultTableModel modelo;
     boolean esNuevo = false;
     private javax.swing.table.TableRowSorter<DefaultTableModel> sorter;
@@ -41,6 +43,19 @@ public class frmArea extends javax.swing.JInternalFrame {
         configurarEstadoInicial();
     }
 
+    public static frmArea getInstancia() {
+        if (instancia == null) {
+            instancia = new frmArea();
+        }
+        return instancia;
+    }
+    
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
+    }
+    
     // Método para cargar y recargar los datos en la tabla
     private void cargarTabla() {
         modelo.setRowCount(0);

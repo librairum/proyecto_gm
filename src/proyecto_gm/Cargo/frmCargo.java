@@ -8,7 +8,9 @@ import proyecto_gm.Utilitario;
 
 
 public class frmCargo extends javax.swing.JInternalFrame {
-
+    
+    private static frmCargo instancia;
+    
     private final DatosCargo datosCargo = new DatosCargo();
     private boolean esNuevo = false;
     private javax.swing.table.TableRowSorter<DefaultTableModel> sorter;
@@ -27,6 +29,20 @@ public class frmCargo extends javax.swing.JInternalFrame {
 
         // Buscar al presionar Enter
         txtBusqueda.addActionListener(e -> filtrarCargo(txtBusqueda.getText().trim()));
+    }
+    
+    
+    public static frmCargo getInstancia() {
+        if (instancia == null) {
+            instancia = new frmCargo();
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
     }
     
     // Carga los datos de la base de datos en la tabla

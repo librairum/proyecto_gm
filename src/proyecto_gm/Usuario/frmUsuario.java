@@ -17,7 +17,7 @@ import proyecto_gm.ConexionBD;
  * @author sistemas
  */
 public class frmUsuario extends frmMantenimientoBasico {
-
+    private static frmUsuario instancia;
     public frmUsuario() {
         super();
         initComponents();
@@ -32,6 +32,19 @@ public class frmUsuario extends frmMantenimientoBasico {
         btnNuevo.setEnabled(true);
         btnGuardar.setEnabled(false);
     }
+    public static frmUsuario getInstancia() {
+        if (instancia == null) {
+            instancia = new frmUsuario();
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
+    }
+    
 
     private void inicializaComboPerfil() {
 

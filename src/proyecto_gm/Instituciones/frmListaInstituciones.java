@@ -6,7 +6,7 @@ import javax.swing.table.DefaultTableModel;
 import proyecto_gm.Exportar;
 
 public class frmListaInstituciones extends javax.swing.JInternalFrame {
-
+    private static frmListaInstituciones instancia;
     Exportar obj;
     DefaultTableModel modelo;
 
@@ -39,6 +39,19 @@ public class frmListaInstituciones extends javax.swing.JInternalFrame {
                 }
             }
         });
+    }
+    
+    public static frmListaInstituciones getInstancia() {
+        if (instancia == null) {
+            instancia = new frmListaInstituciones();
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
     }
 
 

@@ -6,12 +6,26 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 public class frmListaRecibosHonorarios extends javax.swing.JInternalFrame {
-
+    private static frmListaRecibosHonorarios instancia;
     private DefaultTableModel modelo;
 
     public frmListaRecibosHonorarios() {
         initComponents();
         mostrarDatos();
+    }
+    
+    
+    public static frmListaRecibosHonorarios getInstancia() {
+        if (instancia == null) {
+            instancia = new frmListaRecibosHonorarios();
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
     }
     
     public JTable getTabla() {

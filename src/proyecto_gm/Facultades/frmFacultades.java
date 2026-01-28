@@ -10,7 +10,7 @@ import static proyecto_gm.Cargo.frmCargo.tblCargo;
 import proyecto_gm.Exportar;
 
 public class frmFacultades extends javax.swing.JInternalFrame {
-
+    private static frmFacultades instancia;
     DefaultTableModel modelo;
     boolean esNuevo = false;
     List<Facultades> listaFacultades; 
@@ -35,6 +35,19 @@ public class frmFacultades extends javax.swing.JInternalFrame {
 
         // Buscar al presionar Enter
         txtBusqueda.addActionListener(e -> filtrarFacultades(txtBusqueda.getText().trim()));
+    }
+    
+    public static frmFacultades getInstancia() {
+        if (instancia == null) {
+            instancia = new frmFacultades();
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
     }
     
     private void cargarDatos() {

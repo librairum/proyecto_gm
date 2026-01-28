@@ -8,10 +8,23 @@ import javax.swing.table.DefaultTableModel;
 
 
 public class frmListaCuentas extends javax.swing.JInternalFrame {
-
+    private static frmListaCuentas instancia;
     public frmListaCuentas() {
         initComponents();
         cargarDatosTabla();
+    }
+    
+    public static frmListaCuentas getInstancia() {
+        if (instancia == null) {
+            instancia = new frmListaCuentas();
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
     }
 
     // Método público para que otros formularios puedan refrescar la tabla

@@ -9,7 +9,7 @@ import proyecto_gm.Empleado.DatosEmpleados;
 import proyecto_gm.Empleado.Empleados;
 
 public class frmListaHorarios extends javax.swing.JInternalFrame {
-
+    private static frmListaHorarios instancia;
     DefaultTableModel modelo;
     List<Horarios> listaHorarios;
     TableRowSorter<DefaultTableModel> sorter;
@@ -38,6 +38,19 @@ public frmListaHorarios() {
         this.setSize(1100, 600);
         this.setLocation(0, 0);
         this.setVisible(true);
+    }
+
+    public static frmListaHorarios getInstancia() {
+        if (instancia == null) {
+            instancia = new frmListaHorarios();
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
     }
 
     public void cargarDatos() {

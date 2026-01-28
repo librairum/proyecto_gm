@@ -4,7 +4,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class frmPeriodos extends javax.swing.JInternalFrame {
-
+    private static frmPeriodos instancia;
     boolean esNuevo = false;
     DefaultTableModel modeloTabla;
 
@@ -21,6 +21,19 @@ public class frmPeriodos extends javax.swing.JInternalFrame {
         
         cargarTabla();
         gestionarControles(false);
+    }
+    
+    public static frmPeriodos getInstancia() {
+        if (instancia == null) {
+            instancia = new frmPeriodos();
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
     }
 
     private void cargarTabla() {

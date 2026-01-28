@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import proyecto_gm.Modulo.Modulo;
 
 public class frmTipoDocumento extends javax.swing.JInternalFrame {
-
+    private static frmTipoDocumento instancia;
     boolean esNuevo = false;
 
     public frmTipoDocumento() {
@@ -24,6 +24,19 @@ public class frmTipoDocumento extends javax.swing.JInternalFrame {
         tblTipoDocumento.setCellSelectionEnabled(false);
         tblTipoDocumento.setRowSelectionAllowed(true);
 
+    }
+    
+    public static frmTipoDocumento getInstancia() {
+        if (instancia == null) {
+            instancia = new frmTipoDocumento();
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
     }
 
     private void inicializaComboCategoria() {

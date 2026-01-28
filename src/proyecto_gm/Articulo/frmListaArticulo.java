@@ -23,6 +23,7 @@ import proyecto_gm.Categoria.DatosCategoria;
 import proyecto_gm.ConexionBD;
 
 public class frmListaArticulo extends javax.swing.JInternalFrame {
+    private static frmListaArticulo instancia;   
     
     DefaultTableModel modelo;
     List<Articulo> listaArticulos;
@@ -46,6 +47,19 @@ public class frmListaArticulo extends javax.swing.JInternalFrame {
  
         cargarDatos();
         cargarComboCategorias();
+    }
+    
+    public static frmListaArticulo getInstancia() {
+        if (instancia == null) {
+            instancia = new frmListaArticulo();
+        }
+        return instancia;
+    }
+    
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
     }
     
     public void cargarDatos() {

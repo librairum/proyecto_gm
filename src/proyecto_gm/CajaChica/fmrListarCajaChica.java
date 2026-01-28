@@ -13,11 +13,24 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 public class fmrListarCajaChica extends javax.swing.JInternalFrame {
-    
+    private static fmrListarCajaChica instancia;
     public fmrListarCajaChica() {
         initComponents();
         personalizarHeader();
         refrescarTabla();
+    }
+    
+    public static fmrListarCajaChica getInstancia() {
+        if (instancia == null) {
+            instancia = new fmrListarCajaChica();
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
     }
 
     public void refrescarTabla() {
@@ -25,7 +38,8 @@ public class fmrListarCajaChica extends javax.swing.JInternalFrame {
         modelo.setRowCount(0);
         DatosCajaChica.Mostrar(modelo);
     }
-
+    
+    
     private void personalizarHeader() {
         JTableHeader header = tblCajaChica.getTableHeader();
         header.setDefaultRenderer(new DefaultTableCellRenderer() {

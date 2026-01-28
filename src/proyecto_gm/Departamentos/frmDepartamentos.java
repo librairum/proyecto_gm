@@ -7,7 +7,7 @@ import javax.swing.table.DefaultTableModel;
 import proyecto_gm.Exportar; // Si lo usas
 
 public class frmDepartamentos extends javax.swing.JInternalFrame {
-
+    private static frmDepartamentos instancia;
     DatosDepartamentos datos = new DatosDepartamentos();
     Departamentos depto = new Departamentos();
     DefaultTableModel modelo;
@@ -22,6 +22,19 @@ public class frmDepartamentos extends javax.swing.JInternalFrame {
         
         cargarTabla();
         configurarEstadoInicial();
+    }
+    
+    public static frmDepartamentos getInstancia() {
+        if (instancia == null) {
+            instancia = new frmDepartamentos();
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
     }
 
     private void cargarTabla() {

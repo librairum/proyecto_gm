@@ -12,7 +12,7 @@ import proyecto_gm.Exportar;
 
 
 public class frmCarreras extends javax.swing.JInternalFrame {
-    
+    private static frmCarreras instancia;
     private javax.swing.table.TableRowSorter<DefaultTableModel> sorter;
     DefaultTableModel modelo;
     boolean esNuevo = false;
@@ -36,6 +36,19 @@ public class frmCarreras extends javax.swing.JInternalFrame {
 
         // Buscar al presionar Enter
         txtBusqueda.addActionListener(e -> filtrarCarreras(txtBusqueda.getText().trim()));
+    }
+    
+    public static frmCarreras getInstancia() {
+        if (instancia == null) {
+            instancia = new frmCarreras();
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
     }
     
     private void cargarDatos() {

@@ -4,7 +4,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class frmModulo extends javax.swing.JInternalFrame {
-
+    private static frmModulo instancia;
     private boolean esNuevo = false;
     private DefaultTableModel modeloTabla;
 
@@ -23,6 +23,19 @@ public class frmModulo extends javax.swing.JInternalFrame {
         
         cargarTabla();
         gestionarControles(false); // Estado inicial
+    }
+    
+    public static frmModulo getInstancia() {
+        if (instancia == null) {
+            instancia = new frmModulo();
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
     }
     
     // Método para cargar y recargar los datos en la tabla

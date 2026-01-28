@@ -8,7 +8,7 @@ import proyecto_gm.Utilitario;
     
 
 public class frmCredencial extends javax.swing.JInternalFrame {
-
+    private static frmCredencial instancia;
     // --- VARIABLES DE INSTANCIA ---
     private boolean esNuevo = false;
     private List<Credencial> listaCredenciales;
@@ -25,6 +25,19 @@ public class frmCredencial extends javax.swing.JInternalFrame {
         // Cargar datos y configurar estado inicial de la UI
         cargarDatosEnTabla();
         gestionarControles(false);
+    }
+    
+    public static frmCredencial getInstancia() {
+        if (instancia == null) {
+            instancia = new frmCredencial();
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
     }
     
     @SuppressWarnings("unchecked")

@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class frmListaTransferencias extends javax.swing.JInternalFrame {
-
+    private static frmListaTransferencias instancia;
     DefaultTableModel modelo;
     List<Transferencia> listaTransferencias;
 
@@ -23,6 +23,19 @@ public class frmListaTransferencias extends javax.swing.JInternalFrame {
         tblTransferencias.setModel(modelo);
         
         cargarDatos();
+    }
+    
+    public static frmListaTransferencias getInstancia() {
+        if (instancia == null) {
+            instancia = new frmListaTransferencias();
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
     }
 
     

@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import proyecto_gm.Exportar;
 
 public class frmCategoria extends javax.swing.JInternalFrame {
-
+    private static frmCategoria instancia;
     boolean esNuevo = false;
     DefaultTableModel modelo;
     List<Categoria> listaCategorias; 
@@ -23,6 +23,19 @@ public class frmCategoria extends javax.swing.JInternalFrame {
         
         cargarDatos();
         gestionarControles(false); 
+    }
+    
+    public static frmCategoria getInstancia() {
+        if (instancia == null) {
+            instancia = new frmCategoria();
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
     }
     
     private void cargarDatos() {

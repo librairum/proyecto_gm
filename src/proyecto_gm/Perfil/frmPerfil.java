@@ -12,6 +12,7 @@ import proyecto_gm.Mac.MAC_ADDRESS;
  * @author Cristian
  */
 public class frmPerfil extends javax.swing.JInternalFrame {
+    private static frmPerfil instancia;
  DefaultTableModel modelo;
     boolean esNuevo = false;
    public frmPerfil() {
@@ -28,6 +29,21 @@ public class frmPerfil extends javax.swing.JInternalFrame {
         cargarTabla();
         configurarEstadoInicial();
     }
+   
+   public static frmPerfil getInstancia() {
+        if (instancia == null) {
+            instancia = new frmPerfil();
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
+    }
+   
+   
 private void cargarTabla() {
     modelo.setRowCount(0); 
     List<Perfil> lista = DatosPerfil.listar(); 

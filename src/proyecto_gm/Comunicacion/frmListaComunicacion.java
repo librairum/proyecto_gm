@@ -42,10 +42,8 @@ import proyecto_gm.Facultades.DatosFacultades;
  *
  */
 public class frmListaComunicacion extends javax.swing.JInternalFrame {
-
-    /**
-     * Creates new form frmListaComunicacion
-     */
+    private static frmListaComunicacion instancia;
+    
     TableRowSorter<TableModel> rowSorter;
     JDesktopPane panelPadre;
 
@@ -84,6 +82,19 @@ public class frmListaComunicacion extends javax.swing.JInternalFrame {
         
         DatosComunicacion.cargarCombo(cboFlujo, DatosComunicacion.CargarComboFlujo());
         DatosComunicacion.cargarCombo(cboEstado, DatosComunicacion.CargarComboEstado());
+    }
+    
+    public static frmListaComunicacion getInstancia() {
+        if (instancia == null) {
+            instancia = new frmListaComunicacion();
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
     }
 
     /**

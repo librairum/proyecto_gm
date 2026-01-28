@@ -13,7 +13,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 public class frmTipo extends javax.swing.JInternalFrame {
-
+    private static frmTipo instancia;
+    
     boolean esNuevo = false;
 
     public frmTipo() {
@@ -44,6 +45,19 @@ public class frmTipo extends javax.swing.JInternalFrame {
 
         tblTipo.setCellSelectionEnabled(false);
         tblTipo.setRowSelectionAllowed(true);
+    }
+    
+    public static frmTipo getInstancia() {
+        if (instancia == null) {
+            instancia = new frmTipo();
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
     }
 
     @SuppressWarnings("unchecked")

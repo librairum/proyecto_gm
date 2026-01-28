@@ -9,7 +9,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableColumn;
 
 public class frmListaProveedores extends javax.swing.JInternalFrame {
-
+    private static frmListaProveedores instancia;
     private TableRowSorter<DefaultTableModel> sorter;
     private JDesktopPane panelPadre;
     private DatosProveedores datos = new DatosProveedores();
@@ -49,6 +49,20 @@ public frmListaProveedores(JDesktopPane panel) {
     txtBusqueda.addActionListener(e -> filtrarProveedores(txtBusqueda.getText().trim()));
     cargarTabla();
 }
+
+    public static frmListaProveedores getInstancia(JDesktopPane panel) {
+        if (instancia == null) {
+            instancia = new frmListaProveedores(panel);
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
+    }
+
 public void cargarTabla() {
     modelo.setRowCount(0);
     List<Proveedores> lista = datos.listar();

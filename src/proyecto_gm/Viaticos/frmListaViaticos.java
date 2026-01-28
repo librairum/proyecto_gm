@@ -8,12 +8,25 @@ import javax.swing.table.*;
 import proyecto_gm.Utilitario;
 
 public class frmListaViaticos extends javax.swing.JInternalFrame {
-
+    private static frmListaViaticos instancia;
     public frmListaViaticos() {
         initComponents();
         personalizarTabla();
         cargarDatos();
     }
+    public static frmListaViaticos getInstancia() {
+        if (instancia == null) {
+            instancia = new frmListaViaticos();
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
+    }
+    
 
     public void cargarDatos() {
         DefaultTableModel modelo = (DefaultTableModel) tblViatico.getModel();

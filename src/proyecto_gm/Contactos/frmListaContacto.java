@@ -8,7 +8,7 @@ import proyecto_gm.Exportar;
 
 
 public class frmListaContacto extends javax.swing.JInternalFrame {
-
+    private static frmListaContacto instancia;
     Exportar obj;
     private javax.swing.table.TableRowSorter<DefaultTableModel> sorter;
 
@@ -25,6 +25,19 @@ public class frmListaContacto extends javax.swing.JInternalFrame {
 
         // Activar búsqueda con Enter
         txtBusqueda1.addActionListener(e -> filtrarContactos(txtBusqueda1.getText().trim()));
+    }
+    
+    public static frmListaContacto getInstancia() {
+        if (instancia == null) {
+            instancia = new frmListaContacto();
+        }
+        return instancia;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        instancia = null;
     }
 
     
